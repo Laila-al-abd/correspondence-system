@@ -1,0 +1,29 @@
+# ---- Node / dependencies ----
+node_modules/
+
+# ---- Env & secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Builds ----
+dist/
+build/
+.next/
+out/
+
+# ---- Python (ai-service) ----
+ai-service/venv/
+ai-service/.venv/
+ai-service/__pycache__
+ai-service/.env
+*.pyc
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+
+# ---- OS / editors ----
+.DS_Store
+Thumbs.db
+.idea/
