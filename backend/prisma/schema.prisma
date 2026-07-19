@@ -1,7 +1,15 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// ============================================================================
+// Intelligent Administrative Correspondence System — Prisma schema
+// ----------------------------------------------------------------------------
+// Generated from the ER diagram (32 tables). Conventions:
+//   * Bilingual labels are stored as JSONB objects: { "ar": "...", "en": "..." }.
+//   * Enumerated string columns are kept as VARCHAR and validated in the domain
+//     layer, so adding a new value never requires a database migration
+//     (matches the project's extensibility conventions). Allowed values are
+//     documented inline next to each column.
+//   * BIGINT surrogate keys, timestamptz auditing columns, and nullable
+//     deleted_at soft-delete markers throughout.
+// ============================================================================
 
 generator client {
   provider = "prisma-client"
@@ -10,12 +18,653 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  // Connection string is supplied at runtime via prisma.config.ts
+  // (datasource.url = process.env["DATABASE_URL"]).
 }
+
+// ============================================================================
+// Identity & Access (RBAC + ABAC)
+// ============================================================================
+
+model User {
+  updatedAt           DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                  BigInt    @id @default(autoincrement())
+  userType            String    @map("user_type") @db.VarChar(30) // APPLICANT | FACULTY | STAFF | ADMIN ...
+  fullNameAr          String    @map("full_name_ar") @db.VarChar(200)
+  fullNameEn          String?   @map("full_name_en") @db.VarChar(200)
+  institutionalNumber String?   @unique @map("institutional_number") @db.VarChar(50)
+  email               String    @unique @db.VarChar(255)
+  phone               String?   @db.VarChar(30)
+  passwordHash        String?   @map("password_hash") @db.VarChar(255)
+  authProvider        String    @default("LOCAL") @map("auth_provider") @db.VarChar(30) // LOCAL | OTP
+  applicantPurpose    String?   @map("applicant_purpose") @db.VarChar(50)
+  departmentId        BigInt?   @map("department_id")
+  preferredLang       String    @default("ar") @map("preferred_lang") @db.VarChar(10)
+  signatureKey        String?   @map("signature_key") @db.VarChar(255)
+  status              String    @default("ACTIVE") @db.VarChar(30) // ACTIVE | SUSPENDED | INACTIVE
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastSyncedAt        DateTime? @map("last_synced_at") @db.Timestamptz(6)
+  deletedAt           DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  department        Department? @relation(fields: [departmentId], references: [id])
+  preferredLanguage Language    @relation(fields: [preferredLang], references: [code])
+
+  attributes            UserAttribute[]
+  rolesAssigned         UserRole[]            @relation("UserRoleUser")
+  rolesGranted          UserRole[]            @relation("UserRoleAssignedBy")
+  delegationsGiven      Delegation[]          @relation("DelegationDelegator")
+  delegationsReceived   Delegation[]          @relation("DelegationDelegate")
+  requests              Request[]
+  assignedStepInstances RequestStepInstance[]
+  requestActions        RequestAction[]
+  paymentsRequested     Payment[]             @relation("PaymentRequestedBy")
+  paymentsConfirmed     Payment[]             @relation("PaymentConfirmedBy")
+  documents             Document[]
+  eventLogs             EventLog[]
+  notifications         Notification[]
+  systemSettings        SystemSetting[]
+
+  @@index([departmentId])
+  @@index([preferredLang])
+  @@map("users")
+}
+
+model AttributeDefinition {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  code        String    @unique @db.VarChar(100)
+  label       Json      @db.JsonB
+  dataType    String    @map("data_type") @db.VarChar(20) // TEXT | NUMBER | DATE | BOOLEAN | ENUM
+  description Json?     @db.JsonB
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  userAttributes   UserAttribute[]
+  eligibilityRules TemplateEligibilityRule[]
+
+  @@map("attribute_definitions")
+}
+
+model UserAttribute {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt   @map("user_id")
+  attributeId BigInt   @map("attribute_id")
+  value       Json     @db.JsonB
+
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attribute AttributeDefinition @relation(fields: [attributeId], references: [id])
+
+  @@unique([userId, attributeId])
+  @@index([attributeId])
+  @@map("user_attributes")
+}
+
+model Role {
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  name        Json      @db.JsonB
+  description Json?     @db.JsonB
+  isSystem    Boolean   @default(false) @map("is_system")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  permissions   RolePermission[]
+  userRoles     UserRole[]
+  workflowSteps WorkflowStep[]
+
+  @@map("roles")
+}
+
+model PermissionGroup {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  name        Json     @db.JsonB
+  description Json?    @db.JsonB
+
+  permissions Permission[]
+
+  @@map("permission_groups")
+}
+
+model Permission {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  groupId     BigInt   @map("group_id")
+  code        String   @unique @db.VarChar(100)
+  name        Json     @db.JsonB
+  description Json?    @db.JsonB
+
+  group           PermissionGroup  @relation(fields: [groupId], references: [id])
+  rolePermissions RolePermission[]
+
+  @@index([groupId])
+  @@map("permissions")
+}
+
+model RolePermission {
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id           BigInt   @id @default(autoincrement())
+  roleId       BigInt   @map("role_id")
+  permissionId BigInt   @map("permission_id")
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  id           BigInt    @id @default(autoincrement())
+  userId       BigInt    @map("user_id")
+  roleId       BigInt    @map("role_id")
+  departmentId BigInt?   @map("department_id")
+  reason       String?   @db.Text
+  expiresAt    DateTime? @map("expires_at") @db.Timestamptz(6)
+  assignedBy   BigInt?   @map("assigned_by")
+  assignedAt   DateTime  @default(now()) @map("assigned_at") @db.Timestamptz(6)
+
+  user       User        @relation("UserRoleUser", fields: [userId], references: [id], onDelete: Cascade)
+  role       Role        @relation(fields: [roleId], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+  assigner   User?       @relation("UserRoleAssignedBy", fields: [assignedBy], references: [id])
+
+  @@unique([userId, roleId, departmentId, assignedAt])
+  @@index([roleId])
+  @@index([departmentId])
+  @@map("user_roles")
+}
+
+model Delegation {
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  delegatorId BigInt    @map("delegator_id")
+  delegateId  BigInt    @map("delegate_id")
+  startDate   DateTime  @map("start_date") @db.Date
+  endDate     DateTime  @map("end_date") @db.Date
+  reason      String?   @db.Text
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  delegator User @relation("DelegationDelegator", fields: [delegatorId], references: [id])
+  delegate  User @relation("DelegationDelegate", fields: [delegateId], references: [id])
+
+  @@index([delegatorId])
+  @@index([delegateId])
+  @@map("delegations")
+}
+
+// ============================================================================
+// Organization
+// ============================================================================
+
+model OrgUnitType {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  code        String    @unique @db.VarChar(50) // UNIVERSITY | FACULTY | DEPARTMENT | UNIT | OFFICE
+  name        Json      @db.JsonB
+  description Json?     @db.JsonB
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  departments Department[]
+
+  @@map("org_unit_types")
+}
+
+model Department {
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id           BigInt    @id @default(autoincrement())
+  parentId     BigInt?   @map("parent_id")
+  unitTypeId   BigInt    @map("unit_type_id")
+  name         Json      @db.JsonB
+  description  Json?     @db.JsonB
+  isActive     Boolean   @default(true) @map("is_active")
+  externalId   String?   @unique @map("external_id") @db.VarChar(100)
+  sourceSystem String    @default("MANUAL") @map("source_system") @db.VarChar(50)
+  lastSyncedAt DateTime? @map("last_synced_at") @db.Timestamptz(6)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt    DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  parent   Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children Department[] @relation("DepartmentHierarchy")
+  unitType OrgUnitType  @relation(fields: [unitTypeId], references: [id])
+
+  users         User[]
+  userRoles     UserRole[]
+  workflowSteps WorkflowStep[]
+
+  @@index([parentId])
+  @@index([unitTypeId])
+  @@map("departments")
+}
+
+// ============================================================================
+// Catalog (request types, templates, lookups)
+// ============================================================================
+
 model Language {
- code String @id @db.VarChar(10)
- name String @db.VarChar(100)
- nativeName String @map("native_name") @db.VarChar(100)
- isEnabled Boolean @default(true) @map("is_enabled")
- isDefault Boolean @default(false) @map("is_default")
- @@map("languages")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  code       String   @id @db.VarChar(10)
+  name       String   @db.VarChar(100)
+  nativeName String   @map("native_name") @db.VarChar(100)
+  isEnabled  Boolean  @default(true) @map("is_enabled")
+  isDefault  Boolean  @default(false) @map("is_default")
+
+  users User[]
+
+  @@map("languages")
+}
+
+model SensitivityLevel {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  name        Json      @db.JsonB
+  rank        Int       @unique
+  description Json?     @db.JsonB
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  templates Template[]
+  requests  Request[]
+
+  @@map("sensitivity_levels")
+}
+
+model RequestCategory {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  name        Json      @db.JsonB
+  description Json?     @db.JsonB
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  templates Template[]
+
+  @@map("request_categories")
+}
+
+model Template {
+  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                 BigInt    @id @default(autoincrement())
+  categoryId         BigInt    @map("category_id")
+  title              Json      @db.JsonB
+  description        Json?     @db.JsonB
+  sensitivityLevelId BigInt    @map("sensitivity_level_id")
+  isActive           Boolean   @default(true) @map("is_active")
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt          DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  category         RequestCategory  @relation(fields: [categoryId], references: [id])
+  sensitivityLevel SensitivityLevel @relation(fields: [sensitivityLevelId], references: [id])
+
+  fields           TemplateField[]
+  eligibilityRules TemplateEligibilityRule[]
+  workflowPaths    WorkflowPath[]
+  requests         Request[]
+
+  @@index([categoryId])
+  @@index([sensitivityLevelId])
+  @@map("templates")
+}
+
+model TemplateField {
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id         BigInt   @id @default(autoincrement())
+  templateId BigInt   @map("template_id")
+  fieldKey   String   @map("field_key") @db.VarChar(100)
+  label      Json     @db.JsonB
+  dataType   String   @map("data_type") @db.VarChar(20) // TEXT | NUMBER | DATE | ENUM
+  isRequired Boolean  @default(false) @map("is_required")
+  ordinal    Int      @default(0)
+
+  template Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, fieldKey])
+  @@map("template_fields")
+}
+
+model TemplateEligibilityRule {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  templateId  BigInt   @map("template_id")
+  attributeId BigInt   @map("attribute_id")
+  operator    String   @db.VarChar(10) // EQ | NEQ | IN | GTE | LTE
+  value       Json     @db.JsonB
+  description Json?    @db.JsonB
+
+  template  Template            @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  attribute AttributeDefinition @relation(fields: [attributeId], references: [id])
+
+  @@index([templateId])
+  @@index([attributeId])
+  @@map("template_eligibility_rules")
+}
+
+model ActionType {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  code        String    @unique @db.VarChar(50) // APPROVE | REJECT | FORWARD | RETURN | REQUEST_PAYMENT | CONFIRM_PAYMENT | REQUEST_CLEARANCE | CONFIRM_CLEARANCE | SIGN
+  name        Json      @db.JsonB
+  isTerminal  Boolean   @default(false) @map("is_terminal")
+  description Json?     @db.JsonB
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  defaultForSteps WorkflowStep[]
+  allowedInSteps  WorkflowStepAllowedAction[]
+  requestActions  RequestAction[]
+  eventLogs       EventLog[]
+
+  @@map("action_types")
+}
+
+// ============================================================================
+// Workflow definitions
+// ============================================================================
+
+model WorkflowPath {
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt    @id @default(autoincrement())
+  templateId  BigInt    @map("template_id")
+  name        Json      @db.JsonB
+  description Json?     @db.JsonB
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  template Template       @relation(fields: [templateId], references: [id])
+  steps    WorkflowStep[]
+  requests Request[]
+
+  @@index([templateId])
+  @@map("workflow_paths")
+}
+
+model WorkflowStep {
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                   BigInt   @id @default(autoincrement())
+  workflowPathId       BigInt   @map("workflow_path_id")
+  name                 Json     @db.JsonB
+  description          Json?    @db.JsonB
+  assigneeType         String   @map("assignee_type") @db.VarChar(50) // SPECIFIC_UNIT | SPECIFIC_ROLE | REQUESTER_DEPARTMENT_HEAD | REQUESTER_FACULTY_DEAN
+  assigneeRoleId       BigInt?  @map("assignee_role_id")
+  assigneeDepartmentId BigInt?  @map("assignee_department_id")
+  defaultActionTypeId  BigInt?  @map("default_action_type_id")
+  slaHours             Decimal? @map("sla_hours") @db.Decimal(6, 2)
+  pausesSla            Boolean  @default(false) @map("pauses_sla")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workflowPath       WorkflowPath @relation(fields: [workflowPathId], references: [id], onDelete: Cascade)
+  assigneeRole       Role?        @relation(fields: [assigneeRoleId], references: [id])
+  assigneeDepartment Department?  @relation(fields: [assigneeDepartmentId], references: [id])
+  defaultActionType  ActionType?  @relation(fields: [defaultActionTypeId], references: [id])
+
+  allowedActions WorkflowStepAllowedAction[]
+  dependencies   WorkflowStepDependency[]    @relation("StepDependencyStep")
+  dependents     WorkflowStepDependency[]    @relation("StepDependencyDependsOn")
+  stepInstances  RequestStepInstance[]
+
+  @@index([workflowPathId])
+  @@map("workflow_steps")
+}
+
+model WorkflowStepAllowedAction {
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id             BigInt   @id @default(autoincrement())
+  workflowStepId BigInt   @map("workflow_step_id")
+  actionTypeId   BigInt   @map("action_type_id")
+
+  workflowStep WorkflowStep @relation(fields: [workflowStepId], references: [id], onDelete: Cascade)
+  actionType   ActionType   @relation(fields: [actionTypeId], references: [id])
+
+  @@unique([workflowStepId, actionTypeId])
+  @@index([actionTypeId])
+  @@map("workflow_step_allowed_actions")
+}
+
+model WorkflowStepDependency {
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id              BigInt   @id @default(autoincrement())
+  workflowStepId  BigInt   @map("workflow_step_id")
+  dependsOnStepId BigInt   @map("depends_on_step_id")
+
+  workflowStep WorkflowStep @relation("StepDependencyStep", fields: [workflowStepId], references: [id], onDelete: Cascade)
+  dependsOn    WorkflowStep @relation("StepDependencyDependsOn", fields: [dependsOnStepId], references: [id])
+
+  @@unique([workflowStepId, dependsOnStepId])
+  @@index([dependsOnStepId])
+  @@map("workflow_step_dependencies")
+}
+
+// ============================================================================
+// Request runtime
+// ============================================================================
+
+model Request {
+  updatedAt                DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                       BigInt    @id @default(autoincrement())
+  requesterId              BigInt    @map("requester_id")
+  rawText                  String?   @map("raw_text") @db.Text
+  templateId               BigInt?   @map("template_id")
+  workflowPathId           BigInt?   @map("workflow_path_id")
+  filledData               Json?     @map("filled_data") @db.JsonB
+  classificationStatus     String    @default("PENDING") @map("classification_status") @db.VarChar(30) // PENDING | CLASSIFIED | HITL
+  classificationConfidence Decimal?  @map("classification_confidence") @db.Decimal(5, 4)
+  classifiedBy             String?   @map("classified_by") @db.VarChar(30) // NLP | HITL
+  currentStatus            String    @default("DRAFT") @map("current_status") @db.VarChar(30) // DRAFT | IN_PROGRESS | ON_HOLD | COMPLETED | REJECTED | CANCELLED
+  priority                 String    @default("NORMAL") @db.VarChar(30) // LOW | NORMAL | HIGH | URGENT
+  sensitivityLevelId       BigInt?   @map("sensitivity_level_id")
+  slaDueAt                 DateTime? @map("sla_due_at") @db.Timestamptz(6)
+  createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  completedAt              DateTime? @map("completed_at") @db.Timestamptz(6)
+
+  requester        User              @relation(fields: [requesterId], references: [id])
+  template         Template?         @relation(fields: [templateId], references: [id])
+  workflowPath     WorkflowPath?     @relation(fields: [workflowPathId], references: [id])
+  sensitivityLevel SensitivityLevel? @relation(fields: [sensitivityLevelId], references: [id])
+
+  stepInstances RequestStepInstance[]
+  actions       RequestAction[]
+  payments      Payment[]
+  documents     Document[]
+  eventLogs     EventLog[]
+  notifications Notification[]
+  predictions   MlPrediction[]
+
+  @@index([requesterId])
+  @@index([templateId])
+  @@index([currentStatus])
+  @@map("requests")
+}
+
+model RequestStepInstance {
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id               BigInt    @id @default(autoincrement())
+  requestId        BigInt    @map("request_id")
+  workflowStepId   BigInt    @map("workflow_step_id")
+  assignedToUserId BigInt?   @map("assigned_to_user_id")
+  status           String    @default("PENDING") @db.VarChar(30) // PENDING | IN_PROGRESS | WAITING | DONE | SKIPPED | REJECTED
+  slaDueAt         DateTime? @map("sla_due_at") @db.Timestamptz(6)
+  slaPaused        Boolean   @default(false) @map("sla_paused")
+  startedAt        DateTime? @map("started_at") @db.Timestamptz(6)
+  completedAt      DateTime? @map("completed_at") @db.Timestamptz(6)
+
+  request      Request      @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  workflowStep WorkflowStep @relation(fields: [workflowStepId], references: [id])
+  assignedTo   User?        @relation(fields: [assignedToUserId], references: [id])
+
+  actions   RequestAction[]
+  payments  Payment[]
+  eventLogs EventLog[]
+
+  @@index([requestId])
+  @@index([assignedToUserId])
+  @@index([status])
+  @@map("request_step_instances")
+}
+
+model RequestAction {
+  id                    BigInt   @id @default(autoincrement())
+  requestId             BigInt   @map("request_id")
+  requestStepInstanceId BigInt?  @map("request_step_instance_id")
+  actorId               BigInt   @map("actor_id")
+  actionTypeId          BigInt   @map("action_type_id")
+  comment               String?  @db.Text
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  request             Request              @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestStepInstance RequestStepInstance? @relation(fields: [requestStepInstanceId], references: [id])
+  actor               User                 @relation(fields: [actorId], references: [id])
+  actionType          ActionType           @relation(fields: [actionTypeId], references: [id])
+
+  documents Document[]
+
+  @@index([requestId])
+  @@index([requestStepInstanceId])
+  @@index([actorId])
+  @@map("request_actions")
+}
+
+model Payment {
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                    BigInt    @id @default(autoincrement())
+  requestId             BigInt    @map("request_id")
+  requestStepInstanceId BigInt?   @map("request_step_instance_id")
+  amount                Decimal   @db.Decimal(12, 2)
+  currency              String    @default("SYP") @db.VarChar(3)
+  status                String    @default("REQUIRED") @db.VarChar(30) // REQUIRED | CONFIRMED | WAIVED
+  requestedBy           BigInt?   @map("requested_by")
+  confirmedBy           BigInt?   @map("confirmed_by")
+  requestedAt           DateTime? @map("requested_at") @db.Timestamptz(6)
+  confirmedAt           DateTime? @map("confirmed_at") @db.Timestamptz(6)
+
+  request             Request              @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestStepInstance RequestStepInstance? @relation(fields: [requestStepInstanceId], references: [id])
+  requester           User?                @relation("PaymentRequestedBy", fields: [requestedBy], references: [id])
+  confirmer           User?                @relation("PaymentConfirmedBy", fields: [confirmedBy], references: [id])
+
+  @@index([requestId])
+  @@map("payments")
+}
+
+model Document {
+  id              BigInt   @id @default(autoincrement())
+  requestId       BigInt   @map("request_id")
+  requestActionId BigInt?  @map("request_action_id")
+  uploaderId      BigInt   @map("uploader_id")
+  docKind         String   @map("doc_kind") @db.VarChar(50) // ATTACHMENT | GENERATED | SIGNED ...
+  storageKey      String   @map("storage_key") @db.VarChar(500)
+  fileName        String   @map("file_name") @db.VarChar(255)
+  mimeType        String   @map("mime_type") @db.VarChar(100)
+  fileSize        BigInt   @map("file_size")
+  ocrText         String?  @map("ocr_text") @db.Text
+  uploadedAt      DateTime @default(now()) @map("uploaded_at") @db.Timestamptz(6)
+
+  request       Request        @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestAction RequestAction? @relation(fields: [requestActionId], references: [id])
+  uploader      User           @relation(fields: [uploaderId], references: [id])
+
+  @@index([requestId])
+  @@index([requestActionId])
+  @@map("documents")
+}
+
+// ============================================================================
+// Observability & AI
+// ============================================================================
+
+model AcademicCalendar {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  name        Json     @db.JsonB
+  periodType  String   @map("period_type") @db.VarChar(30) // EXAM | REGISTRATION | HOLIDAY | REGULAR
+  startDate   DateTime @map("start_date") @db.Date
+  endDate     DateTime @map("end_date") @db.Date
+  description Json?    @db.JsonB
+
+  @@map("academic_calendar")
+}
+
+model EventLog {
+  id                    BigInt   @id @default(autoincrement())
+  requestId             BigInt?  @map("request_id")
+  requestStepInstanceId BigInt?  @map("request_step_instance_id")
+  actorId               BigInt?  @map("actor_id")
+  actionTypeId          BigInt?  @map("action_type_id")
+  eventType             String   @map("event_type") @db.VarChar(50) // STATUS_CHANGE | STEP_STARTED | STEP_COMPLETED | ACTION_TAKEN | ASSIGNED
+  fromStatus            String?  @map("from_status") @db.VarChar(30)
+  toStatus              String?  @map("to_status") @db.VarChar(30)
+  ipAddress             String?  @map("ip_address") @db.Inet
+  occurredAt            DateTime @default(now()) @map("occurred_at") @db.Timestamptz(6)
+
+  request             Request?             @relation(fields: [requestId], references: [id])
+  requestStepInstance RequestStepInstance? @relation(fields: [requestStepInstanceId], references: [id])
+  actor               User?                @relation(fields: [actorId], references: [id])
+  actionType          ActionType?          @relation(fields: [actionTypeId], references: [id])
+
+  @@index([requestId])
+  @@index([occurredAt])
+  @@map("event_logs")
+}
+
+model Notification {
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @map("user_id")
+  requestId BigInt?  @map("request_id")
+  type      String   @db.VarChar(50)
+  title     String   @db.VarChar(255)
+  body      String?  @db.Text
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  request Request? @relation(fields: [requestId], references: [id])
+
+  @@index([userId])
+  @@index([requestId])
+  @@map("notifications")
+}
+
+model MlPrediction {
+  id             BigInt   @id @default(autoincrement())
+  requestId      BigInt   @map("request_id")
+  modelType      String   @map("model_type") @db.VarChar(50) // NLP_CLASSIFIER | LSTM_REMAINING_TIME
+  modelVersion   String   @map("model_version") @db.VarChar(50)
+  predictedValue Json     @map("predicted_value") @db.JsonB
+  confidence     Decimal? @db.Decimal(5, 4)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@map("ml_predictions")
+}
+
+model SystemSetting {
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id          BigInt   @id @default(autoincrement())
+  key         String   @unique @db.VarChar(100)
+  value       Json     @db.JsonB
+  description String?  @db.Text
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  updatedBy   BigInt?  @map("updated_by")
+
+  updater User? @relation(fields: [updatedBy], references: [id])
+
+  @@index([updatedBy])
+  @@map("system_settings")
 }
