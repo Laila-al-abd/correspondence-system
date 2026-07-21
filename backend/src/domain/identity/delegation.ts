@@ -38,4 +38,23 @@ export class Delegation extends AggregateRoot {
 
   revoke(): void { this.props.isActive = false }
   get delegateId(): Identifier { return this.props.delegateId }
+
+  /** Flat, primitive view of the delegation for the persistence mapper. */
+  snapshot(): {
+    delegatorId: string
+    delegateId: string
+    start: Date
+    end: Date
+    isActive: boolean
+    reason?: string
+  } {
+    return {
+      delegatorId: this.props.delegatorId.toString(),
+      delegateId: this.props.delegateId.toString(),
+      start: this.props.start,
+      end: this.props.end,
+      isActive: this.props.isActive,
+      reason: this.props.reason,
+    }
+  }
 }

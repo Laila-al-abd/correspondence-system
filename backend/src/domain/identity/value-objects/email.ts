@@ -1,7 +1,6 @@
 import { ValueObject } from "../../shared/value-object"
 import { DomainError } from "../../shared/domain-error"
-export class InvalidEmailError extends DomainError { readonly 
-code = "INVALID_EMAIL" }
+export class InvalidEmailError extends DomainError { readonly code = "INVALID_EMAIL" }
 export class Email extends ValueObject<{ value: string }> {
 private static RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 private constructor(value: string) { super({ value }) }

@@ -32,4 +32,6 @@ export class Role extends AggregateRoot {
 
   has(code: string): boolean { return this.props.permissionCodes.has(code) }
   get permissions(): string[] { return [...this.props.permissionCodes] }
+  get name(): LocalizedText { return this.props.name }
+  get isSystem(): boolean { return this.props.isSystem }
 }
