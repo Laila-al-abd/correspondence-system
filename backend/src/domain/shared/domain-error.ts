@@ -8,8 +8,7 @@ this.name = new.target.name
 // stable, machine
 export class RequiredFieldError extends DomainError {
 readonly code = "REQUIRED_FIELD"
-constructor(field: string) { super(`"${field}" is required.
-`) }
+constructor(field: string) { super(`"${field}" is required.`) }
 }
 export class InvariantViolationError extends DomainError {
 readonly code = "INVARIANT_VIOLATION"
