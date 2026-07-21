@@ -24,6 +24,21 @@ lastSyncedAt?: Date
 export interface AuthenticatedUser {
 id: string; email: string; status: UserStatus; authProvider: AuthMethod
 }
+export interface UserSnapshot {
+type: UserType
+fullNameAr: string
+fullNameEn?: string
+email: string
+phone?: string
+institutionalNumber?: string
+passwordHash?: string
+authProvider: AuthMethod
+applicantPurpose?: ApplicantPurpose
+departmentId?: string
+preferredLang: string
+status: UserStatus
+lastSyncedAt?: Date
+}
 export class User extends AggregateRoot {
 private constructor(id: Identifier, private props: UserProps) { super(id) }
 /** Create a brand-new user, enforcing invariants. */
@@ -64,6 +79,24 @@ id: this.id.toString(),
 email: this.props.email.value,
 status: this.props.status,
 authProvider: this.props.authProvider,
+}
+}
+/** Flat, primitive view of the user for the persistence mapper. */
+snapshot(): UserSnapshot {
+return {
+type: this.props.type,
+fullNameAr: this.props.name.ar,
+fullNameEn: this.props.name.en,
+email: this.props.email.value,
+phone: this.props.phone,
+institutionalNumber: this.props.institutionalNumber?.value,
+passwordHash: this.props.passwordHash,
+authProvider: this.props.authProvider,
+applicantPurpose: this.props.applicantPurpose,
+departmentId: this.props.departmentId?.toString(),
+preferredLang: this.props.preferredLang,
+status: this.props.status,
+lastSyncedAt: this.props.lastSyncedAt,
 }
 }
 }
