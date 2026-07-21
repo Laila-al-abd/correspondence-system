@@ -12,8 +12,10 @@
 // ============================================================================
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -326,10 +328,27 @@ model TemplateField {
   isRequired Boolean  @default(false) @map("is_required")
   ordinal    Int      @default(0)
 
-  template Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  template Template              @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  options  TemplateFieldOption[]
 
   @@unique([templateId, fieldKey])
   @@map("template_fields")
+}
+
+model TemplateFieldOption {
+  id              BigInt   @id @default(autoincrement())
+  templateFieldId BigInt   @map("template_field_id")
+  value           String   @db.VarChar(100)
+  label           Json     @db.JsonB
+  ordinal         Int      @default(0)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  field TemplateField @relation(fields: [templateFieldId], references: [id], onDelete: Cascade)
+
+  @@unique([templateFieldId, value])
+  @@index([templateFieldId])
+  @@map("template_field_options")
 }
 
 model TemplateEligibilityRule {
