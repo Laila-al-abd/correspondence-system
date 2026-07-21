@@ -90,4 +90,32 @@ export class WorkflowStep extends Entity {
   get assigneeType(): AssigneeType { return this.props.assigneeType }
   get slaHours(): number | undefined { return this.props.slaHours }
   get pausesSla(): boolean { return this.props.pausesSla }
+
+  snapshot(): {
+    id: string
+    name: { ar: string; en?: string }
+    description?: { ar: string; en?: string }
+    assigneeType: AssigneeType
+    assigneeRoleId?: string
+    assigneeDepartmentId?: string
+    defaultActionTypeId?: string
+    slaHours?: number
+    pausesSla: boolean
+    allowedActionTypeIds: string[]
+    dependsOnStepIds: string[]
+  } {
+    return {
+      id: this.id.toString(),
+      name: this.props.name.toJSON(),
+      description: this.props.description?.toJSON(),
+      assigneeType: this.props.assigneeType,
+      assigneeRoleId: this.props.assigneeRoleId?.toString(),
+      assigneeDepartmentId: this.props.assigneeDepartmentId?.toString(),
+      defaultActionTypeId: this.props.defaultActionTypeId?.toString(),
+      slaHours: this.props.slaHours,
+      pausesSla: this.props.pausesSla,
+      allowedActionTypeIds: [...this.props.allowedActionTypeIds],
+      dependsOnStepIds: [...this.props.dependsOnStepIds],
+    }
+  }
 }
