@@ -58,4 +58,28 @@ export class TemplateField extends Entity {
       default: return true
     }
   }
+
+  snapshot(): {
+    id: string
+    fieldKey: string
+    label: { ar: string; en?: string }
+    dataType: FieldDataType
+    isRequired: boolean
+    ordinal: number
+    options: { value: string; label: { ar: string; en?: string }; ordinal: number }[]
+  } {
+    return {
+      id: this.id.toString(),
+      fieldKey: this.props.fieldKey,
+      label: this.props.label.toJSON(),
+      dataType: this.props.dataType,
+      isRequired: this.props.isRequired,
+      ordinal: this.props.ordinal,
+      options: (this.props.options ?? []).map((o) => ({
+        value: o.value,
+        label: o.label.toJSON(),
+        ordinal: o.ordinal,
+      })),
+    }
+  }
 }

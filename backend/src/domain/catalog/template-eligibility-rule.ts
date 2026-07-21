@@ -40,4 +40,18 @@ export class TemplateEligibilityRule extends Entity {
       default: return false
     }
   }
+
+  snapshot(): {
+    id: string
+    attributeId: string
+    operator: RuleOperator
+    value: unknown
+  } {
+    return {
+      id: this.id.toString(),
+      attributeId: this.props.attributeId.toString(),
+      operator: this.props.operator,
+      value: this.props.value,
+    }
+  }
 }

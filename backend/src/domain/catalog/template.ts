@@ -56,7 +56,10 @@ export class Template extends AggregateRoot {
   }
 
   addEligibilityRule(rule: TemplateEligibilityRule): void {
+    if (this.props.eligibilityRules.some((r) => r.attributeId === rule.attributeId))
+      throw new InvariantViolationError(`Duplicate attribute key "${rule.attributeId}" in template.`)
     this.props.eligibilityRules.push(rule)
+
   }
 
   activate(): void { this.props.isActive = true }
@@ -85,5 +88,25 @@ export class Template extends AggregateRoot {
     return this.props.eligibilityRules.every((rule) =>
       rule.isSatisfiedBy(userAttributes.get(rule.attributeId.toString())),
     )
+  }
+
+  snapshot(): {
+    categoryId: string
+    title: { ar: string; en?: string }
+    description?: { ar: string; en?: string }
+    sensitivityLevelId: string
+    isActive: boolean
+    fields: ReturnType<TemplateField["snapshot"]>[]
+    eligibilityRules: ReturnType<TemplateEligibilityRule["snapshot"]>[]
+  } {
+    return {
+      categoryId: this.props.categoryId.toString(),
+      title: this.props.title.toJSON(),
+      description: this.props.description?.toJSON(),
+      sensitivityLevelId: this.props.sensitivityLevelId.toString(),
+      isActive: this.props.isActive,
+      fields: this.props.fields.map((f) => f.snapshot()),
+      eligibilityRules: this.props.eligibilityRules.map((r) => r.snapshot()),
+    }
   }
 }
