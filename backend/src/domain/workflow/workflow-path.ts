@@ -97,4 +97,20 @@ export class WorkflowPath extends AggregateRoot {
   dependencyMap(): Map<string, string[]> {
     return new Map(this.props.steps.map((s) => [s.id.toString(), s.dependencyIds]))
   }
+
+  snapshot(): {
+    templateId: string
+    name: { ar: string; en?: string }
+    description?: { ar: string; en?: string }
+    isActive: boolean
+    steps: ReturnType<WorkflowStep["snapshot"]>[]
+  } {
+    return {
+      templateId: this.props.templateId.toString(),
+      name: this.props.name.toJSON(),
+      description: this.props.description?.toJSON(),
+      isActive: this.props.isActive,
+      steps: this.props.steps.map((s) => s.snapshot()),
+    }
+  }
 }
