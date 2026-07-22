@@ -17,6 +17,19 @@ interface DocumentProps {
   uploadedAt: Date
 }
 
+export interface DocumentSnapshot {
+  requestId: string
+  requestActionId?: string
+  uploaderId: string
+  docKind: DocKind
+  storageKey: string
+  fileName: string
+  mimeType: string
+  fileSize: number
+  ocrText?: string
+  uploadedAt: Date
+}
+
 /** A file tied to a request: uploaded evidence or a generated document. */
 export class Document extends Entity {
   private constructor(id: Identifier, private props: DocumentProps) {
@@ -52,4 +65,19 @@ export class Document extends Entity {
 
   get storageKey(): string { return this.props.storageKey }
   get docKind(): DocKind { return this.props.docKind }
+
+  snapshot(): DocumentSnapshot {
+    return {
+      requestId: this.props.requestId.toString(),
+      requestActionId: this.props.requestActionId?.toString(),
+      uploaderId: this.props.uploaderId.toString(),
+      docKind: this.props.docKind,
+      storageKey: this.props.storageKey,
+      fileName: this.props.fileName,
+      mimeType: this.props.mimeType,
+      fileSize: this.props.fileSize,
+      ocrText: this.props.ocrText,
+      uploadedAt: this.props.uploadedAt,
+    }
+  }
 }

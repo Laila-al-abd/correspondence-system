@@ -1,12 +1,15 @@
 import { AggregateRoot } from "../shared/entity"
 import { Identifier } from "../shared/identifier"
 import { InvariantViolationError } from "../shared/domain-error"
-import { RequestStepInstance } from "./request-step-instance"
+import { RequestStepInstance, StepInstanceSnapshot } from "./request-step-instance"
 import {
   ClassificationStatus,
   ClassifiedBy,
   Priority,
+  PRIORITY_RANK,
   RequestStatus,
+  SlaRisk,
+  SLA_RISK_RANK,
   StepInstanceStatus,
 } from "./enums"
 
@@ -21,10 +24,29 @@ interface RequestProps {
   classifiedBy?: ClassifiedBy
   currentStatus: RequestStatus
   priority: Priority
+  slaRisk: SlaRisk
   sensitivityLevelId?: Identifier
   slaDueAt?: Date
   completedAt?: Date
   stepInstances: RequestStepInstance[]
+}
+
+export interface RequestSnapshot {
+  requesterId: string
+  rawText?: string
+  templateId?: string
+  workflowPathId?: string
+  filledData: Record<string, unknown>
+  classificationStatus: ClassificationStatus
+  classificationConfidence?: number
+  classifiedBy?: ClassifiedBy
+  currentStatus: RequestStatus
+  priority: Priority
+  slaRisk: SlaRisk
+  sensitivityLevelId?: string
+  slaDueAt?: Date
+  completedAt?: Date
+  stepInstances: StepInstanceSnapshot[]
 }
 
 /** Allowed transitions for the request lifecycle state machine. */
@@ -63,6 +85,7 @@ export class Request extends AggregateRoot {
       classificationStatus: ClassificationStatus.PENDING,
       currentStatus: RequestStatus.DRAFT,
       priority: p.priority ?? Priority.NORMAL,
+      slaRisk: SlaRisk.ON_TRACK,
       stepInstances: [],
     })
   }
@@ -74,25 +97,37 @@ export class Request extends AggregateRoot {
   // ----- classification -----
 
   /**
-   * Apply an automatic (NLP) classification. Below the confidence threshold the
-   * request is flagged for human-in-the-loop review rather than trusted.
-   */
-  classifyByModel(templateId: Identifier, confidence: number, threshold = 0.8): void {
-    if (this.props.currentStatus !== RequestStatus.DRAFT)
-      throw new InvariantViolationError("Only draft requests can be classified.")
-    this.props.templateId = templateId
-    this.props.classificationConfidence = confidence
-    this.props.classifiedBy = ClassifiedBy.NLP
-    this.props.classificationStatus =
-      confidence >= threshold ? ClassificationStatus.CLASSIFIED : ClassificationStatus.HITL
-  }
+ * Apply an automatic (NLP) classification. The model may also propose an
+ * initial priority, which we only trust when confidence clears the threshold.
+ * Below the threshold the request goes to human-in-the-loop review, and the
+ * human sets both the type and the priority via classifyByHuman(...).
+ * This is a one-time suggestion: priority is never changed automatically
+ * afterwards (the SLA monitor only ever touches slaRisk).
+ */
+classifyByModel(
+  templateId: Identifier,
+  confidence: number,
+  threshold = 0.8,
+  suggestedPriority?: Priority,
+): void {
+  if (this.props.currentStatus !== RequestStatus.DRAFT)
+    throw new InvariantViolationError("Only draft requests can be classified.")
+  this.props.templateId = templateId
+  this.props.classificationConfidence = confidence
+  this.props.classifiedBy = ClassifiedBy.NLP
+  const trusted = confidence >= threshold
+  this.props.classificationStatus =
+    trusted ? ClassificationStatus.CLASSIFIED : ClassificationStatus.HITL
+  if (trusted && suggestedPriority) this.props.priority = suggestedPriority
+}
 
-  /** A human resolves or overrides the classification (HITL). */
-  classifyByHuman(templateId: Identifier): void {
-    this.props.templateId = templateId
-    this.props.classifiedBy = ClassifiedBy.HITL
-    this.props.classificationStatus = ClassificationStatus.CLASSIFIED
-  }
+  /** A human resolves or overrides the classification (HITL), optionally setting priority. */
+classifyByHuman(templateId: Identifier, priority?: Priority): void {
+  this.props.templateId = templateId
+  this.props.classifiedBy = ClassifiedBy.HITL
+  this.props.classificationStatus = ClassificationStatus.CLASSIFIED
+  if (priority) this.props.priority = priority
+}
 
   setFilledData(data: Record<string, unknown>): void {
     if (this.props.currentStatus !== RequestStatus.DRAFT)
@@ -102,6 +137,15 @@ export class Request extends AggregateRoot {
 
   setSensitivity(levelId: Identifier): void { this.props.sensitivityLevelId = levelId }
   changePriority(priority: Priority): void { this.props.priority = priority }
+
+  // ----- SLA urgency (separate axis from business priority) -----
+
+  /** Raised by the LSTM monitor when a request is predicted to breach its SLA. */
+  markAtRisk(): void { this.props.slaRisk = SlaRisk.AT_RISK }
+  /** The request has passed its SLA due time. */
+  markBreached(): void { this.props.slaRisk = SlaRisk.BREACHED }
+  /** Clear the urgency flag (e.g. once the workload eases or the step completes). */
+  clearSlaRisk(): void { this.props.slaRisk = SlaRisk.ON_TRACK }
 
   // ----- routing & execution -----
 
@@ -170,5 +214,43 @@ export class Request extends AggregateRoot {
   get classificationStatus(): ClassificationStatus { return this.props.classificationStatus }
   get templateId(): Identifier | undefined { return this.props.templateId }
   get requesterId(): Identifier { return this.props.requesterId }
+  get priority(): Priority { return this.props.priority }
+  get slaRisk(): SlaRisk { return this.props.slaRisk }
+  get slaDueAt(): Date | undefined { return this.props.slaDueAt }
   get stepInstances(): readonly RequestStepInstance[] { return this.props.stepInstances }
+
+  snapshot(): RequestSnapshot {
+    return {
+      requesterId: this.props.requesterId.toString(),
+      rawText: this.props.rawText,
+      templateId: this.props.templateId?.toString(),
+      workflowPathId: this.props.workflowPathId?.toString(),
+      filledData: this.props.filledData,
+      classificationStatus: this.props.classificationStatus,
+      classificationConfidence: this.props.classificationConfidence,
+      classifiedBy: this.props.classifiedBy,
+      currentStatus: this.props.currentStatus,
+      priority: this.props.priority,
+      slaRisk: this.props.slaRisk,
+      sensitivityLevelId: this.props.sensitivityLevelId?.toString(),
+      slaDueAt: this.props.slaDueAt,
+      completedAt: this.props.completedAt,
+      stepInstances: this.props.stepInstances.map((si) => si.snapshot()),
+    }
+  }
+
+  /**
+   * Work-queue ordering across two axes: business importance first (a NORMAL
+   * request never overtakes a genuine HIGH one), then SLA urgency, then the
+   * nearest due date. Business priority is never mutated by the SLA monitor.
+   */
+  static compareForQueue(a: Request, b: Request): number {
+    const byPriority = PRIORITY_RANK[b.props.priority] - PRIORITY_RANK[a.props.priority]
+    if (byPriority !== 0) return byPriority
+    const byRisk = SLA_RISK_RANK[b.props.slaRisk] - SLA_RISK_RANK[a.props.slaRisk]
+    if (byRisk !== 0) return byRisk
+    const aDue = a.props.slaDueAt?.getTime() ?? Number.POSITIVE_INFINITY
+    const bDue = b.props.slaDueAt?.getTime() ?? Number.POSITIVE_INFINITY
+    return aDue - bDue
+  }
 }

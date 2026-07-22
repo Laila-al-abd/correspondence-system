@@ -14,6 +14,18 @@ interface StepInstanceProps {
   completedAt?: Date
 }
 
+export interface StepInstanceSnapshot {
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string
+  status: StepInstanceStatus
+  slaDueAt?: Date
+  slaPaused: boolean
+  startedAt?: Date
+  completedAt?: Date
+}
+
 const TERMINAL: StepInstanceStatus[] = [
   StepInstanceStatus.DONE,
   StepInstanceStatus.SKIPPED,
@@ -98,4 +110,18 @@ export class RequestStepInstance extends Entity {
   get assignedToUserId(): Identifier | undefined { return this.props.assignedToUserId }
   isTerminal(): boolean { return TERMINAL.includes(this.props.status) }
   isDone(): boolean { return this.props.status === StepInstanceStatus.DONE }
+
+  snapshot(): StepInstanceSnapshot {
+    return {
+      id: this.id.toString(),
+      requestId: this.props.requestId.toString(),
+      workflowStepId: this.props.workflowStepId.toString(),
+      assignedToUserId: this.props.assignedToUserId?.toString(),
+      status: this.props.status,
+      slaDueAt: this.props.slaDueAt,
+      slaPaused: this.props.slaPaused,
+      startedAt: this.props.startedAt,
+      completedAt: this.props.completedAt,
+    }
+  }
 }

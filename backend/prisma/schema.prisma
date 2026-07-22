@@ -482,6 +482,7 @@ model Request {
   classifiedBy             String?   @map("classified_by") @db.VarChar(30) // NLP | HITL
   currentStatus            String    @default("DRAFT") @map("current_status") @db.VarChar(30) // DRAFT | IN_PROGRESS | ON_HOLD | COMPLETED | REJECTED | CANCELLED
   priority                 String    @default("NORMAL") @db.VarChar(30) // LOW | NORMAL | HIGH | URGENT
+  slaRisk                  String    @default("ON_TRACK") @map("sla_risk") @db.VarChar(30) // ON_TRACK | AT_RISK | BREACHED
   sensitivityLevelId       BigInt?   @map("sensitivity_level_id")
   slaDueAt                 DateTime? @map("sla_due_at") @db.Timestamptz(6)
   createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
