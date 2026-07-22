@@ -25,6 +25,8 @@ export type AggregateLanguage = {
 }
 
 export type LanguageMinAggregateOutputType = {
+  createdAt: Date | null
+  updatedAt: Date | null
   code: string | null
   name: string | null
   nativeName: string | null
@@ -33,6 +35,8 @@ export type LanguageMinAggregateOutputType = {
 }
 
 export type LanguageMaxAggregateOutputType = {
+  createdAt: Date | null
+  updatedAt: Date | null
   code: string | null
   name: string | null
   nativeName: string | null
@@ -41,6 +45,8 @@ export type LanguageMaxAggregateOutputType = {
 }
 
 export type LanguageCountAggregateOutputType = {
+  createdAt: number
+  updatedAt: number
   code: number
   name: number
   nativeName: number
@@ -51,6 +57,8 @@ export type LanguageCountAggregateOutputType = {
 
 
 export type LanguageMinAggregateInputType = {
+  createdAt?: true
+  updatedAt?: true
   code?: true
   name?: true
   nativeName?: true
@@ -59,6 +67,8 @@ export type LanguageMinAggregateInputType = {
 }
 
 export type LanguageMaxAggregateInputType = {
+  createdAt?: true
+  updatedAt?: true
   code?: true
   name?: true
   nativeName?: true
@@ -67,6 +77,8 @@ export type LanguageMaxAggregateInputType = {
 }
 
 export type LanguageCountAggregateInputType = {
+  createdAt?: true
+  updatedAt?: true
   code?: true
   name?: true
   nativeName?: true
@@ -148,6 +160,8 @@ export type LanguageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 export type LanguageGroupByOutputType = {
+  createdAt: Date
+  updatedAt: Date
   code: string
   name: string
   nativeName: string
@@ -177,19 +191,25 @@ export type LanguageWhereInput = {
   AND?: Prisma.LanguageWhereInput | Prisma.LanguageWhereInput[]
   OR?: Prisma.LanguageWhereInput[]
   NOT?: Prisma.LanguageWhereInput | Prisma.LanguageWhereInput[]
+  createdAt?: Prisma.DateTimeFilter<"Language"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Language"> | Date | string
   code?: Prisma.StringFilter<"Language"> | string
   name?: Prisma.StringFilter<"Language"> | string
   nativeName?: Prisma.StringFilter<"Language"> | string
   isEnabled?: Prisma.BoolFilter<"Language"> | boolean
   isDefault?: Prisma.BoolFilter<"Language"> | boolean
+  users?: Prisma.UserListRelationFilter
 }
 
 export type LanguageOrderByWithRelationInput = {
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   nativeName?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
+  users?: Prisma.UserOrderByRelationAggregateInput
 }
 
 export type LanguageWhereUniqueInput = Prisma.AtLeast<{
@@ -197,13 +217,18 @@ export type LanguageWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.LanguageWhereInput | Prisma.LanguageWhereInput[]
   OR?: Prisma.LanguageWhereInput[]
   NOT?: Prisma.LanguageWhereInput | Prisma.LanguageWhereInput[]
+  createdAt?: Prisma.DateTimeFilter<"Language"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Language"> | Date | string
   name?: Prisma.StringFilter<"Language"> | string
   nativeName?: Prisma.StringFilter<"Language"> | string
   isEnabled?: Prisma.BoolFilter<"Language"> | boolean
   isDefault?: Prisma.BoolFilter<"Language"> | boolean
+  users?: Prisma.UserListRelationFilter
 }, "code">
 
 export type LanguageOrderByWithAggregationInput = {
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   nativeName?: Prisma.SortOrder
@@ -218,6 +243,8 @@ export type LanguageScalarWhereWithAggregatesInput = {
   AND?: Prisma.LanguageScalarWhereWithAggregatesInput | Prisma.LanguageScalarWhereWithAggregatesInput[]
   OR?: Prisma.LanguageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.LanguageScalarWhereWithAggregatesInput | Prisma.LanguageScalarWhereWithAggregatesInput[]
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Language"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Language"> | Date | string
   code?: Prisma.StringWithAggregatesFilter<"Language"> | string
   name?: Prisma.StringWithAggregatesFilter<"Language"> | string
   nativeName?: Prisma.StringWithAggregatesFilter<"Language"> | string
@@ -226,38 +253,52 @@ export type LanguageScalarWhereWithAggregatesInput = {
 }
 
 export type LanguageCreateInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
   code: string
   name: string
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
+  users?: Prisma.UserCreateNestedManyWithoutPreferredLanguageInput
 }
 
 export type LanguageUncheckedCreateInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
   code: string
   name: string
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutPreferredLanguageInput
 }
 
 export type LanguageUpdateInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  users?: Prisma.UserUpdateManyWithoutPreferredLanguageNestedInput
 }
 
 export type LanguageUncheckedUpdateInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  users?: Prisma.UserUncheckedUpdateManyWithoutPreferredLanguageNestedInput
 }
 
 export type LanguageCreateManyInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
   code: string
   name: string
   nativeName: string
@@ -266,6 +307,8 @@ export type LanguageCreateManyInput = {
 }
 
 export type LanguageUpdateManyMutationInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -274,6 +317,8 @@ export type LanguageUpdateManyMutationInput = {
 }
 
 export type LanguageUncheckedUpdateManyInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -281,7 +326,14 @@ export type LanguageUncheckedUpdateManyInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
+export type LanguageScalarRelationFilter = {
+  is?: Prisma.LanguageWhereInput
+  isNot?: Prisma.LanguageWhereInput
+}
+
 export type LanguageCountOrderByAggregateInput = {
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   nativeName?: Prisma.SortOrder
@@ -290,6 +342,8 @@ export type LanguageCountOrderByAggregateInput = {
 }
 
 export type LanguageMaxOrderByAggregateInput = {
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   nativeName?: Prisma.SortOrder
@@ -298,6 +352,8 @@ export type LanguageMaxOrderByAggregateInput = {
 }
 
 export type LanguageMinOrderByAggregateInput = {
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
   nativeName?: Prisma.SortOrder
@@ -305,25 +361,122 @@ export type LanguageMinOrderByAggregateInput = {
   isDefault?: Prisma.SortOrder
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type LanguageCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.LanguageCreateWithoutUsersInput, Prisma.LanguageUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.LanguageCreateOrConnectWithoutUsersInput
+  connect?: Prisma.LanguageWhereUniqueInput
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type LanguageUpdateOneRequiredWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.LanguageCreateWithoutUsersInput, Prisma.LanguageUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.LanguageCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.LanguageUpsertWithoutUsersInput
+  connect?: Prisma.LanguageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LanguageUpdateToOneWithWhereWithoutUsersInput, Prisma.LanguageUpdateWithoutUsersInput>, Prisma.LanguageUncheckedUpdateWithoutUsersInput>
 }
 
+export type LanguageCreateWithoutUsersInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  code: string
+  name: string
+  nativeName: string
+  isEnabled?: boolean
+  isDefault?: boolean
+}
+
+export type LanguageUncheckedCreateWithoutUsersInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  code: string
+  name: string
+  nativeName: string
+  isEnabled?: boolean
+  isDefault?: boolean
+}
+
+export type LanguageCreateOrConnectWithoutUsersInput = {
+  where: Prisma.LanguageWhereUniqueInput
+  create: Prisma.XOR<Prisma.LanguageCreateWithoutUsersInput, Prisma.LanguageUncheckedCreateWithoutUsersInput>
+}
+
+export type LanguageUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.LanguageUpdateWithoutUsersInput, Prisma.LanguageUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.LanguageCreateWithoutUsersInput, Prisma.LanguageUncheckedCreateWithoutUsersInput>
+  where?: Prisma.LanguageWhereInput
+}
+
+export type LanguageUpdateToOneWithWhereWithoutUsersInput = {
+  where?: Prisma.LanguageWhereInput
+  data: Prisma.XOR<Prisma.LanguageUpdateWithoutUsersInput, Prisma.LanguageUncheckedUpdateWithoutUsersInput>
+}
+
+export type LanguageUpdateWithoutUsersInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  nativeName?: Prisma.StringFieldUpdateOperationsInput | string
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type LanguageUncheckedUpdateWithoutUsersInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  nativeName?: Prisma.StringFieldUpdateOperationsInput | string
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+
+/**
+ * Count Type LanguageCountOutputType
+ */
+
+export type LanguageCountOutputType = {
+  users: number
+}
+
+export type LanguageCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  users?: boolean | LanguageCountOutputTypeCountUsersArgs
+}
+
+/**
+ * LanguageCountOutputType without action
+ */
+export type LanguageCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LanguageCountOutputType
+   */
+  select?: Prisma.LanguageCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LanguageCountOutputType without action
+ */
+export type LanguageCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
 
 
 export type LanguageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  createdAt?: boolean
+  updatedAt?: boolean
   code?: boolean
   name?: boolean
   nativeName?: boolean
   isEnabled?: boolean
   isDefault?: boolean
+  users?: boolean | Prisma.Language$usersArgs<ExtArgs>
+  _count?: boolean | Prisma.LanguageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["language"]>
 
 export type LanguageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  createdAt?: boolean
+  updatedAt?: boolean
   code?: boolean
   name?: boolean
   nativeName?: boolean
@@ -332,6 +485,8 @@ export type LanguageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 }, ExtArgs["result"]["language"]>
 
 export type LanguageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  createdAt?: boolean
+  updatedAt?: boolean
   code?: boolean
   name?: boolean
   nativeName?: boolean
@@ -340,6 +495,8 @@ export type LanguageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 }, ExtArgs["result"]["language"]>
 
 export type LanguageSelectScalar = {
+  createdAt?: boolean
+  updatedAt?: boolean
   code?: boolean
   name?: boolean
   nativeName?: boolean
@@ -347,12 +504,22 @@ export type LanguageSelectScalar = {
   isDefault?: boolean
 }
 
-export type LanguageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"code" | "name" | "nativeName" | "isEnabled" | "isDefault", ExtArgs["result"]["language"]>
+export type LanguageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "code" | "name" | "nativeName" | "isEnabled" | "isDefault", ExtArgs["result"]["language"]>
+export type LanguageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  users?: boolean | Prisma.Language$usersArgs<ExtArgs>
+  _count?: boolean | Prisma.LanguageCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type LanguageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type LanguageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $LanguagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Language"
-  objects: {}
+  objects: {
+    users: Prisma.$UserPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    createdAt: Date
+    updatedAt: Date
     code: string
     name: string
     nativeName: string
@@ -441,8 +608,8 @@ export interface LanguageDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * // Get first 10 Languages
    * const languages = await prisma.language.findMany({ take: 10 })
    * 
-   * // Only select the `code`
-   * const languageWithCodeOnly = await prisma.language.findMany({ select: { code: true } })
+   * // Only select the `createdAt`
+   * const languageWithCreatedAtOnly = await prisma.language.findMany({ select: { createdAt: true } })
    * 
    */
   findMany<T extends LanguageFindManyArgs>(args?: Prisma.SelectSubset<T, LanguageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -486,9 +653,9 @@ export interface LanguageDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Create many Languages and only return the `code`
-   * const languageWithCodeOnly = await prisma.language.createManyAndReturn({
-   *   select: { code: true },
+   * // Create many Languages and only return the `createdAt`
+   * const languageWithCreatedAtOnly = await prisma.language.createManyAndReturn({
+   *   select: { createdAt: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -577,9 +744,9 @@ export interface LanguageDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Update zero or more Languages and only return the `code`
-   * const languageWithCodeOnly = await prisma.language.updateManyAndReturn({
-   *   select: { code: true },
+   * // Update zero or more Languages and only return the `createdAt`
+   * const languageWithCreatedAtOnly = await prisma.language.updateManyAndReturn({
+   *   select: { createdAt: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -752,6 +919,7 @@ readonly fields: LanguageFieldRefs;
  */
 export interface Prisma__LanguageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  users<T extends Prisma.Language$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Language$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -781,6 +949,8 @@ export interface Prisma__LanguageClient<T, Null = never, ExtArgs extends runtime
  * Fields of the Language model
  */
 export interface LanguageFieldRefs {
+  readonly createdAt: Prisma.FieldRef<"Language", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Language", 'DateTime'>
   readonly code: Prisma.FieldRef<"Language", 'String'>
   readonly name: Prisma.FieldRef<"Language", 'String'>
   readonly nativeName: Prisma.FieldRef<"Language", 'String'>
@@ -803,6 +973,10 @@ export type LanguageFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * Filter, which Language to fetch.
    */
   where: Prisma.LanguageWhereUniqueInput
@@ -821,6 +995,10 @@ export type LanguageFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * Filter, which Language to fetch.
    */
   where: Prisma.LanguageWhereUniqueInput
@@ -838,6 +1016,10 @@ export type LanguageFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the Language
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
   /**
    * Filter, which Language to fetch.
    */
@@ -887,6 +1069,10 @@ export type LanguageFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * Filter, which Language to fetch.
    */
   where?: Prisma.LanguageWhereInput
@@ -934,6 +1120,10 @@ export type LanguageFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Language
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
   /**
    * Filter, which Languages to fetch.
    */
@@ -983,6 +1173,10 @@ export type LanguageCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * The data needed to create a Language.
    */
   data: Prisma.XOR<Prisma.LanguageCreateInput, Prisma.LanguageUncheckedCreateInput>
@@ -1030,6 +1224,10 @@ export type LanguageUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Language
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
   /**
    * The data needed to update a Language.
    */
@@ -1097,6 +1295,10 @@ export type LanguageUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * The filter to search for the Language to update in case it exists.
    */
   where: Prisma.LanguageWhereUniqueInput
@@ -1123,6 +1325,10 @@ export type LanguageDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
+  /**
    * Filter which Language to delete.
    */
   where: Prisma.LanguageWhereUniqueInput
@@ -1143,6 +1349,30 @@ export type LanguageDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Language.users
+ */
+export type Language$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
  * Language without action
  */
 export type LanguageDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1154,4 +1384,8 @@ export type LanguageDefaultArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Language
    */
   omit?: Prisma.LanguageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LanguageInclude<ExtArgs> | null
 }

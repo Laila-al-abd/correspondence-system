@@ -15,6 +15,18 @@ interface PaymentProps {
   confirmedAt?: Date
 }
 
+export interface PaymentSnapshot {
+  requestId: string
+  requestStepInstanceId?: string
+  amount: number
+  currency: string
+  status: PaymentStatus
+  requestedBy?: string
+  confirmedBy?: string
+  requestedAt?: Date
+  confirmedAt?: Date
+}
+
 /**
  * A fee tied to a request. Lifecycle: REQUIRED -> CONFIRMED (paid) or WAIVED.
  * Confirmation and waiver are one-way transitions recorded with who and when.
@@ -69,4 +81,18 @@ export class Payment extends AggregateRoot {
   get status(): PaymentStatus { return this.props.status }
   get money(): Money { return this.props.money }
   isSettled(): boolean { return this.props.status !== PaymentStatus.REQUIRED }
+
+  snapshot(): PaymentSnapshot {
+    return {
+      requestId: this.props.requestId.toString(),
+      requestStepInstanceId: this.props.requestStepInstanceId?.toString(),
+      amount: this.props.money.amount,
+      currency: this.props.money.currency,
+      status: this.props.status,
+      requestedBy: this.props.requestedBy?.toString(),
+      confirmedBy: this.props.confirmedBy?.toString(),
+      requestedAt: this.props.requestedAt,
+      confirmedAt: this.props.confirmedAt,
+    }
+  }
 }

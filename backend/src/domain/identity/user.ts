@@ -56,6 +56,35 @@ return new User(id, props)
 /** Rebuild from persistence without re-running creation guards. */
 static rehydrate(id: Identifier, props: UserProps): User { 
 return new User(id, props) }
+/** Imported from the university directory before the person ever logs in. */
+static fromExternal(id: Identifier, p: {
+type: UserType
+name: PersonName
+email: Email
+institutionalNumber: InstitutionalNumber
+authProvider: AuthMethod
+phone?: string
+departmentId?: Identifier
+preferredLang?: string
+syncedAt: Date
+}): User {
+if (p.type === UserType.APPLICANT)
+throw new InvariantViolationError("Applicants self-register; they are not imported from the directory.")
+if (p.authProvider === "LOCAL")
+throw new InvariantViolationError("Directory users authenticate externally and have no LOCAL password.")
+return new User(id, {
+type: p.type,
+name: p.name,
+email: p.email,
+phone: p.phone,
+institutionalNumber: p.institutionalNumber,
+authProvider: p.authProvider,
+departmentId: p.departmentId,
+preferredLang: p.preferredLang ?? "ar",
+status: UserStatus.ACTIVE,
+lastSyncedAt: p.syncedAt,
+})
+}
 // ----- behaviour ----
 hasLocalPassword(): boolean { return !!this.props.passwordHash }
 get passwordHash(): string | undefined { return this.props.
@@ -73,6 +102,13 @@ activate(): void { this.props.status = UserStatus.ACTIVE }
 changeEmail(email: Email): void { this.props.email = email 
 }
 markSynced(at: Date): void { this.props.lastSyncedAt = at }
+/** Idempotent refresh from the directory; keeps the user's identity and local edits stable. */
+applyDirectoryUpdate(p: { name?: PersonName; email?: Email; departmentId?: Identifier }, syncedAt: Date): void {
+if (p.name) this.props.name = p.name
+if (p.email) this.props.email = p.email
+if (p.departmentId) this.props.departmentId = p.departmentId
+this.props.lastSyncedAt = syncedAt
+}
 toAuthenticated(): AuthenticatedUser {
 return {
 id: this.id.toString(),

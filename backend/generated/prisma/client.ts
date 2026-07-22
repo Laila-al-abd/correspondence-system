@@ -12,8 +12,6 @@
 
 import * as process from 'node:process'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
-globalThis['__dirname'] = path.dirname(fileURLToPath(import.meta.url))
 
 import * as runtime from "@prisma/client/runtime/client"
 import * as $Enums from "./enums.js"
@@ -31,8 +29,8 @@ export * from "./enums.js"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Languages
- * const languages = await prisma.language.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -42,7 +40,167 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model AttributeDefinition
+ * 
+ */
+export type AttributeDefinition = Prisma.AttributeDefinitionModel
+/**
+ * Model UserAttribute
+ * 
+ */
+export type UserAttribute = Prisma.UserAttributeModel
+/**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
+ * Model PermissionGroup
+ * 
+ */
+export type PermissionGroup = Prisma.PermissionGroupModel
+/**
+ * Model Permission
+ * 
+ */
+export type Permission = Prisma.PermissionModel
+/**
+ * Model RolePermission
+ * 
+ */
+export type RolePermission = Prisma.RolePermissionModel
+/**
+ * Model UserRole
+ * 
+ */
+export type UserRole = Prisma.UserRoleModel
+/**
+ * Model Delegation
+ * 
+ */
+export type Delegation = Prisma.DelegationModel
+/**
+ * Model OrgUnitType
+ * 
+ */
+export type OrgUnitType = Prisma.OrgUnitTypeModel
+/**
+ * Model Department
+ * 
+ */
+export type Department = Prisma.DepartmentModel
+/**
  * Model Language
  * 
  */
 export type Language = Prisma.LanguageModel
+/**
+ * Model SensitivityLevel
+ * 
+ */
+export type SensitivityLevel = Prisma.SensitivityLevelModel
+/**
+ * Model RequestCategory
+ * 
+ */
+export type RequestCategory = Prisma.RequestCategoryModel
+/**
+ * Model Template
+ * 
+ */
+export type Template = Prisma.TemplateModel
+/**
+ * Model TemplateField
+ * 
+ */
+export type TemplateField = Prisma.TemplateFieldModel
+/**
+ * Model TemplateFieldOption
+ * 
+ */
+export type TemplateFieldOption = Prisma.TemplateFieldOptionModel
+/**
+ * Model TemplateEligibilityRule
+ * 
+ */
+export type TemplateEligibilityRule = Prisma.TemplateEligibilityRuleModel
+/**
+ * Model ActionType
+ * 
+ */
+export type ActionType = Prisma.ActionTypeModel
+/**
+ * Model WorkflowPath
+ * 
+ */
+export type WorkflowPath = Prisma.WorkflowPathModel
+/**
+ * Model WorkflowStep
+ * 
+ */
+export type WorkflowStep = Prisma.WorkflowStepModel
+/**
+ * Model WorkflowStepAllowedAction
+ * 
+ */
+export type WorkflowStepAllowedAction = Prisma.WorkflowStepAllowedActionModel
+/**
+ * Model WorkflowStepDependency
+ * 
+ */
+export type WorkflowStepDependency = Prisma.WorkflowStepDependencyModel
+/**
+ * Model Request
+ * 
+ */
+export type Request = Prisma.RequestModel
+/**
+ * Model RequestStepInstance
+ * 
+ */
+export type RequestStepInstance = Prisma.RequestStepInstanceModel
+/**
+ * Model RequestAction
+ * 
+ */
+export type RequestAction = Prisma.RequestActionModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Document
+ * 
+ */
+export type Document = Prisma.DocumentModel
+/**
+ * Model AcademicCalendar
+ * 
+ */
+export type AcademicCalendar = Prisma.AcademicCalendarModel
+/**
+ * Model EventLog
+ * 
+ */
+export type EventLog = Prisma.EventLogModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model MlPrediction
+ * 
+ */
+export type MlPrediction = Prisma.MlPredictionModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel
