@@ -10,6 +10,7 @@ import { OrganizationModule } from './interface/organization/organization.module
 import { WorkflowModule } from './interface/workflow/workflow.module';
 import { RequestModule } from './interface/request/request.module';
 import { ObservabilityModule } from './interface/observability/observability.module';
+import { AccessModule } from './interface/access/access.module';
 import { AuditContextInterceptor } from './interface/shared/audit-context.interceptor';
 
 @Module({
@@ -22,6 +23,7 @@ import { AuditContextInterceptor } from './interface/shared/audit-context.interc
     WorkflowModule,
     RequestModule,
     ObservabilityModule,
+    AccessModule,
   ],
   controllers: [AppController],
   providers: [

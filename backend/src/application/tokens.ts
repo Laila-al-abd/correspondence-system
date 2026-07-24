@@ -14,6 +14,7 @@ export const AUTH_PROVIDER_REGISTRY = Symbol('AuthProviderRegistry')
 export const ROLE_REPOSITORY = Symbol('RoleRepository')
 export const DELEGATION_REPOSITORY = Symbol('DelegationRepository')
 export const ACCESS_TOKEN_SERVICE = Symbol('AccessTokenService')
+export const USER_ATTRIBUTE_REPOSITORY = Symbol('UserAttributeRepository')
 
 // catalog
 export const LANGUAGE_REPOSITORY = Symbol('LanguageRepository')
@@ -21,6 +22,9 @@ export const TEMPLATE_REPOSITORY = Symbol('TemplateRepository')
 export const SENSITIVITY_LEVEL_REPOSITORY = Symbol('SensitivityLevelRepository')
 export const REQUEST_CATEGORY_REPOSITORY = Symbol('RequestCategoryRepository')
 export const ACTION_TYPE_REPOSITORY = Symbol('ActionTypeRepository')
+export const ATTRIBUTE_DEFINITION_REPOSITORY = Symbol(
+  'AttributeDefinitionRepository',
+)
 
 // organization
 export const DEPARTMENT_REPOSITORY = Symbol('DepartmentRepository')
