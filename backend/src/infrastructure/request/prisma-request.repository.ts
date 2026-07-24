@@ -25,6 +25,14 @@ export class PrismaRequestRepository implements RequestRepository {
     return row ? RequestMapper.toDomain(row) : null
   }
 
+  async findByReferenceNo(referenceNo: string): Promise<Request | null> {
+    const row = await this.prisma.request.findFirst({
+      where: { referenceNo },
+      include: requestInclude,
+    })
+    return row ? RequestMapper.toDomain(row) : null
+  }
+
   async listByRequester(requesterId: Identifier): Promise<Request[]> {
     const rows = await this.prisma.request.findMany({
       where: { requesterId: BigInt(requesterId.toString()) },

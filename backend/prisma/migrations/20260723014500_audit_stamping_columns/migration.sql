@@ -1,0 +1,60 @@
+-- Automatic audit stamping: record WHO created / last updated each row,
+-- alongside the existing created_at / updated_at that record WHEN.
+-- Nullable and without a foreign key: system writes (seeds, jobs) leave them
+-- null, and the write path stays cheap and uncoupled from the users table.
+
+ALTER TABLE "users" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "users" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "attribute_definitions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "attribute_definitions" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "user_attributes" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "user_attributes" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "roles" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "roles" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "permission_groups" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "permission_groups" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "permissions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "permissions" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "role_permissions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "delegations" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "delegations" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "org_unit_types" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "org_unit_types" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "departments" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "departments" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "languages" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "languages" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "sensitivity_levels" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "sensitivity_levels" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "request_categories" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "request_categories" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "templates" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "templates" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "template_fields" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "template_fields" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "template_field_options" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "template_field_options" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "template_eligibility_rules" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "template_eligibility_rules" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "action_types" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "action_types" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "workflow_paths" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "workflow_paths" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "workflow_steps" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "workflow_steps" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "workflow_step_allowed_actions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "workflow_step_dependencies" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "requests" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "requests" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "request_step_instances" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "request_step_instances" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "request_actions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "payments" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "payments" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "academic_calendar" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "academic_calendar" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "notifications" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "notifications" ADD COLUMN "updated_by" BIGINT;
+ALTER TABLE "ml_predictions" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "system_settings" ADD COLUMN "created_by" BIGINT;
+ALTER TABLE "request_number_sequences" ADD COLUMN "updated_by" BIGINT;
