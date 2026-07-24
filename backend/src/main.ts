@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DomainExceptionFilter } from './interface/shared/domain-exception.filter';
+import { requestContextMiddleware } from './interface/shared/request-context.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(requestContextMiddleware);
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, transform: true }),
   );
