@@ -31,6 +31,26 @@ export class Notification extends AggregateRoot {
     return new Notification(id, props)
   }
 
+  snapshot(): {
+    userId: string
+    requestId?: string
+    type: string
+    title: string
+    body?: string
+    isRead: boolean
+    createdAt: Date
+  } {
+    return {
+      userId: this.props.userId.toString(),
+      requestId: this.props.requestId?.toString(),
+      type: this.props.type,
+      title: this.props.title,
+      body: this.props.body,
+      isRead: this.props.isRead,
+      createdAt: this.props.createdAt,
+    }
+  }
+
   markRead(): void { this.props.isRead = true }
 
   get isRead(): boolean { return this.props.isRead }

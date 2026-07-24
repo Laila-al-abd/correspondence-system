@@ -429,7 +429,8 @@ export const ModelName = {
   EventLog: 'EventLog',
   Notification: 'Notification',
   MlPrediction: 'MlPrediction',
-  SystemSetting: 'SystemSetting'
+  SystemSetting: 'SystemSetting',
+  RequestNumberSequence: 'RequestNumberSequence'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -445,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "attributeDefinition" | "userAttribute" | "role" | "permissionGroup" | "permission" | "rolePermission" | "userRole" | "delegation" | "orgUnitType" | "department" | "language" | "sensitivityLevel" | "requestCategory" | "template" | "templateField" | "templateFieldOption" | "templateEligibilityRule" | "actionType" | "workflowPath" | "workflowStep" | "workflowStepAllowedAction" | "workflowStepDependency" | "request" | "requestStepInstance" | "requestAction" | "payment" | "document" | "academicCalendar" | "eventLog" | "notification" | "mlPrediction" | "systemSetting"
+    modelProps: "user" | "attributeDefinition" | "userAttribute" | "role" | "permissionGroup" | "permission" | "rolePermission" | "userRole" | "delegation" | "orgUnitType" | "department" | "language" | "sensitivityLevel" | "requestCategory" | "template" | "templateField" | "templateFieldOption" | "templateEligibilityRule" | "actionType" | "workflowPath" | "workflowStep" | "workflowStepAllowedAction" | "workflowStepDependency" | "request" | "requestStepInstance" | "requestAction" | "payment" | "document" | "academicCalendar" | "eventLog" | "notification" | "mlPrediction" | "systemSetting" | "requestNumberSequence"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2891,6 +2892,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RequestNumberSequence: {
+      payload: Prisma.$RequestNumberSequencePayload<ExtArgs>
+      fields: Prisma.RequestNumberSequenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RequestNumberSequenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RequestNumberSequenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        findFirst: {
+          args: Prisma.RequestNumberSequenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RequestNumberSequenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        findMany: {
+          args: Prisma.RequestNumberSequenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>[]
+        }
+        create: {
+          args: Prisma.RequestNumberSequenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        createMany: {
+          args: Prisma.RequestNumberSequenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RequestNumberSequenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>[]
+        }
+        delete: {
+          args: Prisma.RequestNumberSequenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        update: {
+          args: Prisma.RequestNumberSequenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        deleteMany: {
+          args: Prisma.RequestNumberSequenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RequestNumberSequenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RequestNumberSequenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>[]
+        }
+        upsert: {
+          args: Prisma.RequestNumberSequenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RequestNumberSequencePayload>
+        }
+        aggregate: {
+          args: Prisma.RequestNumberSequenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRequestNumberSequence>
+        }
+        groupBy: {
+          args: Prisma.RequestNumberSequenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RequestNumberSequenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RequestNumberSequenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RequestNumberSequenceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2948,7 +3023,9 @@ export const UserScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   lastSyncedAt: 'lastSyncedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2962,7 +3039,9 @@ export const AttributeDefinitionScalarFieldEnum = {
   label: 'label',
   dataType: 'dataType',
   description: 'description',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AttributeDefinitionScalarFieldEnum = (typeof AttributeDefinitionScalarFieldEnum)[keyof typeof AttributeDefinitionScalarFieldEnum]
@@ -2974,7 +3053,9 @@ export const UserAttributeScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   attributeId: 'attributeId',
-  value: 'value'
+  value: 'value',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type UserAttributeScalarFieldEnum = (typeof UserAttributeScalarFieldEnum)[keyof typeof UserAttributeScalarFieldEnum]
@@ -2987,7 +3068,9 @@ export const RoleScalarFieldEnum = {
   description: 'description',
   isSystem: 'isSystem',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -2998,7 +3081,9 @@ export const PermissionGroupScalarFieldEnum = {
   updatedAt: 'updatedAt',
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PermissionGroupScalarFieldEnum = (typeof PermissionGroupScalarFieldEnum)[keyof typeof PermissionGroupScalarFieldEnum]
@@ -3011,7 +3096,9 @@ export const PermissionScalarFieldEnum = {
   groupId: 'groupId',
   code: 'code',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
@@ -3021,7 +3108,8 @@ export const RolePermissionScalarFieldEnum = {
   createdAt: 'createdAt',
   id: 'id',
   roleId: 'roleId',
-  permissionId: 'permissionId'
+  permissionId: 'permissionId',
+  createdBy: 'createdBy'
 } as const
 
 export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
@@ -3051,7 +3139,9 @@ export const DelegationScalarFieldEnum = {
   reason: 'reason',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type DelegationScalarFieldEnum = (typeof DelegationScalarFieldEnum)[keyof typeof DelegationScalarFieldEnum]
@@ -3064,7 +3154,9 @@ export const OrgUnitTypeScalarFieldEnum = {
   code: 'code',
   name: 'name',
   description: 'description',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type OrgUnitTypeScalarFieldEnum = (typeof OrgUnitTypeScalarFieldEnum)[keyof typeof OrgUnitTypeScalarFieldEnum]
@@ -3082,7 +3174,9 @@ export const DepartmentScalarFieldEnum = {
   sourceSystem: 'sourceSystem',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
@@ -3095,7 +3189,9 @@ export const LanguageScalarFieldEnum = {
   name: 'name',
   nativeName: 'nativeName',
   isEnabled: 'isEnabled',
-  isDefault: 'isDefault'
+  isDefault: 'isDefault',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
@@ -3108,7 +3204,9 @@ export const SensitivityLevelScalarFieldEnum = {
   name: 'name',
   rank: 'rank',
   description: 'description',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SensitivityLevelScalarFieldEnum = (typeof SensitivityLevelScalarFieldEnum)[keyof typeof SensitivityLevelScalarFieldEnum]
@@ -3120,7 +3218,9 @@ export const RequestCategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RequestCategoryScalarFieldEnum = (typeof RequestCategoryScalarFieldEnum)[keyof typeof RequestCategoryScalarFieldEnum]
@@ -3135,7 +3235,9 @@ export const TemplateScalarFieldEnum = {
   sensitivityLevelId: 'sensitivityLevelId',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TemplateScalarFieldEnum = (typeof TemplateScalarFieldEnum)[keyof typeof TemplateScalarFieldEnum]
@@ -3150,7 +3252,9 @@ export const TemplateFieldScalarFieldEnum = {
   label: 'label',
   dataType: 'dataType',
   isRequired: 'isRequired',
-  ordinal: 'ordinal'
+  ordinal: 'ordinal',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TemplateFieldScalarFieldEnum = (typeof TemplateFieldScalarFieldEnum)[keyof typeof TemplateFieldScalarFieldEnum]
@@ -3163,7 +3267,9 @@ export const TemplateFieldOptionScalarFieldEnum = {
   label: 'label',
   ordinal: 'ordinal',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TemplateFieldOptionScalarFieldEnum = (typeof TemplateFieldOptionScalarFieldEnum)[keyof typeof TemplateFieldOptionScalarFieldEnum]
@@ -3177,7 +3283,9 @@ export const TemplateEligibilityRuleScalarFieldEnum = {
   attributeId: 'attributeId',
   operator: 'operator',
   value: 'value',
-  description: 'description'
+  description: 'description',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TemplateEligibilityRuleScalarFieldEnum = (typeof TemplateEligibilityRuleScalarFieldEnum)[keyof typeof TemplateEligibilityRuleScalarFieldEnum]
@@ -3191,7 +3299,9 @@ export const ActionTypeScalarFieldEnum = {
   name: 'name',
   isTerminal: 'isTerminal',
   description: 'description',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type ActionTypeScalarFieldEnum = (typeof ActionTypeScalarFieldEnum)[keyof typeof ActionTypeScalarFieldEnum]
@@ -3205,7 +3315,9 @@ export const WorkflowPathScalarFieldEnum = {
   description: 'description',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type WorkflowPathScalarFieldEnum = (typeof WorkflowPathScalarFieldEnum)[keyof typeof WorkflowPathScalarFieldEnum]
@@ -3223,7 +3335,9 @@ export const WorkflowStepScalarFieldEnum = {
   defaultActionTypeId: 'defaultActionTypeId',
   slaHours: 'slaHours',
   pausesSla: 'pausesSla',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type WorkflowStepScalarFieldEnum = (typeof WorkflowStepScalarFieldEnum)[keyof typeof WorkflowStepScalarFieldEnum]
@@ -3233,7 +3347,8 @@ export const WorkflowStepAllowedActionScalarFieldEnum = {
   createdAt: 'createdAt',
   id: 'id',
   workflowStepId: 'workflowStepId',
-  actionTypeId: 'actionTypeId'
+  actionTypeId: 'actionTypeId',
+  createdBy: 'createdBy'
 } as const
 
 export type WorkflowStepAllowedActionScalarFieldEnum = (typeof WorkflowStepAllowedActionScalarFieldEnum)[keyof typeof WorkflowStepAllowedActionScalarFieldEnum]
@@ -3243,7 +3358,8 @@ export const WorkflowStepDependencyScalarFieldEnum = {
   createdAt: 'createdAt',
   id: 'id',
   workflowStepId: 'workflowStepId',
-  dependsOnStepId: 'dependsOnStepId'
+  dependsOnStepId: 'dependsOnStepId',
+  createdBy: 'createdBy'
 } as const
 
 export type WorkflowStepDependencyScalarFieldEnum = (typeof WorkflowStepDependencyScalarFieldEnum)[keyof typeof WorkflowStepDependencyScalarFieldEnum]
@@ -3252,6 +3368,7 @@ export type WorkflowStepDependencyScalarFieldEnum = (typeof WorkflowStepDependen
 export const RequestScalarFieldEnum = {
   updatedAt: 'updatedAt',
   id: 'id',
+  referenceNo: 'referenceNo',
   requesterId: 'requesterId',
   rawText: 'rawText',
   templateId: 'templateId',
@@ -3266,7 +3383,9 @@ export const RequestScalarFieldEnum = {
   sensitivityLevelId: 'sensitivityLevelId',
   slaDueAt: 'slaDueAt',
   createdAt: 'createdAt',
-  completedAt: 'completedAt'
+  completedAt: 'completedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RequestScalarFieldEnum = (typeof RequestScalarFieldEnum)[keyof typeof RequestScalarFieldEnum]
@@ -3283,7 +3402,9 @@ export const RequestStepInstanceScalarFieldEnum = {
   slaDueAt: 'slaDueAt',
   slaPaused: 'slaPaused',
   startedAt: 'startedAt',
-  completedAt: 'completedAt'
+  completedAt: 'completedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RequestStepInstanceScalarFieldEnum = (typeof RequestStepInstanceScalarFieldEnum)[keyof typeof RequestStepInstanceScalarFieldEnum]
@@ -3296,7 +3417,8 @@ export const RequestActionScalarFieldEnum = {
   actorId: 'actorId',
   actionTypeId: 'actionTypeId',
   comment: 'comment',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  createdBy: 'createdBy'
 } as const
 
 export type RequestActionScalarFieldEnum = (typeof RequestActionScalarFieldEnum)[keyof typeof RequestActionScalarFieldEnum]
@@ -3314,7 +3436,9 @@ export const PaymentScalarFieldEnum = {
   requestedBy: 'requestedBy',
   confirmedBy: 'confirmedBy',
   requestedAt: 'requestedAt',
-  confirmedAt: 'confirmedAt'
+  confirmedAt: 'confirmedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -3345,7 +3469,9 @@ export const AcademicCalendarScalarFieldEnum = {
   periodType: 'periodType',
   startDate: 'startDate',
   endDate: 'endDate',
-  description: 'description'
+  description: 'description',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AcademicCalendarScalarFieldEnum = (typeof AcademicCalendarScalarFieldEnum)[keyof typeof AcademicCalendarScalarFieldEnum]
@@ -3376,7 +3502,9 @@ export const NotificationScalarFieldEnum = {
   title: 'title',
   body: 'body',
   isRead: 'isRead',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
@@ -3389,7 +3517,8 @@ export const MlPredictionScalarFieldEnum = {
   modelVersion: 'modelVersion',
   predictedValue: 'predictedValue',
   confidence: 'confidence',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  createdBy: 'createdBy'
 } as const
 
 export type MlPredictionScalarFieldEnum = (typeof MlPredictionScalarFieldEnum)[keyof typeof MlPredictionScalarFieldEnum]
@@ -3402,10 +3531,21 @@ export const SystemSettingScalarFieldEnum = {
   value: 'value',
   description: 'description',
   updatedAt: 'updatedAt',
-  updatedBy: 'updatedBy'
+  updatedBy: 'updatedBy',
+  createdBy: 'createdBy'
 } as const
 
 export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
+export const RequestNumberSequenceScalarFieldEnum = {
+  scope: 'scope',
+  currentValue: 'currentValue',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
+} as const
+
+export type RequestNumberSequenceScalarFieldEnum = (typeof RequestNumberSequenceScalarFieldEnum)[keyof typeof RequestNumberSequenceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3750,6 +3890,7 @@ export type GlobalOmitConfig = {
   notification?: Prisma.NotificationOmit
   mlPrediction?: Prisma.MlPredictionOmit
   systemSetting?: Prisma.SystemSettingOmit
+  requestNumberSequence?: Prisma.RequestNumberSequenceOmit
 }
 
 /* Types for Logging */

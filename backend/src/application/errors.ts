@@ -29,6 +29,14 @@ export class InvalidCredentialsError extends ApplicationError {
   }
 }
 
+export class InvalidTokenError extends ApplicationError {
+  readonly code = 'INVALID_TOKEN'
+  readonly status = 401
+  constructor(message = 'Invalid or expired access token.') {
+    super(message)
+  }
+}
+
 export class UnsupportedAuthMethodError extends ApplicationError {
   readonly code = 'UNSUPPORTED_AUTH_METHOD'
   readonly status = 400

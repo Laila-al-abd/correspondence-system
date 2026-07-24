@@ -30,12 +30,14 @@ export type WorkflowStepDependencyAvgAggregateOutputType = {
   id: number | null
   workflowStepId: number | null
   dependsOnStepId: number | null
+  createdBy: number | null
 }
 
 export type WorkflowStepDependencySumAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   dependsOnStepId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepDependencyMinAggregateOutputType = {
@@ -43,6 +45,7 @@ export type WorkflowStepDependencyMinAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   dependsOnStepId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepDependencyMaxAggregateOutputType = {
@@ -50,6 +53,7 @@ export type WorkflowStepDependencyMaxAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   dependsOnStepId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepDependencyCountAggregateOutputType = {
@@ -57,6 +61,7 @@ export type WorkflowStepDependencyCountAggregateOutputType = {
   id: number
   workflowStepId: number
   dependsOnStepId: number
+  createdBy: number
   _all: number
 }
 
@@ -65,12 +70,14 @@ export type WorkflowStepDependencyAvgAggregateInputType = {
   id?: true
   workflowStepId?: true
   dependsOnStepId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepDependencySumAggregateInputType = {
   id?: true
   workflowStepId?: true
   dependsOnStepId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepDependencyMinAggregateInputType = {
@@ -78,6 +85,7 @@ export type WorkflowStepDependencyMinAggregateInputType = {
   id?: true
   workflowStepId?: true
   dependsOnStepId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepDependencyMaxAggregateInputType = {
@@ -85,6 +93,7 @@ export type WorkflowStepDependencyMaxAggregateInputType = {
   id?: true
   workflowStepId?: true
   dependsOnStepId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepDependencyCountAggregateInputType = {
@@ -92,6 +101,7 @@ export type WorkflowStepDependencyCountAggregateInputType = {
   id?: true
   workflowStepId?: true
   dependsOnStepId?: true
+  createdBy?: true
   _all?: true
 }
 
@@ -186,6 +196,7 @@ export type WorkflowStepDependencyGroupByOutputType = {
   id: bigint
   workflowStepId: bigint
   dependsOnStepId: bigint
+  createdBy: bigint | null
   _count: WorkflowStepDependencyCountAggregateOutputType | null
   _avg: WorkflowStepDependencyAvgAggregateOutputType | null
   _sum: WorkflowStepDependencySumAggregateOutputType | null
@@ -216,6 +227,7 @@ export type WorkflowStepDependencyWhereInput = {
   id?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
   dependsOnStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepDependency"> | bigint | number | null
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   dependsOn?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
 }
@@ -225,6 +237,7 @@ export type WorkflowStepDependencyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   workflowStep?: Prisma.WorkflowStepOrderByWithRelationInput
   dependsOn?: Prisma.WorkflowStepOrderByWithRelationInput
 }
@@ -238,6 +251,7 @@ export type WorkflowStepDependencyWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"WorkflowStepDependency"> | Date | string
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
   dependsOnStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepDependency"> | bigint | number | null
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   dependsOn?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
 }, "id" | "workflowStepId_dependsOnStepId">
@@ -247,6 +261,7 @@ export type WorkflowStepDependencyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WorkflowStepDependencyCountOrderByAggregateInput
   _avg?: Prisma.WorkflowStepDependencyAvgOrderByAggregateInput
   _max?: Prisma.WorkflowStepDependencyMaxOrderByAggregateInput
@@ -262,11 +277,13 @@ export type WorkflowStepDependencyScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepDependency"> | bigint | number
   workflowStepId?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepDependency"> | bigint | number
   dependsOnStepId?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepDependency"> | bigint | number
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStepDependency"> | bigint | number | null
 }
 
 export type WorkflowStepDependencyCreateInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutDependenciesInput
   dependsOn: Prisma.WorkflowStepCreateNestedOneWithoutDependentsInput
 }
@@ -276,11 +293,13 @@ export type WorkflowStepDependencyUncheckedCreateInput = {
   id?: bigint | number
   workflowStepId: bigint | number
   dependsOnStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutDependenciesNestedInput
   dependsOn?: Prisma.WorkflowStepUpdateOneRequiredWithoutDependentsNestedInput
 }
@@ -290,6 +309,7 @@ export type WorkflowStepDependencyUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   dependsOnStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyCreateManyInput = {
@@ -297,11 +317,13 @@ export type WorkflowStepDependencyCreateManyInput = {
   id?: bigint | number
   workflowStepId: bigint | number
   dependsOnStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyUncheckedUpdateManyInput = {
@@ -309,6 +331,7 @@ export type WorkflowStepDependencyUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   dependsOnStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyListRelationFilter = {
@@ -331,12 +354,14 @@ export type WorkflowStepDependencyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepDependencyAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepDependencyMaxOrderByAggregateInput = {
@@ -344,6 +369,7 @@ export type WorkflowStepDependencyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepDependencyMinOrderByAggregateInput = {
@@ -351,12 +377,14 @@ export type WorkflowStepDependencyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepDependencySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   dependsOnStepId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepDependencyCreateNestedManyWithoutWorkflowStepInput = {
@@ -446,6 +474,7 @@ export type WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
 export type WorkflowStepDependencyCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   dependsOn: Prisma.WorkflowStepCreateNestedOneWithoutDependentsInput
 }
 
@@ -453,6 +482,7 @@ export type WorkflowStepDependencyUncheckedCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
   dependsOnStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyCreateOrConnectWithoutWorkflowStepInput = {
@@ -468,6 +498,7 @@ export type WorkflowStepDependencyCreateManyWorkflowStepInputEnvelope = {
 export type WorkflowStepDependencyCreateWithoutDependsOnInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutDependenciesInput
 }
 
@@ -475,6 +506,7 @@ export type WorkflowStepDependencyUncheckedCreateWithoutDependsOnInput = {
   createdAt?: Date | string
   id?: bigint | number
   workflowStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyCreateOrConnectWithoutDependsOnInput = {
@@ -511,6 +543,7 @@ export type WorkflowStepDependencyScalarWhereInput = {
   id?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
   dependsOnStepId?: Prisma.BigIntFilter<"WorkflowStepDependency"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepDependency"> | bigint | number | null
 }
 
 export type WorkflowStepDependencyUpsertWithWhereUniqueWithoutDependsOnInput = {
@@ -533,17 +566,20 @@ export type WorkflowStepDependencyCreateManyWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
   dependsOnStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyCreateManyDependsOnInput = {
   createdAt?: Date | string
   id?: bigint | number
   workflowStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepDependencyUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   dependsOn?: Prisma.WorkflowStepUpdateOneRequiredWithoutDependentsNestedInput
 }
 
@@ -551,17 +587,20 @@ export type WorkflowStepDependencyUncheckedUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   dependsOnStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   dependsOnStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyUpdateWithoutDependsOnInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutDependenciesNestedInput
 }
 
@@ -569,12 +608,14 @@ export type WorkflowStepDependencyUncheckedUpdateWithoutDependsOnInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -584,6 +625,7 @@ export type WorkflowStepDependencySelect<ExtArgs extends runtime.Types.Extension
   id?: boolean
   workflowStepId?: boolean
   dependsOnStepId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   dependsOn?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepDependency"]>
@@ -593,6 +635,7 @@ export type WorkflowStepDependencySelectCreateManyAndReturn<ExtArgs extends runt
   id?: boolean
   workflowStepId?: boolean
   dependsOnStepId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   dependsOn?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepDependency"]>
@@ -602,6 +645,7 @@ export type WorkflowStepDependencySelectUpdateManyAndReturn<ExtArgs extends runt
   id?: boolean
   workflowStepId?: boolean
   dependsOnStepId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   dependsOn?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepDependency"]>
@@ -611,9 +655,10 @@ export type WorkflowStepDependencySelectScalar = {
   id?: boolean
   workflowStepId?: boolean
   dependsOnStepId?: boolean
+  createdBy?: boolean
 }
 
-export type WorkflowStepDependencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "id" | "workflowStepId" | "dependsOnStepId", ExtArgs["result"]["workflowStepDependency"]>
+export type WorkflowStepDependencyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "id" | "workflowStepId" | "dependsOnStepId" | "createdBy", ExtArgs["result"]["workflowStepDependency"]>
 export type WorkflowStepDependencyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   dependsOn?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
@@ -638,6 +683,7 @@ export type $WorkflowStepDependencyPayload<ExtArgs extends runtime.Types.Extensi
     id: bigint
     workflowStepId: bigint
     dependsOnStepId: bigint
+    createdBy: bigint | null
   }, ExtArgs["result"]["workflowStepDependency"]>
   composites: {}
 }
@@ -1067,6 +1113,7 @@ export interface WorkflowStepDependencyFieldRefs {
   readonly id: Prisma.FieldRef<"WorkflowStepDependency", 'BigInt'>
   readonly workflowStepId: Prisma.FieldRef<"WorkflowStepDependency", 'BigInt'>
   readonly dependsOnStepId: Prisma.FieldRef<"WorkflowStepDependency", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"WorkflowStepDependency", 'BigInt'>
 }
     
 

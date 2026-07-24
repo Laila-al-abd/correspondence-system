@@ -29,11 +29,15 @@ export type AggregateWorkflowPath = {
 export type WorkflowPathAvgAggregateOutputType = {
   id: number | null
   templateId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type WorkflowPathSumAggregateOutputType = {
   id: bigint | null
   templateId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type WorkflowPathMinAggregateOutputType = {
@@ -43,6 +47,8 @@ export type WorkflowPathMinAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type WorkflowPathMaxAggregateOutputType = {
@@ -52,6 +58,8 @@ export type WorkflowPathMaxAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type WorkflowPathCountAggregateOutputType = {
@@ -63,6 +71,8 @@ export type WorkflowPathCountAggregateOutputType = {
   isActive: number
   createdAt: number
   deletedAt: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -70,11 +80,15 @@ export type WorkflowPathCountAggregateOutputType = {
 export type WorkflowPathAvgAggregateInputType = {
   id?: true
   templateId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type WorkflowPathSumAggregateInputType = {
   id?: true
   templateId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type WorkflowPathMinAggregateInputType = {
@@ -84,6 +98,8 @@ export type WorkflowPathMinAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type WorkflowPathMaxAggregateInputType = {
@@ -93,6 +109,8 @@ export type WorkflowPathMaxAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type WorkflowPathCountAggregateInputType = {
@@ -104,6 +122,8 @@ export type WorkflowPathCountAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -202,6 +222,8 @@ export type WorkflowPathGroupByOutputType = {
   isActive: boolean
   createdAt: Date
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: WorkflowPathCountAggregateOutputType | null
   _avg: WorkflowPathAvgAggregateOutputType | null
   _sum: WorkflowPathSumAggregateOutputType | null
@@ -236,6 +258,8 @@ export type WorkflowPathWhereInput = {
   isActive?: Prisma.BoolFilter<"WorkflowPath"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowPath"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowPath"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   steps?: Prisma.WorkflowStepListRelationFilter
   requests?: Prisma.RequestListRelationFilter
@@ -250,6 +274,8 @@ export type WorkflowPathOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   template?: Prisma.TemplateOrderByWithRelationInput
   steps?: Prisma.WorkflowStepOrderByRelationAggregateInput
   requests?: Prisma.RequestOrderByRelationAggregateInput
@@ -267,6 +293,8 @@ export type WorkflowPathWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"WorkflowPath"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowPath"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowPath"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   steps?: Prisma.WorkflowStepListRelationFilter
   requests?: Prisma.RequestListRelationFilter
@@ -281,6 +309,8 @@ export type WorkflowPathOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WorkflowPathCountOrderByAggregateInput
   _avg?: Prisma.WorkflowPathAvgOrderByAggregateInput
   _max?: Prisma.WorkflowPathMaxOrderByAggregateInput
@@ -300,6 +330,8 @@ export type WorkflowPathScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"WorkflowPath"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowPath"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WorkflowPath"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowPath"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowPath"> | bigint | number | null
 }
 
 export type WorkflowPathCreateInput = {
@@ -310,6 +342,8 @@ export type WorkflowPathCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutWorkflowPathsInput
   steps?: Prisma.WorkflowStepCreateNestedManyWithoutWorkflowPathInput
   requests?: Prisma.RequestCreateNestedManyWithoutWorkflowPathInput
@@ -324,6 +358,8 @@ export type WorkflowPathUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutWorkflowPathInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutWorkflowPathInput
 }
@@ -336,6 +372,8 @@ export type WorkflowPathUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutWorkflowPathsNestedInput
   steps?: Prisma.WorkflowStepUpdateManyWithoutWorkflowPathNestedInput
   requests?: Prisma.RequestUpdateManyWithoutWorkflowPathNestedInput
@@ -350,6 +388,8 @@ export type WorkflowPathUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutWorkflowPathNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutWorkflowPathNestedInput
 }
@@ -363,6 +403,8 @@ export type WorkflowPathCreateManyInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type WorkflowPathUpdateManyMutationInput = {
@@ -373,6 +415,8 @@ export type WorkflowPathUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowPathUncheckedUpdateManyInput = {
@@ -384,6 +428,8 @@ export type WorkflowPathUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowPathListRelationFilter = {
@@ -405,11 +451,15 @@ export type WorkflowPathCountOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowPathAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowPathMaxOrderByAggregateInput = {
@@ -419,6 +469,8 @@ export type WorkflowPathMaxOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowPathMinOrderByAggregateInput = {
@@ -428,11 +480,15 @@ export type WorkflowPathMinOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowPathSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowPathScalarRelationFilter = {
@@ -525,6 +581,8 @@ export type WorkflowPathCreateWithoutTemplateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   steps?: Prisma.WorkflowStepCreateNestedManyWithoutWorkflowPathInput
   requests?: Prisma.RequestCreateNestedManyWithoutWorkflowPathInput
 }
@@ -537,6 +595,8 @@ export type WorkflowPathUncheckedCreateWithoutTemplateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutWorkflowPathInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutWorkflowPathInput
 }
@@ -579,6 +639,8 @@ export type WorkflowPathScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"WorkflowPath"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowPath"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"WorkflowPath"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowPath"> | bigint | number | null
 }
 
 export type WorkflowPathCreateWithoutStepsInput = {
@@ -589,6 +651,8 @@ export type WorkflowPathCreateWithoutStepsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutWorkflowPathsInput
   requests?: Prisma.RequestCreateNestedManyWithoutWorkflowPathInput
 }
@@ -602,6 +666,8 @@ export type WorkflowPathUncheckedCreateWithoutStepsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutWorkflowPathInput
 }
 
@@ -629,6 +695,8 @@ export type WorkflowPathUpdateWithoutStepsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutWorkflowPathsNestedInput
   requests?: Prisma.RequestUpdateManyWithoutWorkflowPathNestedInput
 }
@@ -642,6 +710,8 @@ export type WorkflowPathUncheckedUpdateWithoutStepsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   requests?: Prisma.RequestUncheckedUpdateManyWithoutWorkflowPathNestedInput
 }
 
@@ -653,6 +723,8 @@ export type WorkflowPathCreateWithoutRequestsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutWorkflowPathsInput
   steps?: Prisma.WorkflowStepCreateNestedManyWithoutWorkflowPathInput
 }
@@ -666,6 +738,8 @@ export type WorkflowPathUncheckedCreateWithoutRequestsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutWorkflowPathInput
 }
 
@@ -693,6 +767,8 @@ export type WorkflowPathUpdateWithoutRequestsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutWorkflowPathsNestedInput
   steps?: Prisma.WorkflowStepUpdateManyWithoutWorkflowPathNestedInput
 }
@@ -706,6 +782,8 @@ export type WorkflowPathUncheckedUpdateWithoutRequestsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutWorkflowPathNestedInput
 }
 
@@ -717,6 +795,8 @@ export type WorkflowPathCreateManyTemplateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type WorkflowPathUpdateWithoutTemplateInput = {
@@ -727,6 +807,8 @@ export type WorkflowPathUpdateWithoutTemplateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   steps?: Prisma.WorkflowStepUpdateManyWithoutWorkflowPathNestedInput
   requests?: Prisma.RequestUpdateManyWithoutWorkflowPathNestedInput
 }
@@ -739,6 +821,8 @@ export type WorkflowPathUncheckedUpdateWithoutTemplateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   steps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutWorkflowPathNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutWorkflowPathNestedInput
 }
@@ -751,6 +835,8 @@ export type WorkflowPathUncheckedUpdateManyWithoutTemplateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -802,6 +888,8 @@ export type WorkflowPathSelect<ExtArgs extends runtime.Types.Extensions.Internal
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   steps?: boolean | Prisma.WorkflowPath$stepsArgs<ExtArgs>
   requests?: boolean | Prisma.WorkflowPath$requestsArgs<ExtArgs>
@@ -817,6 +905,8 @@ export type WorkflowPathSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowPath"]>
 
@@ -829,6 +919,8 @@ export type WorkflowPathSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowPath"]>
 
@@ -841,9 +933,11 @@ export type WorkflowPathSelectScalar = {
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type WorkflowPathOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "templateId" | "name" | "description" | "isActive" | "createdAt" | "deletedAt", ExtArgs["result"]["workflowPath"]>
+export type WorkflowPathOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "templateId" | "name" | "description" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["workflowPath"]>
 export type WorkflowPathInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   steps?: boolean | Prisma.WorkflowPath$stepsArgs<ExtArgs>
@@ -873,6 +967,8 @@ export type $WorkflowPathPayload<ExtArgs extends runtime.Types.Extensions.Intern
     isActive: boolean
     createdAt: Date
     deletedAt: Date | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["workflowPath"]>
   composites: {}
 }
@@ -1307,6 +1403,8 @@ export interface WorkflowPathFieldRefs {
   readonly isActive: Prisma.FieldRef<"WorkflowPath", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WorkflowPath", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"WorkflowPath", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"WorkflowPath", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"WorkflowPath", 'BigInt'>
 }
     
 

@@ -30,12 +30,14 @@ export type MlPredictionAvgAggregateOutputType = {
   id: number | null
   requestId: number | null
   confidence: runtime.Decimal | null
+  createdBy: number | null
 }
 
 export type MlPredictionSumAggregateOutputType = {
   id: bigint | null
   requestId: bigint | null
   confidence: runtime.Decimal | null
+  createdBy: bigint | null
 }
 
 export type MlPredictionMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type MlPredictionMinAggregateOutputType = {
   modelVersion: string | null
   confidence: runtime.Decimal | null
   createdAt: Date | null
+  createdBy: bigint | null
 }
 
 export type MlPredictionMaxAggregateOutputType = {
@@ -54,6 +57,7 @@ export type MlPredictionMaxAggregateOutputType = {
   modelVersion: string | null
   confidence: runtime.Decimal | null
   createdAt: Date | null
+  createdBy: bigint | null
 }
 
 export type MlPredictionCountAggregateOutputType = {
@@ -64,6 +68,7 @@ export type MlPredictionCountAggregateOutputType = {
   predictedValue: number
   confidence: number
   createdAt: number
+  createdBy: number
   _all: number
 }
 
@@ -72,12 +77,14 @@ export type MlPredictionAvgAggregateInputType = {
   id?: true
   requestId?: true
   confidence?: true
+  createdBy?: true
 }
 
 export type MlPredictionSumAggregateInputType = {
   id?: true
   requestId?: true
   confidence?: true
+  createdBy?: true
 }
 
 export type MlPredictionMinAggregateInputType = {
@@ -87,6 +94,7 @@ export type MlPredictionMinAggregateInputType = {
   modelVersion?: true
   confidence?: true
   createdAt?: true
+  createdBy?: true
 }
 
 export type MlPredictionMaxAggregateInputType = {
@@ -96,6 +104,7 @@ export type MlPredictionMaxAggregateInputType = {
   modelVersion?: true
   confidence?: true
   createdAt?: true
+  createdBy?: true
 }
 
 export type MlPredictionCountAggregateInputType = {
@@ -106,6 +115,7 @@ export type MlPredictionCountAggregateInputType = {
   predictedValue?: true
   confidence?: true
   createdAt?: true
+  createdBy?: true
   _all?: true
 }
 
@@ -203,6 +213,7 @@ export type MlPredictionGroupByOutputType = {
   predictedValue: runtime.JsonValue
   confidence: runtime.Decimal | null
   createdAt: Date
+  createdBy: bigint | null
   _count: MlPredictionCountAggregateOutputType | null
   _avg: MlPredictionAvgAggregateOutputType | null
   _sum: MlPredictionSumAggregateOutputType | null
@@ -236,6 +247,7 @@ export type MlPredictionWhereInput = {
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"MlPrediction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"MlPrediction"> | bigint | number | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
 }
 
@@ -247,6 +259,7 @@ export type MlPredictionOrderByWithRelationInput = {
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   request?: Prisma.RequestOrderByWithRelationInput
 }
 
@@ -261,6 +274,7 @@ export type MlPredictionWhereUniqueInput = Prisma.AtLeast<{
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"MlPrediction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"MlPrediction"> | bigint | number | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
 }, "id">
 
@@ -272,6 +286,7 @@ export type MlPredictionOrderByWithAggregationInput = {
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MlPredictionCountOrderByAggregateInput
   _avg?: Prisma.MlPredictionAvgOrderByAggregateInput
   _max?: Prisma.MlPredictionMaxOrderByAggregateInput
@@ -290,6 +305,7 @@ export type MlPredictionScalarWhereWithAggregatesInput = {
   predictedValue?: Prisma.JsonWithAggregatesFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableWithAggregatesFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MlPrediction"> | Date | string
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"MlPrediction"> | bigint | number | null
 }
 
 export type MlPredictionCreateInput = {
@@ -299,6 +315,7 @@ export type MlPredictionCreateInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutPredictionsInput
 }
 
@@ -310,6 +327,7 @@ export type MlPredictionUncheckedCreateInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type MlPredictionUpdateInput = {
@@ -319,6 +337,7 @@ export type MlPredictionUpdateInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPredictionsNestedInput
 }
 
@@ -330,6 +349,7 @@ export type MlPredictionUncheckedUpdateInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type MlPredictionCreateManyInput = {
@@ -340,6 +360,7 @@ export type MlPredictionCreateManyInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type MlPredictionUpdateManyMutationInput = {
@@ -349,6 +370,7 @@ export type MlPredictionUpdateManyMutationInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type MlPredictionUncheckedUpdateManyInput = {
@@ -359,6 +381,7 @@ export type MlPredictionUncheckedUpdateManyInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type MlPredictionListRelationFilter = {
@@ -379,12 +402,14 @@ export type MlPredictionCountOrderByAggregateInput = {
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type MlPredictionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type MlPredictionMaxOrderByAggregateInput = {
@@ -394,6 +419,7 @@ export type MlPredictionMaxOrderByAggregateInput = {
   modelVersion?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type MlPredictionMinOrderByAggregateInput = {
@@ -403,12 +429,14 @@ export type MlPredictionMinOrderByAggregateInput = {
   modelVersion?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type MlPredictionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type MlPredictionCreateNestedManyWithoutRequestInput = {
@@ -460,6 +488,7 @@ export type MlPredictionCreateWithoutRequestInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type MlPredictionUncheckedCreateWithoutRequestInput = {
@@ -469,6 +498,7 @@ export type MlPredictionUncheckedCreateWithoutRequestInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type MlPredictionCreateOrConnectWithoutRequestInput = {
@@ -508,6 +538,7 @@ export type MlPredictionScalarWhereInput = {
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"MlPrediction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"MlPrediction"> | bigint | number | null
 }
 
 export type MlPredictionCreateManyRequestInput = {
@@ -517,6 +548,7 @@ export type MlPredictionCreateManyRequestInput = {
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type MlPredictionUpdateWithoutRequestInput = {
@@ -526,6 +558,7 @@ export type MlPredictionUpdateWithoutRequestInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type MlPredictionUncheckedUpdateWithoutRequestInput = {
@@ -535,6 +568,7 @@ export type MlPredictionUncheckedUpdateWithoutRequestInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type MlPredictionUncheckedUpdateManyWithoutRequestInput = {
@@ -544,6 +578,7 @@ export type MlPredictionUncheckedUpdateManyWithoutRequestInput = {
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -556,6 +591,7 @@ export type MlPredictionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   predictedValue?: boolean
   confidence?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mlPrediction"]>
 
@@ -567,6 +603,7 @@ export type MlPredictionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   predictedValue?: boolean
   confidence?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mlPrediction"]>
 
@@ -578,6 +615,7 @@ export type MlPredictionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   predictedValue?: boolean
   confidence?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mlPrediction"]>
 
@@ -589,9 +627,10 @@ export type MlPredictionSelectScalar = {
   predictedValue?: boolean
   confidence?: boolean
   createdAt?: boolean
+  createdBy?: boolean
 }
 
-export type MlPredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "modelType" | "modelVersion" | "predictedValue" | "confidence" | "createdAt", ExtArgs["result"]["mlPrediction"]>
+export type MlPredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "modelType" | "modelVersion" | "predictedValue" | "confidence" | "createdAt" | "createdBy", ExtArgs["result"]["mlPrediction"]>
 export type MlPredictionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
 }
@@ -615,6 +654,7 @@ export type $MlPredictionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     predictedValue: runtime.JsonValue
     confidence: runtime.Decimal | null
     createdAt: Date
+    createdBy: bigint | null
   }, ExtArgs["result"]["mlPrediction"]>
   composites: {}
 }
@@ -1046,6 +1086,7 @@ export interface MlPredictionFieldRefs {
   readonly predictedValue: Prisma.FieldRef<"MlPrediction", 'Json'>
   readonly confidence: Prisma.FieldRef<"MlPrediction", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"MlPrediction", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"MlPrediction", 'BigInt'>
 }
     
 

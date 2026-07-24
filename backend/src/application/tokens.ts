@@ -13,6 +13,7 @@ export const PASSWORD_HASHER = Symbol('PasswordHasher')
 export const AUTH_PROVIDER_REGISTRY = Symbol('AuthProviderRegistry')
 export const ROLE_REPOSITORY = Symbol('RoleRepository')
 export const DELEGATION_REPOSITORY = Symbol('DelegationRepository')
+export const ACCESS_TOKEN_SERVICE = Symbol('AccessTokenService')
 
 // catalog
 export const LANGUAGE_REPOSITORY = Symbol('LanguageRepository')
@@ -34,6 +35,14 @@ export const REQUEST_REPOSITORY = Symbol('RequestRepository')
 export const REQUEST_ACTION_REPOSITORY = Symbol('RequestActionRepository')
 export const PAYMENT_REPOSITORY = Symbol('PaymentRepository')
 export const DOCUMENT_REPOSITORY = Symbol('DocumentRepository')
+export const REFERENCE_NUMBER_GENERATOR = Symbol('ReferenceNumberGenerator')
+
+// observability
+export const EVENT_LOG_REPOSITORY = Symbol('EventLogRepository')
+export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepository')
+export const ML_PREDICTION_REPOSITORY = Symbol('MlPredictionRepository')
+export const ACADEMIC_CALENDAR_REPOSITORY = Symbol('AcademicCalendarRepository')
+export const SYSTEM_SETTING_REPOSITORY = Symbol('SystemSettingRepository')
 
 // storage
 export const OBJECT_STORAGE = Symbol('ObjectStorage')

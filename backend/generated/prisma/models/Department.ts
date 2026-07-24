@@ -30,12 +30,16 @@ export type DepartmentAvgAggregateOutputType = {
   id: number | null
   parentId: number | null
   unitTypeId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type DepartmentSumAggregateOutputType = {
   id: bigint | null
   parentId: bigint | null
   unitTypeId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DepartmentMinAggregateOutputType = {
@@ -49,6 +53,8 @@ export type DepartmentMinAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DepartmentMaxAggregateOutputType = {
@@ -62,6 +68,8 @@ export type DepartmentMaxAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DepartmentCountAggregateOutputType = {
@@ -77,6 +85,8 @@ export type DepartmentCountAggregateOutputType = {
   lastSyncedAt: number
   createdAt: number
   deletedAt: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -85,12 +95,16 @@ export type DepartmentAvgAggregateInputType = {
   id?: true
   parentId?: true
   unitTypeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DepartmentSumAggregateInputType = {
   id?: true
   parentId?: true
   unitTypeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DepartmentMinAggregateInputType = {
@@ -104,6 +118,8 @@ export type DepartmentMinAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DepartmentMaxAggregateInputType = {
@@ -117,6 +133,8 @@ export type DepartmentMaxAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DepartmentCountAggregateInputType = {
@@ -132,6 +150,8 @@ export type DepartmentCountAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -234,6 +254,8 @@ export type DepartmentGroupByOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: DepartmentCountAggregateOutputType | null
   _avg: DepartmentAvgAggregateOutputType | null
   _sum: DepartmentSumAggregateOutputType | null
@@ -272,6 +294,8 @@ export type DepartmentWhereInput = {
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
   parent?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   children?: Prisma.DepartmentListRelationFilter
   unitType?: Prisma.XOR<Prisma.OrgUnitTypeScalarRelationFilter, Prisma.OrgUnitTypeWhereInput>
@@ -293,6 +317,8 @@ export type DepartmentOrderByWithRelationInput = {
   lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   parent?: Prisma.DepartmentOrderByWithRelationInput
   children?: Prisma.DepartmentOrderByRelationAggregateInput
   unitType?: Prisma.OrgUnitTypeOrderByWithRelationInput
@@ -317,6 +343,8 @@ export type DepartmentWhereUniqueInput = Prisma.AtLeast<{
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
   parent?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   children?: Prisma.DepartmentListRelationFilter
   unitType?: Prisma.XOR<Prisma.OrgUnitTypeScalarRelationFilter, Prisma.OrgUnitTypeWhereInput>
@@ -338,6 +366,8 @@ export type DepartmentOrderByWithAggregationInput = {
   lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DepartmentCountOrderByAggregateInput
   _avg?: Prisma.DepartmentAvgOrderByAggregateInput
   _max?: Prisma.DepartmentMaxOrderByAggregateInput
@@ -361,6 +391,8 @@ export type DepartmentScalarWhereWithAggregatesInput = {
   lastSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Department"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Department"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Department"> | bigint | number | null
 }
 
 export type DepartmentCreateInput = {
@@ -374,6 +406,8 @@ export type DepartmentCreateInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -395,6 +429,8 @@ export type DepartmentUncheckedCreateInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -412,6 +448,8 @@ export type DepartmentUpdateInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -433,6 +471,8 @@ export type DepartmentUncheckedUpdateInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -452,6 +492,8 @@ export type DepartmentCreateManyInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DepartmentUpdateManyMutationInput = {
@@ -465,6 +507,8 @@ export type DepartmentUpdateManyMutationInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DepartmentUncheckedUpdateManyInput = {
@@ -480,6 +524,8 @@ export type DepartmentUncheckedUpdateManyInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DepartmentNullableScalarRelationFilter = {
@@ -510,12 +556,16 @@ export type DepartmentCountOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DepartmentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   unitTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DepartmentMaxOrderByAggregateInput = {
@@ -529,6 +579,8 @@ export type DepartmentMaxOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DepartmentMinOrderByAggregateInput = {
@@ -542,12 +594,16 @@ export type DepartmentMinOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DepartmentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   unitTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DepartmentCreateNestedOneWithoutUsersInput = {
@@ -709,6 +765,8 @@ export type DepartmentCreateWithoutUsersInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -729,6 +787,8 @@ export type DepartmentUncheckedCreateWithoutUsersInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -761,6 +821,8 @@ export type DepartmentUpdateWithoutUsersInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -781,6 +843,8 @@ export type DepartmentUncheckedUpdateWithoutUsersInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -797,6 +861,8 @@ export type DepartmentCreateWithoutUserRolesInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -817,6 +883,8 @@ export type DepartmentUncheckedCreateWithoutUserRolesInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -849,6 +917,8 @@ export type DepartmentUpdateWithoutUserRolesInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -869,6 +939,8 @@ export type DepartmentUncheckedUpdateWithoutUserRolesInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -885,6 +957,8 @@ export type DepartmentCreateWithoutUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -904,6 +978,8 @@ export type DepartmentUncheckedCreateWithoutUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -952,6 +1028,8 @@ export type DepartmentScalarWhereInput = {
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
 }
 
 export type DepartmentCreateWithoutChildrenInput = {
@@ -965,6 +1043,8 @@ export type DepartmentCreateWithoutChildrenInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -985,6 +1065,8 @@ export type DepartmentUncheckedCreateWithoutChildrenInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -1006,6 +1088,8 @@ export type DepartmentCreateWithoutParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -1025,6 +1109,8 @@ export type DepartmentUncheckedCreateWithoutParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -1063,6 +1149,8 @@ export type DepartmentUpdateWithoutChildrenInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1083,6 +1171,8 @@ export type DepartmentUncheckedUpdateWithoutChildrenInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -1115,6 +1205,8 @@ export type DepartmentCreateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -1135,6 +1227,8 @@ export type DepartmentUncheckedCreateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -1167,6 +1261,8 @@ export type DepartmentUpdateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -1187,6 +1283,8 @@ export type DepartmentUncheckedUpdateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1204,6 +1302,8 @@ export type DepartmentCreateManyUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DepartmentUpdateWithoutUnitTypeInput = {
@@ -1217,6 +1317,8 @@ export type DepartmentUpdateWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1236,6 +1338,8 @@ export type DepartmentUncheckedUpdateWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1254,6 +1358,8 @@ export type DepartmentUncheckedUpdateManyWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DepartmentCreateManyParentInput = {
@@ -1268,6 +1374,8 @@ export type DepartmentCreateManyParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DepartmentUpdateWithoutParentInput = {
@@ -1281,6 +1389,8 @@ export type DepartmentUpdateWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1300,6 +1410,8 @@ export type DepartmentUncheckedUpdateWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1318,6 +1430,8 @@ export type DepartmentUncheckedUpdateManyWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -1391,6 +1505,8 @@ export type DepartmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   lastSyncedAt?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   parent?: boolean | Prisma.Department$parentArgs<ExtArgs>
   children?: boolean | Prisma.Department$childrenArgs<ExtArgs>
   unitType?: boolean | Prisma.OrgUnitTypeDefaultArgs<ExtArgs>
@@ -1413,6 +1529,8 @@ export type DepartmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   lastSyncedAt?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   parent?: boolean | Prisma.Department$parentArgs<ExtArgs>
   unitType?: boolean | Prisma.OrgUnitTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["department"]>
@@ -1430,6 +1548,8 @@ export type DepartmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   lastSyncedAt?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   parent?: boolean | Prisma.Department$parentArgs<ExtArgs>
   unitType?: boolean | Prisma.OrgUnitTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["department"]>
@@ -1447,9 +1567,11 @@ export type DepartmentSelectScalar = {
   lastSyncedAt?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type DepartmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "parentId" | "unitTypeId" | "name" | "description" | "isActive" | "externalId" | "sourceSystem" | "lastSyncedAt" | "createdAt" | "deletedAt", ExtArgs["result"]["department"]>
+export type DepartmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "parentId" | "unitTypeId" | "name" | "description" | "isActive" | "externalId" | "sourceSystem" | "lastSyncedAt" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["department"]>
 export type DepartmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   parent?: boolean | Prisma.Department$parentArgs<ExtArgs>
   children?: boolean | Prisma.Department$childrenArgs<ExtArgs>
@@ -1491,6 +1613,8 @@ export type $DepartmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     lastSyncedAt: Date | null
     createdAt: Date
     deletedAt: Date | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["department"]>
   composites: {}
 }
@@ -1932,6 +2056,8 @@ export interface DepartmentFieldRefs {
   readonly lastSyncedAt: Prisma.FieldRef<"Department", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Department", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Department", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"Department", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"Department", 'BigInt'>
 }
     
 

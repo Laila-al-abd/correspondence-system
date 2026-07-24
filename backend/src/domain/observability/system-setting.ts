@@ -31,6 +31,22 @@ export class SystemSetting extends AggregateRoot {
     return new SystemSetting(id, props)
   }
 
+  snapshot(): {
+    key: string
+    value: unknown
+    description?: string
+    updatedBy?: string
+    updatedAt: Date
+  } {
+    return {
+      key: this.props.key,
+      value: this.props.value,
+      description: this.props.description,
+      updatedBy: this.props.updatedBy?.toString(),
+      updatedAt: this.props.updatedAt,
+    }
+  }
+
   update(value: unknown, updatedBy?: Identifier): void {
     this.props.value = value
     this.props.updatedBy = updatedBy

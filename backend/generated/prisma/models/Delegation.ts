@@ -30,12 +30,16 @@ export type DelegationAvgAggregateOutputType = {
   id: number | null
   delegatorId: number | null
   delegateId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type DelegationSumAggregateOutputType = {
   id: bigint | null
   delegatorId: bigint | null
   delegateId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DelegationMinAggregateOutputType = {
@@ -49,6 +53,8 @@ export type DelegationMinAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DelegationMaxAggregateOutputType = {
@@ -62,6 +68,8 @@ export type DelegationMaxAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type DelegationCountAggregateOutputType = {
@@ -75,6 +83,8 @@ export type DelegationCountAggregateOutputType = {
   isActive: number
   createdAt: number
   deletedAt: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -83,12 +93,16 @@ export type DelegationAvgAggregateInputType = {
   id?: true
   delegatorId?: true
   delegateId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DelegationSumAggregateInputType = {
   id?: true
   delegatorId?: true
   delegateId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DelegationMinAggregateInputType = {
@@ -102,6 +116,8 @@ export type DelegationMinAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DelegationMaxAggregateInputType = {
@@ -115,6 +131,8 @@ export type DelegationMaxAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type DelegationCountAggregateInputType = {
@@ -128,6 +146,8 @@ export type DelegationCountAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -228,6 +248,8 @@ export type DelegationGroupByOutputType = {
   isActive: boolean
   createdAt: Date
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: DelegationCountAggregateOutputType | null
   _avg: DelegationAvgAggregateOutputType | null
   _sum: DelegationSumAggregateOutputType | null
@@ -264,6 +286,8 @@ export type DelegationWhereInput = {
   isActive?: Prisma.BoolFilter<"Delegation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Delegation"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Delegation"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
   delegator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   delegate?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -279,6 +303,8 @@ export type DelegationOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   delegator?: Prisma.UserOrderByWithRelationInput
   delegate?: Prisma.UserOrderByWithRelationInput
 }
@@ -297,6 +323,8 @@ export type DelegationWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"Delegation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Delegation"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Delegation"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
   delegator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   delegate?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -312,6 +340,8 @@ export type DelegationOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DelegationCountOrderByAggregateInput
   _avg?: Prisma.DelegationAvgOrderByAggregateInput
   _max?: Prisma.DelegationMaxOrderByAggregateInput
@@ -333,6 +363,8 @@ export type DelegationScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"Delegation"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Delegation"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Delegation"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Delegation"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Delegation"> | bigint | number | null
 }
 
 export type DelegationCreateInput = {
@@ -344,6 +376,8 @@ export type DelegationCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   delegator: Prisma.UserCreateNestedOneWithoutDelegationsGivenInput
   delegate: Prisma.UserCreateNestedOneWithoutDelegationsReceivedInput
 }
@@ -359,6 +393,8 @@ export type DelegationUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationUpdateInput = {
@@ -370,6 +406,8 @@ export type DelegationUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   delegator?: Prisma.UserUpdateOneRequiredWithoutDelegationsGivenNestedInput
   delegate?: Prisma.UserUpdateOneRequiredWithoutDelegationsReceivedNestedInput
 }
@@ -385,6 +423,8 @@ export type DelegationUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationCreateManyInput = {
@@ -398,6 +438,8 @@ export type DelegationCreateManyInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationUpdateManyMutationInput = {
@@ -409,6 +451,8 @@ export type DelegationUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationUncheckedUpdateManyInput = {
@@ -422,6 +466,8 @@ export type DelegationUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationListRelationFilter = {
@@ -445,12 +491,16 @@ export type DelegationCountOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DelegationAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   delegatorId?: Prisma.SortOrder
   delegateId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DelegationMaxOrderByAggregateInput = {
@@ -464,6 +514,8 @@ export type DelegationMaxOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DelegationMinOrderByAggregateInput = {
@@ -477,12 +529,16 @@ export type DelegationMinOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DelegationSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   delegatorId?: Prisma.SortOrder
   delegateId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DelegationCreateNestedManyWithoutDelegatorInput = {
@@ -578,6 +634,8 @@ export type DelegationCreateWithoutDelegatorInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   delegate: Prisma.UserCreateNestedOneWithoutDelegationsReceivedInput
 }
 
@@ -591,6 +649,8 @@ export type DelegationUncheckedCreateWithoutDelegatorInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationCreateOrConnectWithoutDelegatorInput = {
@@ -612,6 +672,8 @@ export type DelegationCreateWithoutDelegateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   delegator: Prisma.UserCreateNestedOneWithoutDelegationsGivenInput
 }
 
@@ -625,6 +687,8 @@ export type DelegationUncheckedCreateWithoutDelegateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationCreateOrConnectWithoutDelegateInput = {
@@ -667,6 +731,8 @@ export type DelegationScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"Delegation"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Delegation"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Delegation"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Delegation"> | bigint | number | null
 }
 
 export type DelegationUpsertWithWhereUniqueWithoutDelegateInput = {
@@ -695,6 +761,8 @@ export type DelegationCreateManyDelegatorInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationCreateManyDelegateInput = {
@@ -707,6 +775,8 @@ export type DelegationCreateManyDelegateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type DelegationUpdateWithoutDelegatorInput = {
@@ -718,6 +788,8 @@ export type DelegationUpdateWithoutDelegatorInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   delegate?: Prisma.UserUpdateOneRequiredWithoutDelegationsReceivedNestedInput
 }
 
@@ -731,6 +803,8 @@ export type DelegationUncheckedUpdateWithoutDelegatorInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationUncheckedUpdateManyWithoutDelegatorInput = {
@@ -743,6 +817,8 @@ export type DelegationUncheckedUpdateManyWithoutDelegatorInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationUpdateWithoutDelegateInput = {
@@ -754,6 +830,8 @@ export type DelegationUpdateWithoutDelegateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   delegator?: Prisma.UserUpdateOneRequiredWithoutDelegationsGivenNestedInput
 }
 
@@ -767,6 +845,8 @@ export type DelegationUncheckedUpdateWithoutDelegateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type DelegationUncheckedUpdateManyWithoutDelegateInput = {
@@ -779,6 +859,8 @@ export type DelegationUncheckedUpdateManyWithoutDelegateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -794,6 +876,8 @@ export type DelegationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   delegator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   delegate?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["delegation"]>
@@ -809,6 +893,8 @@ export type DelegationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   delegator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   delegate?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["delegation"]>
@@ -824,6 +910,8 @@ export type DelegationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   delegator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   delegate?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["delegation"]>
@@ -839,9 +927,11 @@ export type DelegationSelectScalar = {
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type DelegationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "delegatorId" | "delegateId" | "startDate" | "endDate" | "reason" | "isActive" | "createdAt" | "deletedAt", ExtArgs["result"]["delegation"]>
+export type DelegationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "delegatorId" | "delegateId" | "startDate" | "endDate" | "reason" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["delegation"]>
 export type DelegationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   delegator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   delegate?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -872,6 +962,8 @@ export type $DelegationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     isActive: boolean
     createdAt: Date
     deletedAt: Date | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["delegation"]>
   composites: {}
 }
@@ -1307,6 +1399,8 @@ export interface DelegationFieldRefs {
   readonly isActive: Prisma.FieldRef<"Delegation", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Delegation", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Delegation", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"Delegation", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"Delegation", 'BigInt'>
 }
     
 
