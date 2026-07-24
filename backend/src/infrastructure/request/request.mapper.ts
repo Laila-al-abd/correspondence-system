@@ -50,6 +50,7 @@ export const RequestMapper = {
 
     return Request.rehydrate(Identifier.of(row.id), {
       requesterId: Identifier.of(row.requesterId),
+      referenceNo: row.referenceNo ?? undefined,
       rawText: row.rawText ?? undefined,
       templateId: row.templateId != null ? Identifier.of(row.templateId) : undefined,
       workflowPathId:
@@ -82,6 +83,7 @@ export const RequestMapper = {
     return {
       id: BigInt(request.id.toString()),
       requesterId: BigInt(s.requesterId),
+      referenceNo: s.referenceNo ?? null,
       rawText: s.rawText ?? null,
       templateId: s.templateId ? BigInt(s.templateId) : null,
       workflowPathId: s.workflowPathId ? BigInt(s.workflowPathId) : null,

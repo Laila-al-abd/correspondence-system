@@ -35,6 +35,24 @@ async function main(): Promise<void> {
     },
   })
 
+  // Request numbering — the institution's customizable reference-number format.
+  // The generator falls back to sensible defaults when this row is absent.
+  await prisma.systemSetting.upsert({
+    where: { key: 'request_numbering' },
+    update: {},
+    create: {
+      key: 'request_numbering',
+      value: {
+        pattern: '{prefix}/{year}/{seq}',
+        prefix: 'HIAST',
+        seqPadding: 5,
+        resetPolicy: 'YEARLY',
+        yearDigits: 4,
+      },
+      description: 'Customizable request reference-number format.',
+    },
+  })
+
   // Permission group — Permission.groupId is required (FK to permission_groups).
   const group = await prisma.permissionGroup.upsert({
     where: { id: 1n },

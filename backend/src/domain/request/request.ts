@@ -15,6 +15,7 @@ import {
 
 interface RequestProps {
   requesterId: Identifier
+  referenceNo?: string
   rawText?: string
   templateId?: Identifier
   workflowPathId?: Identifier
@@ -33,6 +34,7 @@ interface RequestProps {
 
 export interface RequestSnapshot {
   requesterId: string
+  referenceNo?: string
   rawText?: string
   templateId?: string
   workflowPathId?: string
@@ -76,10 +78,16 @@ export class Request extends AggregateRoot {
 
   static create(
     id: Identifier,
-    p: { requesterId: Identifier; rawText?: string; priority?: Priority },
+    p: {
+      requesterId: Identifier
+      referenceNo?: string
+      rawText?: string
+      priority?: Priority
+    },
   ): Request {
     return new Request(id, {
       requesterId: p.requesterId,
+      referenceNo: p.referenceNo,
       rawText: p.rawText,
       filledData: {},
       classificationStatus: ClassificationStatus.PENDING,
@@ -210,6 +218,7 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
     this.props.currentStatus = next
   }
 
+  get referenceNo(): string | undefined { return this.props.referenceNo }
   get status(): RequestStatus { return this.props.currentStatus }
   get classificationStatus(): ClassificationStatus { return this.props.classificationStatus }
   get templateId(): Identifier | undefined { return this.props.templateId }
@@ -222,6 +231,7 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   snapshot(): RequestSnapshot {
     return {
       requesterId: this.props.requesterId.toString(),
+      referenceNo: this.props.referenceNo,
       rawText: this.props.rawText,
       templateId: this.props.templateId?.toString(),
       workflowPathId: this.props.workflowPathId?.toString(),

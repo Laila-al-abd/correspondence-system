@@ -4,6 +4,7 @@ import { Request } from "../request"
 import { RequestStatus } from "../enums"
 
 export interface RequestRepository extends Repository<Request> {
+  findByReferenceNo(referenceNo: string): Promise<Request | null>
   listByRequester(requesterId: Identifier): Promise<Request[]>
   listAssignedTo(userId: Identifier): Promise<Request[]>
   listByStatus(status: RequestStatus): Promise<Request[]>
