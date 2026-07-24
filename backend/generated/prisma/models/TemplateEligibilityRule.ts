@@ -30,12 +30,16 @@ export type TemplateEligibilityRuleAvgAggregateOutputType = {
   id: number | null
   templateId: number | null
   attributeId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type TemplateEligibilityRuleSumAggregateOutputType = {
   id: bigint | null
   templateId: bigint | null
   attributeId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateEligibilityRuleMinAggregateOutputType = {
@@ -45,6 +49,8 @@ export type TemplateEligibilityRuleMinAggregateOutputType = {
   templateId: bigint | null
   attributeId: bigint | null
   operator: string | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateEligibilityRuleMaxAggregateOutputType = {
@@ -54,6 +60,8 @@ export type TemplateEligibilityRuleMaxAggregateOutputType = {
   templateId: bigint | null
   attributeId: bigint | null
   operator: string | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateEligibilityRuleCountAggregateOutputType = {
@@ -65,6 +73,8 @@ export type TemplateEligibilityRuleCountAggregateOutputType = {
   operator: number
   value: number
   description: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -73,12 +83,16 @@ export type TemplateEligibilityRuleAvgAggregateInputType = {
   id?: true
   templateId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateEligibilityRuleSumAggregateInputType = {
   id?: true
   templateId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateEligibilityRuleMinAggregateInputType = {
@@ -88,6 +102,8 @@ export type TemplateEligibilityRuleMinAggregateInputType = {
   templateId?: true
   attributeId?: true
   operator?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateEligibilityRuleMaxAggregateInputType = {
@@ -97,6 +113,8 @@ export type TemplateEligibilityRuleMaxAggregateInputType = {
   templateId?: true
   attributeId?: true
   operator?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateEligibilityRuleCountAggregateInputType = {
@@ -108,6 +126,8 @@ export type TemplateEligibilityRuleCountAggregateInputType = {
   operator?: true
   value?: true
   description?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -206,6 +226,8 @@ export type TemplateEligibilityRuleGroupByOutputType = {
   operator: string
   value: runtime.JsonValue
   description: runtime.JsonValue | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: TemplateEligibilityRuleCountAggregateOutputType | null
   _avg: TemplateEligibilityRuleAvgAggregateOutputType | null
   _sum: TemplateEligibilityRuleSumAggregateOutputType | null
@@ -240,6 +262,8 @@ export type TemplateEligibilityRuleWhereInput = {
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }
@@ -253,6 +277,8 @@ export type TemplateEligibilityRuleOrderByWithRelationInput = {
   operator?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   template?: Prisma.TemplateOrderByWithRelationInput
   attribute?: Prisma.AttributeDefinitionOrderByWithRelationInput
 }
@@ -269,6 +295,8 @@ export type TemplateEligibilityRuleWhereUniqueInput = Prisma.AtLeast<{
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }, "id">
@@ -282,6 +310,8 @@ export type TemplateEligibilityRuleOrderByWithAggregationInput = {
   operator?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TemplateEligibilityRuleCountOrderByAggregateInput
   _avg?: Prisma.TemplateEligibilityRuleAvgOrderByAggregateInput
   _max?: Prisma.TemplateEligibilityRuleMaxOrderByAggregateInput
@@ -301,6 +331,8 @@ export type TemplateEligibilityRuleScalarWhereWithAggregatesInput = {
   operator?: Prisma.StringWithAggregatesFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonWithAggregatesFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableWithAggregatesFilter<"TemplateEligibilityRule">
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateInput = {
@@ -310,6 +342,8 @@ export type TemplateEligibilityRuleCreateInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutEligibilityRulesInput
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutEligibilityRulesInput
 }
@@ -323,6 +357,8 @@ export type TemplateEligibilityRuleUncheckedCreateInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleUpdateInput = {
@@ -332,6 +368,8 @@ export type TemplateEligibilityRuleUpdateInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutEligibilityRulesNestedInput
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
@@ -345,6 +383,8 @@ export type TemplateEligibilityRuleUncheckedUpdateInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateManyInput = {
@@ -356,6 +396,8 @@ export type TemplateEligibilityRuleCreateManyInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleUpdateManyMutationInput = {
@@ -365,6 +407,8 @@ export type TemplateEligibilityRuleUpdateManyMutationInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyInput = {
@@ -376,6 +420,8 @@ export type TemplateEligibilityRuleUncheckedUpdateManyInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleListRelationFilter = {
@@ -397,12 +443,16 @@ export type TemplateEligibilityRuleCountOrderByAggregateInput = {
   operator?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateEligibilityRuleAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateEligibilityRuleMaxOrderByAggregateInput = {
@@ -412,6 +462,8 @@ export type TemplateEligibilityRuleMaxOrderByAggregateInput = {
   templateId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   operator?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateEligibilityRuleMinOrderByAggregateInput = {
@@ -421,12 +473,16 @@ export type TemplateEligibilityRuleMinOrderByAggregateInput = {
   templateId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   operator?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateEligibilityRuleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput = {
@@ -520,6 +576,8 @@ export type TemplateEligibilityRuleCreateWithoutAttributeInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutEligibilityRulesInput
 }
 
@@ -531,6 +589,8 @@ export type TemplateEligibilityRuleUncheckedCreateWithoutAttributeInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateOrConnectWithoutAttributeInput = {
@@ -571,6 +631,8 @@ export type TemplateEligibilityRuleScalarWhereInput = {
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateWithoutTemplateInput = {
@@ -580,6 +642,8 @@ export type TemplateEligibilityRuleCreateWithoutTemplateInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutEligibilityRulesInput
 }
 
@@ -591,6 +655,8 @@ export type TemplateEligibilityRuleUncheckedCreateWithoutTemplateInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateOrConnectWithoutTemplateInput = {
@@ -627,6 +693,8 @@ export type TemplateEligibilityRuleCreateManyAttributeInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleUpdateWithoutAttributeInput = {
@@ -636,6 +704,8 @@ export type TemplateEligibilityRuleUpdateWithoutAttributeInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
 
@@ -647,6 +717,8 @@ export type TemplateEligibilityRuleUncheckedUpdateWithoutAttributeInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeInput = {
@@ -657,6 +729,8 @@ export type TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleCreateManyTemplateInput = {
@@ -667,6 +741,8 @@ export type TemplateEligibilityRuleCreateManyTemplateInput = {
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateEligibilityRuleUpdateWithoutTemplateInput = {
@@ -676,6 +752,8 @@ export type TemplateEligibilityRuleUpdateWithoutTemplateInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
 
@@ -687,6 +765,8 @@ export type TemplateEligibilityRuleUncheckedUpdateWithoutTemplateInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateInput = {
@@ -697,6 +777,8 @@ export type TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateInput = {
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -710,6 +792,8 @@ export type TemplateEligibilityRuleSelect<ExtArgs extends runtime.Types.Extensio
   operator?: boolean
   value?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["templateEligibilityRule"]>
@@ -723,6 +807,8 @@ export type TemplateEligibilityRuleSelectCreateManyAndReturn<ExtArgs extends run
   operator?: boolean
   value?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["templateEligibilityRule"]>
@@ -736,6 +822,8 @@ export type TemplateEligibilityRuleSelectUpdateManyAndReturn<ExtArgs extends run
   operator?: boolean
   value?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["templateEligibilityRule"]>
@@ -749,9 +837,11 @@ export type TemplateEligibilityRuleSelectScalar = {
   operator?: boolean
   value?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type TemplateEligibilityRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "attributeId" | "operator" | "value" | "description", ExtArgs["result"]["templateEligibilityRule"]>
+export type TemplateEligibilityRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "attributeId" | "operator" | "value" | "description" | "createdBy" | "updatedBy", ExtArgs["result"]["templateEligibilityRule"]>
 export type TemplateEligibilityRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
@@ -780,6 +870,8 @@ export type $TemplateEligibilityRulePayload<ExtArgs extends runtime.Types.Extens
     operator: string
     value: runtime.JsonValue
     description: runtime.JsonValue | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["templateEligibilityRule"]>
   composites: {}
 }
@@ -1213,6 +1305,8 @@ export interface TemplateEligibilityRuleFieldRefs {
   readonly operator: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
   readonly value: Prisma.FieldRef<"TemplateEligibilityRule", 'Json'>
   readonly description: Prisma.FieldRef<"TemplateEligibilityRule", 'Json'>
+  readonly createdBy: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
 }
     
 

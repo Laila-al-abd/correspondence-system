@@ -3,21 +3,22 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common'
+import { AuthenticatedRequestUser } from './authenticated-request'
 
 /**
  * Resolves the caller's user id for a route handler.
  *
- * TEMPORARY: reads the `x-user-id` request header as a stand-in for real
- * authentication. When JWT login lands, the extraction below will be replaced with the
- * verified token claim — no controller or guard code needs to change.
+ * The id comes from `request.user`, which JwtAuthGuard populates after it has
+ * verified the Bearer token. Controllers and use cases are unchanged by how
+ * authentication works -- they just ask for the current user id.
  */
 export const CurrentUserId = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): string => {
     const request = ctx
       .switchToHttp()
-      .getRequest<{ headers: Record<string, string | undefined> }>()
-    const userId = request.headers['x-user-id']
-    if (!userId) throw new UnauthorizedException('Missing x-user-id header.')
+      .getRequest<{ user?: AuthenticatedRequestUser }>()
+    const userId = request.user?.userId
+    if (!userId) throw new UnauthorizedException('Not authenticated.')
     return userId
   },
 )

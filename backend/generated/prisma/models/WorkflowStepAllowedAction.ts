@@ -30,12 +30,14 @@ export type WorkflowStepAllowedActionAvgAggregateOutputType = {
   id: number | null
   workflowStepId: number | null
   actionTypeId: number | null
+  createdBy: number | null
 }
 
 export type WorkflowStepAllowedActionSumAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   actionTypeId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepAllowedActionMinAggregateOutputType = {
@@ -43,6 +45,7 @@ export type WorkflowStepAllowedActionMinAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   actionTypeId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepAllowedActionMaxAggregateOutputType = {
@@ -50,6 +53,7 @@ export type WorkflowStepAllowedActionMaxAggregateOutputType = {
   id: bigint | null
   workflowStepId: bigint | null
   actionTypeId: bigint | null
+  createdBy: bigint | null
 }
 
 export type WorkflowStepAllowedActionCountAggregateOutputType = {
@@ -57,6 +61,7 @@ export type WorkflowStepAllowedActionCountAggregateOutputType = {
   id: number
   workflowStepId: number
   actionTypeId: number
+  createdBy: number
   _all: number
 }
 
@@ -65,12 +70,14 @@ export type WorkflowStepAllowedActionAvgAggregateInputType = {
   id?: true
   workflowStepId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepAllowedActionSumAggregateInputType = {
   id?: true
   workflowStepId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepAllowedActionMinAggregateInputType = {
@@ -78,6 +85,7 @@ export type WorkflowStepAllowedActionMinAggregateInputType = {
   id?: true
   workflowStepId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepAllowedActionMaxAggregateInputType = {
@@ -85,6 +93,7 @@ export type WorkflowStepAllowedActionMaxAggregateInputType = {
   id?: true
   workflowStepId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type WorkflowStepAllowedActionCountAggregateInputType = {
@@ -92,6 +101,7 @@ export type WorkflowStepAllowedActionCountAggregateInputType = {
   id?: true
   workflowStepId?: true
   actionTypeId?: true
+  createdBy?: true
   _all?: true
 }
 
@@ -186,6 +196,7 @@ export type WorkflowStepAllowedActionGroupByOutputType = {
   id: bigint
   workflowStepId: bigint
   actionTypeId: bigint
+  createdBy: bigint | null
   _count: WorkflowStepAllowedActionCountAggregateOutputType | null
   _avg: WorkflowStepAllowedActionAvgAggregateOutputType | null
   _sum: WorkflowStepAllowedActionSumAggregateOutputType | null
@@ -216,6 +227,7 @@ export type WorkflowStepAllowedActionWhereInput = {
   id?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
   actionTypeId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepAllowedAction"> | bigint | number | null
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   actionType?: Prisma.XOR<Prisma.ActionTypeScalarRelationFilter, Prisma.ActionTypeWhereInput>
 }
@@ -225,6 +237,7 @@ export type WorkflowStepAllowedActionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   workflowStep?: Prisma.WorkflowStepOrderByWithRelationInput
   actionType?: Prisma.ActionTypeOrderByWithRelationInput
 }
@@ -238,6 +251,7 @@ export type WorkflowStepAllowedActionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"WorkflowStepAllowedAction"> | Date | string
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
   actionTypeId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepAllowedAction"> | bigint | number | null
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   actionType?: Prisma.XOR<Prisma.ActionTypeScalarRelationFilter, Prisma.ActionTypeWhereInput>
 }, "id" | "workflowStepId_actionTypeId">
@@ -247,6 +261,7 @@ export type WorkflowStepAllowedActionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WorkflowStepAllowedActionCountOrderByAggregateInput
   _avg?: Prisma.WorkflowStepAllowedActionAvgOrderByAggregateInput
   _max?: Prisma.WorkflowStepAllowedActionMaxOrderByAggregateInput
@@ -262,11 +277,13 @@ export type WorkflowStepAllowedActionScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepAllowedAction"> | bigint | number
   workflowStepId?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepAllowedAction"> | bigint | number
   actionTypeId?: Prisma.BigIntWithAggregatesFilter<"WorkflowStepAllowedAction"> | bigint | number
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStepAllowedAction"> | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutAllowedActionsInput
   actionType: Prisma.ActionTypeCreateNestedOneWithoutAllowedInStepsInput
 }
@@ -276,11 +293,13 @@ export type WorkflowStepAllowedActionUncheckedCreateInput = {
   id?: bigint | number
   workflowStepId: bigint | number
   actionTypeId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutAllowedActionsNestedInput
   actionType?: Prisma.ActionTypeUpdateOneRequiredWithoutAllowedInStepsNestedInput
 }
@@ -290,6 +309,7 @@ export type WorkflowStepAllowedActionUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateManyInput = {
@@ -297,11 +317,13 @@ export type WorkflowStepAllowedActionCreateManyInput = {
   id?: bigint | number
   workflowStepId: bigint | number
   actionTypeId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUncheckedUpdateManyInput = {
@@ -309,6 +331,7 @@ export type WorkflowStepAllowedActionUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionListRelationFilter = {
@@ -331,12 +354,14 @@ export type WorkflowStepAllowedActionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepAllowedActionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepAllowedActionMaxOrderByAggregateInput = {
@@ -344,6 +369,7 @@ export type WorkflowStepAllowedActionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepAllowedActionMinOrderByAggregateInput = {
@@ -351,12 +377,14 @@ export type WorkflowStepAllowedActionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepAllowedActionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workflowStepId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepAllowedActionCreateNestedManyWithoutActionTypeInput = {
@@ -446,6 +474,7 @@ export type WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNeste
 export type WorkflowStepAllowedActionCreateWithoutActionTypeInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutAllowedActionsInput
 }
 
@@ -453,6 +482,7 @@ export type WorkflowStepAllowedActionUncheckedCreateWithoutActionTypeInput = {
   createdAt?: Date | string
   id?: bigint | number
   workflowStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateOrConnectWithoutActionTypeInput = {
@@ -489,11 +519,13 @@ export type WorkflowStepAllowedActionScalarWhereInput = {
   id?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
   workflowStepId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
   actionTypeId?: Prisma.BigIntFilter<"WorkflowStepAllowedAction"> | bigint | number
+  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStepAllowedAction"> | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
+  createdBy?: bigint | number | null
   actionType: Prisma.ActionTypeCreateNestedOneWithoutAllowedInStepsInput
 }
 
@@ -501,6 +533,7 @@ export type WorkflowStepAllowedActionUncheckedCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
   actionTypeId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateOrConnectWithoutWorkflowStepInput = {
@@ -533,11 +566,13 @@ export type WorkflowStepAllowedActionCreateManyActionTypeInput = {
   createdAt?: Date | string
   id?: bigint | number
   workflowStepId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUpdateWithoutActionTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutAllowedActionsNestedInput
 }
 
@@ -545,23 +580,27 @@ export type WorkflowStepAllowedActionUncheckedUpdateWithoutActionTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUncheckedUpdateManyWithoutActionTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionCreateManyWorkflowStepInput = {
   createdAt?: Date | string
   id?: bigint | number
   actionTypeId: bigint | number
+  createdBy?: bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   actionType?: Prisma.ActionTypeUpdateOneRequiredWithoutAllowedInStepsNestedInput
 }
 
@@ -569,12 +608,14 @@ export type WorkflowStepAllowedActionUncheckedUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -584,6 +625,7 @@ export type WorkflowStepAllowedActionSelect<ExtArgs extends runtime.Types.Extens
   id?: boolean
   workflowStepId?: boolean
   actionTypeId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   actionType?: boolean | Prisma.ActionTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepAllowedAction"]>
@@ -593,6 +635,7 @@ export type WorkflowStepAllowedActionSelectCreateManyAndReturn<ExtArgs extends r
   id?: boolean
   workflowStepId?: boolean
   actionTypeId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   actionType?: boolean | Prisma.ActionTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepAllowedAction"]>
@@ -602,6 +645,7 @@ export type WorkflowStepAllowedActionSelectUpdateManyAndReturn<ExtArgs extends r
   id?: boolean
   workflowStepId?: boolean
   actionTypeId?: boolean
+  createdBy?: boolean
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   actionType?: boolean | Prisma.ActionTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowStepAllowedAction"]>
@@ -611,9 +655,10 @@ export type WorkflowStepAllowedActionSelectScalar = {
   id?: boolean
   workflowStepId?: boolean
   actionTypeId?: boolean
+  createdBy?: boolean
 }
 
-export type WorkflowStepAllowedActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "id" | "workflowStepId" | "actionTypeId", ExtArgs["result"]["workflowStepAllowedAction"]>
+export type WorkflowStepAllowedActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "id" | "workflowStepId" | "actionTypeId" | "createdBy", ExtArgs["result"]["workflowStepAllowedAction"]>
 export type WorkflowStepAllowedActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflowStep?: boolean | Prisma.WorkflowStepDefaultArgs<ExtArgs>
   actionType?: boolean | Prisma.ActionTypeDefaultArgs<ExtArgs>
@@ -638,6 +683,7 @@ export type $WorkflowStepAllowedActionPayload<ExtArgs extends runtime.Types.Exte
     id: bigint
     workflowStepId: bigint
     actionTypeId: bigint
+    createdBy: bigint | null
   }, ExtArgs["result"]["workflowStepAllowedAction"]>
   composites: {}
 }
@@ -1067,6 +1113,7 @@ export interface WorkflowStepAllowedActionFieldRefs {
   readonly id: Prisma.FieldRef<"WorkflowStepAllowedAction", 'BigInt'>
   readonly workflowStepId: Prisma.FieldRef<"WorkflowStepAllowedAction", 'BigInt'>
   readonly actionTypeId: Prisma.FieldRef<"WorkflowStepAllowedAction", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"WorkflowStepAllowedAction", 'BigInt'>
 }
     
 

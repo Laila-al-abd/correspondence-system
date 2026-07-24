@@ -30,12 +30,16 @@ export type UserAttributeAvgAggregateOutputType = {
   id: number | null
   userId: number | null
   attributeId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type UserAttributeSumAggregateOutputType = {
   id: bigint | null
   userId: bigint | null
   attributeId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type UserAttributeMinAggregateOutputType = {
@@ -44,6 +48,8 @@ export type UserAttributeMinAggregateOutputType = {
   id: bigint | null
   userId: bigint | null
   attributeId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type UserAttributeMaxAggregateOutputType = {
@@ -52,6 +58,8 @@ export type UserAttributeMaxAggregateOutputType = {
   id: bigint | null
   userId: bigint | null
   attributeId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type UserAttributeCountAggregateOutputType = {
@@ -61,6 +69,8 @@ export type UserAttributeCountAggregateOutputType = {
   userId: number
   attributeId: number
   value: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -69,12 +79,16 @@ export type UserAttributeAvgAggregateInputType = {
   id?: true
   userId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserAttributeSumAggregateInputType = {
   id?: true
   userId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserAttributeMinAggregateInputType = {
@@ -83,6 +97,8 @@ export type UserAttributeMinAggregateInputType = {
   id?: true
   userId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserAttributeMaxAggregateInputType = {
@@ -91,6 +107,8 @@ export type UserAttributeMaxAggregateInputType = {
   id?: true
   userId?: true
   attributeId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserAttributeCountAggregateInputType = {
@@ -100,6 +118,8 @@ export type UserAttributeCountAggregateInputType = {
   userId?: true
   attributeId?: true
   value?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -196,6 +216,8 @@ export type UserAttributeGroupByOutputType = {
   userId: bigint
   attributeId: bigint
   value: runtime.JsonValue
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: UserAttributeCountAggregateOutputType | null
   _avg: UserAttributeAvgAggregateOutputType | null
   _sum: UserAttributeSumAggregateOutputType | null
@@ -228,6 +250,8 @@ export type UserAttributeWhereInput = {
   userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   value?: Prisma.JsonFilter<"UserAttribute">
+  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }
@@ -239,6 +263,8 @@ export type UserAttributeOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   attribute?: Prisma.AttributeDefinitionOrderByWithRelationInput
 }
@@ -254,6 +280,8 @@ export type UserAttributeWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   value?: Prisma.JsonFilter<"UserAttribute">
+  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }, "id" | "userId_attributeId">
@@ -265,6 +293,8 @@ export type UserAttributeOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserAttributeCountOrderByAggregateInput
   _avg?: Prisma.UserAttributeAvgOrderByAggregateInput
   _max?: Prisma.UserAttributeMaxOrderByAggregateInput
@@ -282,6 +312,8 @@ export type UserAttributeScalarWhereWithAggregatesInput = {
   userId?: Prisma.BigIntWithAggregatesFilter<"UserAttribute"> | bigint | number
   attributeId?: Prisma.BigIntWithAggregatesFilter<"UserAttribute"> | bigint | number
   value?: Prisma.JsonWithAggregatesFilter<"UserAttribute">
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"UserAttribute"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"UserAttribute"> | bigint | number | null
 }
 
 export type UserAttributeCreateInput = {
@@ -289,6 +321,8 @@ export type UserAttributeCreateInput = {
   updatedAt?: Date | string
   id?: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   user: Prisma.UserCreateNestedOneWithoutAttributesInput
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutUserAttributesInput
 }
@@ -300,6 +334,8 @@ export type UserAttributeUncheckedCreateInput = {
   userId: bigint | number
   attributeId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeUpdateInput = {
@@ -307,6 +343,8 @@ export type UserAttributeUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttributesNestedInput
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutUserAttributesNestedInput
 }
@@ -318,6 +356,8 @@ export type UserAttributeUncheckedUpdateInput = {
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeCreateManyInput = {
@@ -327,6 +367,8 @@ export type UserAttributeCreateManyInput = {
   userId: bigint | number
   attributeId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeUpdateManyMutationInput = {
@@ -334,6 +376,8 @@ export type UserAttributeUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeUncheckedUpdateManyInput = {
@@ -343,6 +387,8 @@ export type UserAttributeUncheckedUpdateManyInput = {
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeListRelationFilter = {
@@ -367,12 +413,16 @@ export type UserAttributeCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserAttributeAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserAttributeMaxOrderByAggregateInput = {
@@ -381,6 +431,8 @@ export type UserAttributeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserAttributeMinOrderByAggregateInput = {
@@ -389,12 +441,16 @@ export type UserAttributeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserAttributeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserAttributeCreateNestedManyWithoutUserInput = {
@@ -486,6 +542,8 @@ export type UserAttributeCreateWithoutUserInput = {
   updatedAt?: Date | string
   id?: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutUserAttributesInput
 }
 
@@ -495,6 +553,8 @@ export type UserAttributeUncheckedCreateWithoutUserInput = {
   id?: bigint | number
   attributeId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeCreateOrConnectWithoutUserInput = {
@@ -533,6 +593,8 @@ export type UserAttributeScalarWhereInput = {
   userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
   value?: Prisma.JsonFilter<"UserAttribute">
+  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
 }
 
 export type UserAttributeCreateWithoutAttributeInput = {
@@ -540,6 +602,8 @@ export type UserAttributeCreateWithoutAttributeInput = {
   updatedAt?: Date | string
   id?: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   user: Prisma.UserCreateNestedOneWithoutAttributesInput
 }
 
@@ -549,6 +613,8 @@ export type UserAttributeUncheckedCreateWithoutAttributeInput = {
   id?: bigint | number
   userId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeCreateOrConnectWithoutAttributeInput = {
@@ -583,6 +649,8 @@ export type UserAttributeCreateManyUserInput = {
   id?: bigint | number
   attributeId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeUpdateWithoutUserInput = {
@@ -590,6 +658,8 @@ export type UserAttributeUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutUserAttributesNestedInput
 }
 
@@ -599,6 +669,8 @@ export type UserAttributeUncheckedUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeUncheckedUpdateManyWithoutUserInput = {
@@ -607,6 +679,8 @@ export type UserAttributeUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeCreateManyAttributeInput = {
@@ -615,6 +689,8 @@ export type UserAttributeCreateManyAttributeInput = {
   id?: bigint | number
   userId: bigint | number
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type UserAttributeUpdateWithoutAttributeInput = {
@@ -622,6 +698,8 @@ export type UserAttributeUpdateWithoutAttributeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttributesNestedInput
 }
 
@@ -631,6 +709,8 @@ export type UserAttributeUncheckedUpdateWithoutAttributeInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type UserAttributeUncheckedUpdateManyWithoutAttributeInput = {
@@ -639,6 +719,8 @@ export type UserAttributeUncheckedUpdateManyWithoutAttributeInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -650,6 +732,8 @@ export type UserAttributeSelect<ExtArgs extends runtime.Types.Extensions.Interna
   userId?: boolean
   attributeId?: boolean
   value?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAttribute"]>
@@ -661,6 +745,8 @@ export type UserAttributeSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   userId?: boolean
   attributeId?: boolean
   value?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAttribute"]>
@@ -672,6 +758,8 @@ export type UserAttributeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   userId?: boolean
   attributeId?: boolean
   value?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAttribute"]>
@@ -683,9 +771,11 @@ export type UserAttributeSelectScalar = {
   userId?: boolean
   attributeId?: boolean
   value?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type UserAttributeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "userId" | "attributeId" | "value", ExtArgs["result"]["userAttribute"]>
+export type UserAttributeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "userId" | "attributeId" | "value" | "createdBy" | "updatedBy", ExtArgs["result"]["userAttribute"]>
 export type UserAttributeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   attribute?: boolean | Prisma.AttributeDefinitionDefaultArgs<ExtArgs>
@@ -712,6 +802,8 @@ export type $UserAttributePayload<ExtArgs extends runtime.Types.Extensions.Inter
     userId: bigint
     attributeId: bigint
     value: runtime.JsonValue
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["userAttribute"]>
   composites: {}
 }
@@ -1143,6 +1235,8 @@ export interface UserAttributeFieldRefs {
   readonly userId: Prisma.FieldRef<"UserAttribute", 'BigInt'>
   readonly attributeId: Prisma.FieldRef<"UserAttribute", 'BigInt'>
   readonly value: Prisma.FieldRef<"UserAttribute", 'Json'>
+  readonly createdBy: Prisma.FieldRef<"UserAttribute", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"UserAttribute", 'BigInt'>
 }
     
 

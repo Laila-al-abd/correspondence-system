@@ -10,6 +10,7 @@ import { GetEffectivePermissionsQuery } from '../../application/identity/queries
 import { CurrentUserId } from './current-user.decorator'
 import { PermissionsGuard } from './permissions.guard'
 import { RequirePermissions } from './permissions.decorator'
+import { Public } from './public.decorator'
 
 @Controller('auth')
 export class AuthController {
@@ -18,11 +19,13 @@ export class AuthController {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @Public()
   @Post('register')
   register(@Body() dto: RegisterUserDto) {
     return this.commandBus.execute(new RegisterUserCommand(dto))
   }
 
+  @Public()
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.commandBus.execute(
