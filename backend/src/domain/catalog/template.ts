@@ -90,6 +90,22 @@ export class Template extends AggregateRoot {
     )
   }
 
+  /**
+   * ABAC detail: snapshots of the eligibility rules the user's attributes fail
+   * to satisfy (empty array = eligible). Same deny-by-default semantics as
+   * isEligible; useful for explaining *why* a user is not eligible.
+   */
+  unmetEligibilityRules(
+    userAttributes: Map<string, unknown>,
+  ): ReturnType<TemplateEligibilityRule["snapshot"]>[] {
+    return this.props.eligibilityRules
+      .filter(
+        (rule) =>
+          !rule.isSatisfiedBy(userAttributes.get(rule.attributeId.toString())),
+      )
+      .map((rule) => rule.snapshot())
+  }
+
   snapshot(): {
     categoryId: string
     title: { ar: string; en?: string }
