@@ -1,0 +1,20 @@
+# Field-mapping for the external personnel directory.
+# Edit this file (no code change) to onboard a new source or adapt to a schema change.
+
+# Dot-path to the array of records inside the HTTP response.
+# Omit when the response body is already a JSON array.
+recordsPath: data.units
+
+# Dot-paths (relative to a single record) for each canonical field.
+fields:
+  externalId: id
+  parentExternalId: parentId
+  nameAr: name.ar
+  nameEn: name.en
+  unitType: type
+
+# Translate the source's unit-type codes to our OrgUnitType codes.
+unitTypeMap:
+  UNI: UNIVERSITY
+  FAC: FACULTY
+  DEP: DEPARTMENT
