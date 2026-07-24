@@ -19,7 +19,10 @@ import {
   PASSWORD_HASHER,
   USER_REPOSITORY,
 } from '../../../tokens'
-import { EmailAlreadyInUseError } from '../../../errors'
+import {
+  EmailAlreadyInUseError,
+  InstitutionalNumberAlreadyInUseError,
+} from '../../../errors'
 import { RegisterUserCommand } from './register-user.command'
 
 export interface RegisterUserResult {
@@ -47,6 +50,12 @@ export class RegisterUserHandler
     const institutionalNumber = input.institutionalNumber
       ? InstitutionalNumber.create(input.institutionalNumber)
       : undefined
+    if (
+      institutionalNumber &&
+      (await this.users.findByInstitutionalNumber(institutionalNumber))
+    ) {
+      throw new InstitutionalNumberAlreadyInUseError(institutionalNumber.value)
+    }
 
     let passwordHash: string | undefined
     if (input.authProvider === 'LOCAL') {

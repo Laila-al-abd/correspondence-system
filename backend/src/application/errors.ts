@@ -21,6 +21,14 @@ export class EmailAlreadyInUseError extends ApplicationError {
   }
 }
 
+export class InstitutionalNumberAlreadyInUseError extends ApplicationError {
+  readonly code = 'INSTITUTIONAL_NUMBER_IN_USE'
+  readonly status = 409
+  constructor(value: string) {
+    super(`Institutional number already in use: ${value}`)
+  }
+}
+
 export class InvalidCredentialsError extends ApplicationError {
   readonly code = 'INVALID_CREDENTIALS'
   readonly status = 401
