@@ -30,12 +30,16 @@ export type TemplateAvgAggregateOutputType = {
   id: number | null
   categoryId: number | null
   sensitivityLevelId: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type TemplateSumAggregateOutputType = {
   id: bigint | null
   categoryId: bigint | null
   sensitivityLevelId: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateMinAggregateOutputType = {
@@ -46,6 +50,8 @@ export type TemplateMinAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateMaxAggregateOutputType = {
@@ -56,6 +62,8 @@ export type TemplateMaxAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateCountAggregateOutputType = {
@@ -68,6 +76,8 @@ export type TemplateCountAggregateOutputType = {
   isActive: number
   createdAt: number
   deletedAt: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -76,12 +86,16 @@ export type TemplateAvgAggregateInputType = {
   id?: true
   categoryId?: true
   sensitivityLevelId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateSumAggregateInputType = {
   id?: true
   categoryId?: true
   sensitivityLevelId?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateMinAggregateInputType = {
@@ -92,6 +106,8 @@ export type TemplateMinAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateMaxAggregateInputType = {
@@ -102,6 +118,8 @@ export type TemplateMaxAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateCountAggregateInputType = {
@@ -114,6 +132,8 @@ export type TemplateCountAggregateInputType = {
   isActive?: true
   createdAt?: true
   deletedAt?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -213,6 +233,8 @@ export type TemplateGroupByOutputType = {
   isActive: boolean
   createdAt: Date
   deletedAt: Date | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: TemplateCountAggregateOutputType | null
   _avg: TemplateAvgAggregateOutputType | null
   _sum: TemplateSumAggregateOutputType | null
@@ -248,6 +270,8 @@ export type TemplateWhereInput = {
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
   category?: Prisma.XOR<Prisma.RequestCategoryScalarRelationFilter, Prisma.RequestCategoryWhereInput>
   sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelScalarRelationFilter, Prisma.SensitivityLevelWhereInput>
   fields?: Prisma.TemplateFieldListRelationFilter
@@ -266,6 +290,8 @@ export type TemplateOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.RequestCategoryOrderByWithRelationInput
   sensitivityLevel?: Prisma.SensitivityLevelOrderByWithRelationInput
   fields?: Prisma.TemplateFieldOrderByRelationAggregateInput
@@ -287,6 +313,8 @@ export type TemplateWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
   category?: Prisma.XOR<Prisma.RequestCategoryScalarRelationFilter, Prisma.RequestCategoryWhereInput>
   sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelScalarRelationFilter, Prisma.SensitivityLevelWhereInput>
   fields?: Prisma.TemplateFieldListRelationFilter
@@ -305,6 +333,8 @@ export type TemplateOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TemplateCountOrderByAggregateInput
   _avg?: Prisma.TemplateAvgOrderByAggregateInput
   _max?: Prisma.TemplateMaxOrderByAggregateInput
@@ -325,6 +355,8 @@ export type TemplateScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Template"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Template"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Template"> | bigint | number | null
 }
 
 export type TemplateCreateInput = {
@@ -335,6 +367,8 @@ export type TemplateCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
@@ -353,6 +387,8 @@ export type TemplateUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
@@ -367,6 +403,8 @@ export type TemplateUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
@@ -385,6 +423,8 @@ export type TemplateUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
@@ -401,6 +441,8 @@ export type TemplateCreateManyInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateUpdateManyMutationInput = {
@@ -411,6 +453,8 @@ export type TemplateUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateUncheckedUpdateManyInput = {
@@ -423,6 +467,8 @@ export type TemplateUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateListRelationFilter = {
@@ -445,12 +491,16 @@ export type TemplateCountOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateMaxOrderByAggregateInput = {
@@ -461,6 +511,8 @@ export type TemplateMaxOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateMinOrderByAggregateInput = {
@@ -471,12 +523,16 @@ export type TemplateMinOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateScalarRelationFilter = {
@@ -639,6 +695,8 @@ export type TemplateCreateWithoutSensitivityLevelInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
@@ -655,6 +713,8 @@ export type TemplateUncheckedCreateWithoutSensitivityLevelInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
@@ -700,6 +760,8 @@ export type TemplateScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
+  createdBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"Template"> | bigint | number | null
 }
 
 export type TemplateCreateWithoutCategoryInput = {
@@ -710,6 +772,8 @@ export type TemplateCreateWithoutCategoryInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
@@ -726,6 +790,8 @@ export type TemplateUncheckedCreateWithoutCategoryInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
@@ -766,6 +832,8 @@ export type TemplateCreateWithoutFieldsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
@@ -783,6 +851,8 @@ export type TemplateUncheckedCreateWithoutFieldsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTemplateInput
@@ -812,6 +882,8 @@ export type TemplateUpdateWithoutFieldsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
@@ -829,6 +901,8 @@ export type TemplateUncheckedUpdateWithoutFieldsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutTemplateNestedInput
@@ -842,6 +916,8 @@ export type TemplateCreateWithoutEligibilityRulesInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
@@ -859,6 +935,8 @@ export type TemplateUncheckedCreateWithoutEligibilityRulesInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTemplateInput
@@ -888,6 +966,8 @@ export type TemplateUpdateWithoutEligibilityRulesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
@@ -905,6 +985,8 @@ export type TemplateUncheckedUpdateWithoutEligibilityRulesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutTemplateNestedInput
@@ -918,6 +1000,8 @@ export type TemplateCreateWithoutWorkflowPathsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
@@ -935,6 +1019,8 @@ export type TemplateUncheckedCreateWithoutWorkflowPathsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutTemplateInput
@@ -964,6 +1050,8 @@ export type TemplateUpdateWithoutWorkflowPathsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
@@ -981,6 +1069,8 @@ export type TemplateUncheckedUpdateWithoutWorkflowPathsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutTemplateNestedInput
@@ -994,6 +1084,8 @@ export type TemplateCreateWithoutRequestsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
@@ -1011,6 +1103,8 @@ export type TemplateUncheckedCreateWithoutRequestsInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathUncheckedCreateNestedManyWithoutTemplateInput
@@ -1040,6 +1134,8 @@ export type TemplateUpdateWithoutRequestsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
@@ -1057,6 +1153,8 @@ export type TemplateUncheckedUpdateWithoutRequestsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
@@ -1071,6 +1169,8 @@ export type TemplateCreateManySensitivityLevelInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateUpdateWithoutSensitivityLevelInput = {
@@ -1081,6 +1181,8 @@ export type TemplateUpdateWithoutSensitivityLevelInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
@@ -1097,6 +1199,8 @@ export type TemplateUncheckedUpdateWithoutSensitivityLevelInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
@@ -1112,6 +1216,8 @@ export type TemplateUncheckedUpdateManyWithoutSensitivityLevelInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateCreateManyCategoryInput = {
@@ -1123,6 +1229,8 @@ export type TemplateCreateManyCategoryInput = {
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateUpdateWithoutCategoryInput = {
@@ -1133,6 +1241,8 @@ export type TemplateUpdateWithoutCategoryInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
@@ -1149,6 +1259,8 @@ export type TemplateUncheckedUpdateWithoutCategoryInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   fields?: Prisma.TemplateFieldUncheckedUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUncheckedUpdateManyWithoutTemplateNestedInput
@@ -1164,6 +1276,8 @@ export type TemplateUncheckedUpdateManyWithoutCategoryInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -1234,6 +1348,8 @@ export type TemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
   sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
   fields?: boolean | Prisma.Template$fieldsArgs<ExtArgs>
@@ -1253,6 +1369,8 @@ export type TemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
   sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
@@ -1267,6 +1385,8 @@ export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
   sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
@@ -1281,9 +1401,11 @@ export type TemplateSelectScalar = {
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "categoryId" | "title" | "description" | "sensitivityLevelId" | "isActive" | "createdAt" | "deletedAt", ExtArgs["result"]["template"]>
+export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "categoryId" | "title" | "description" | "sensitivityLevelId" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["template"]>
 export type TemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
   sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
@@ -1322,6 +1444,8 @@ export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     isActive: boolean
     createdAt: Date
     deletedAt: Date | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["template"]>
   composites: {}
 }
@@ -1760,6 +1884,8 @@ export interface TemplateFieldRefs {
   readonly isActive: Prisma.FieldRef<"Template", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Template", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Template", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"Template", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"Template", 'BigInt'>
 }
     
 

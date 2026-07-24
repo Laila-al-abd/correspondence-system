@@ -39,6 +39,24 @@ export class MlPrediction extends Entity {
     return new MlPrediction(id, props)
   }
 
+  snapshot(): {
+    requestId: string
+    modelType: ModelType
+    modelVersion: string
+    predictedValue: unknown
+    confidence?: number
+    createdAt: Date
+  } {
+    return {
+      requestId: this.props.requestId.toString(),
+      modelType: this.props.modelType,
+      modelVersion: this.props.modelVersion,
+      predictedValue: this.props.predictedValue,
+      confidence: this.props.confidence,
+      createdAt: this.props.createdAt,
+    }
+  }
+
   /** For NLP classifications: is the model confident enough to auto-accept? */
   isConfident(threshold = 0.8): boolean {
     return this.props.confidence !== undefined && this.props.confidence >= threshold

@@ -28,22 +28,30 @@ export type AggregatePermissionGroup = {
 
 export type PermissionGroupAvgAggregateOutputType = {
   id: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type PermissionGroupSumAggregateOutputType = {
   id: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type PermissionGroupMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   id: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type PermissionGroupMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   id: bigint | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type PermissionGroupCountAggregateOutputType = {
@@ -52,28 +60,38 @@ export type PermissionGroupCountAggregateOutputType = {
   id: number
   name: number
   description: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
 
 export type PermissionGroupAvgAggregateInputType = {
   id?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type PermissionGroupSumAggregateInputType = {
   id?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type PermissionGroupMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   id?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type PermissionGroupMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   id?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type PermissionGroupCountAggregateInputType = {
@@ -82,6 +100,8 @@ export type PermissionGroupCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -177,6 +197,8 @@ export type PermissionGroupGroupByOutputType = {
   id: bigint
   name: runtime.JsonValue
   description: runtime.JsonValue | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: PermissionGroupCountAggregateOutputType | null
   _avg: PermissionGroupAvgAggregateOutputType | null
   _sum: PermissionGroupSumAggregateOutputType | null
@@ -208,6 +230,8 @@ export type PermissionGroupWhereInput = {
   id?: Prisma.BigIntFilter<"PermissionGroup"> | bigint | number
   name?: Prisma.JsonFilter<"PermissionGroup">
   description?: Prisma.JsonNullableFilter<"PermissionGroup">
+  createdBy?: Prisma.BigIntNullableFilter<"PermissionGroup"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"PermissionGroup"> | bigint | number | null
   permissions?: Prisma.PermissionListRelationFilter
 }
 
@@ -217,6 +241,8 @@ export type PermissionGroupOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   permissions?: Prisma.PermissionOrderByRelationAggregateInput
 }
 
@@ -229,6 +255,8 @@ export type PermissionGroupWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"PermissionGroup"> | Date | string
   name?: Prisma.JsonFilter<"PermissionGroup">
   description?: Prisma.JsonNullableFilter<"PermissionGroup">
+  createdBy?: Prisma.BigIntNullableFilter<"PermissionGroup"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"PermissionGroup"> | bigint | number | null
   permissions?: Prisma.PermissionListRelationFilter
 }, "id">
 
@@ -238,6 +266,8 @@ export type PermissionGroupOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PermissionGroupCountOrderByAggregateInput
   _avg?: Prisma.PermissionGroupAvgOrderByAggregateInput
   _max?: Prisma.PermissionGroupMaxOrderByAggregateInput
@@ -254,6 +284,8 @@ export type PermissionGroupScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"PermissionGroup"> | bigint | number
   name?: Prisma.JsonWithAggregatesFilter<"PermissionGroup">
   description?: Prisma.JsonNullableWithAggregatesFilter<"PermissionGroup">
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"PermissionGroup"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"PermissionGroup"> | bigint | number | null
 }
 
 export type PermissionGroupCreateInput = {
@@ -262,6 +294,8 @@ export type PermissionGroupCreateInput = {
   id?: bigint | number
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   permissions?: Prisma.PermissionCreateNestedManyWithoutGroupInput
 }
 
@@ -271,6 +305,8 @@ export type PermissionGroupUncheckedCreateInput = {
   id?: bigint | number
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutGroupInput
 }
 
@@ -280,6 +316,8 @@ export type PermissionGroupUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   permissions?: Prisma.PermissionUpdateManyWithoutGroupNestedInput
 }
 
@@ -289,6 +327,8 @@ export type PermissionGroupUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutGroupNestedInput
 }
 
@@ -298,6 +338,8 @@ export type PermissionGroupCreateManyInput = {
   id?: bigint | number
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type PermissionGroupUpdateManyMutationInput = {
@@ -306,6 +348,8 @@ export type PermissionGroupUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type PermissionGroupUncheckedUpdateManyInput = {
@@ -314,6 +358,8 @@ export type PermissionGroupUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type PermissionGroupCountOrderByAggregateInput = {
@@ -322,26 +368,36 @@ export type PermissionGroupCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PermissionGroupAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PermissionGroupMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PermissionGroupMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PermissionGroupSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PermissionGroupScalarRelationFilter = {
@@ -369,6 +425,8 @@ export type PermissionGroupCreateWithoutPermissionsInput = {
   id?: bigint | number
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type PermissionGroupUncheckedCreateWithoutPermissionsInput = {
@@ -377,6 +435,8 @@ export type PermissionGroupUncheckedCreateWithoutPermissionsInput = {
   id?: bigint | number
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type PermissionGroupCreateOrConnectWithoutPermissionsInput = {
@@ -401,6 +461,8 @@ export type PermissionGroupUpdateWithoutPermissionsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type PermissionGroupUncheckedUpdateWithoutPermissionsInput = {
@@ -409,6 +471,8 @@ export type PermissionGroupUncheckedUpdateWithoutPermissionsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -448,6 +512,8 @@ export type PermissionGroupSelect<ExtArgs extends runtime.Types.Extensions.Inter
   id?: boolean
   name?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   permissions?: boolean | Prisma.PermissionGroup$permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.PermissionGroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["permissionGroup"]>
@@ -458,6 +524,8 @@ export type PermissionGroupSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   name?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }, ExtArgs["result"]["permissionGroup"]>
 
 export type PermissionGroupSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -466,6 +534,8 @@ export type PermissionGroupSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   name?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }, ExtArgs["result"]["permissionGroup"]>
 
 export type PermissionGroupSelectScalar = {
@@ -474,9 +544,11 @@ export type PermissionGroupSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type PermissionGroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "name" | "description", ExtArgs["result"]["permissionGroup"]>
+export type PermissionGroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "name" | "description" | "createdBy" | "updatedBy", ExtArgs["result"]["permissionGroup"]>
 export type PermissionGroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   permissions?: boolean | Prisma.PermissionGroup$permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.PermissionGroupCountOutputTypeDefaultArgs<ExtArgs>
@@ -495,6 +567,8 @@ export type $PermissionGroupPayload<ExtArgs extends runtime.Types.Extensions.Int
     id: bigint
     name: runtime.JsonValue
     description: runtime.JsonValue | null
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["permissionGroup"]>
   composites: {}
 }
@@ -924,6 +998,8 @@ export interface PermissionGroupFieldRefs {
   readonly id: Prisma.FieldRef<"PermissionGroup", 'BigInt'>
   readonly name: Prisma.FieldRef<"PermissionGroup", 'Json'>
   readonly description: Prisma.FieldRef<"PermissionGroup", 'Json'>
+  readonly createdBy: Prisma.FieldRef<"PermissionGroup", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"PermissionGroup", 'BigInt'>
 }
     
 

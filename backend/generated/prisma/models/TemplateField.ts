@@ -30,12 +30,16 @@ export type TemplateFieldAvgAggregateOutputType = {
   id: number | null
   templateId: number | null
   ordinal: number | null
+  createdBy: number | null
+  updatedBy: number | null
 }
 
 export type TemplateFieldSumAggregateOutputType = {
   id: bigint | null
   templateId: bigint | null
   ordinal: number | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateFieldMinAggregateOutputType = {
@@ -47,6 +51,8 @@ export type TemplateFieldMinAggregateOutputType = {
   dataType: string | null
   isRequired: boolean | null
   ordinal: number | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateFieldMaxAggregateOutputType = {
@@ -58,6 +64,8 @@ export type TemplateFieldMaxAggregateOutputType = {
   dataType: string | null
   isRequired: boolean | null
   ordinal: number | null
+  createdBy: bigint | null
+  updatedBy: bigint | null
 }
 
 export type TemplateFieldCountAggregateOutputType = {
@@ -70,6 +78,8 @@ export type TemplateFieldCountAggregateOutputType = {
   dataType: number
   isRequired: number
   ordinal: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -78,12 +88,16 @@ export type TemplateFieldAvgAggregateInputType = {
   id?: true
   templateId?: true
   ordinal?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateFieldSumAggregateInputType = {
   id?: true
   templateId?: true
   ordinal?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateFieldMinAggregateInputType = {
@@ -95,6 +109,8 @@ export type TemplateFieldMinAggregateInputType = {
   dataType?: true
   isRequired?: true
   ordinal?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateFieldMaxAggregateInputType = {
@@ -106,6 +122,8 @@ export type TemplateFieldMaxAggregateInputType = {
   dataType?: true
   isRequired?: true
   ordinal?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type TemplateFieldCountAggregateInputType = {
@@ -118,6 +136,8 @@ export type TemplateFieldCountAggregateInputType = {
   dataType?: true
   isRequired?: true
   ordinal?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -217,6 +237,8 @@ export type TemplateFieldGroupByOutputType = {
   dataType: string
   isRequired: boolean
   ordinal: number
+  createdBy: bigint | null
+  updatedBy: bigint | null
   _count: TemplateFieldCountAggregateOutputType | null
   _avg: TemplateFieldAvgAggregateOutputType | null
   _sum: TemplateFieldSumAggregateOutputType | null
@@ -252,6 +274,8 @@ export type TemplateFieldWhereInput = {
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   options?: Prisma.TemplateFieldOptionListRelationFilter
 }
@@ -266,6 +290,8 @@ export type TemplateFieldOrderByWithRelationInput = {
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   template?: Prisma.TemplateOrderByWithRelationInput
   options?: Prisma.TemplateFieldOptionOrderByRelationAggregateInput
 }
@@ -284,6 +310,8 @@ export type TemplateFieldWhereUniqueInput = Prisma.AtLeast<{
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   options?: Prisma.TemplateFieldOptionListRelationFilter
 }, "id" | "templateId_fieldKey">
@@ -298,6 +326,8 @@ export type TemplateFieldOrderByWithAggregationInput = {
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TemplateFieldCountOrderByAggregateInput
   _avg?: Prisma.TemplateFieldAvgOrderByAggregateInput
   _max?: Prisma.TemplateFieldMaxOrderByAggregateInput
@@ -318,6 +348,8 @@ export type TemplateFieldScalarWhereWithAggregatesInput = {
   dataType?: Prisma.StringWithAggregatesFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolWithAggregatesFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntWithAggregatesFilter<"TemplateField"> | number
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateField"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateField"> | bigint | number | null
 }
 
 export type TemplateFieldCreateInput = {
@@ -329,6 +361,8 @@ export type TemplateFieldCreateInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutFieldsInput
   options?: Prisma.TemplateFieldOptionCreateNestedManyWithoutFieldInput
 }
@@ -343,6 +377,8 @@ export type TemplateFieldUncheckedCreateInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   options?: Prisma.TemplateFieldOptionUncheckedCreateNestedManyWithoutFieldInput
 }
 
@@ -355,6 +391,8 @@ export type TemplateFieldUpdateInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutFieldsNestedInput
   options?: Prisma.TemplateFieldOptionUpdateManyWithoutFieldNestedInput
 }
@@ -369,6 +407,8 @@ export type TemplateFieldUncheckedUpdateInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   options?: Prisma.TemplateFieldOptionUncheckedUpdateManyWithoutFieldNestedInput
 }
 
@@ -382,6 +422,8 @@ export type TemplateFieldCreateManyInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateFieldUpdateManyMutationInput = {
@@ -393,6 +435,8 @@ export type TemplateFieldUpdateManyMutationInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateFieldUncheckedUpdateManyInput = {
@@ -405,6 +449,8 @@ export type TemplateFieldUncheckedUpdateManyInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateFieldListRelationFilter = {
@@ -432,12 +478,16 @@ export type TemplateFieldCountOrderByAggregateInput = {
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldMaxOrderByAggregateInput = {
@@ -449,6 +499,8 @@ export type TemplateFieldMaxOrderByAggregateInput = {
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldMinOrderByAggregateInput = {
@@ -460,12 +512,16 @@ export type TemplateFieldMinOrderByAggregateInput = {
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldScalarRelationFilter = {
@@ -538,6 +594,8 @@ export type TemplateFieldCreateWithoutTemplateInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   options?: Prisma.TemplateFieldOptionCreateNestedManyWithoutFieldInput
 }
 
@@ -550,6 +608,8 @@ export type TemplateFieldUncheckedCreateWithoutTemplateInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   options?: Prisma.TemplateFieldOptionUncheckedCreateNestedManyWithoutFieldInput
 }
 
@@ -592,6 +652,8 @@ export type TemplateFieldScalarWhereInput = {
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
+  createdBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
+  updatedBy?: Prisma.BigIntNullableFilter<"TemplateField"> | bigint | number | null
 }
 
 export type TemplateFieldCreateWithoutOptionsInput = {
@@ -603,6 +665,8 @@ export type TemplateFieldCreateWithoutOptionsInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
   template: Prisma.TemplateCreateNestedOneWithoutFieldsInput
 }
 
@@ -616,6 +680,8 @@ export type TemplateFieldUncheckedCreateWithoutOptionsInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateFieldCreateOrConnectWithoutOptionsInput = {
@@ -643,6 +709,8 @@ export type TemplateFieldUpdateWithoutOptionsInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutFieldsNestedInput
 }
 
@@ -656,6 +724,8 @@ export type TemplateFieldUncheckedUpdateWithoutOptionsInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type TemplateFieldCreateManyTemplateInput = {
@@ -667,6 +737,8 @@ export type TemplateFieldCreateManyTemplateInput = {
   dataType: string
   isRequired?: boolean
   ordinal?: number
+  createdBy?: bigint | number | null
+  updatedBy?: bigint | number | null
 }
 
 export type TemplateFieldUpdateWithoutTemplateInput = {
@@ -678,6 +750,8 @@ export type TemplateFieldUpdateWithoutTemplateInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   options?: Prisma.TemplateFieldOptionUpdateManyWithoutFieldNestedInput
 }
 
@@ -690,6 +764,8 @@ export type TemplateFieldUncheckedUpdateWithoutTemplateInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   options?: Prisma.TemplateFieldOptionUncheckedUpdateManyWithoutFieldNestedInput
 }
 
@@ -702,6 +778,8 @@ export type TemplateFieldUncheckedUpdateManyWithoutTemplateInput = {
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -745,6 +823,8 @@ export type TemplateFieldSelect<ExtArgs extends runtime.Types.Extensions.Interna
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   options?: boolean | Prisma.TemplateField$optionsArgs<ExtArgs>
   _count?: boolean | Prisma.TemplateFieldCountOutputTypeDefaultArgs<ExtArgs>
@@ -760,6 +840,8 @@ export type TemplateFieldSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["templateField"]>
 
@@ -773,6 +855,8 @@ export type TemplateFieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["templateField"]>
 
@@ -786,9 +870,11 @@ export type TemplateFieldSelectScalar = {
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type TemplateFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "fieldKey" | "label" | "dataType" | "isRequired" | "ordinal", ExtArgs["result"]["templateField"]>
+export type TemplateFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "fieldKey" | "label" | "dataType" | "isRequired" | "ordinal" | "createdBy" | "updatedBy", ExtArgs["result"]["templateField"]>
 export type TemplateFieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   options?: boolean | Prisma.TemplateField$optionsArgs<ExtArgs>
@@ -817,6 +903,8 @@ export type $TemplateFieldPayload<ExtArgs extends runtime.Types.Extensions.Inter
     dataType: string
     isRequired: boolean
     ordinal: number
+    createdBy: bigint | null
+    updatedBy: bigint | null
   }, ExtArgs["result"]["templateField"]>
   composites: {}
 }
@@ -1251,6 +1339,8 @@ export interface TemplateFieldFieldRefs {
   readonly dataType: Prisma.FieldRef<"TemplateField", 'String'>
   readonly isRequired: Prisma.FieldRef<"TemplateField", 'Boolean'>
   readonly ordinal: Prisma.FieldRef<"TemplateField", 'Int'>
+  readonly createdBy: Prisma.FieldRef<"TemplateField", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"TemplateField", 'BigInt'>
 }
     
 

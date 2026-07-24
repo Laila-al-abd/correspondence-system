@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
+import { APP_GUARD } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { RegisterUserHandler } from '../../application/identity/commands/register-user/register-user.handler'
 import { AuthenticateUserHandler } from '../../application/identity/commands/authenticate-user/authenticate-user.handler'
 import {
+  ACCESS_TOKEN_SERVICE,
   AUTH_PROVIDER_REGISTRY,
   DELEGATION_REPOSITORY,
   ID_GENERATOR,
@@ -17,7 +19,9 @@ import { BcryptPasswordHasher } from '../../infrastructure/identity/bcrypt-passw
 import { LocalAuthProvider } from '../../infrastructure/identity/local-auth.provider'
 import { AuthProviderRegistryImpl } from '../../infrastructure/identity/auth-provider.registry'
 import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { JwtAccessTokenService } from '../../infrastructure/identity/jwt-access-token.service'
 import { AuthController } from './auth.controller'
+import { JwtAuthGuard } from './jwt-auth.guard'
 import { PermissionsGuard } from './permissions.guard'
 import { GetEffectivePermissionsHandler } from '../../application/identity/queries/get-effective-permissions/get-effective-permissions.handler'
 
@@ -37,6 +41,8 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
     AuthenticateUserHandler,
     GetEffectivePermissionsHandler,
     PermissionsGuard,
+    { provide: ACCESS_TOKEN_SERVICE, useClass: JwtAccessTokenService },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
     { provide: DELEGATION_REPOSITORY, useClass: PrismaDelegationRepository },

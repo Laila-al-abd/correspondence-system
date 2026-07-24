@@ -102,6 +102,30 @@ export class EventLog extends Entity {
     })
   }
 
+  snapshot(): {
+    requestId?: string
+    requestStepInstanceId?: string
+    actorId?: string
+    actionTypeId?: string
+    eventType: EventType
+    fromStatus?: string
+    toStatus?: string
+    ipAddress?: string
+    occurredAt: Date
+  } {
+    return {
+      requestId: this.props.requestId?.toString(),
+      requestStepInstanceId: this.props.requestStepInstanceId?.toString(),
+      actorId: this.props.actorId?.toString(),
+      actionTypeId: this.props.actionTypeId?.toString(),
+      eventType: this.props.eventType,
+      fromStatus: this.props.fromStatus,
+      toStatus: this.props.toStatus,
+      ipAddress: this.props.ipAddress,
+      occurredAt: this.props.occurredAt,
+    }
+  }
+
   get eventType(): EventType { return this.props.eventType }
   get requestId(): Identifier | undefined { return this.props.requestId }
 }

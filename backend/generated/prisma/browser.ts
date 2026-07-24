@@ -182,3 +182,8 @@ export type MlPrediction = Prisma.MlPredictionModel
  * 
  */
 export type SystemSetting = Prisma.SystemSettingModel
+/**
+ * Model RequestNumberSequence
+ * 
+ */
+export type RequestNumberSequence = Prisma.RequestNumberSequenceModel

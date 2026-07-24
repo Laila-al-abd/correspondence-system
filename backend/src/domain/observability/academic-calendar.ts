@@ -32,6 +32,22 @@ export class AcademicCalendar extends Entity {
     return new AcademicCalendar(id, props)
   }
 
+  snapshot(): {
+    name: { ar: string; en?: string }
+    periodType: CalendarPeriodType
+    startDate: Date
+    endDate: Date
+    description?: { ar: string; en?: string }
+  } {
+    return {
+      name: this.props.name.toJSON(),
+      periodType: this.props.periodType,
+      startDate: this.props.startDate,
+      endDate: this.props.endDate,
+      description: this.props.description?.toJSON(),
+    }
+  }
+
   /** Does this period contain the given day (inclusive)? */
   covers(day: Date): boolean { return day >= this.props.startDate && day <= this.props.endDate }
 

@@ -32,6 +32,7 @@ export type RequestActionAvgAggregateOutputType = {
   requestStepInstanceId: number | null
   actorId: number | null
   actionTypeId: number | null
+  createdBy: number | null
 }
 
 export type RequestActionSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type RequestActionSumAggregateOutputType = {
   requestStepInstanceId: bigint | null
   actorId: bigint | null
   actionTypeId: bigint | null
+  createdBy: bigint | null
 }
 
 export type RequestActionMinAggregateOutputType = {
@@ -50,6 +52,7 @@ export type RequestActionMinAggregateOutputType = {
   actionTypeId: bigint | null
   comment: string | null
   createdAt: Date | null
+  createdBy: bigint | null
 }
 
 export type RequestActionMaxAggregateOutputType = {
@@ -60,6 +63,7 @@ export type RequestActionMaxAggregateOutputType = {
   actionTypeId: bigint | null
   comment: string | null
   createdAt: Date | null
+  createdBy: bigint | null
 }
 
 export type RequestActionCountAggregateOutputType = {
@@ -70,6 +74,7 @@ export type RequestActionCountAggregateOutputType = {
   actionTypeId: number
   comment: number
   createdAt: number
+  createdBy: number
   _all: number
 }
 
@@ -80,6 +85,7 @@ export type RequestActionAvgAggregateInputType = {
   requestStepInstanceId?: true
   actorId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type RequestActionSumAggregateInputType = {
@@ -88,6 +94,7 @@ export type RequestActionSumAggregateInputType = {
   requestStepInstanceId?: true
   actorId?: true
   actionTypeId?: true
+  createdBy?: true
 }
 
 export type RequestActionMinAggregateInputType = {
@@ -98,6 +105,7 @@ export type RequestActionMinAggregateInputType = {
   actionTypeId?: true
   comment?: true
   createdAt?: true
+  createdBy?: true
 }
 
 export type RequestActionMaxAggregateInputType = {
@@ -108,6 +116,7 @@ export type RequestActionMaxAggregateInputType = {
   actionTypeId?: true
   comment?: true
   createdAt?: true
+  createdBy?: true
 }
 
 export type RequestActionCountAggregateInputType = {
@@ -118,6 +127,7 @@ export type RequestActionCountAggregateInputType = {
   actionTypeId?: true
   comment?: true
   createdAt?: true
+  createdBy?: true
   _all?: true
 }
 
@@ -215,6 +225,7 @@ export type RequestActionGroupByOutputType = {
   actionTypeId: bigint
   comment: string | null
   createdAt: Date
+  createdBy: bigint | null
   _count: RequestActionCountAggregateOutputType | null
   _avg: RequestActionAvgAggregateOutputType | null
   _sum: RequestActionSumAggregateOutputType | null
@@ -248,6 +259,7 @@ export type RequestActionWhereInput = {
   actionTypeId?: Prisma.BigIntFilter<"RequestAction"> | bigint | number
   comment?: Prisma.StringNullableFilter<"RequestAction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RequestAction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"RequestAction"> | bigint | number | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   actor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -263,6 +275,7 @@ export type RequestActionOrderByWithRelationInput = {
   actionTypeId?: Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   request?: Prisma.RequestOrderByWithRelationInput
   requestStepInstance?: Prisma.RequestStepInstanceOrderByWithRelationInput
   actor?: Prisma.UserOrderByWithRelationInput
@@ -281,6 +294,7 @@ export type RequestActionWhereUniqueInput = Prisma.AtLeast<{
   actionTypeId?: Prisma.BigIntFilter<"RequestAction"> | bigint | number
   comment?: Prisma.StringNullableFilter<"RequestAction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RequestAction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"RequestAction"> | bigint | number | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   actor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -296,6 +310,7 @@ export type RequestActionOrderByWithAggregationInput = {
   actionTypeId?: Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RequestActionCountOrderByAggregateInput
   _avg?: Prisma.RequestActionAvgOrderByAggregateInput
   _max?: Prisma.RequestActionMaxOrderByAggregateInput
@@ -314,12 +329,14 @@ export type RequestActionScalarWhereWithAggregatesInput = {
   actionTypeId?: Prisma.BigIntWithAggregatesFilter<"RequestAction"> | bigint | number
   comment?: Prisma.StringNullableWithAggregatesFilter<"RequestAction"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RequestAction"> | Date | string
+  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestAction"> | bigint | number | null
 }
 
 export type RequestActionCreateInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutActionsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutActionsInput
   actor: Prisma.UserCreateNestedOneWithoutRequestActionsInput
@@ -335,6 +352,7 @@ export type RequestActionUncheckedCreateInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutRequestActionInput
 }
 
@@ -342,6 +360,7 @@ export type RequestActionUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutActionsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutActionsNestedInput
   actor?: Prisma.UserUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -357,6 +376,7 @@ export type RequestActionUncheckedUpdateInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutRequestActionNestedInput
 }
 
@@ -368,12 +388,14 @@ export type RequestActionCreateManyInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionUncheckedUpdateManyInput = {
@@ -384,6 +406,7 @@ export type RequestActionUncheckedUpdateManyInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionListRelationFilter = {
@@ -404,6 +427,7 @@ export type RequestActionCountOrderByAggregateInput = {
   actionTypeId?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type RequestActionAvgOrderByAggregateInput = {
@@ -412,6 +436,7 @@ export type RequestActionAvgOrderByAggregateInput = {
   requestStepInstanceId?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type RequestActionMaxOrderByAggregateInput = {
@@ -422,6 +447,7 @@ export type RequestActionMaxOrderByAggregateInput = {
   actionTypeId?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type RequestActionMinOrderByAggregateInput = {
@@ -432,6 +458,7 @@ export type RequestActionMinOrderByAggregateInput = {
   actionTypeId?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type RequestActionSumOrderByAggregateInput = {
@@ -440,6 +467,7 @@ export type RequestActionSumOrderByAggregateInput = {
   requestStepInstanceId?: Prisma.SortOrder
   actorId?: Prisma.SortOrder
   actionTypeId?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
 }
 
 export type RequestActionNullableScalarRelationFilter = {
@@ -635,6 +663,7 @@ export type RequestActionCreateWithoutActorInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutActionsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutActionsInput
   actionType: Prisma.ActionTypeCreateNestedOneWithoutRequestActionsInput
@@ -648,6 +677,7 @@ export type RequestActionUncheckedCreateWithoutActorInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutRequestActionInput
 }
 
@@ -688,12 +718,14 @@ export type RequestActionScalarWhereInput = {
   actionTypeId?: Prisma.BigIntFilter<"RequestAction"> | bigint | number
   comment?: Prisma.StringNullableFilter<"RequestAction"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RequestAction"> | Date | string
+  createdBy?: Prisma.BigIntNullableFilter<"RequestAction"> | bigint | number | null
 }
 
 export type RequestActionCreateWithoutActionTypeInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutActionsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutActionsInput
   actor: Prisma.UserCreateNestedOneWithoutRequestActionsInput
@@ -707,6 +739,7 @@ export type RequestActionUncheckedCreateWithoutActionTypeInput = {
   actorId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutRequestActionInput
 }
 
@@ -740,6 +773,7 @@ export type RequestActionCreateWithoutRequestInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutActionsInput
   actor: Prisma.UserCreateNestedOneWithoutRequestActionsInput
   actionType: Prisma.ActionTypeCreateNestedOneWithoutRequestActionsInput
@@ -753,6 +787,7 @@ export type RequestActionUncheckedCreateWithoutRequestInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutRequestActionInput
 }
 
@@ -786,6 +821,7 @@ export type RequestActionCreateWithoutRequestStepInstanceInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutActionsInput
   actor: Prisma.UserCreateNestedOneWithoutRequestActionsInput
   actionType: Prisma.ActionTypeCreateNestedOneWithoutRequestActionsInput
@@ -799,6 +835,7 @@ export type RequestActionUncheckedCreateWithoutRequestStepInstanceInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutRequestActionInput
 }
 
@@ -832,6 +869,7 @@ export type RequestActionCreateWithoutDocumentsInput = {
   id?: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
   request: Prisma.RequestCreateNestedOneWithoutActionsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutActionsInput
   actor: Prisma.UserCreateNestedOneWithoutRequestActionsInput
@@ -846,6 +884,7 @@ export type RequestActionUncheckedCreateWithoutDocumentsInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionCreateOrConnectWithoutDocumentsInput = {
@@ -868,6 +907,7 @@ export type RequestActionUpdateWithoutDocumentsInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutActionsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutActionsNestedInput
   actor?: Prisma.UserUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -882,6 +922,7 @@ export type RequestActionUncheckedUpdateWithoutDocumentsInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionCreateManyActorInput = {
@@ -891,12 +932,14 @@ export type RequestActionCreateManyActorInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionUpdateWithoutActorInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutActionsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutActionsNestedInput
   actionType?: Prisma.ActionTypeUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -910,6 +953,7 @@ export type RequestActionUncheckedUpdateWithoutActorInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutRequestActionNestedInput
 }
 
@@ -920,6 +964,7 @@ export type RequestActionUncheckedUpdateManyWithoutActorInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionCreateManyActionTypeInput = {
@@ -929,12 +974,14 @@ export type RequestActionCreateManyActionTypeInput = {
   actorId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionUpdateWithoutActionTypeInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutActionsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutActionsNestedInput
   actor?: Prisma.UserUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -948,6 +995,7 @@ export type RequestActionUncheckedUpdateWithoutActionTypeInput = {
   actorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutRequestActionNestedInput
 }
 
@@ -958,6 +1006,7 @@ export type RequestActionUncheckedUpdateManyWithoutActionTypeInput = {
   actorId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionCreateManyRequestInput = {
@@ -967,12 +1016,14 @@ export type RequestActionCreateManyRequestInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionUpdateWithoutRequestInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutActionsNestedInput
   actor?: Prisma.UserUpdateOneRequiredWithoutRequestActionsNestedInput
   actionType?: Prisma.ActionTypeUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -986,6 +1037,7 @@ export type RequestActionUncheckedUpdateWithoutRequestInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutRequestActionNestedInput
 }
 
@@ -996,6 +1048,7 @@ export type RequestActionUncheckedUpdateManyWithoutRequestInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 export type RequestActionCreateManyRequestStepInstanceInput = {
@@ -1005,12 +1058,14 @@ export type RequestActionCreateManyRequestStepInstanceInput = {
   actionTypeId: bigint | number
   comment?: string | null
   createdAt?: Date | string
+  createdBy?: bigint | number | null
 }
 
 export type RequestActionUpdateWithoutRequestStepInstanceInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   request?: Prisma.RequestUpdateOneRequiredWithoutActionsNestedInput
   actor?: Prisma.UserUpdateOneRequiredWithoutRequestActionsNestedInput
   actionType?: Prisma.ActionTypeUpdateOneRequiredWithoutRequestActionsNestedInput
@@ -1024,6 +1079,7 @@ export type RequestActionUncheckedUpdateWithoutRequestStepInstanceInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutRequestActionNestedInput
 }
 
@@ -1034,6 +1090,7 @@ export type RequestActionUncheckedUpdateManyWithoutRequestStepInstanceInput = {
   actionTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
 }
 
 
@@ -1075,6 +1132,7 @@ export type RequestActionSelect<ExtArgs extends runtime.Types.Extensions.Interna
   actionTypeId?: boolean
   comment?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.RequestAction$requestStepInstanceArgs<ExtArgs>
   actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1091,6 +1149,7 @@ export type RequestActionSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   actionTypeId?: boolean
   comment?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.RequestAction$requestStepInstanceArgs<ExtArgs>
   actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1105,6 +1164,7 @@ export type RequestActionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   actionTypeId?: boolean
   comment?: boolean
   createdAt?: boolean
+  createdBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.RequestAction$requestStepInstanceArgs<ExtArgs>
   actor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1119,9 +1179,10 @@ export type RequestActionSelectScalar = {
   actionTypeId?: boolean
   comment?: boolean
   createdAt?: boolean
+  createdBy?: boolean
 }
 
-export type RequestActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "requestStepInstanceId" | "actorId" | "actionTypeId" | "comment" | "createdAt", ExtArgs["result"]["requestAction"]>
+export type RequestActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "requestStepInstanceId" | "actorId" | "actionTypeId" | "comment" | "createdAt" | "createdBy", ExtArgs["result"]["requestAction"]>
 export type RequestActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.RequestAction$requestStepInstanceArgs<ExtArgs>
@@ -1160,6 +1221,7 @@ export type $RequestActionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     actionTypeId: bigint
     comment: string | null
     createdAt: Date
+    createdBy: bigint | null
   }, ExtArgs["result"]["requestAction"]>
   composites: {}
 }
@@ -1595,6 +1657,7 @@ export interface RequestActionFieldRefs {
   readonly actionTypeId: Prisma.FieldRef<"RequestAction", 'BigInt'>
   readonly comment: Prisma.FieldRef<"RequestAction", 'String'>
   readonly createdAt: Prisma.FieldRef<"RequestAction", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"RequestAction", 'BigInt'>
 }
     
 
