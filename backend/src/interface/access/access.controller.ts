@@ -6,8 +6,10 @@ import { ListAttributeDefinitionsQuery } from '../../application/access/queries/
 import { TemplateEligibilityView } from '../../application/access/evaluate-eligibility'
 import { EligibleTemplateView } from '../../application/access/queries/views/eligible-template.view'
 import { AttributeDefinitionView } from '../../application/access/queries/views/attribute-definition.view'
+import { RequirePermissions } from '../identity/permissions.decorator'
 
 @Controller('access')
+@RequirePermissions('template.manage')
 export class AccessController {
   constructor(private readonly queryBus: QueryBus) {}
 

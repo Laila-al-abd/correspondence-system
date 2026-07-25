@@ -12,7 +12,7 @@ import {
   REQUEST_ACTION_REPOSITORY,
   REQUEST_REPOSITORY,
 } from '../../../tokens'
-import { EntityNotFoundError } from '../../../errors'
+import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
 import { ActOnStepCommand, StepActionKind } from './act-on-step.command'
 
 export interface ActOnStepResult {
@@ -48,6 +48,11 @@ export class ActOnStepHandler
     )
     if (!step)
       throw new EntityNotFoundError('Step instance', input.stepInstanceId)
+
+    if (step.assignedToUserId?.toString() !== input.actorId)
+      throw new ForbiddenActionError(
+        'You can only act on steps assigned to you.',
+      )
 
     switch (input.action) {
       case StepActionKind.START:
