@@ -68,4 +68,48 @@ export class PrismaRoleRepository implements RoleRepository {
     })
     return new Set(rows.map((rp) => rp.permission.code))
   }
+
+  async assignToUser(params: {
+    userId: Identifier
+    roleId: Identifier
+    departmentId?: Identifier
+    expiresAt?: Date
+    assignedBy?: Identifier
+  }): Promise<void> {
+    const where = {
+      userId: BigInt(params.userId.toString()),
+      roleId: BigInt(params.roleId.toString()),
+      departmentId: params.departmentId
+        ? BigInt(params.departmentId.toString())
+        : null,
+    }
+    await this.prisma.$transaction(async (tx) => {
+      await tx.userRole.deleteMany({ where })
+      await tx.userRole.create({
+        data: {
+          ...where,
+          expiresAt: params.expiresAt ?? null,
+          assignedBy: params.assignedBy
+            ? BigInt(params.assignedBy.toString())
+            : null,
+        },
+      })
+    })
+  }
+
+  async revokeFromUser(params: {
+    userId: Identifier
+    roleId: Identifier
+    departmentId?: Identifier
+  }): Promise<void> {
+    await this.prisma.userRole.deleteMany({
+      where: {
+        userId: BigInt(params.userId.toString()),
+        roleId: BigInt(params.roleId.toString()),
+        departmentId: params.departmentId
+          ? BigInt(params.departmentId.toString())
+          : null,
+      },
+    })
+  }
 }
