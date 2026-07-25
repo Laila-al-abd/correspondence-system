@@ -16,9 +16,11 @@ import {
   PASSWORD_HASHER,
   ROLE_REPOSITORY,
   USER_ATTRIBUTE_REPOSITORY,
+  USER_QUERY,
   USER_REPOSITORY,
 } from '../../application/tokens'
 import { PrismaUserRepository } from '../../infrastructure/identity/prisma-user.repository'
+import { PrismaUserQuery } from '../../infrastructure/identity/prisma-user-query'
 import { PrismaRoleRepository } from '../../infrastructure/identity/prisma-role.repository'
 import { PrismaAttributeDefinitionRepository } from '../../infrastructure/catalog/prisma-attribute-definition.repository'
 import { PrismaUserAttributeRepository } from '../../infrastructure/identity/prisma-user-attribute.repository'
@@ -59,6 +61,7 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: PermissionsGuard },
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
+    { provide: USER_QUERY, useClass: PrismaUserQuery },
     { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
     {
       provide: ATTRIBUTE_DEFINITION_REPOSITORY,

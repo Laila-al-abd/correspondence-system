@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
+  Inject,
   Param,
   Post,
   Put,
@@ -17,6 +19,14 @@ import { AssignRoleDto } from './dto/assign-role.dto'
 import { SetUserAttributeDto } from './dto/set-user-attribute.dto'
 import { RequirePermissions } from './permissions.decorator'
 import { CurrentUserId } from './current-user.decorator'
+import { ListUsersDto } from './dto/list-users.dto'
+import type {
+  ListUsersResult,
+  UserDetailView,
+  UserQueryPort,
+} from '../../application/identity/ports/user-query.port'
+import { USER_QUERY } from '../../application/tokens'
+import { EntityNotFoundError } from '../../application/errors'
 
 /**
  * Admin surface for user administration: granting and revoking roles (optionally
@@ -26,7 +36,31 @@ import { CurrentUserId } from './current-user.decorator'
 @Controller('users')
 @RequirePermissions('user.manage')
 export class UsersController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    @Inject(USER_QUERY) private readonly users: UserQueryPort,
+  ) {}
+
+  // List/search users with pagination (admin directory).
+  @Get()
+  list(@Query() dto: ListUsersDto): Promise<ListUsersResult> {
+    return this.users.list({
+      search: dto.search,
+      userType: dto.userType,
+      status: dto.status,
+      departmentId: dto.departmentId,
+      limit: dto.limit ? Number(dto.limit) : undefined,
+      offset: dto.offset ? Number(dto.offset) : undefined,
+    })
+  }
+
+  // One user with their roles and ABAC attributes.
+  @Get(':userId')
+  async getOne(@Param('userId') userId: string): Promise<UserDetailView> {
+    const found = await this.users.getDetail(userId)
+    if (!found) throw new EntityNotFoundError('User', userId)
+    return found
+  }
 
   @Post(':userId/roles')
   assignRole(

@@ -15,6 +15,7 @@ export const ROLE_REPOSITORY = Symbol('RoleRepository')
 export const DELEGATION_REPOSITORY = Symbol('DelegationRepository')
 export const ACCESS_TOKEN_SERVICE = Symbol('AccessTokenService')
 export const USER_ATTRIBUTE_REPOSITORY = Symbol('UserAttributeRepository')
+export const USER_QUERY = Symbol('UserQuery')
 
 // catalog
 export const LANGUAGE_REPOSITORY = Symbol('LanguageRepository')
@@ -30,6 +31,7 @@ export const ATTRIBUTE_DEFINITION_REPOSITORY = Symbol(
 export const DEPARTMENT_REPOSITORY = Symbol('DepartmentRepository')
 export const ORG_UNIT_TYPE_REPOSITORY = Symbol('OrgUnitTypeRepository')
 export const PERSONNEL_DIRECTORY = Symbol('PersonnelDirectory')
+export const DEPARTMENT_QUERY = Symbol('DepartmentQuery')
 
 // workflow
 export const WORKFLOW_PATH_REPOSITORY = Symbol('WorkflowPathRepository')

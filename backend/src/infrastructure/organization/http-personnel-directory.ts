@@ -12,6 +12,7 @@ import {
   parseMapping,
   toExternalOrgUnit,
 } from './personnel-directory-mapping'
+import { UpstreamUnavailableError } from '../../application/errors'
 
 const DEFAULT_MAPPING_PATH = 'config/personnel-directory.mapping.yaml'
 const DEFAULT_TIMEOUT_MS = 10_000
@@ -32,8 +33,8 @@ export class HttpPersonnelDirectory implements PersonnelDirectory {
   async fetchUnits(): Promise<ExternalOrgUnit[]> {
     const url = this.config.get<string>('PERSONNEL_DIRECTORY_URL')
     if (!url)
-      throw new Error(
-        'PERSONNEL_DIRECTORY_URL is not configured; cannot sync departments.',
+      throw new UpstreamUnavailableError(
+        'Personnel directory is not configured (set PERSONNEL_DIRECTORY_URL).',
       )
 
     const mapping = this.loadMapping()
@@ -70,16 +71,17 @@ export class HttpPersonnelDirectory implements PersonnelDirectory {
         signal: controller.signal,
       })
       if (!response.ok)
-        throw new Error(
+        throw new UpstreamUnavailableError(
           `Personnel directory responded with HTTP ${response.status}.`,
         )
       return await response.json()
     } catch (error) {
+      if (error instanceof UpstreamUnavailableError) throw error
       if (error instanceof Error && error.name === 'AbortError')
-        throw new Error(
+        throw new UpstreamUnavailableError(
           `Personnel directory request timed out after ${timeoutMs}ms.`,
         )
-      throw error
+      throw new UpstreamUnavailableError('Personnel directory is unreachable.')
     } finally {
       clearTimeout(timer)
     }
