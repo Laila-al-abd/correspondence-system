@@ -43,6 +43,7 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
     PermissionsGuard,
     { provide: ACCESS_TOKEN_SERVICE, useClass: JwtAccessTokenService },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: PermissionsGuard },
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
     { provide: DELEGATION_REPOSITORY, useClass: PrismaDelegationRepository },

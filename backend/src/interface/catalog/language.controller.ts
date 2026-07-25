@@ -4,8 +4,10 @@ import { CreateLanguageCommand } from '../../application/catalog/commands/create
 import { ListLanguagesQuery } from '../../application/catalog/queries/list-languages/list-languages.query'
 import { LanguageView } from '../../application/catalog/queries/list-languages/language.view'
 import { CreateLanguageDto } from './dto/create-language.dto'
+import { RequirePermissions } from '../identity/permissions.decorator'
 
 @Controller('languages')
+@RequirePermissions('template.manage')
 export class LanguageController {
   constructor(
     private readonly commandBus: CommandBus,

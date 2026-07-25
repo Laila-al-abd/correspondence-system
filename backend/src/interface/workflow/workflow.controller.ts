@@ -7,8 +7,10 @@ import { GetWorkflowPathQuery } from '../../application/workflow/queries/get-wor
 import { ListWorkflowPathsByTemplateQuery } from '../../application/workflow/queries/list-workflow-paths/list-workflow-paths.query'
 import { WorkflowPathView } from '../../application/workflow/queries/views/workflow-path.view'
 import { DefineWorkflowPathDto } from './dto/define-workflow-path.dto'
+import { RequirePermissions } from '../identity/permissions.decorator'
 
 @Controller('workflow-paths')
+@RequirePermissions('workflow.manage')
 export class WorkflowController {
   constructor(
     private readonly commandBus: CommandBus,
