@@ -7,8 +7,13 @@ import { EvaluateEligibility } from '../../application/access/evaluate-eligibili
 import { CheckTemplateEligibilityHandler } from '../../application/access/queries/check-template-eligibility/check-template-eligibility.handler'
 import { ListEligibleTemplatesHandler } from '../../application/access/queries/list-eligible-templates/list-eligible-templates.handler'
 import { ListAttributeDefinitionsHandler } from '../../application/access/queries/list-attribute-definitions/list-attribute-definitions.handler'
+import { AddEligibilityRuleHandler } from '../../application/access/commands/add-eligibility-rule/add-eligibility-rule.handler'
+import { RemoveEligibilityRuleHandler } from '../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.handler'
+import { ListEligibilityRulesHandler } from '../../application/access/queries/list-eligibility-rules/list-eligibility-rules.handler'
+import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
 import {
   ATTRIBUTE_DEFINITION_REPOSITORY,
+  ID_GENERATOR,
   TEMPLATE_REPOSITORY,
   USER_ATTRIBUTE_REPOSITORY,
 } from '../../application/tokens'
@@ -18,6 +23,9 @@ const handlers = [
   CheckTemplateEligibilityHandler,
   ListEligibleTemplatesHandler,
   ListAttributeDefinitionsHandler,
+  AddEligibilityRuleHandler,
+  RemoveEligibilityRuleHandler,
+  ListEligibilityRulesHandler,
 ]
 
 /**
@@ -32,6 +40,7 @@ const handlers = [
   providers: [
     ...handlers,
     { provide: TEMPLATE_REPOSITORY, useClass: PrismaTemplateRepository },
+    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
     {
       provide: ATTRIBUTE_DEFINITION_REPOSITORY,
       useClass: PrismaAttributeDefinitionRepository,

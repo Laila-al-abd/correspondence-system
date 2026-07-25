@@ -76,3 +76,11 @@ export class ForbiddenActionError extends ApplicationError {
     super(message)
   }
 }
+
+export class UpstreamUnavailableError extends ApplicationError {
+  readonly code = 'UPSTREAM_UNAVAILABLE'
+  readonly status = 502
+  constructor(message = 'An upstream service is currently unavailable.') {
+    super(message)
+  }
+}
