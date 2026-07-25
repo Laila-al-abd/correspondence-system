@@ -68,3 +68,11 @@ export class EntityNotFoundError extends ApplicationError {
     super(id ? `${entity} not found: ${id}` : `${entity} not found.`)
   }
 }
+
+export class ForbiddenActionError extends ApplicationError {
+  readonly code = 'FORBIDDEN'
+  readonly status = 403
+  constructor(message = 'You are not allowed to perform this action.') {
+    super(message)
+  }
+}

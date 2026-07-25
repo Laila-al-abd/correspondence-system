@@ -23,6 +23,7 @@ import { ClassifyByHumanDto } from './dto/classify-by-human.dto'
 import { AssignStepDto } from './dto/assign-step.dto'
 import { ActOnStepDto } from './dto/act-on-step.dto'
 import { UploadDocumentDto } from './dto/upload-document.dto'
+import { RequirePermissions } from '../identity/permissions.decorator'
 
 /**
  * HTTP surface for the request runtime. Commands drive the lifecycle (submit ->
@@ -50,11 +51,13 @@ export class RequestController {
   }
 
   @Get('queue')
+  @RequirePermissions('request.read')
   listQueue(@Query('status') status: string): Promise<RequestSummaryView[]> {
     return this.queryBus.execute(new ListRequestQueueQuery(status))
   }
 
   @Get('by-reference/:referenceNo')
+  @RequirePermissions('request.read')
   getByReference(
     @Param('referenceNo') referenceNo: string,
   ): Promise<RequestDetailView> {
@@ -62,6 +65,7 @@ export class RequestController {
   }
 
   @Get(':id')
+  @RequirePermissions('request.read')
   getOne(@Param('id') id: string): Promise<RequestDetailView> {
     return this.queryBus.execute(new GetRequestQuery(id))
   }
@@ -76,6 +80,7 @@ export class RequestController {
   }
 
   @Post(':id/classify/model')
+  @RequirePermissions('request.act')
   classifyByModel(@Param('id') id: string, @Body() dto: ClassifyByModelDto) {
     return this.commandBus.execute(
       new ClassifyRequestByModelCommand({ requestId: id, ...dto }),
@@ -83,6 +88,7 @@ export class RequestController {
   }
 
   @Post(':id/classify/human')
+  @RequirePermissions('request.act')
   classifyByHuman(@Param('id') id: string, @Body() dto: ClassifyByHumanDto) {
     return this.commandBus.execute(
       new ClassifyRequestByHumanCommand({ requestId: id, ...dto }),
@@ -90,11 +96,13 @@ export class RequestController {
   }
 
   @Post(':id/start')
+  @RequirePermissions('request.act')
   start(@Param('id') id: string) {
     return this.commandBus.execute(new StartRequestWorkflowCommand(id))
   }
 
   @Post(':id/steps/:stepId/assign')
+  @RequirePermissions('request.act')
   assignStep(
     @Param('id') id: string,
     @Param('stepId') stepId: string,
@@ -110,6 +118,7 @@ export class RequestController {
   }
 
   @Post(':id/steps/:stepId/actions')
+  @RequirePermissions('request.act')
   actOnStep(
     @CurrentUserId() userId: string,
     @Param('id') id: string,
