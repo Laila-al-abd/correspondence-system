@@ -6,6 +6,7 @@ import { HttpPersonnelDirectory } from '../../infrastructure/organization/http-p
 import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
 import { SyncDepartmentsFromDirectory } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsHandler } from '../../application/organization/commands/sync-departments/sync-departments.handler'
+import { CreateDepartmentHandler } from '../../application/organization/commands/create-department/create-department.handler'
 import {
   DEPARTMENT_REPOSITORY,
   ID_GENERATOR,
@@ -25,6 +26,7 @@ import { OrganizationController } from './organization.controller'
   controllers: [OrganizationController],
   providers: [
     SyncDepartmentsHandler,
+    CreateDepartmentHandler,
     { provide: DEPARTMENT_REPOSITORY, useClass: PrismaDepartmentRepository },
     {
       provide: ORG_UNIT_TYPE_REPOSITORY,
