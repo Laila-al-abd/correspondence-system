@@ -11,6 +11,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   ATTRIBUTE_DEFINITION_REPOSITORY,
   AUTH_PROVIDER_REGISTRY,
+  DELEGATION_QUERY,
   DELEGATION_REPOSITORY,
   ID_GENERATOR,
   PASSWORD_HASHER,
@@ -36,6 +37,12 @@ import { OrganizationModule } from '../organization/organization.module'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { PermissionsGuard } from './permissions.guard'
 import { GetEffectivePermissionsHandler } from '../../application/identity/queries/get-effective-permissions/get-effective-permissions.handler'
+import { GrantDelegationHandler } from '../../application/identity/commands/grant-delegation/grant-delegation.handler'
+import { RevokeDelegationHandler } from '../../application/identity/commands/revoke-delegation/revoke-delegation.handler'
+import { ListDelegationsHandler } from '../../application/identity/queries/list-delegations/list-delegations.handler'
+import { GetDelegationHandler } from '../../application/identity/queries/get-delegation/get-delegation.handler'
+import { PrismaDelegationQuery } from '../../infrastructure/identity/prisma-delegation-query'
+import { DelegationsController } from './delegations.controller'
 
 /**
  * Identity composition root. Binds every domain port to an adapter.
@@ -47,7 +54,7 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
  */
 @Module({
   imports: [CqrsModule, OrganizationModule],
-  controllers: [AuthController, UsersController],
+  controllers: [AuthController, UsersController, DelegationsController],
   providers: [
     RegisterUserHandler,
     AuthenticateUserHandler,
@@ -56,6 +63,10 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
     RevokeRoleFromUserHandler,
     SetUserAttributeHandler,
     ClearUserAttributeHandler,
+    GrantDelegationHandler,
+    RevokeDelegationHandler,
+    ListDelegationsHandler,
+    GetDelegationHandler,
     PermissionsGuard,
     { provide: ACCESS_TOKEN_SERVICE, useClass: JwtAccessTokenService },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
@@ -72,6 +83,7 @@ import { GetEffectivePermissionsHandler } from '../../application/identity/queri
       useClass: PrismaUserAttributeRepository,
     },
     { provide: DELEGATION_REPOSITORY, useClass: PrismaDelegationRepository },
+    { provide: DELEGATION_QUERY, useClass: PrismaDelegationQuery },
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
     LocalAuthProvider,
