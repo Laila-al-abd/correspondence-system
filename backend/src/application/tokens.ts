@@ -48,5 +48,8 @@ export const ML_PREDICTION_REPOSITORY = Symbol('MlPredictionRepository')
 export const ACADEMIC_CALENDAR_REPOSITORY = Symbol('AcademicCalendarRepository')
 export const SYSTEM_SETTING_REPOSITORY = Symbol('SystemSettingRepository')
 
+// reporting
+export const REPORTS_QUERY = Symbol('ReportsQuery')
+
 // storage
 export const OBJECT_STORAGE = Symbol('ObjectStorage')
