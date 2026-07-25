@@ -62,6 +62,15 @@ export class Template extends AggregateRoot {
 
   }
 
+  removeEligibilityRule(ruleId: Identifier): void {
+    const before = this.props.eligibilityRules.length
+    this.props.eligibilityRules = this.props.eligibilityRules.filter(
+      (r) => r.id.toString() !== ruleId.toString(),
+    )
+    if (this.props.eligibilityRules.length === before)
+      throw new InvariantViolationError(`Eligibility rule "${ruleId.toString()}" not found in template.`)
+  }
+
   activate(): void { this.props.isActive = true }
   deactivate(): void { this.props.isActive = false }
 

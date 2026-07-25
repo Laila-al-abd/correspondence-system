@@ -3,11 +3,13 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { PrismaDepartmentRepository } from '../../infrastructure/organization/prisma-department.repository'
 import { PrismaOrgUnitTypeRepository } from '../../infrastructure/organization/prisma-org-unit-type.repository'
 import { HttpPersonnelDirectory } from '../../infrastructure/organization/http-personnel-directory'
+import { PrismaDepartmentQuery } from '../../infrastructure/organization/prisma-department-query'
 import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
 import { SyncDepartmentsFromDirectory } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsHandler } from '../../application/organization/commands/sync-departments/sync-departments.handler'
 import { CreateDepartmentHandler } from '../../application/organization/commands/create-department/create-department.handler'
 import {
+  DEPARTMENT_QUERY,
   DEPARTMENT_REPOSITORY,
   ID_GENERATOR,
   ORG_UNIT_TYPE_REPOSITORY,
@@ -28,6 +30,7 @@ import { OrganizationController } from './organization.controller'
     SyncDepartmentsHandler,
     CreateDepartmentHandler,
     { provide: DEPARTMENT_REPOSITORY, useClass: PrismaDepartmentRepository },
+    { provide: DEPARTMENT_QUERY, useClass: PrismaDepartmentQuery },
     {
       provide: ORG_UNIT_TYPE_REPOSITORY,
       useClass: PrismaOrgUnitTypeRepository,
