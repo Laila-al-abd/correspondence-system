@@ -174,6 +174,7 @@ async function main(): Promise<void> {
     { id: 3n, code: 'request.act', name: t('التصرف بالطلبات', 'Act on requests') },
     { id: 4n, code: 'workflow.manage', name: t('إدارة مسارات العمل', 'Manage workflows') },
     { id: 5n, code: 'template.manage', name: t('إدارة القوالب', 'Manage templates') },
+    { id: 6n, code: 'reports.view', name: t('عرض التقارير', 'View reports') },
   ]
   for (const p of permissions) {
     await prisma.permission.upsert({
@@ -227,6 +228,69 @@ async function main(): Promise<void> {
   // nullable departmentId, so clear-then-create instead of upsert.
   await prisma.userRole.deleteMany({ where: { userId: user.id, roleId: role.id } })
   await prisma.userRole.create({ data: { userId: user.id, roleId: role.id } })
+
+  // --- Reviewer role + two staff reviewers (to test the ownership rule) ------
+  // A Reviewer can read and act on requests, but cannot manage config. These
+  // two users prove that request.act alone is not enough: you can only act on
+  // a step that is assigned to you. In the walkthrough reviewer1 is assigned
+  // the step and succeeds; reviewer2 has the same permission but is blocked 403.
+  const reviewerRole = await prisma.role.upsert({
+    where: { id: 2n },
+    update: {},
+    create: { id: 2n, name: t('مُراجِع', 'Reviewer'), isSystem: false },
+  })
+  for (const permissionId of [2n, 3n]) {
+    // request.read (2) + request.act (3)
+    await prisma.rolePermission.upsert({
+      where: {
+        roleId_permissionId: { roleId: reviewerRole.id, permissionId },
+      },
+      update: {},
+      create: { roleId: reviewerRole.id, permissionId },
+    })
+  }
+
+  const reviewerPasswordHash = await bcrypt.hash('Review@12345', 10)
+  const reviewers = [
+    {
+      id: 2n,
+      fullNameAr: 'المراجع الأول',
+      fullNameEn: 'Reviewer One',
+      institutionalNumber: 'STF-0002',
+      email: 'reviewer1@correspondence.local',
+    },
+    {
+      id: 3n,
+      fullNameAr: 'المراجع الثاني',
+      fullNameEn: 'Reviewer Two',
+      institutionalNumber: 'STF-0003',
+      email: 'reviewer2@correspondence.local',
+    },
+  ]
+  for (const r of reviewers) {
+    const reviewer = await prisma.user.upsert({
+      where: { email: r.email },
+      update: { passwordHash: reviewerPasswordHash },
+      create: {
+        id: r.id,
+        userType: 'EMPLOYEE',
+        fullNameAr: r.fullNameAr,
+        fullNameEn: r.fullNameEn,
+        institutionalNumber: r.institutionalNumber,
+        email: r.email,
+        passwordHash: reviewerPasswordHash,
+        authProvider: 'LOCAL',
+        preferredLang: 'ar',
+        status: 'ACTIVE',
+      },
+    })
+    await prisma.userRole.deleteMany({
+      where: { userId: reviewer.id, roleId: reviewerRole.id },
+    })
+    await prisma.userRole.create({
+      data: { userId: reviewer.id, roleId: reviewerRole.id },
+    })
+  }
 
   // --- Sample attribute values for the admin (so ABAC returns eligible) -----
   const userAttrValues = [
@@ -323,8 +387,9 @@ async function main(): Promise<void> {
   }
 
   console.log('Seed complete.')
-  console.log('  Admin login : admin@correspondence.local / Admin@12345')
-  console.log(`  Admin id    : ${user.id}`)
+  console.log('  Admin login  : admin@correspondence.local / Admin@12345')
+  console.log('  Reviewer 1   : reviewer1@correspondence.local / Review@12345  (id 2)')
+  console.log('  Reviewer 2   : reviewer2@correspondence.local / Review@12345  (id 3)')
   console.log('  Demo template id: 1 (Academic / Internal)')
 }
 
