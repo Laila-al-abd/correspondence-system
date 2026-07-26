@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
+import { CatalogModule } from '../catalog/catalog.module'
+import { ObservabilityModule } from '../observability/observability.module'
 import {
+  ASSIGNEE_DIRECTORY,
   DOCUMENT_REPOSITORY,
   ID_GENERATOR,
   OBJECT_STORAGE,
@@ -31,6 +34,8 @@ import { ListMyRequestsHandler } from '../../application/request/queries/list-my
 import { ListAssignedRequestsHandler } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.handler'
 import { ListRequestQueueHandler } from '../../application/request/queries/list-request-queue/list-request-queue.handler'
 import { RequestController } from './request.controller'
+import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
+import { PrismaAssigneeDirectory } from '../../infrastructure/request/prisma-assignee-directory'
 
 const handlers = [
   SubmitRequestHandler,
@@ -54,7 +59,7 @@ const handlers = [
  * and query handlers that run a request through its lifecycle over HTTP.
  */
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, CatalogModule, ObservabilityModule],
   controllers: [RequestController],
   providers: [
     ...handlers,
@@ -75,6 +80,8 @@ const handlers = [
       useClass: PrismaReferenceNumberGenerator,
     },
     { provide: OBJECT_STORAGE, useClass: MinioObjectStorage },
+    { provide: ASSIGNEE_DIRECTORY, useClass: PrismaAssigneeDirectory },
+    AssigneeResolver,
   ],
   exports: [
     REQUEST_REPOSITORY,
