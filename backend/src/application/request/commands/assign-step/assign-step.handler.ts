@@ -4,6 +4,7 @@ import { Identifier } from '../../../../domain/shared/identifier'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
 import { REQUEST_REPOSITORY } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { AssignStepCommand } from './assign-step.command'
 
 export interface AssignStepResult {
@@ -21,6 +22,7 @@ export class AssignStepHandler
 {
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    private readonly notifier: NotificationEmitter,
   ) {}
 
   async execute({ input }: AssignStepCommand): Promise<AssignStepResult> {
@@ -35,6 +37,13 @@ export class AssignStepHandler
 
     step.assignTo(Identifier.of(input.assigneeUserId))
     await this.requests.save(request)
+
+    await this.notifier.stepAssigned({
+      assigneeUserId: input.assigneeUserId,
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+    })
+
     return {
       stepInstanceId: step.id.toString(),
       assignedToUserId: input.assigneeUserId,

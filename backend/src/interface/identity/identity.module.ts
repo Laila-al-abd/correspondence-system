@@ -43,6 +43,7 @@ import { ListDelegationsHandler } from '../../application/identity/queries/list-
 import { GetDelegationHandler } from '../../application/identity/queries/get-delegation/get-delegation.handler'
 import { PrismaDelegationQuery } from '../../infrastructure/identity/prisma-delegation-query'
 import { DelegationsController } from './delegations.controller'
+import { ObservabilityModule } from '../observability/observability.module'
 
 /**
  * Identity composition root. Binds every domain port to an adapter.
@@ -53,7 +54,7 @@ import { DelegationsController } from './delegations.controller'
  * in-memory user repository is kept for unit tests.
  */
 @Module({
-  imports: [CqrsModule, OrganizationModule],
+  imports: [CqrsModule, OrganizationModule, ObservabilityModule],
   controllers: [AuthController, UsersController, DelegationsController],
   providers: [
     RegisterUserHandler,

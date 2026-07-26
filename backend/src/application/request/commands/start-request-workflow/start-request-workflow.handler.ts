@@ -13,6 +13,8 @@ import {
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
 import { StartRequestWorkflowCommand } from './start-request-workflow.command'
+import { AssigneeResolver } from '../../services/assignee-resolver'
+import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 
@@ -20,6 +22,8 @@ export interface StartWorkflowResult {
   id: string
   workflowPathId: string
   stepCount: number
+  assignedStepCount: number
+  unassignedStepCount: number
 }
 
 /**
@@ -37,6 +41,8 @@ export class StartRequestWorkflowHandler
     @Inject(WORKFLOW_PATH_REPOSITORY)
     private readonly workflowPaths: WorkflowPathRepository,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
+    private readonly assignees: AssigneeResolver,
+    private readonly notifier: NotificationEmitter,
   ) {}
 
   async execute(
@@ -72,12 +78,48 @@ export class StartRequestWorkflowHandler
       }),
     )
 
+    // Auto-route: pick one owner per step from its assignee strategy. Steps we
+    // cannot resolve are left unassigned for an admin to pick up manually.
+    const assignments = await this.assignees.resolveForPath(
+      path,
+      request.requesterId,
+    )
+    let assignedStepCount = 0
+    for (const instance of stepInstances) {
+      const assignee = assignments.get(instance.workflowStepId.toString())
+      if (assignee) {
+        instance.assignTo(assignee)
+        assignedStepCount++
+      }
+    }
+
     request.startWorkflow(path.id, stepInstances)
     await this.requests.save(request)
+
+    // Everyone who was auto-routed a step hears about it, and the requester is
+    // told their request is now moving.
+    for (const instance of stepInstances) {
+      const assignee = instance.assignedToUserId
+      if (!assignee) continue
+      await this.notifier.stepAssigned({
+        assigneeUserId: assignee.toString(),
+        requestId: request.id.toString(),
+        referenceNo: request.referenceNo,
+      })
+    }
+    await this.notifier.requestStateChanged({
+      userId: request.requesterId.toString(),
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+      status: request.status,
+    })
+
     return {
       id: request.id.toString(),
       workflowPathId: path.id.toString(),
       stepCount: stepInstances.length,
+      assignedStepCount,
+      unassignedStepCount: stepInstances.length - assignedStepCount,
     }
   }
 }

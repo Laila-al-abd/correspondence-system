@@ -3,7 +3,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { Priority } from '../../../../domain/request/enums'
 import { Identifier } from '../../../../domain/shared/identifier'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
-import { REQUEST_REPOSITORY } from '../../../tokens'
+import { REQUEST_REPOSITORY, TEMPLATE_REPOSITORY } from '../../../tokens'
+import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
 import { EntityNotFoundError } from '../../../errors'
 import { ClassifyRequestByHumanCommand } from './classify-request-by-human.command'
 
@@ -23,6 +24,7 @@ export class ClassifyRequestByHumanHandler
 {
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
   ) {}
 
   async execute({
@@ -30,6 +32,11 @@ export class ClassifyRequestByHumanHandler
   }: ClassifyRequestByHumanCommand): Promise<HumanClassificationResult> {
     const request = await this.requests.findById(Identifier.of(input.requestId))
     if (!request) throw new EntityNotFoundError('Request', input.requestId)
+
+    const template = await this.templates.findById(
+      Identifier.of(input.templateId),
+    )
+    if (!template) throw new EntityNotFoundError('Template', input.templateId)
 
     request.classifyByHuman(
       Identifier.of(input.templateId),

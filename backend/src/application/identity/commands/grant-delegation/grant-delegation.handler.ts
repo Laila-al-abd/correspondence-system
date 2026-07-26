@@ -17,6 +17,7 @@ import {
   USER_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { GrantDelegationCommand } from './grant-delegation.command'
 
 /**
@@ -36,6 +37,7 @@ export class GrantDelegationHandler
     @Inject(DELEGATION_QUERY)
     private readonly delegationView: DelegationQueryPort,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
+    private readonly notifier: NotificationEmitter,
   ) {}
 
   async execute({ input }: GrantDelegationCommand): Promise<DelegationView> {
@@ -59,6 +61,16 @@ export class GrantDelegationHandler
     const view = await this.delegationView.getById(delegation.id.toString())
     if (!view)
       throw new EntityNotFoundError('Delegation', delegation.id.toString())
+
+    await this.notifier.delegationGranted({
+      delegatorId: view.delegatorId,
+      delegateId: view.delegateId,
+      delegatorName: view.delegatorName.en ?? view.delegatorName.ar,
+      delegateName: view.delegateName.en ?? view.delegateName.ar,
+      startDate: view.startDate,
+      endDate: view.endDate,
+    })
+
     return view
   }
 }
