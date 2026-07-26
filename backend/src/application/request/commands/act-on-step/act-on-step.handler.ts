@@ -13,6 +13,7 @@ import {
   REQUEST_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
+import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { ActOnStepCommand, StepActionKind } from './act-on-step.command'
 
 export interface ActOnStepResult {
@@ -37,6 +38,7 @@ export class ActOnStepHandler
     @Inject(REQUEST_ACTION_REPOSITORY)
     private readonly actions: RequestActionRepository,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
+    private readonly notifier: NotificationEmitter,
   ) {}
 
   async execute({ input }: ActOnStepCommand): Promise<ActOnStepResult> {
@@ -53,6 +55,8 @@ export class ActOnStepHandler
       throw new ForbiddenActionError(
         'You can only act on steps assigned to you.',
       )
+
+    const statusBefore = request.status
 
     switch (input.action) {
       case StepActionKind.START:
@@ -91,6 +95,27 @@ export class ActOnStepHandler
     }
 
     await this.requests.save(request)
+
+    // Tell the owner what happened. Notifying is best-effort inside the
+    // emitter, so a notification failure can never undo the decision above.
+    const requesterId = request.requesterId.toString()
+    await this.notifier.actionTaken({
+      userId: requesterId,
+      actorId: input.actorId,
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+      action: input.action,
+    })
+    if (request.status !== statusBefore) {
+      await this.notifier.requestStateChanged({
+        userId: requesterId,
+        actorId: input.actorId,
+        requestId: request.id.toString(),
+        referenceNo: request.referenceNo,
+        status: request.status,
+      })
+    }
+
     return {
       stepInstanceId: step.id.toString(),
       stepStatus: step.status,

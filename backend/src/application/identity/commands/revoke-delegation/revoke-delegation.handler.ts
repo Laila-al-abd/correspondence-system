@@ -8,6 +8,7 @@ import type {
 import { Identifier } from '../../../../domain/shared/identifier'
 import { DELEGATION_QUERY, DELEGATION_REPOSITORY } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { RevokeDelegationCommand } from './revoke-delegation.command'
 
 /**
@@ -23,6 +24,7 @@ export class RevokeDelegationHandler
     private readonly delegations: DelegationRepository,
     @Inject(DELEGATION_QUERY)
     private readonly delegationView: DelegationQueryPort,
+    private readonly notifier: NotificationEmitter,
   ) {}
 
   async execute({
@@ -38,6 +40,14 @@ export class RevokeDelegationHandler
 
     const view = await this.delegationView.getById(delegationId)
     if (!view) throw new EntityNotFoundError('Delegation', delegationId)
+
+    await this.notifier.delegationRevoked({
+      delegatorId: view.delegatorId,
+      delegateId: view.delegateId,
+      delegatorName: view.delegatorName.en ?? view.delegatorName.ar,
+      delegateName: view.delegateName.en ?? view.delegateName.ar,
+    })
+
     return view
   }
 }

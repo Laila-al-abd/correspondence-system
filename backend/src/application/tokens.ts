@@ -39,6 +39,7 @@ export const WORKFLOW_PATH_REPOSITORY = Symbol('WorkflowPathRepository')
 
 // request
 export const REQUEST_REPOSITORY = Symbol('RequestRepository')
+export const ASSIGNEE_DIRECTORY = Symbol('AssigneeDirectory')
 export const REQUEST_ACTION_REPOSITORY = Symbol('RequestActionRepository')
 export const PAYMENT_REPOSITORY = Symbol('PaymentRepository')
 export const DOCUMENT_REPOSITORY = Symbol('DocumentRepository')
@@ -47,6 +48,8 @@ export const REFERENCE_NUMBER_GENERATOR = Symbol('ReferenceNumberGenerator')
 // observability
 export const EVENT_LOG_REPOSITORY = Symbol('EventLogRepository')
 export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepository')
+export const NOTIFICATION_AUDIENCE = Symbol('NotificationAudience')
+export const NOTIFICATION_STREAM = Symbol('NotificationStream')
 export const ML_PREDICTION_REPOSITORY = Symbol('MlPredictionRepository')
 export const ACADEMIC_CALENDAR_REPOSITORY = Symbol('AcademicCalendarRepository')
 export const SYSTEM_SETTING_REPOSITORY = Symbol('SystemSettingRepository')
