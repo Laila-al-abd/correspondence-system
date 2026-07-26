@@ -31,11 +31,24 @@ export class PrismaNotificationRepository implements NotificationRepository {
     return rows.map((row) => NotificationMapper.toDomain(row))
   }
 
+  async countUnread(userId: Identifier): Promise<number> {
+    return this.prisma.notification.count({
+      where: { userId: BigInt(userId.toString()), isRead: false },
+    })
+  }
+
   async markAllRead(userId: Identifier): Promise<void> {
     await this.prisma.notification.updateMany({
       where: { userId: BigInt(userId.toString()), isRead: false },
       data: { isRead: true },
     })
+  }
+
+  async deleteOlderThan(cutoff: Date): Promise<number> {
+    const { count } = await this.prisma.notification.deleteMany({
+      where: { createdAt: { lt: cutoff } },
+    })
+    return count
   }
 
   async save(notification: Notification): Promise<void> {
