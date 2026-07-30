@@ -10,6 +10,7 @@ import { PrismaSystemSettingRepository } from '../../infrastructure/observabilit
 import { NotificationRetentionService } from '../../infrastructure/observability/notification-retention.service'
 import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
 import { NotificationEmitter } from '../../application/observability/services/notification-emitter'
+import { BusinessHoursService } from '../../application/observability/services/business-hours.service'
 import { ListMyNotificationsHandler } from '../../application/observability/queries/list-my-notifications/list-my-notifications.handler'
 import { CountUnreadNotificationsHandler } from '../../application/observability/queries/count-unread-notifications/count-unread-notifications.handler'
 import { MarkNotificationReadHandler } from '../../application/observability/commands/mark-notification-read/mark-notification-read.handler'
@@ -53,6 +54,7 @@ const handlers = [
   providers: [
     ...handlers,
     NotificationEmitter,
+    BusinessHoursService,
     NotificationRetentionService,
     { provide: EVENT_LOG_REPOSITORY, useClass: PrismaEventLogRepository },
     {
@@ -82,6 +84,7 @@ const handlers = [
     ACADEMIC_CALENDAR_REPOSITORY,
     SYSTEM_SETTING_REPOSITORY,
     NotificationEmitter,
+    BusinessHoursService,
   ],
 })
 export class ObservabilityModule {}
