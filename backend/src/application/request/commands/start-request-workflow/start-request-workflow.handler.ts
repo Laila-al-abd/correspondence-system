@@ -15,8 +15,7 @@ import { EntityNotFoundError } from '../../../errors'
 import { StartRequestWorkflowCommand } from './start-request-workflow.command'
 import { AssigneeResolver } from '../../services/assignee-resolver'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
-
-const MS_PER_HOUR = 60 * 60 * 1000
+import { BusinessHoursService } from '../../../observability/services/business-hours.service'
 
 export interface StartWorkflowResult {
   id: string
@@ -43,6 +42,7 @@ export class StartRequestWorkflowHandler
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
     private readonly assignees: AssigneeResolver,
     private readonly notifier: NotificationEmitter,
+    private readonly businessHours: BusinessHoursService,
   ) {}
 
   async execute(
@@ -66,17 +66,26 @@ export class StartRequestWorkflowHandler
         templateId.toString(),
       )
 
-    const now = Date.now()
-    const stepInstances = path.steps.map((step) =>
-      RequestStepInstance.create(this.ids.next(), {
-        requestId: request.id,
-        workflowStepId: step.id,
-        slaDueAt:
-          step.slaHours !== undefined
-            ? new Date(now + step.slaHours * MS_PER_HOUR)
-            : undefined,
-      }),
-    )
+    // SLA clocks run in *working* hours, not wall-clock hours: a 48-hour step
+    // started on Thursday afternoon is due two working days later, not on
+    // Saturday when nobody is in. The same service backs the working-hours
+    // guard and the LSTM's elapsed-time features, so all three agree on whether
+    // a weekend counted.
+    const startedAt = new Date()
+    const stepInstances: RequestStepInstance[] = []
+    for (const step of path.steps) {
+      const slaDueAt =
+        step.slaHours !== undefined
+          ? await this.businessHours.addWorkingHours(startedAt, step.slaHours)
+          : undefined
+      stepInstances.push(
+        RequestStepInstance.create(this.ids.next(), {
+          requestId: request.id,
+          workflowStepId: step.id,
+          slaDueAt,
+        }),
+      )
+    }
 
     // Auto-route: pick one owner per step from its assignee strategy. Steps we
     // cannot resolve are left unassigned for an admin to pick up manually.
