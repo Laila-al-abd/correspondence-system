@@ -36,6 +36,7 @@ import { UsersController } from './users.controller'
 import { OrganizationModule } from '../organization/organization.module'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { PermissionsGuard } from './permissions.guard'
+import { WorkingHoursGuard } from './working-hours.guard'
 import { GetEffectivePermissionsHandler } from '../../application/identity/queries/get-effective-permissions/get-effective-permissions.handler'
 import { GrantDelegationHandler } from '../../application/identity/commands/grant-delegation/grant-delegation.handler'
 import { RevokeDelegationHandler } from '../../application/identity/commands/revoke-delegation/revoke-delegation.handler'
@@ -69,9 +70,12 @@ import { ObservabilityModule } from '../observability/observability.module'
     ListDelegationsHandler,
     GetDelegationHandler,
     PermissionsGuard,
+    WorkingHoursGuard,
     { provide: ACCESS_TOKEN_SERVICE, useClass: JwtAccessTokenService },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: PermissionsGuard },
+    // Runs last: permission failures should be reported before opening hours.
+    { provide: APP_GUARD, useClass: WorkingHoursGuard },
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     { provide: USER_QUERY, useClass: PrismaUserQuery },
     { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
