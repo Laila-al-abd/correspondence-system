@@ -10,6 +10,7 @@ import { REQUEST_REPOSITORY, TEMPLATE_REPOSITORY } from '../../../tokens'
 import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
 import { EntityNotFoundError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
+import { TemplateSubmissionPolicy } from '../../services/template-submission-policy'
 import { ClassifyRequestByModelCommand } from './classify-request-by-model.command'
 
 export interface ClassificationResult {
@@ -30,6 +31,7 @@ export class ClassifyRequestByModelHandler
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
     @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
     private readonly notifier: NotificationEmitter,
+    private readonly submissionPolicy: TemplateSubmissionPolicy,
   ) {}
 
   async execute({
@@ -42,6 +44,10 @@ export class ClassifyRequestByModelHandler
       Identifier.of(input.templateId),
     )
     if (!template) throw new EntityNotFoundError('Template', input.templateId)
+
+    // Eligibility and form validity are checked here because this is the first
+    // moment the template -- and therefore the rules -- are known.
+    await this.submissionPolicy.assertMayBeClassifiedAs(request, template)
 
     request.classifyByModel(
       Identifier.of(input.templateId),

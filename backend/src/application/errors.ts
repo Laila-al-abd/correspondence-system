@@ -84,3 +84,33 @@ export class UpstreamUnavailableError extends ApplicationError {
     super(message)
   }
 }
+
+export class NotEligibleError extends ApplicationError {
+  readonly code = 'NOT_ELIGIBLE'
+  readonly status = 403
+  constructor(
+    readonly unmetRules: Array<{
+      attributeCode?: string
+      operator: string
+      value: unknown
+    }>,
+  ) {
+    super(
+      `You do not meet the requirements for this request type: ${unmetRules
+        .map((rule) => rule.attributeCode ?? 'an unnamed attribute')
+        .join(', ')}`,
+    )
+  }
+}
+
+export class FilledDataInvalidError extends ApplicationError {
+  readonly code = 'FILLED_DATA_INVALID'
+  readonly status = 400
+  constructor(readonly violations: Array<{ fieldKey: string; reason: string }>) {
+    super(
+      `The submitted form data does not match the template: ${violations
+        .map((violation) => `${violation.fieldKey} -- ${violation.reason}`)
+        .join('; ')}`,
+    )
+  }
+}
