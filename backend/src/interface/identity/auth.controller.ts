@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { RegisterUserCommand } from '../../application/identity/commands/register-user/register-user.command'
 import {
@@ -19,10 +27,23 @@ export class AuthController {
     private readonly queryBus: QueryBus,
   ) {}
 
+  /**
+   * Public self-registration for external applicants only.
+   *
+   * Answers 202 Accepted with a fixed message whether or not the address was
+   * already registered, so the endpoint cannot be used to discover which
+   * email addresses have accounts.
+   */
   @Public()
   @Post('register')
-  register(@Body() dto: RegisterUserDto) {
-    return this.commandBus.execute(new RegisterUserCommand(dto))
+  @HttpCode(HttpStatus.ACCEPTED)
+  async register(@Body() dto: RegisterUserDto) {
+    await this.commandBus.execute(new RegisterUserCommand(dto))
+    return {
+      status: 'accepted',
+      message:
+        'If the address is not already registered, the account has been created. You can now sign in.',
+    }
   }
 
   @Public()

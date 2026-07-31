@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common'
+import { Inject, Logger } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { User } from '../../../../domain/identity/user'
 import {
@@ -7,33 +7,40 @@ import {
   UserType,
 } from '../../../../domain/identity/enums'
 import { Email } from '../../../../domain/identity/value-objects/email'
-import { InstitutionalNumber } from '../../../../domain/identity/value-objects/institutional-number'
 import { PersonName } from '../../../../domain/identity/value-objects/person-name'
 import type { UserRepository } from '../../../../domain/identity/ports/user.repository'
 import type { PasswordHasher } from '../../../../domain/identity/ports/password-hasher'
-import { InvariantViolationError } from '../../../../domain/shared/domain-error'
-import { Identifier } from '../../../../domain/shared/identifier'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
 import {
   ID_GENERATOR,
   PASSWORD_HASHER,
   USER_REPOSITORY,
 } from '../../../tokens'
-import {
-  EmailAlreadyInUseError,
-  InstitutionalNumberAlreadyInUseError,
-} from '../../../errors'
 import { RegisterUserCommand } from './register-user.command'
 
+/**
+ * Deliberately says nothing about the account. See the handler comment on
+ * enumeration below.
+ */
 export interface RegisterUserResult {
-  id: string
-  email: string
+  accepted: true
 }
 
+/**
+ * Creates an external applicant account.
+ *
+ * Everything that carries privilege is fixed here rather than taken from the
+ * request body: the account is always an APPLICANT, always LOCAL (email +
+ * password), always without an institutional number or department. That is
+ * what stops an anonymous caller from registering themselves as staff and
+ * then being routed work.
+ */
 @CommandHandler(RegisterUserCommand)
 export class RegisterUserHandler
   implements ICommandHandler<RegisterUserCommand, RegisterUserResult>
 {
+  private readonly logger = new Logger(RegisterUserHandler.name)
+
   constructor(
     @Inject(USER_REPOSITORY) private readonly users: UserRepository,
     @Inject(PASSWORD_HASHER) private readonly hasher: PasswordHasher,
@@ -42,46 +49,36 @@ export class RegisterUserHandler
 
   async execute({ input }: RegisterUserCommand): Promise<RegisterUserResult> {
     const email = Email.create(input.email)
+
+    // Account enumeration: returning 409 "email already in use" to an
+    // anonymous caller confirms which addresses are registered, which is
+    // exactly what a credential-stuffing script wants. The response is the
+    // same either way; the duplicate is only recorded in the server log.
     if (await this.users.findByEmail(email)) {
-      throw new EmailAlreadyInUseError(email.value)
+      this.logger.warn(
+        `Registration attempt for an address that already exists: ${email.value}`,
+      )
+      return { accepted: true }
     }
 
     const name = PersonName.create(input.fullNameAr, input.fullNameEn)
-    const institutionalNumber = input.institutionalNumber
-      ? InstitutionalNumber.create(input.institutionalNumber)
-      : undefined
-    if (
-      institutionalNumber &&
-      (await this.users.findByInstitutionalNumber(institutionalNumber))
-    ) {
-      throw new InstitutionalNumberAlreadyInUseError(institutionalNumber.value)
-    }
-
-    let passwordHash: string | undefined
-    if (input.authProvider === 'LOCAL') {
-      if (!input.password) {
-        throw new InvariantViolationError('LOCAL auth requires a password.')
-      }
-      passwordHash = await this.hasher.hash(input.password)
-    }
+    const passwordHash = await this.hasher.hash(input.password)
 
     const user = User.create(this.ids.next(), {
-      type: input.type as UserType,
+      type: UserType.APPLICANT,
       name,
       email,
       phone: input.phone,
-      institutionalNumber,
+      institutionalNumber: undefined,
       passwordHash,
-      authProvider: input.authProvider,
+      authProvider: 'LOCAL',
       applicantPurpose: input.applicantPurpose as ApplicantPurpose | undefined,
-      departmentId: input.departmentId
-        ? Identifier.of(input.departmentId)
-        : undefined,
+      departmentId: undefined,
       preferredLang: input.preferredLang ?? 'ar',
       status: UserStatus.ACTIVE,
     })
 
     await this.users.save(user)
-    return { id: user.id.toString(), email: email.value }
+    return { accepted: true }
   }
 }
