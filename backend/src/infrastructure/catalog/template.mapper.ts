@@ -72,13 +72,13 @@ export const TemplateMapper = {
   toRoot(template: Template): Prisma.TemplateUncheckedCreateInput {
     const s = template.snapshot()
     return {
-      id: BigInt(template.id.toString()),
-      categoryId: BigInt(s.categoryId),
+      id: template.id.toString(),
+      categoryId: s.categoryId,
       title: s.title as Prisma.InputJsonValue,
       description: s.description
         ? (s.description as Prisma.InputJsonValue)
         : Prisma.JsonNull,
-      sensitivityLevelId: BigInt(s.sensitivityLevelId),
+      sensitivityLevelId: s.sensitivityLevelId,
       isActive: s.isActive,
     }
   },

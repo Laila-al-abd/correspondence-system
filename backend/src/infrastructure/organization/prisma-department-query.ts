@@ -28,7 +28,7 @@ export class PrismaDepartmentQuery implements DepartmentQueryPort {
   async list(filter: ListDepartmentsFilter): Promise<DepartmentView[]> {
     const where: Prisma.DepartmentWhereInput = { deletedAt: null }
     if (filter.activeOnly) where.isActive = true
-    if (filter.parentId) where.parentId = BigInt(filter.parentId)
+    if (filter.parentId) where.parentId = filter.parentId
     if (filter.search) {
       const term = filter.search
       where.OR = [
@@ -46,7 +46,7 @@ export class PrismaDepartmentQuery implements DepartmentQueryPort {
 
   async getById(id: string): Promise<DepartmentView | null> {
     const row = await this.prisma.department.findFirst({
-      where: { id: BigInt(id), deletedAt: null },
+      where: { id: id, deletedAt: null },
       include: { unitType: true },
     })
     return row ? toView(row) : null

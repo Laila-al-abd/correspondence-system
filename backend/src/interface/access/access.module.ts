@@ -10,7 +10,7 @@ import { ListAttributeDefinitionsHandler } from '../../application/access/querie
 import { AddEligibilityRuleHandler } from '../../application/access/commands/add-eligibility-rule/add-eligibility-rule.handler'
 import { RemoveEligibilityRuleHandler } from '../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.handler'
 import { ListEligibilityRulesHandler } from '../../application/access/queries/list-eligibility-rules/list-eligibility-rules.handler'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import {
   ATTRIBUTE_DEFINITION_REPOSITORY,
   ID_GENERATOR,
@@ -40,7 +40,7 @@ const handlers = [
   providers: [
     ...handlers,
     { provide: TEMPLATE_REPOSITORY, useClass: PrismaTemplateRepository },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
     {
       provide: ATTRIBUTE_DEFINITION_REPOSITORY,
       useClass: PrismaAttributeDefinitionRepository,

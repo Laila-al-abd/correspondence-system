@@ -24,8 +24,8 @@ export class PrismaDelegationQuery implements DelegationQueryPort {
 
   async list(filter: ListDelegationsFilter): Promise<DelegationView[]> {
     const where: Prisma.DelegationWhereInput = { deletedAt: null }
-    if (filter.delegatorId) where.delegatorId = BigInt(filter.delegatorId)
-    if (filter.delegateId) where.delegateId = BigInt(filter.delegateId)
+    if (filter.delegatorId) where.delegatorId = filter.delegatorId
+    if (filter.delegateId) where.delegateId = filter.delegateId
     if (filter.activeOnly) where.isActive = true
     if (filter.onDate) {
       const day = new Date(filter.onDate)
@@ -43,7 +43,7 @@ export class PrismaDelegationQuery implements DelegationQueryPort {
 
   async getById(id: string): Promise<DelegationView | null> {
     const row = await this.prisma.delegation.findFirst({
-      where: { id: BigInt(id), deletedAt: null },
+      where: { id: id, deletedAt: null },
       include: withUsers,
     })
     return row ? toView(row) : null

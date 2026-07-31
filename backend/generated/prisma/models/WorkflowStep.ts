@@ -27,55 +27,41 @@ export type AggregateWorkflowStep = {
 }
 
 export type WorkflowStepAvgAggregateOutputType = {
-  id: number | null
-  workflowPathId: number | null
-  assigneeRoleId: number | null
-  assigneeDepartmentId: number | null
-  defaultActionTypeId: number | null
   slaHours: runtime.Decimal | null
-  createdBy: number | null
-  updatedBy: number | null
 }
 
 export type WorkflowStepSumAggregateOutputType = {
-  id: bigint | null
-  workflowPathId: bigint | null
-  assigneeRoleId: bigint | null
-  assigneeDepartmentId: bigint | null
-  defaultActionTypeId: bigint | null
   slaHours: runtime.Decimal | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type WorkflowStepMinAggregateOutputType = {
   updatedAt: Date | null
-  id: bigint | null
-  workflowPathId: bigint | null
+  id: string | null
+  workflowPathId: string | null
   assigneeType: string | null
-  assigneeRoleId: bigint | null
-  assigneeDepartmentId: bigint | null
-  defaultActionTypeId: bigint | null
+  assigneeRoleId: string | null
+  assigneeDepartmentId: string | null
+  defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean | null
   createdAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type WorkflowStepMaxAggregateOutputType = {
   updatedAt: Date | null
-  id: bigint | null
-  workflowPathId: bigint | null
+  id: string | null
+  workflowPathId: string | null
   assigneeType: string | null
-  assigneeRoleId: bigint | null
-  assigneeDepartmentId: bigint | null
-  defaultActionTypeId: bigint | null
+  assigneeRoleId: string | null
+  assigneeDepartmentId: string | null
+  defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean | null
   createdAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type WorkflowStepCountAggregateOutputType = {
@@ -98,25 +84,11 @@ export type WorkflowStepCountAggregateOutputType = {
 
 
 export type WorkflowStepAvgAggregateInputType = {
-  id?: true
-  workflowPathId?: true
-  assigneeRoleId?: true
-  assigneeDepartmentId?: true
-  defaultActionTypeId?: true
   slaHours?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type WorkflowStepSumAggregateInputType = {
-  id?: true
-  workflowPathId?: true
-  assigneeRoleId?: true
-  assigneeDepartmentId?: true
-  defaultActionTypeId?: true
   slaHours?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type WorkflowStepMinAggregateInputType = {
@@ -255,19 +227,19 @@ export type WorkflowStepGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type WorkflowStepGroupByOutputType = {
   updatedAt: Date
-  id: bigint
-  workflowPathId: bigint
+  id: string
+  workflowPathId: string
   name: runtime.JsonValue
   description: runtime.JsonValue | null
   assigneeType: string
-  assigneeRoleId: bigint | null
-  assigneeDepartmentId: bigint | null
-  defaultActionTypeId: bigint | null
+  assigneeRoleId: string | null
+  assigneeDepartmentId: string | null
+  defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean
   createdAt: Date
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: WorkflowStepCountAggregateOutputType | null
   _avg: WorkflowStepAvgAggregateOutputType | null
   _sum: WorkflowStepSumAggregateOutputType | null
@@ -295,19 +267,19 @@ export type WorkflowStepWhereInput = {
   OR?: Prisma.WorkflowStepWhereInput[]
   NOT?: Prisma.WorkflowStepWhereInput | Prisma.WorkflowStepWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  id?: Prisma.BigIntFilter<"WorkflowStep"> | bigint | number
-  workflowPathId?: Prisma.BigIntFilter<"WorkflowStep"> | bigint | number
+  id?: Prisma.UuidFilter<"WorkflowStep"> | string
+  workflowPathId?: Prisma.UuidFilter<"WorkflowStep"> | string
   name?: Prisma.JsonFilter<"WorkflowStep">
   description?: Prisma.JsonNullableFilter<"WorkflowStep">
   assigneeType?: Prisma.StringFilter<"WorkflowStep"> | string
-  assigneeRoleId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  assigneeDepartmentId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  defaultActionTypeId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  assigneeRoleId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  assigneeDepartmentId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   workflowPath?: Prisma.XOR<Prisma.WorkflowPathScalarRelationFilter, Prisma.WorkflowPathWhereInput>
   assigneeRole?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null
   assigneeDepartment?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
@@ -344,23 +316,23 @@ export type WorkflowStepOrderByWithRelationInput = {
 }
 
 export type WorkflowStepWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.WorkflowStepWhereInput | Prisma.WorkflowStepWhereInput[]
   OR?: Prisma.WorkflowStepWhereInput[]
   NOT?: Prisma.WorkflowStepWhereInput | Prisma.WorkflowStepWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  workflowPathId?: Prisma.BigIntFilter<"WorkflowStep"> | bigint | number
+  workflowPathId?: Prisma.UuidFilter<"WorkflowStep"> | string
   name?: Prisma.JsonFilter<"WorkflowStep">
   description?: Prisma.JsonNullableFilter<"WorkflowStep">
   assigneeType?: Prisma.StringFilter<"WorkflowStep"> | string
-  assigneeRoleId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  assigneeDepartmentId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  defaultActionTypeId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  assigneeRoleId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  assigneeDepartmentId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   workflowPath?: Prisma.XOR<Prisma.WorkflowPathScalarRelationFilter, Prisma.WorkflowPathWhereInput>
   assigneeRole?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.RoleWhereInput> | null
   assigneeDepartment?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
@@ -398,32 +370,32 @@ export type WorkflowStepScalarWhereWithAggregatesInput = {
   OR?: Prisma.WorkflowStepScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WorkflowStepScalarWhereWithAggregatesInput | Prisma.WorkflowStepScalarWhereWithAggregatesInput[]
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowStep"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"WorkflowStep"> | bigint | number
-  workflowPathId?: Prisma.BigIntWithAggregatesFilter<"WorkflowStep"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"WorkflowStep"> | string
+  workflowPathId?: Prisma.UuidWithAggregatesFilter<"WorkflowStep"> | string
   name?: Prisma.JsonWithAggregatesFilter<"WorkflowStep">
   description?: Prisma.JsonNullableWithAggregatesFilter<"WorkflowStep">
   assigneeType?: Prisma.StringWithAggregatesFilter<"WorkflowStep"> | string
-  assigneeRoleId?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStep"> | bigint | number | null
-  assigneeDepartmentId?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStep"> | bigint | number | null
-  defaultActionTypeId?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStep"> | bigint | number | null
+  assigneeRoleId?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
+  assigneeDepartmentId?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
+  defaultActionTypeId?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableWithAggregatesFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolWithAggregatesFilter<"WorkflowStep"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowStep"> | Date | string
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStep"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"WorkflowStep"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
 }
 
 export type WorkflowStepCreateInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -436,19 +408,19 @@ export type WorkflowStepCreateInput = {
 
 export type WorkflowStepUncheckedCreateInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -457,15 +429,15 @@ export type WorkflowStepUncheckedCreateInput = {
 
 export type WorkflowStepUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -478,19 +450,19 @@ export type WorkflowStepUpdateInput = {
 
 export type WorkflowStepUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -499,49 +471,49 @@ export type WorkflowStepUncheckedUpdateInput = {
 
 export type WorkflowStepCreateManyInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type WorkflowStepUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowStepUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowStepListRelationFilter = {
@@ -572,14 +544,7 @@ export type WorkflowStepCountOrderByAggregateInput = {
 }
 
 export type WorkflowStepAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  workflowPathId?: Prisma.SortOrder
-  assigneeRoleId?: Prisma.SortOrder
-  assigneeDepartmentId?: Prisma.SortOrder
-  defaultActionTypeId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepMaxOrderByAggregateInput = {
@@ -613,14 +578,7 @@ export type WorkflowStepMinOrderByAggregateInput = {
 }
 
 export type WorkflowStepSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  workflowPathId?: Prisma.SortOrder
-  assigneeRoleId?: Prisma.SortOrder
-  assigneeDepartmentId?: Prisma.SortOrder
-  defaultActionTypeId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type WorkflowStepScalarRelationFilter = {
@@ -862,15 +820,15 @@ export type WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput = {
 
 export type WorkflowStepCreateWithoutAssigneeRoleInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
   defaultActionType?: Prisma.ActionTypeCreateNestedOneWithoutDefaultForStepsInput
@@ -882,18 +840,18 @@ export type WorkflowStepCreateWithoutAssigneeRoleInput = {
 
 export type WorkflowStepUncheckedCreateWithoutAssigneeRoleInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -931,32 +889,32 @@ export type WorkflowStepScalarWhereInput = {
   OR?: Prisma.WorkflowStepScalarWhereInput[]
   NOT?: Prisma.WorkflowStepScalarWhereInput | Prisma.WorkflowStepScalarWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  id?: Prisma.BigIntFilter<"WorkflowStep"> | bigint | number
-  workflowPathId?: Prisma.BigIntFilter<"WorkflowStep"> | bigint | number
+  id?: Prisma.UuidFilter<"WorkflowStep"> | string
+  workflowPathId?: Prisma.UuidFilter<"WorkflowStep"> | string
   name?: Prisma.JsonFilter<"WorkflowStep">
   description?: Prisma.JsonNullableFilter<"WorkflowStep">
   assigneeType?: Prisma.StringFilter<"WorkflowStep"> | string
-  assigneeRoleId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  assigneeDepartmentId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  defaultActionTypeId?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  assigneeRoleId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  assigneeDepartmentId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"WorkflowStep"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
 }
 
 export type WorkflowStepCreateWithoutAssigneeDepartmentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   defaultActionType?: Prisma.ActionTypeCreateNestedOneWithoutDefaultForStepsInput
@@ -968,18 +926,18 @@ export type WorkflowStepCreateWithoutAssigneeDepartmentInput = {
 
 export type WorkflowStepUncheckedCreateWithoutAssigneeDepartmentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -1014,15 +972,15 @@ export type WorkflowStepUpdateManyWithWhereWithoutAssigneeDepartmentInput = {
 
 export type WorkflowStepCreateWithoutDefaultActionTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -1034,18 +992,18 @@ export type WorkflowStepCreateWithoutDefaultActionTypeInput = {
 
 export type WorkflowStepUncheckedCreateWithoutDefaultActionTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -1080,15 +1038,15 @@ export type WorkflowStepUpdateManyWithWhereWithoutDefaultActionTypeInput = {
 
 export type WorkflowStepCreateWithoutWorkflowPathInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
   defaultActionType?: Prisma.ActionTypeCreateNestedOneWithoutDefaultForStepsInput
@@ -1100,18 +1058,18 @@ export type WorkflowStepCreateWithoutWorkflowPathInput = {
 
 export type WorkflowStepUncheckedCreateWithoutWorkflowPathInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -1146,15 +1104,15 @@ export type WorkflowStepUpdateManyWithWhereWithoutWorkflowPathInput = {
 
 export type WorkflowStepCreateWithoutAllowedActionsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -1166,19 +1124,19 @@ export type WorkflowStepCreateWithoutAllowedActionsInput = {
 
 export type WorkflowStepUncheckedCreateWithoutAllowedActionsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutWorkflowStepInput
@@ -1202,15 +1160,15 @@ export type WorkflowStepUpdateToOneWithWhereWithoutAllowedActionsInput = {
 
 export type WorkflowStepUpdateWithoutAllowedActionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -1222,19 +1180,19 @@ export type WorkflowStepUpdateWithoutAllowedActionsInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutAllowedActionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutWorkflowStepNestedInput
@@ -1242,15 +1200,15 @@ export type WorkflowStepUncheckedUpdateWithoutAllowedActionsInput = {
 
 export type WorkflowStepCreateWithoutDependenciesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -1262,19 +1220,19 @@ export type WorkflowStepCreateWithoutDependenciesInput = {
 
 export type WorkflowStepUncheckedCreateWithoutDependenciesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutWorkflowStepInput
@@ -1287,15 +1245,15 @@ export type WorkflowStepCreateOrConnectWithoutDependenciesInput = {
 
 export type WorkflowStepCreateWithoutDependentsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -1307,19 +1265,19 @@ export type WorkflowStepCreateWithoutDependentsInput = {
 
 export type WorkflowStepUncheckedCreateWithoutDependentsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutWorkflowStepInput
@@ -1343,15 +1301,15 @@ export type WorkflowStepUpdateToOneWithWhereWithoutDependenciesInput = {
 
 export type WorkflowStepUpdateWithoutDependenciesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -1363,19 +1321,19 @@ export type WorkflowStepUpdateWithoutDependenciesInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutDependenciesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutWorkflowStepNestedInput
@@ -1394,15 +1352,15 @@ export type WorkflowStepUpdateToOneWithWhereWithoutDependentsInput = {
 
 export type WorkflowStepUpdateWithoutDependentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -1414,19 +1372,19 @@ export type WorkflowStepUpdateWithoutDependentsInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutDependentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutWorkflowStepNestedInput
@@ -1434,15 +1392,15 @@ export type WorkflowStepUncheckedUpdateWithoutDependentsInput = {
 
 export type WorkflowStepCreateWithoutStepInstancesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowPath: Prisma.WorkflowPathCreateNestedOneWithoutStepsInput
   assigneeRole?: Prisma.RoleCreateNestedOneWithoutWorkflowStepsInput
   assigneeDepartment?: Prisma.DepartmentCreateNestedOneWithoutWorkflowStepsInput
@@ -1454,19 +1412,19 @@ export type WorkflowStepCreateWithoutStepInstancesInput = {
 
 export type WorkflowStepUncheckedCreateWithoutStepInstancesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutWorkflowStepInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedCreateNestedManyWithoutDependsOnInput
@@ -1490,15 +1448,15 @@ export type WorkflowStepUpdateToOneWithWhereWithoutStepInstancesInput = {
 
 export type WorkflowStepUpdateWithoutStepInstancesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -1510,19 +1468,19 @@ export type WorkflowStepUpdateWithoutStepInstancesInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutStepInstancesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -1530,31 +1488,31 @@ export type WorkflowStepUncheckedUpdateWithoutStepInstancesInput = {
 
 export type WorkflowStepCreateManyAssigneeRoleInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type WorkflowStepUpdateWithoutAssigneeRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
   defaultActionType?: Prisma.ActionTypeUpdateOneWithoutDefaultForStepsNestedInput
@@ -1566,18 +1524,18 @@ export type WorkflowStepUpdateWithoutAssigneeRoleInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutAssigneeRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -1586,47 +1544,47 @@ export type WorkflowStepUncheckedUpdateWithoutAssigneeRoleInput = {
 
 export type WorkflowStepUncheckedUpdateManyWithoutAssigneeRoleInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowStepCreateManyAssigneeDepartmentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type WorkflowStepUpdateWithoutAssigneeDepartmentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   defaultActionType?: Prisma.ActionTypeUpdateOneWithoutDefaultForStepsNestedInput
@@ -1638,18 +1596,18 @@ export type WorkflowStepUpdateWithoutAssigneeDepartmentInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutAssigneeDepartmentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -1658,47 +1616,47 @@ export type WorkflowStepUncheckedUpdateWithoutAssigneeDepartmentInput = {
 
 export type WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowStepCreateManyDefaultActionTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowPathId: bigint | number
+  id: string
+  workflowPathId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type WorkflowStepUpdateWithoutDefaultActionTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowPath?: Prisma.WorkflowPathUpdateOneRequiredWithoutStepsNestedInput
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
@@ -1710,18 +1668,18 @@ export type WorkflowStepUpdateWithoutDefaultActionTypeInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutDefaultActionTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -1730,47 +1688,47 @@ export type WorkflowStepUncheckedUpdateWithoutDefaultActionTypeInput = {
 
 export type WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowPathId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowPathId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowStepCreateManyWorkflowPathInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType: string
-  assigneeRoleId?: bigint | number | null
-  assigneeDepartmentId?: bigint | number | null
-  defaultActionTypeId?: bigint | number | null
+  assigneeRoleId?: string | null
+  assigneeDepartmentId?: string | null
+  defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
   createdAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type WorkflowStepUpdateWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeRole?: Prisma.RoleUpdateOneWithoutWorkflowStepsNestedInput
   assigneeDepartment?: Prisma.DepartmentUpdateOneWithoutWorkflowStepsNestedInput
   defaultActionType?: Prisma.ActionTypeUpdateOneWithoutDefaultForStepsNestedInput
@@ -1782,18 +1740,18 @@ export type WorkflowStepUpdateWithoutWorkflowPathInput = {
 
 export type WorkflowStepUncheckedUpdateWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedActions?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependencies?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutWorkflowStepNestedInput
   dependents?: Prisma.WorkflowStepDependencyUncheckedUpdateManyWithoutDependsOnNestedInput
@@ -1802,18 +1760,18 @@ export type WorkflowStepUncheckedUpdateWithoutWorkflowPathInput = {
 
 export type WorkflowStepUncheckedUpdateManyWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
-  assigneeRoleId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  assigneeDepartmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  defaultActionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assigneeRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1998,19 +1956,19 @@ export type $WorkflowStepPayload<ExtArgs extends runtime.Types.Extensions.Intern
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     updatedAt: Date
-    id: bigint
-    workflowPathId: bigint
+    id: string
+    workflowPathId: string
     name: runtime.JsonValue
     description: runtime.JsonValue | null
     assigneeType: string
-    assigneeRoleId: bigint | null
-    assigneeDepartmentId: bigint | null
-    defaultActionTypeId: bigint | null
+    assigneeRoleId: string | null
+    assigneeDepartmentId: string | null
+    defaultActionTypeId: string | null
     slaHours: runtime.Decimal | null
     pausesSla: boolean
     createdAt: Date
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["workflowStep"]>
   composites: {}
 }
@@ -2443,19 +2401,19 @@ export interface Prisma__WorkflowStepClient<T, Null = never, ExtArgs extends run
  */
 export interface WorkflowStepFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"WorkflowStep", 'DateTime'>
-  readonly id: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
-  readonly workflowPathId: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
+  readonly id: Prisma.FieldRef<"WorkflowStep", 'String'>
+  readonly workflowPathId: Prisma.FieldRef<"WorkflowStep", 'String'>
   readonly name: Prisma.FieldRef<"WorkflowStep", 'Json'>
   readonly description: Prisma.FieldRef<"WorkflowStep", 'Json'>
   readonly assigneeType: Prisma.FieldRef<"WorkflowStep", 'String'>
-  readonly assigneeRoleId: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
-  readonly assigneeDepartmentId: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
-  readonly defaultActionTypeId: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
+  readonly assigneeRoleId: Prisma.FieldRef<"WorkflowStep", 'String'>
+  readonly assigneeDepartmentId: Prisma.FieldRef<"WorkflowStep", 'String'>
+  readonly defaultActionTypeId: Prisma.FieldRef<"WorkflowStep", 'String'>
   readonly slaHours: Prisma.FieldRef<"WorkflowStep", 'Decimal'>
   readonly pausesSla: Prisma.FieldRef<"WorkflowStep", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WorkflowStep", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"WorkflowStep", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"WorkflowStep", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"WorkflowStep", 'String'>
 }
     
 

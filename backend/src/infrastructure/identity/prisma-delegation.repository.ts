@@ -12,7 +12,7 @@ export class PrismaDelegationRepository implements DelegationRepository {
 
   async findById(id: Identifier): Promise<Delegation | null> {
     const row = await this.prisma.delegation.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? DelegationMapper.toDomain(row) : null
   }
@@ -20,7 +20,7 @@ export class PrismaDelegationRepository implements DelegationRepository {
   async save(delegation: Delegation): Promise<void> {
     const data = DelegationMapper.toPersistence(delegation)
     await this.prisma.delegation.upsert({
-      where: { id: BigInt(delegation.id.toString()) },
+      where: { id: delegation.id.toString() },
       create: data,
       update: data,
     })
@@ -32,7 +32,7 @@ export class PrismaDelegationRepository implements DelegationRepository {
   ): Promise<Delegation | null> {
     const row = await this.prisma.delegation.findFirst({
       where: {
-        delegatorId: BigInt(delegatorId.toString()),
+        delegatorId: delegatorId.toString(),
         isActive: true,
         deletedAt: null,
         startDate: { lte: on },

@@ -25,8 +25,8 @@ export const MlPredictionMapper = {
   ): Prisma.MlPredictionUncheckedCreateInput {
     const s = prediction.snapshot()
     return {
-      id: BigInt(prediction.id.toString()),
-      requestId: BigInt(s.requestId),
+      id: prediction.id.toString(),
+      requestId: s.requestId,
       modelType: s.modelType,
       modelVersion: s.modelVersion,
       predictedValue: s.predictedValue as Prisma.InputJsonValue,

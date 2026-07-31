@@ -27,41 +27,33 @@ export type AggregateTemplateFieldOption = {
 }
 
 export type TemplateFieldOptionAvgAggregateOutputType = {
-  id: number | null
-  templateFieldId: number | null
   ordinal: number | null
-  createdBy: number | null
-  updatedBy: number | null
 }
 
 export type TemplateFieldOptionSumAggregateOutputType = {
-  id: bigint | null
-  templateFieldId: bigint | null
   ordinal: number | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type TemplateFieldOptionMinAggregateOutputType = {
-  id: bigint | null
-  templateFieldId: bigint | null
+  id: string | null
+  templateFieldId: string | null
   value: string | null
   ordinal: number | null
   createdAt: Date | null
   updatedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TemplateFieldOptionMaxAggregateOutputType = {
-  id: bigint | null
-  templateFieldId: bigint | null
+  id: string | null
+  templateFieldId: string | null
   value: string | null
   ordinal: number | null
   createdAt: Date | null
   updatedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TemplateFieldOptionCountAggregateOutputType = {
@@ -79,19 +71,11 @@ export type TemplateFieldOptionCountAggregateOutputType = {
 
 
 export type TemplateFieldOptionAvgAggregateInputType = {
-  id?: true
-  templateFieldId?: true
   ordinal?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type TemplateFieldOptionSumAggregateInputType = {
-  id?: true
-  templateFieldId?: true
   ordinal?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type TemplateFieldOptionMinAggregateInputType = {
@@ -216,15 +200,15 @@ export type TemplateFieldOptionGroupByArgs<ExtArgs extends runtime.Types.Extensi
 }
 
 export type TemplateFieldOptionGroupByOutputType = {
-  id: bigint
-  templateFieldId: bigint
+  id: string
+  templateFieldId: string
   value: string
   label: runtime.JsonValue
   ordinal: number
   createdAt: Date
   updatedAt: Date
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: TemplateFieldOptionCountAggregateOutputType | null
   _avg: TemplateFieldOptionAvgAggregateOutputType | null
   _sum: TemplateFieldOptionSumAggregateOutputType | null
@@ -251,15 +235,15 @@ export type TemplateFieldOptionWhereInput = {
   AND?: Prisma.TemplateFieldOptionWhereInput | Prisma.TemplateFieldOptionWhereInput[]
   OR?: Prisma.TemplateFieldOptionWhereInput[]
   NOT?: Prisma.TemplateFieldOptionWhereInput | Prisma.TemplateFieldOptionWhereInput[]
-  id?: Prisma.BigIntFilter<"TemplateFieldOption"> | bigint | number
-  templateFieldId?: Prisma.BigIntFilter<"TemplateFieldOption"> | bigint | number
+  id?: Prisma.UuidFilter<"TemplateFieldOption"> | string
+  templateFieldId?: Prisma.UuidFilter<"TemplateFieldOption"> | string
   value?: Prisma.StringFilter<"TemplateFieldOption"> | string
   label?: Prisma.JsonFilter<"TemplateFieldOption">
   ordinal?: Prisma.IntFilter<"TemplateFieldOption"> | number
   createdAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
   field?: Prisma.XOR<Prisma.TemplateFieldScalarRelationFilter, Prisma.TemplateFieldWhereInput>
 }
 
@@ -277,19 +261,19 @@ export type TemplateFieldOptionOrderByWithRelationInput = {
 }
 
 export type TemplateFieldOptionWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   templateFieldId_value?: Prisma.TemplateFieldOptionTemplateFieldIdValueCompoundUniqueInput
   AND?: Prisma.TemplateFieldOptionWhereInput | Prisma.TemplateFieldOptionWhereInput[]
   OR?: Prisma.TemplateFieldOptionWhereInput[]
   NOT?: Prisma.TemplateFieldOptionWhereInput | Prisma.TemplateFieldOptionWhereInput[]
-  templateFieldId?: Prisma.BigIntFilter<"TemplateFieldOption"> | bigint | number
+  templateFieldId?: Prisma.UuidFilter<"TemplateFieldOption"> | string
   value?: Prisma.StringFilter<"TemplateFieldOption"> | string
   label?: Prisma.JsonFilter<"TemplateFieldOption">
   ordinal?: Prisma.IntFilter<"TemplateFieldOption"> | number
   createdAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
   field?: Prisma.XOR<Prisma.TemplateFieldScalarRelationFilter, Prisma.TemplateFieldWhereInput>
 }, "id" | "templateFieldId_value">
 
@@ -314,98 +298,98 @@ export type TemplateFieldOptionScalarWhereWithAggregatesInput = {
   AND?: Prisma.TemplateFieldOptionScalarWhereWithAggregatesInput | Prisma.TemplateFieldOptionScalarWhereWithAggregatesInput[]
   OR?: Prisma.TemplateFieldOptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TemplateFieldOptionScalarWhereWithAggregatesInput | Prisma.TemplateFieldOptionScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"TemplateFieldOption"> | bigint | number
-  templateFieldId?: Prisma.BigIntWithAggregatesFilter<"TemplateFieldOption"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"TemplateFieldOption"> | string
+  templateFieldId?: Prisma.UuidWithAggregatesFilter<"TemplateFieldOption"> | string
   value?: Prisma.StringWithAggregatesFilter<"TemplateFieldOption"> | string
   label?: Prisma.JsonWithAggregatesFilter<"TemplateFieldOption">
   ordinal?: Prisma.IntWithAggregatesFilter<"TemplateFieldOption"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TemplateFieldOption"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TemplateFieldOption"> | Date | string
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateFieldOption"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateFieldOption"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"TemplateFieldOption"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"TemplateFieldOption"> | string | null
 }
 
 export type TemplateFieldOptionCreateInput = {
-  id?: bigint | number
+  id?: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   field: Prisma.TemplateFieldCreateNestedOneWithoutOptionsInput
 }
 
 export type TemplateFieldOptionUncheckedCreateInput = {
-  id?: bigint | number
-  templateFieldId: bigint | number
+  id?: string
+  templateFieldId: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateFieldOptionUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   field?: Prisma.TemplateFieldUpdateOneRequiredWithoutOptionsNestedInput
 }
 
 export type TemplateFieldOptionUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateFieldId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateFieldId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateFieldOptionCreateManyInput = {
-  id?: bigint | number
-  templateFieldId: bigint | number
+  id?: string
+  templateFieldId: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateFieldOptionUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateFieldOptionUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateFieldId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateFieldId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateFieldOptionListRelationFilter = {
@@ -419,7 +403,7 @@ export type TemplateFieldOptionOrderByRelationAggregateInput = {
 }
 
 export type TemplateFieldOptionTemplateFieldIdValueCompoundUniqueInput = {
-  templateFieldId: bigint | number
+  templateFieldId: string
   value: string
 }
 
@@ -436,11 +420,7 @@ export type TemplateFieldOptionCountOrderByAggregateInput = {
 }
 
 export type TemplateFieldOptionAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  templateFieldId?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldOptionMaxOrderByAggregateInput = {
@@ -466,11 +446,7 @@ export type TemplateFieldOptionMinOrderByAggregateInput = {
 }
 
 export type TemplateFieldOptionSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  templateFieldId?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type TemplateFieldOptionCreateNestedManyWithoutFieldInput = {
@@ -516,25 +492,25 @@ export type TemplateFieldOptionUncheckedUpdateManyWithoutFieldNestedInput = {
 }
 
 export type TemplateFieldOptionCreateWithoutFieldInput = {
-  id?: bigint | number
+  id?: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateFieldOptionUncheckedCreateWithoutFieldInput = {
-  id?: bigint | number
+  id?: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateFieldOptionCreateOrConnectWithoutFieldInput = {
@@ -567,59 +543,59 @@ export type TemplateFieldOptionScalarWhereInput = {
   AND?: Prisma.TemplateFieldOptionScalarWhereInput | Prisma.TemplateFieldOptionScalarWhereInput[]
   OR?: Prisma.TemplateFieldOptionScalarWhereInput[]
   NOT?: Prisma.TemplateFieldOptionScalarWhereInput | Prisma.TemplateFieldOptionScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"TemplateFieldOption"> | bigint | number
-  templateFieldId?: Prisma.BigIntFilter<"TemplateFieldOption"> | bigint | number
+  id?: Prisma.UuidFilter<"TemplateFieldOption"> | string
+  templateFieldId?: Prisma.UuidFilter<"TemplateFieldOption"> | string
   value?: Prisma.StringFilter<"TemplateFieldOption"> | string
   label?: Prisma.JsonFilter<"TemplateFieldOption">
   ordinal?: Prisma.IntFilter<"TemplateFieldOption"> | number
   createdAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateFieldOption"> | Date | string
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateFieldOption"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateFieldOption"> | string | null
 }
 
 export type TemplateFieldOptionCreateManyFieldInput = {
-  id?: bigint | number
+  id?: string
   value: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateFieldOptionUpdateWithoutFieldInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateFieldOptionUncheckedUpdateWithoutFieldInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateFieldOptionUncheckedUpdateManyWithoutFieldInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -692,15 +668,15 @@ export type $TemplateFieldOptionPayload<ExtArgs extends runtime.Types.Extensions
     field: Prisma.$TemplateFieldPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    templateFieldId: bigint
+    id: string
+    templateFieldId: string
     value: string
     label: runtime.JsonValue
     ordinal: number
     createdAt: Date
     updatedAt: Date
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["templateFieldOption"]>
   composites: {}
 }
@@ -1125,15 +1101,15 @@ export interface Prisma__TemplateFieldOptionClient<T, Null = never, ExtArgs exte
  * Fields of the TemplateFieldOption model
  */
 export interface TemplateFieldOptionFieldRefs {
-  readonly id: Prisma.FieldRef<"TemplateFieldOption", 'BigInt'>
-  readonly templateFieldId: Prisma.FieldRef<"TemplateFieldOption", 'BigInt'>
+  readonly id: Prisma.FieldRef<"TemplateFieldOption", 'String'>
+  readonly templateFieldId: Prisma.FieldRef<"TemplateFieldOption", 'String'>
   readonly value: Prisma.FieldRef<"TemplateFieldOption", 'String'>
   readonly label: Prisma.FieldRef<"TemplateFieldOption", 'Json'>
   readonly ordinal: Prisma.FieldRef<"TemplateFieldOption", 'Int'>
   readonly createdAt: Prisma.FieldRef<"TemplateFieldOption", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TemplateFieldOption", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"TemplateFieldOption", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"TemplateFieldOption", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"TemplateFieldOption", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"TemplateFieldOption", 'String'>
 }
     
 

@@ -26,10 +26,10 @@ export const DocumentMapper = {
   toPersistence(document: Document): Prisma.DocumentUncheckedCreateInput {
     const s = document.snapshot()
     return {
-      id: BigInt(document.id.toString()),
-      requestId: BigInt(s.requestId),
-      requestActionId: s.requestActionId ? BigInt(s.requestActionId) : null,
-      uploaderId: BigInt(s.uploaderId),
+      id: document.id.toString(),
+      requestId: s.requestId,
+      requestActionId: s.requestActionId ? s.requestActionId : null,
+      uploaderId: s.uploaderId,
       docKind: s.docKind,
       storageKey: s.storageKey,
       fileName: s.fileName,

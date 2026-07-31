@@ -20,47 +20,29 @@ export type UserRoleModel = runtime.Types.Result.DefaultSelection<Prisma.$UserRo
 
 export type AggregateUserRole = {
   _count: UserRoleCountAggregateOutputType | null
-  _avg: UserRoleAvgAggregateOutputType | null
-  _sum: UserRoleSumAggregateOutputType | null
   _min: UserRoleMinAggregateOutputType | null
   _max: UserRoleMaxAggregateOutputType | null
 }
 
-export type UserRoleAvgAggregateOutputType = {
-  id: number | null
-  userId: number | null
-  roleId: number | null
-  departmentId: number | null
-  assignedBy: number | null
-}
-
-export type UserRoleSumAggregateOutputType = {
-  id: bigint | null
-  userId: bigint | null
-  roleId: bigint | null
-  departmentId: bigint | null
-  assignedBy: bigint | null
-}
-
 export type UserRoleMinAggregateOutputType = {
-  id: bigint | null
-  userId: bigint | null
-  roleId: bigint | null
-  departmentId: bigint | null
+  id: string | null
+  userId: string | null
+  roleId: string | null
+  departmentId: string | null
   reason: string | null
   expiresAt: Date | null
-  assignedBy: bigint | null
+  assignedBy: string | null
   assignedAt: Date | null
 }
 
 export type UserRoleMaxAggregateOutputType = {
-  id: bigint | null
-  userId: bigint | null
-  roleId: bigint | null
-  departmentId: bigint | null
+  id: string | null
+  userId: string | null
+  roleId: string | null
+  departmentId: string | null
   reason: string | null
   expiresAt: Date | null
-  assignedBy: bigint | null
+  assignedBy: string | null
   assignedAt: Date | null
 }
 
@@ -76,22 +58,6 @@ export type UserRoleCountAggregateOutputType = {
   _all: number
 }
 
-
-export type UserRoleAvgAggregateInputType = {
-  id?: true
-  userId?: true
-  roleId?: true
-  departmentId?: true
-  assignedBy?: true
-}
-
-export type UserRoleSumAggregateInputType = {
-  id?: true
-  userId?: true
-  roleId?: true
-  departmentId?: true
-  assignedBy?: true
-}
 
 export type UserRoleMinAggregateInputType = {
   id?: true
@@ -165,18 +131,6 @@ export type UserRoleAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: UserRoleAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: UserRoleSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserRoleMinAggregateInputType
@@ -207,24 +161,20 @@ export type UserRoleGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: UserRoleCountAggregateInputType | true
-  _avg?: UserRoleAvgAggregateInputType
-  _sum?: UserRoleSumAggregateInputType
   _min?: UserRoleMinAggregateInputType
   _max?: UserRoleMaxAggregateInputType
 }
 
 export type UserRoleGroupByOutputType = {
-  id: bigint
-  userId: bigint
-  roleId: bigint
-  departmentId: bigint | null
+  id: string
+  userId: string
+  roleId: string
+  departmentId: string | null
   reason: string | null
   expiresAt: Date | null
-  assignedBy: bigint | null
+  assignedBy: string | null
   assignedAt: Date
   _count: UserRoleCountAggregateOutputType | null
-  _avg: UserRoleAvgAggregateOutputType | null
-  _sum: UserRoleSumAggregateOutputType | null
   _min: UserRoleMinAggregateOutputType | null
   _max: UserRoleMaxAggregateOutputType | null
 }
@@ -248,13 +198,13 @@ export type UserRoleWhereInput = {
   AND?: Prisma.UserRoleWhereInput | Prisma.UserRoleWhereInput[]
   OR?: Prisma.UserRoleWhereInput[]
   NOT?: Prisma.UserRoleWhereInput | Prisma.UserRoleWhereInput[]
-  id?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  userId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  roleId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  departmentId?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  id?: Prisma.UuidFilter<"UserRole"> | string
+  userId?: Prisma.UuidFilter<"UserRole"> | string
+  roleId?: Prisma.UuidFilter<"UserRole"> | string
+  departmentId?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   reason?: Prisma.StringNullableFilter<"UserRole"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserRole"> | Date | string | null
-  assignedBy?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  assignedBy?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"UserRole"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
@@ -278,17 +228,17 @@ export type UserRoleOrderByWithRelationInput = {
 }
 
 export type UserRoleWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   userId_roleId_departmentId_assignedAt?: Prisma.UserRoleUserIdRoleIdDepartmentIdAssignedAtCompoundUniqueInput
   AND?: Prisma.UserRoleWhereInput | Prisma.UserRoleWhereInput[]
   OR?: Prisma.UserRoleWhereInput[]
   NOT?: Prisma.UserRoleWhereInput | Prisma.UserRoleWhereInput[]
-  userId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  roleId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  departmentId?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  userId?: Prisma.UuidFilter<"UserRole"> | string
+  roleId?: Prisma.UuidFilter<"UserRole"> | string
+  departmentId?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   reason?: Prisma.StringNullableFilter<"UserRole"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserRole"> | Date | string | null
-  assignedBy?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  assignedBy?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"UserRole"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
@@ -306,28 +256,26 @@ export type UserRoleOrderByWithAggregationInput = {
   assignedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
   _count?: Prisma.UserRoleCountOrderByAggregateInput
-  _avg?: Prisma.UserRoleAvgOrderByAggregateInput
   _max?: Prisma.UserRoleMaxOrderByAggregateInput
   _min?: Prisma.UserRoleMinOrderByAggregateInput
-  _sum?: Prisma.UserRoleSumOrderByAggregateInput
 }
 
 export type UserRoleScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserRoleScalarWhereWithAggregatesInput | Prisma.UserRoleScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserRoleScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserRoleScalarWhereWithAggregatesInput | Prisma.UserRoleScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"UserRole"> | bigint | number
-  userId?: Prisma.BigIntWithAggregatesFilter<"UserRole"> | bigint | number
-  roleId?: Prisma.BigIntWithAggregatesFilter<"UserRole"> | bigint | number
-  departmentId?: Prisma.BigIntNullableWithAggregatesFilter<"UserRole"> | bigint | number | null
+  id?: Prisma.UuidWithAggregatesFilter<"UserRole"> | string
+  userId?: Prisma.UuidWithAggregatesFilter<"UserRole"> | string
+  roleId?: Prisma.UuidWithAggregatesFilter<"UserRole"> | string
+  departmentId?: Prisma.UuidNullableWithAggregatesFilter<"UserRole"> | string | null
   reason?: Prisma.StringNullableWithAggregatesFilter<"UserRole"> | string | null
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserRole"> | Date | string | null
-  assignedBy?: Prisma.BigIntNullableWithAggregatesFilter<"UserRole"> | bigint | number | null
+  assignedBy?: Prisma.UuidNullableWithAggregatesFilter<"UserRole"> | string | null
   assignedAt?: Prisma.DateTimeWithAggregatesFilter<"UserRole"> | Date | string
 }
 
 export type UserRoleCreateInput = {
-  id?: bigint | number
+  id?: string
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -338,18 +286,18 @@ export type UserRoleCreateInput = {
 }
 
 export type UserRoleUncheckedCreateInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -360,42 +308,42 @@ export type UserRoleUpdateInput = {
 }
 
 export type UserRoleUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleCreateManyInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -410,9 +358,9 @@ export type UserRoleOrderByRelationAggregateInput = {
 }
 
 export type UserRoleUserIdRoleIdDepartmentIdAssignedAtCompoundUniqueInput = {
-  userId: bigint | number
-  roleId: bigint | number
-  departmentId: bigint | number
+  userId: string
+  roleId: string
+  departmentId: string
   assignedAt: Date | string
 }
 
@@ -425,14 +373,6 @@ export type UserRoleCountOrderByAggregateInput = {
   expiresAt?: Prisma.SortOrder
   assignedBy?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
-}
-
-export type UserRoleAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
-  departmentId?: Prisma.SortOrder
-  assignedBy?: Prisma.SortOrder
 }
 
 export type UserRoleMaxOrderByAggregateInput = {
@@ -455,14 +395,6 @@ export type UserRoleMinOrderByAggregateInput = {
   expiresAt?: Prisma.SortOrder
   assignedBy?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
-}
-
-export type UserRoleSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
-  departmentId?: Prisma.SortOrder
-  assignedBy?: Prisma.SortOrder
 }
 
 export type UserRoleCreateNestedManyWithoutUserInput = {
@@ -634,7 +566,7 @@ export type UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput = {
 }
 
 export type UserRoleCreateWithoutUserInput = {
-  id?: bigint | number
+  id?: string
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -644,12 +576,12 @@ export type UserRoleCreateWithoutUserInput = {
 }
 
 export type UserRoleUncheckedCreateWithoutUserInput = {
-  id?: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
@@ -664,7 +596,7 @@ export type UserRoleCreateManyUserInputEnvelope = {
 }
 
 export type UserRoleCreateWithoutAssignerInput = {
-  id?: bigint | number
+  id?: string
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -674,10 +606,10 @@ export type UserRoleCreateWithoutAssignerInput = {
 }
 
 export type UserRoleUncheckedCreateWithoutAssignerInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -713,13 +645,13 @@ export type UserRoleScalarWhereInput = {
   AND?: Prisma.UserRoleScalarWhereInput | Prisma.UserRoleScalarWhereInput[]
   OR?: Prisma.UserRoleScalarWhereInput[]
   NOT?: Prisma.UserRoleScalarWhereInput | Prisma.UserRoleScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  userId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  roleId?: Prisma.BigIntFilter<"UserRole"> | bigint | number
-  departmentId?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  id?: Prisma.UuidFilter<"UserRole"> | string
+  userId?: Prisma.UuidFilter<"UserRole"> | string
+  roleId?: Prisma.UuidFilter<"UserRole"> | string
+  departmentId?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   reason?: Prisma.StringNullableFilter<"UserRole"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"UserRole"> | Date | string | null
-  assignedBy?: Prisma.BigIntNullableFilter<"UserRole"> | bigint | number | null
+  assignedBy?: Prisma.UuidNullableFilter<"UserRole"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"UserRole"> | Date | string
 }
 
@@ -740,7 +672,7 @@ export type UserRoleUpdateManyWithWhereWithoutAssignerInput = {
 }
 
 export type UserRoleCreateWithoutRoleInput = {
-  id?: bigint | number
+  id?: string
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -750,12 +682,12 @@ export type UserRoleCreateWithoutRoleInput = {
 }
 
 export type UserRoleUncheckedCreateWithoutRoleInput = {
-  id?: bigint | number
-  userId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
@@ -786,7 +718,7 @@ export type UserRoleUpdateManyWithWhereWithoutRoleInput = {
 }
 
 export type UserRoleCreateWithoutDepartmentInput = {
-  id?: bigint | number
+  id?: string
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
@@ -796,12 +728,12 @@ export type UserRoleCreateWithoutDepartmentInput = {
 }
 
 export type UserRoleUncheckedCreateWithoutDepartmentInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
+  id?: string
+  userId: string
+  roleId: string
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
@@ -832,27 +764,27 @@ export type UserRoleUpdateManyWithWhereWithoutDepartmentInput = {
 }
 
 export type UserRoleCreateManyUserInput = {
-  id?: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleCreateManyAssignerInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  roleId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleUpdateWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -862,27 +794,27 @@ export type UserRoleUpdateWithoutUserInput = {
 }
 
 export type UserRoleUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUpdateWithoutAssignerInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -892,37 +824,37 @@ export type UserRoleUpdateWithoutAssignerInput = {
 }
 
 export type UserRoleUncheckedUpdateWithoutAssignerInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUncheckedUpdateManyWithoutAssignerInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleCreateManyRoleInput = {
-  id?: bigint | number
-  userId: bigint | number
-  departmentId?: bigint | number | null
+  id?: string
+  userId: string
+  departmentId?: string | null
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleUpdateWithoutRoleInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -932,37 +864,37 @@ export type UserRoleUpdateWithoutRoleInput = {
 }
 
 export type UserRoleUncheckedUpdateWithoutRoleInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUncheckedUpdateManyWithoutRoleInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  departmentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleCreateManyDepartmentInput = {
-  id?: bigint | number
-  userId: bigint | number
-  roleId: bigint | number
+  id?: string
+  userId: string
+  roleId: string
   reason?: string | null
   expiresAt?: Date | string | null
-  assignedBy?: bigint | number | null
+  assignedBy?: string | null
   assignedAt?: Date | string
 }
 
 export type UserRoleUpdateWithoutDepartmentInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -972,22 +904,22 @@ export type UserRoleUpdateWithoutDepartmentInput = {
 }
 
 export type UserRoleUncheckedUpdateWithoutDepartmentInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserRoleUncheckedUpdateManyWithoutDepartmentInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  roleId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  assignedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  assignedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1078,13 +1010,13 @@ export type $UserRolePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     assigner: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    userId: bigint
-    roleId: bigint
-    departmentId: bigint | null
+    id: string
+    userId: string
+    roleId: string
+    departmentId: string | null
     reason: string | null
     expiresAt: Date | null
-    assignedBy: bigint | null
+    assignedBy: string | null
     assignedAt: Date
   }, ExtArgs["result"]["userRole"]>
   composites: {}
@@ -1513,13 +1445,13 @@ export interface Prisma__UserRoleClient<T, Null = never, ExtArgs extends runtime
  * Fields of the UserRole model
  */
 export interface UserRoleFieldRefs {
-  readonly id: Prisma.FieldRef<"UserRole", 'BigInt'>
-  readonly userId: Prisma.FieldRef<"UserRole", 'BigInt'>
-  readonly roleId: Prisma.FieldRef<"UserRole", 'BigInt'>
-  readonly departmentId: Prisma.FieldRef<"UserRole", 'BigInt'>
+  readonly id: Prisma.FieldRef<"UserRole", 'String'>
+  readonly userId: Prisma.FieldRef<"UserRole", 'String'>
+  readonly roleId: Prisma.FieldRef<"UserRole", 'String'>
+  readonly departmentId: Prisma.FieldRef<"UserRole", 'String'>
   readonly reason: Prisma.FieldRef<"UserRole", 'String'>
   readonly expiresAt: Prisma.FieldRef<"UserRole", 'DateTime'>
-  readonly assignedBy: Prisma.FieldRef<"UserRole", 'BigInt'>
+  readonly assignedBy: Prisma.FieldRef<"UserRole", 'String'>
   readonly assignedAt: Prisma.FieldRef<"UserRole", 'DateTime'>
 }
     

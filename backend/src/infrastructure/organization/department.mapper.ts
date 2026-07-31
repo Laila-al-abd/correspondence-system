@@ -38,9 +38,9 @@ export const DepartmentMapper = {
   toPersistence(department: Department): Prisma.DepartmentUncheckedCreateInput {
     const s = department.snapshot()
     return {
-      id: BigInt(department.id.toString()),
-      parentId: s.parentId ? BigInt(s.parentId) : null,
-      unitTypeId: BigInt(s.unitTypeId),
+      id: department.id.toString(),
+      parentId: s.parentId ? s.parentId : null,
+      unitTypeId: s.unitTypeId,
       name: s.name as Prisma.InputJsonValue,
       description: s.description
         ? (s.description as Prisma.InputJsonValue)

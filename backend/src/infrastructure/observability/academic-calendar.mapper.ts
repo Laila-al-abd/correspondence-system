@@ -31,7 +31,7 @@ export const AcademicCalendarMapper = {
   ): Prisma.AcademicCalendarUncheckedCreateInput {
     const s = calendar.snapshot()
     return {
-      id: BigInt(calendar.id.toString()),
+      id: calendar.id.toString(),
       name: s.name as Prisma.InputJsonValue,
       periodType: s.periodType,
       startDate: s.startDate,

@@ -70,8 +70,8 @@ export const WorkflowPathMapper = {
   toRoot(path: WorkflowPath): Prisma.WorkflowPathUncheckedCreateInput {
     const s = path.snapshot()
     return {
-      id: BigInt(path.id.toString()),
-      templateId: BigInt(s.templateId),
+      id: path.id.toString(),
+      templateId: s.templateId,
       name: s.name as Prisma.InputJsonValue,
       description: s.description
         ? (s.description as Prisma.InputJsonValue)

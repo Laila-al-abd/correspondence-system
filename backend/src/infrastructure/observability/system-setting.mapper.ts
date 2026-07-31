@@ -23,11 +23,11 @@ export const SystemSettingMapper = {
   ): Prisma.SystemSettingUncheckedCreateInput {
     const s = setting.snapshot()
     return {
-      id: BigInt(setting.id.toString()),
+      id: setting.id.toString(),
       key: s.key,
       value: s.value as Prisma.InputJsonValue,
       description: s.description ?? null,
-      updatedBy: s.updatedBy ? BigInt(s.updatedBy) : null,
+      updatedBy: s.updatedBy ? s.updatedBy : null,
       updatedAt: s.updatedAt,
     }
   },

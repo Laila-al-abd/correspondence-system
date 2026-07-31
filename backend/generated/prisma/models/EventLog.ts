@@ -20,34 +20,16 @@ export type EventLogModel = runtime.Types.Result.DefaultSelection<Prisma.$EventL
 
 export type AggregateEventLog = {
   _count: EventLogCountAggregateOutputType | null
-  _avg: EventLogAvgAggregateOutputType | null
-  _sum: EventLogSumAggregateOutputType | null
   _min: EventLogMinAggregateOutputType | null
   _max: EventLogMaxAggregateOutputType | null
 }
 
-export type EventLogAvgAggregateOutputType = {
-  id: number | null
-  requestId: number | null
-  requestStepInstanceId: number | null
-  actorId: number | null
-  actionTypeId: number | null
-}
-
-export type EventLogSumAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
-  actorId: bigint | null
-  actionTypeId: bigint | null
-}
-
 export type EventLogMinAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
-  actorId: bigint | null
-  actionTypeId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestStepInstanceId: string | null
+  actorId: string | null
+  actionTypeId: string | null
   eventType: string | null
   fromStatus: string | null
   toStatus: string | null
@@ -56,11 +38,11 @@ export type EventLogMinAggregateOutputType = {
 }
 
 export type EventLogMaxAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
-  actorId: bigint | null
-  actionTypeId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestStepInstanceId: string | null
+  actorId: string | null
+  actionTypeId: string | null
   eventType: string | null
   fromStatus: string | null
   toStatus: string | null
@@ -82,22 +64,6 @@ export type EventLogCountAggregateOutputType = {
   _all: number
 }
 
-
-export type EventLogAvgAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestStepInstanceId?: true
-  actorId?: true
-  actionTypeId?: true
-}
-
-export type EventLogSumAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestStepInstanceId?: true
-  actorId?: true
-  actionTypeId?: true
-}
 
 export type EventLogMinAggregateInputType = {
   id?: true
@@ -177,18 +143,6 @@ export type EventLogAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: EventLogAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: EventLogSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: EventLogMinAggregateInputType
@@ -219,26 +173,22 @@ export type EventLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: EventLogCountAggregateInputType | true
-  _avg?: EventLogAvgAggregateInputType
-  _sum?: EventLogSumAggregateInputType
   _min?: EventLogMinAggregateInputType
   _max?: EventLogMaxAggregateInputType
 }
 
 export type EventLogGroupByOutputType = {
-  id: bigint
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
-  actorId: bigint | null
-  actionTypeId: bigint | null
+  id: string
+  requestId: string | null
+  requestStepInstanceId: string | null
+  actorId: string | null
+  actionTypeId: string | null
   eventType: string
   fromStatus: string | null
   toStatus: string | null
   ipAddress: string | null
   occurredAt: Date
   _count: EventLogCountAggregateOutputType | null
-  _avg: EventLogAvgAggregateOutputType | null
-  _sum: EventLogSumAggregateOutputType | null
   _min: EventLogMinAggregateOutputType | null
   _max: EventLogMaxAggregateOutputType | null
 }
@@ -262,11 +212,11 @@ export type EventLogWhereInput = {
   AND?: Prisma.EventLogWhereInput | Prisma.EventLogWhereInput[]
   OR?: Prisma.EventLogWhereInput[]
   NOT?: Prisma.EventLogWhereInput | Prisma.EventLogWhereInput[]
-  id?: Prisma.BigIntFilter<"EventLog"> | bigint | number
-  requestId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actorId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actionTypeId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
+  id?: Prisma.UuidFilter<"EventLog"> | string
+  requestId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actorId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actionTypeId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
   eventType?: Prisma.StringFilter<"EventLog"> | string
   fromStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
   toStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
@@ -296,14 +246,14 @@ export type EventLogOrderByWithRelationInput = {
 }
 
 export type EventLogWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.EventLogWhereInput | Prisma.EventLogWhereInput[]
   OR?: Prisma.EventLogWhereInput[]
   NOT?: Prisma.EventLogWhereInput | Prisma.EventLogWhereInput[]
-  requestId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actorId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actionTypeId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
+  requestId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actorId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actionTypeId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
   eventType?: Prisma.StringFilter<"EventLog"> | string
   fromStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
   toStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
@@ -327,21 +277,19 @@ export type EventLogOrderByWithAggregationInput = {
   ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
   _count?: Prisma.EventLogCountOrderByAggregateInput
-  _avg?: Prisma.EventLogAvgOrderByAggregateInput
   _max?: Prisma.EventLogMaxOrderByAggregateInput
   _min?: Prisma.EventLogMinOrderByAggregateInput
-  _sum?: Prisma.EventLogSumOrderByAggregateInput
 }
 
 export type EventLogScalarWhereWithAggregatesInput = {
   AND?: Prisma.EventLogScalarWhereWithAggregatesInput | Prisma.EventLogScalarWhereWithAggregatesInput[]
   OR?: Prisma.EventLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EventLogScalarWhereWithAggregatesInput | Prisma.EventLogScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"EventLog"> | bigint | number
-  requestId?: Prisma.BigIntNullableWithAggregatesFilter<"EventLog"> | bigint | number | null
-  requestStepInstanceId?: Prisma.BigIntNullableWithAggregatesFilter<"EventLog"> | bigint | number | null
-  actorId?: Prisma.BigIntNullableWithAggregatesFilter<"EventLog"> | bigint | number | null
-  actionTypeId?: Prisma.BigIntNullableWithAggregatesFilter<"EventLog"> | bigint | number | null
+  id?: Prisma.UuidWithAggregatesFilter<"EventLog"> | string
+  requestId?: Prisma.UuidNullableWithAggregatesFilter<"EventLog"> | string | null
+  requestStepInstanceId?: Prisma.UuidNullableWithAggregatesFilter<"EventLog"> | string | null
+  actorId?: Prisma.UuidNullableWithAggregatesFilter<"EventLog"> | string | null
+  actionTypeId?: Prisma.UuidNullableWithAggregatesFilter<"EventLog"> | string | null
   eventType?: Prisma.StringWithAggregatesFilter<"EventLog"> | string
   fromStatus?: Prisma.StringNullableWithAggregatesFilter<"EventLog"> | string | null
   toStatus?: Prisma.StringNullableWithAggregatesFilter<"EventLog"> | string | null
@@ -350,7 +298,7 @@ export type EventLogScalarWhereWithAggregatesInput = {
 }
 
 export type EventLogCreateInput = {
-  id?: bigint | number
+  id: string
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -363,11 +311,11 @@ export type EventLogCreateInput = {
 }
 
 export type EventLogUncheckedCreateInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -376,7 +324,7 @@ export type EventLogUncheckedCreateInput = {
 }
 
 export type EventLogUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -389,11 +337,11 @@ export type EventLogUpdateInput = {
 }
 
 export type EventLogUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -402,11 +350,11 @@ export type EventLogUncheckedUpdateInput = {
 }
 
 export type EventLogCreateManyInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -415,7 +363,7 @@ export type EventLogCreateManyInput = {
 }
 
 export type EventLogUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -424,11 +372,11 @@ export type EventLogUpdateManyMutationInput = {
 }
 
 export type EventLogUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -459,14 +407,6 @@ export type EventLogCountOrderByAggregateInput = {
   occurredAt?: Prisma.SortOrder
 }
 
-export type EventLogAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestStepInstanceId?: Prisma.SortOrder
-  actorId?: Prisma.SortOrder
-  actionTypeId?: Prisma.SortOrder
-}
-
 export type EventLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
@@ -491,14 +431,6 @@ export type EventLogMinOrderByAggregateInput = {
   toStatus?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   occurredAt?: Prisma.SortOrder
-}
-
-export type EventLogSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestStepInstanceId?: Prisma.SortOrder
-  actorId?: Prisma.SortOrder
-  actionTypeId?: Prisma.SortOrder
 }
 
 export type EventLogCreateNestedManyWithoutActorInput = {
@@ -670,7 +602,7 @@ export type EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput = {
 }
 
 export type EventLogCreateWithoutActorInput = {
-  id?: bigint | number
+  id: string
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -682,10 +614,10 @@ export type EventLogCreateWithoutActorInput = {
 }
 
 export type EventLogUncheckedCreateWithoutActorInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -723,11 +655,11 @@ export type EventLogScalarWhereInput = {
   AND?: Prisma.EventLogScalarWhereInput | Prisma.EventLogScalarWhereInput[]
   OR?: Prisma.EventLogScalarWhereInput[]
   NOT?: Prisma.EventLogScalarWhereInput | Prisma.EventLogScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"EventLog"> | bigint | number
-  requestId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actorId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
-  actionTypeId?: Prisma.BigIntNullableFilter<"EventLog"> | bigint | number | null
+  id?: Prisma.UuidFilter<"EventLog"> | string
+  requestId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actorId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
+  actionTypeId?: Prisma.UuidNullableFilter<"EventLog"> | string | null
   eventType?: Prisma.StringFilter<"EventLog"> | string
   fromStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
   toStatus?: Prisma.StringNullableFilter<"EventLog"> | string | null
@@ -736,7 +668,7 @@ export type EventLogScalarWhereInput = {
 }
 
 export type EventLogCreateWithoutActionTypeInput = {
-  id?: bigint | number
+  id: string
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -748,10 +680,10 @@ export type EventLogCreateWithoutActionTypeInput = {
 }
 
 export type EventLogUncheckedCreateWithoutActionTypeInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actorId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -786,7 +718,7 @@ export type EventLogUpdateManyWithWhereWithoutActionTypeInput = {
 }
 
 export type EventLogCreateWithoutRequestInput = {
-  id?: bigint | number
+  id: string
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -798,10 +730,10 @@ export type EventLogCreateWithoutRequestInput = {
 }
 
 export type EventLogUncheckedCreateWithoutRequestInput = {
-  id?: bigint | number
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestStepInstanceId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -836,7 +768,7 @@ export type EventLogUpdateManyWithWhereWithoutRequestInput = {
 }
 
 export type EventLogCreateWithoutRequestStepInstanceInput = {
-  id?: bigint | number
+  id: string
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -848,10 +780,10 @@ export type EventLogCreateWithoutRequestStepInstanceInput = {
 }
 
 export type EventLogUncheckedCreateWithoutRequestStepInstanceInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -886,10 +818,10 @@ export type EventLogUpdateManyWithWhereWithoutRequestStepInstanceInput = {
 }
 
 export type EventLogCreateManyActorInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -898,7 +830,7 @@ export type EventLogCreateManyActorInput = {
 }
 
 export type EventLogUpdateWithoutActorInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -910,10 +842,10 @@ export type EventLogUpdateWithoutActorInput = {
 }
 
 export type EventLogUncheckedUpdateWithoutActorInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -922,10 +854,10 @@ export type EventLogUncheckedUpdateWithoutActorInput = {
 }
 
 export type EventLogUncheckedUpdateManyWithoutActorInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -934,10 +866,10 @@ export type EventLogUncheckedUpdateManyWithoutActorInput = {
 }
 
 export type EventLogCreateManyActionTypeInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  requestStepInstanceId?: string | null
+  actorId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -946,7 +878,7 @@ export type EventLogCreateManyActionTypeInput = {
 }
 
 export type EventLogUpdateWithoutActionTypeInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -958,10 +890,10 @@ export type EventLogUpdateWithoutActionTypeInput = {
 }
 
 export type EventLogUncheckedUpdateWithoutActionTypeInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -970,10 +902,10 @@ export type EventLogUncheckedUpdateWithoutActionTypeInput = {
 }
 
 export type EventLogUncheckedUpdateManyWithoutActionTypeInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -982,10 +914,10 @@ export type EventLogUncheckedUpdateManyWithoutActionTypeInput = {
 }
 
 export type EventLogCreateManyRequestInput = {
-  id?: bigint | number
-  requestStepInstanceId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestStepInstanceId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -994,7 +926,7 @@ export type EventLogCreateManyRequestInput = {
 }
 
 export type EventLogUpdateWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1006,10 +938,10 @@ export type EventLogUpdateWithoutRequestInput = {
 }
 
 export type EventLogUncheckedUpdateWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1018,10 +950,10 @@ export type EventLogUncheckedUpdateWithoutRequestInput = {
 }
 
 export type EventLogUncheckedUpdateManyWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1030,10 +962,10 @@ export type EventLogUncheckedUpdateManyWithoutRequestInput = {
 }
 
 export type EventLogCreateManyRequestStepInstanceInput = {
-  id?: bigint | number
-  requestId?: bigint | number | null
-  actorId?: bigint | number | null
-  actionTypeId?: bigint | number | null
+  id: string
+  requestId?: string | null
+  actorId?: string | null
+  actionTypeId?: string | null
   eventType: string
   fromStatus?: string | null
   toStatus?: string | null
@@ -1042,7 +974,7 @@ export type EventLogCreateManyRequestStepInstanceInput = {
 }
 
 export type EventLogUpdateWithoutRequestStepInstanceInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1054,10 +986,10 @@ export type EventLogUpdateWithoutRequestStepInstanceInput = {
 }
 
 export type EventLogUncheckedUpdateWithoutRequestStepInstanceInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1066,10 +998,10 @@ export type EventLogUncheckedUpdateWithoutRequestStepInstanceInput = {
 }
 
 export type EventLogUncheckedUpdateManyWithoutRequestStepInstanceInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actorId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  actionTypeId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   fromStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1172,11 +1104,11 @@ export type $EventLogPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     actionType: Prisma.$ActionTypePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    requestId: bigint | null
-    requestStepInstanceId: bigint | null
-    actorId: bigint | null
-    actionTypeId: bigint | null
+    id: string
+    requestId: string | null
+    requestStepInstanceId: string | null
+    actorId: string | null
+    actionTypeId: string | null
     eventType: string
     fromStatus: string | null
     toStatus: string | null
@@ -1609,11 +1541,11 @@ export interface Prisma__EventLogClient<T, Null = never, ExtArgs extends runtime
  * Fields of the EventLog model
  */
 export interface EventLogFieldRefs {
-  readonly id: Prisma.FieldRef<"EventLog", 'BigInt'>
-  readonly requestId: Prisma.FieldRef<"EventLog", 'BigInt'>
-  readonly requestStepInstanceId: Prisma.FieldRef<"EventLog", 'BigInt'>
-  readonly actorId: Prisma.FieldRef<"EventLog", 'BigInt'>
-  readonly actionTypeId: Prisma.FieldRef<"EventLog", 'BigInt'>
+  readonly id: Prisma.FieldRef<"EventLog", 'String'>
+  readonly requestId: Prisma.FieldRef<"EventLog", 'String'>
+  readonly requestStepInstanceId: Prisma.FieldRef<"EventLog", 'String'>
+  readonly actorId: Prisma.FieldRef<"EventLog", 'String'>
+  readonly actionTypeId: Prisma.FieldRef<"EventLog", 'String'>
   readonly eventType: Prisma.FieldRef<"EventLog", 'String'>
   readonly fromStatus: Prisma.FieldRef<"EventLog", 'String'>
   readonly toStatus: Prisma.FieldRef<"EventLog", 'String'>

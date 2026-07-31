@@ -30,13 +30,13 @@ export const EventLogMapper = {
   toPersistence(event: EventLog): Prisma.EventLogUncheckedCreateInput {
     const s = event.snapshot()
     return {
-      id: BigInt(event.id.toString()),
-      requestId: s.requestId ? BigInt(s.requestId) : null,
+      id: event.id.toString(),
+      requestId: s.requestId ? s.requestId : null,
       requestStepInstanceId: s.requestStepInstanceId
-        ? BigInt(s.requestStepInstanceId)
+        ? s.requestStepInstanceId
         : null,
-      actorId: s.actorId ? BigInt(s.actorId) : null,
-      actionTypeId: s.actionTypeId ? BigInt(s.actionTypeId) : null,
+      actorId: s.actorId ? s.actorId : null,
+      actionTypeId: s.actionTypeId ? s.actionTypeId : null,
       eventType: s.eventType,
       fromStatus: s.fromStatus ?? null,
       toStatus: s.toStatus ?? null,

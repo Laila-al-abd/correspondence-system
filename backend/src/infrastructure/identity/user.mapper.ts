@@ -35,7 +35,7 @@ export const UserMapper = {
   toPersistence(user: User): Prisma.UserUncheckedCreateInput {
     const s = user.snapshot()
     return {
-      id: BigInt(user.id.toString()),
+      id: user.id.toString(),
       userType: s.type,
       fullNameAr: s.fullNameAr,
       fullNameEn: s.fullNameEn ?? null,
@@ -45,7 +45,7 @@ export const UserMapper = {
       passwordHash: s.passwordHash ?? null,
       authProvider: s.authProvider,
       applicantPurpose: s.applicantPurpose ?? null,
-      departmentId: s.departmentId ? BigInt(s.departmentId) : null,
+      departmentId: s.departmentId ? s.departmentId : null,
       preferredLang: s.preferredLang,
       status: s.status,
       lastSyncedAt: s.lastSyncedAt ?? null,

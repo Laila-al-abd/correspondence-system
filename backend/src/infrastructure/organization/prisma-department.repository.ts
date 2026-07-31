@@ -17,7 +17,7 @@ export class PrismaDepartmentRepository implements DepartmentRepository {
 
   async findById(id: Identifier): Promise<Department | null> {
     const row = await this.prisma.department.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? DepartmentMapper.toDomain(row) : null
   }
@@ -39,7 +39,7 @@ export class PrismaDepartmentRepository implements DepartmentRepository {
     departmentId: Identifier,
     kind: string,
   ): Promise<Department | null> {
-    let currentId: bigint | null = BigInt(departmentId.toString())
+    let currentId: string | null = departmentId.toString()
     const visited = new Set<string>()
 
     while (currentId !== null) {
@@ -60,7 +60,7 @@ export class PrismaDepartmentRepository implements DepartmentRepository {
 
   async listChildren(parentId: Identifier): Promise<Department[]> {
     const rows = await this.prisma.department.findMany({
-      where: { parentId: BigInt(parentId.toString()), deletedAt: null },
+      where: { parentId: parentId.toString(), deletedAt: null },
       orderBy: { id: 'asc' },
     })
     return rows.map((row) => DepartmentMapper.toDomain(row))
@@ -69,7 +69,7 @@ export class PrismaDepartmentRepository implements DepartmentRepository {
   async save(department: Department): Promise<void> {
     const data = DepartmentMapper.toPersistence(department)
     await this.prisma.department.upsert({
-      where: { id: BigInt(department.id.toString()) },
+      where: { id: department.id.toString() },
       create: data,
       update: data,
     })

@@ -27,26 +27,18 @@ export type AggregateDocument = {
 }
 
 export type DocumentAvgAggregateOutputType = {
-  id: number | null
-  requestId: number | null
-  requestActionId: number | null
-  uploaderId: number | null
   fileSize: number | null
 }
 
 export type DocumentSumAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestActionId: bigint | null
-  uploaderId: bigint | null
   fileSize: bigint | null
 }
 
 export type DocumentMinAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestActionId: bigint | null
-  uploaderId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestActionId: string | null
+  uploaderId: string | null
   docKind: string | null
   storageKey: string | null
   fileName: string | null
@@ -57,10 +49,10 @@ export type DocumentMinAggregateOutputType = {
 }
 
 export type DocumentMaxAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestActionId: bigint | null
-  uploaderId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestActionId: string | null
+  uploaderId: string | null
   docKind: string | null
   storageKey: string | null
   fileName: string | null
@@ -87,18 +79,10 @@ export type DocumentCountAggregateOutputType = {
 
 
 export type DocumentAvgAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestActionId?: true
-  uploaderId?: true
   fileSize?: true
 }
 
 export type DocumentSumAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestActionId?: true
-  uploaderId?: true
   fileSize?: true
 }
 
@@ -232,10 +216,10 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 export type DocumentGroupByOutputType = {
-  id: bigint
-  requestId: bigint
-  requestActionId: bigint | null
-  uploaderId: bigint
+  id: string
+  requestId: string
+  requestActionId: string | null
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -269,10 +253,10 @@ export type DocumentWhereInput = {
   AND?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
-  id?: Prisma.BigIntFilter<"Document"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"Document"> | bigint | number
-  requestActionId?: Prisma.BigIntNullableFilter<"Document"> | bigint | number | null
-  uploaderId?: Prisma.BigIntFilter<"Document"> | bigint | number
+  id?: Prisma.UuidFilter<"Document"> | string
+  requestId?: Prisma.UuidFilter<"Document"> | string
+  requestActionId?: Prisma.UuidNullableFilter<"Document"> | string | null
+  uploaderId?: Prisma.UuidFilter<"Document"> | string
   docKind?: Prisma.StringFilter<"Document"> | string
   storageKey?: Prisma.StringFilter<"Document"> | string
   fileName?: Prisma.StringFilter<"Document"> | string
@@ -303,13 +287,13 @@ export type DocumentOrderByWithRelationInput = {
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   OR?: Prisma.DocumentWhereInput[]
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
-  requestId?: Prisma.BigIntFilter<"Document"> | bigint | number
-  requestActionId?: Prisma.BigIntNullableFilter<"Document"> | bigint | number | null
-  uploaderId?: Prisma.BigIntFilter<"Document"> | bigint | number
+  requestId?: Prisma.UuidFilter<"Document"> | string
+  requestActionId?: Prisma.UuidNullableFilter<"Document"> | string | null
+  uploaderId?: Prisma.UuidFilter<"Document"> | string
   docKind?: Prisma.StringFilter<"Document"> | string
   storageKey?: Prisma.StringFilter<"Document"> | string
   fileName?: Prisma.StringFilter<"Document"> | string
@@ -345,10 +329,10 @@ export type DocumentScalarWhereWithAggregatesInput = {
   AND?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
   OR?: Prisma.DocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentScalarWhereWithAggregatesInput | Prisma.DocumentScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"Document"> | bigint | number
-  requestId?: Prisma.BigIntWithAggregatesFilter<"Document"> | bigint | number
-  requestActionId?: Prisma.BigIntNullableWithAggregatesFilter<"Document"> | bigint | number | null
-  uploaderId?: Prisma.BigIntWithAggregatesFilter<"Document"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"Document"> | string
+  requestId?: Prisma.UuidWithAggregatesFilter<"Document"> | string
+  requestActionId?: Prisma.UuidNullableWithAggregatesFilter<"Document"> | string | null
+  uploaderId?: Prisma.UuidWithAggregatesFilter<"Document"> | string
   docKind?: Prisma.StringWithAggregatesFilter<"Document"> | string
   storageKey?: Prisma.StringWithAggregatesFilter<"Document"> | string
   fileName?: Prisma.StringWithAggregatesFilter<"Document"> | string
@@ -359,7 +343,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
 }
 
 export type DocumentCreateInput = {
-  id?: bigint | number
+  id: string
   docKind: string
   storageKey: string
   fileName: string
@@ -373,10 +357,10 @@ export type DocumentCreateInput = {
 }
 
 export type DocumentUncheckedCreateInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  requestActionId?: bigint | number | null
-  uploaderId: bigint | number
+  id: string
+  requestId: string
+  requestActionId?: string | null
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -387,7 +371,7 @@ export type DocumentUncheckedCreateInput = {
 }
 
 export type DocumentUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -401,10 +385,10 @@ export type DocumentUpdateInput = {
 }
 
 export type DocumentUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -415,10 +399,10 @@ export type DocumentUncheckedUpdateInput = {
 }
 
 export type DocumentCreateManyInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  requestActionId?: bigint | number | null
-  uploaderId: bigint | number
+  id: string
+  requestId: string
+  requestActionId?: string | null
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -429,7 +413,7 @@ export type DocumentCreateManyInput = {
 }
 
 export type DocumentUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -440,10 +424,10 @@ export type DocumentUpdateManyMutationInput = {
 }
 
 export type DocumentUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -478,10 +462,6 @@ export type DocumentCountOrderByAggregateInput = {
 }
 
 export type DocumentAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestActionId?: Prisma.SortOrder
-  uploaderId?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
 }
 
@@ -514,10 +494,6 @@ export type DocumentMinOrderByAggregateInput = {
 }
 
 export type DocumentSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestActionId?: Prisma.SortOrder
-  uploaderId?: Prisma.SortOrder
   fileSize?: Prisma.SortOrder
 }
 
@@ -647,8 +623,16 @@ export type DocumentUncheckedUpdateManyWithoutRequestActionNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 export type DocumentCreateWithoutUploaderInput = {
-  id?: bigint | number
+  id: string
   docKind: string
   storageKey: string
   fileName: string
@@ -661,9 +645,9 @@ export type DocumentCreateWithoutUploaderInput = {
 }
 
 export type DocumentUncheckedCreateWithoutUploaderInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  requestActionId?: bigint | number | null
+  id: string
+  requestId: string
+  requestActionId?: string | null
   docKind: string
   storageKey: string
   fileName: string
@@ -703,10 +687,10 @@ export type DocumentScalarWhereInput = {
   AND?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
   OR?: Prisma.DocumentScalarWhereInput[]
   NOT?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"Document"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"Document"> | bigint | number
-  requestActionId?: Prisma.BigIntNullableFilter<"Document"> | bigint | number | null
-  uploaderId?: Prisma.BigIntFilter<"Document"> | bigint | number
+  id?: Prisma.UuidFilter<"Document"> | string
+  requestId?: Prisma.UuidFilter<"Document"> | string
+  requestActionId?: Prisma.UuidNullableFilter<"Document"> | string | null
+  uploaderId?: Prisma.UuidFilter<"Document"> | string
   docKind?: Prisma.StringFilter<"Document"> | string
   storageKey?: Prisma.StringFilter<"Document"> | string
   fileName?: Prisma.StringFilter<"Document"> | string
@@ -717,7 +701,7 @@ export type DocumentScalarWhereInput = {
 }
 
 export type DocumentCreateWithoutRequestInput = {
-  id?: bigint | number
+  id: string
   docKind: string
   storageKey: string
   fileName: string
@@ -730,9 +714,9 @@ export type DocumentCreateWithoutRequestInput = {
 }
 
 export type DocumentUncheckedCreateWithoutRequestInput = {
-  id?: bigint | number
-  requestActionId?: bigint | number | null
-  uploaderId: bigint | number
+  id: string
+  requestActionId?: string | null
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -769,7 +753,7 @@ export type DocumentUpdateManyWithWhereWithoutRequestInput = {
 }
 
 export type DocumentCreateWithoutRequestActionInput = {
-  id?: bigint | number
+  id: string
   docKind: string
   storageKey: string
   fileName: string
@@ -782,9 +766,9 @@ export type DocumentCreateWithoutRequestActionInput = {
 }
 
 export type DocumentUncheckedCreateWithoutRequestActionInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  uploaderId: bigint | number
+  id: string
+  requestId: string
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -821,9 +805,9 @@ export type DocumentUpdateManyWithWhereWithoutRequestActionInput = {
 }
 
 export type DocumentCreateManyUploaderInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  requestActionId?: bigint | number | null
+  id: string
+  requestId: string
+  requestActionId?: string | null
   docKind: string
   storageKey: string
   fileName: string
@@ -834,7 +818,7 @@ export type DocumentCreateManyUploaderInput = {
 }
 
 export type DocumentUpdateWithoutUploaderInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -847,9 +831,9 @@ export type DocumentUpdateWithoutUploaderInput = {
 }
 
 export type DocumentUncheckedUpdateWithoutUploaderInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -860,9 +844,9 @@ export type DocumentUncheckedUpdateWithoutUploaderInput = {
 }
 
 export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -873,9 +857,9 @@ export type DocumentUncheckedUpdateManyWithoutUploaderInput = {
 }
 
 export type DocumentCreateManyRequestInput = {
-  id?: bigint | number
-  requestActionId?: bigint | number | null
-  uploaderId: bigint | number
+  id: string
+  requestActionId?: string | null
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -886,7 +870,7 @@ export type DocumentCreateManyRequestInput = {
 }
 
 export type DocumentUpdateWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -899,9 +883,9 @@ export type DocumentUpdateWithoutRequestInput = {
 }
 
 export type DocumentUncheckedUpdateWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -912,9 +896,9 @@ export type DocumentUncheckedUpdateWithoutRequestInput = {
 }
 
 export type DocumentUncheckedUpdateManyWithoutRequestInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestActionId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -925,9 +909,9 @@ export type DocumentUncheckedUpdateManyWithoutRequestInput = {
 }
 
 export type DocumentCreateManyRequestActionInput = {
-  id?: bigint | number
-  requestId: bigint | number
-  uploaderId: bigint | number
+  id: string
+  requestId: string
+  uploaderId: string
   docKind: string
   storageKey: string
   fileName: string
@@ -938,7 +922,7 @@ export type DocumentCreateManyRequestActionInput = {
 }
 
 export type DocumentUpdateWithoutRequestActionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -951,9 +935,9 @@ export type DocumentUpdateWithoutRequestActionInput = {
 }
 
 export type DocumentUncheckedUpdateWithoutRequestActionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -964,9 +948,9 @@ export type DocumentUncheckedUpdateWithoutRequestActionInput = {
 }
 
 export type DocumentUncheckedUpdateManyWithoutRequestActionInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  uploaderId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  uploaderId?: Prisma.StringFieldUpdateOperationsInput | string
   docKind?: Prisma.StringFieldUpdateOperationsInput | string
   storageKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1068,10 +1052,10 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     uploader: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    requestId: bigint
-    requestActionId: bigint | null
-    uploaderId: bigint
+    id: string
+    requestId: string
+    requestActionId: string | null
+    uploaderId: string
     docKind: string
     storageKey: string
     fileName: string
@@ -1505,10 +1489,10 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
  * Fields of the Document model
  */
 export interface DocumentFieldRefs {
-  readonly id: Prisma.FieldRef<"Document", 'BigInt'>
-  readonly requestId: Prisma.FieldRef<"Document", 'BigInt'>
-  readonly requestActionId: Prisma.FieldRef<"Document", 'BigInt'>
-  readonly uploaderId: Prisma.FieldRef<"Document", 'BigInt'>
+  readonly id: Prisma.FieldRef<"Document", 'String'>
+  readonly requestId: Prisma.FieldRef<"Document", 'String'>
+  readonly requestActionId: Prisma.FieldRef<"Document", 'String'>
+  readonly uploaderId: Prisma.FieldRef<"Document", 'String'>
   readonly docKind: Prisma.FieldRef<"Document", 'String'>
   readonly storageKey: Prisma.FieldRef<"Document", 'String'>
   readonly fileName: Prisma.FieldRef<"Document", 'String'>

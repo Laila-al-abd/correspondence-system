@@ -359,7 +359,8 @@ function localParts(
   const found = new Map(
     formatter.formatToParts(at).map((part) => [part.type, part.value]),
   )
-  const read = (type: string): number => Number(found.get(type) ?? '0')
+  const read = (type: Intl.DateTimeFormatPartTypes): number =>
+  Number(found.get(type) ?? '0')
   return {
     year: read('year'),
     month: read('month'),

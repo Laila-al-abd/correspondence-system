@@ -18,7 +18,7 @@ export class PrismaMlPredictionRepository implements MlPredictionRepository {
   async save(prediction: MlPrediction): Promise<void> {
     const data = MlPredictionMapper.toPersistence(prediction)
     await this.prisma.mlPrediction.upsert({
-      where: { id: BigInt(prediction.id.toString()) },
+      where: { id: prediction.id.toString() },
       create: data,
       update: data,
     })
@@ -26,7 +26,7 @@ export class PrismaMlPredictionRepository implements MlPredictionRepository {
 
   async listByRequest(requestId: Identifier): Promise<MlPrediction[]> {
     const rows = await this.prisma.mlPrediction.findMany({
-      where: { requestId: BigInt(requestId.toString()) },
+      where: { requestId: requestId.toString() },
       orderBy: { id: 'asc' },
     })
     return rows.map((row) => MlPredictionMapper.toDomain(row))
@@ -37,7 +37,7 @@ export class PrismaMlPredictionRepository implements MlPredictionRepository {
     modelType: ModelType,
   ): Promise<MlPrediction | null> {
     const row = await this.prisma.mlPrediction.findFirst({
-      where: { requestId: BigInt(requestId.toString()), modelType },
+      where: { requestId: requestId.toString(), modelType },
       orderBy: { id: 'desc' },
     })
     return row ? MlPredictionMapper.toDomain(row) : null

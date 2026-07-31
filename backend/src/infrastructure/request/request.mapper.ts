@@ -81,12 +81,12 @@ export const RequestMapper = {
   toRoot(request: Request): Prisma.RequestUncheckedCreateInput {
     const s = request.snapshot()
     return {
-      id: BigInt(request.id.toString()),
-      requesterId: BigInt(s.requesterId),
+      id: request.id.toString(),
+      requesterId: s.requesterId,
       referenceNo: s.referenceNo ?? null,
       rawText: s.rawText ?? null,
-      templateId: s.templateId ? BigInt(s.templateId) : null,
-      workflowPathId: s.workflowPathId ? BigInt(s.workflowPathId) : null,
+      templateId: s.templateId ? s.templateId : null,
+      workflowPathId: s.workflowPathId ? s.workflowPathId : null,
       filledData: s.filledData as Prisma.InputJsonValue,
       classificationStatus: s.classificationStatus,
       classificationConfidence: s.classificationConfidence ?? null,
@@ -94,7 +94,7 @@ export const RequestMapper = {
       currentStatus: s.currentStatus,
       priority: s.priority,
       slaRisk: s.slaRisk,
-      sensitivityLevelId: s.sensitivityLevelId ? BigInt(s.sensitivityLevelId) : null,
+      sensitivityLevelId: s.sensitivityLevelId ? s.sensitivityLevelId : null,
       slaDueAt: s.slaDueAt ?? null,
       completedAt: s.completedAt ?? null,
     }
@@ -105,10 +105,10 @@ export const RequestMapper = {
     si: StepInstanceSnapshot,
   ): Prisma.RequestStepInstanceUncheckedCreateInput {
     return {
-      id: BigInt(si.id),
-      requestId: BigInt(si.requestId),
-      workflowStepId: BigInt(si.workflowStepId),
-      assignedToUserId: si.assignedToUserId ? BigInt(si.assignedToUserId) : null,
+      id: si.id,
+      requestId: si.requestId,
+      workflowStepId: si.workflowStepId,
+      assignedToUserId: si.assignedToUserId ? si.assignedToUserId : null,
       status: si.status,
       slaDueAt: si.slaDueAt ?? null,
       slaPaused: si.slaPaused,
