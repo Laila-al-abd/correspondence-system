@@ -18,7 +18,7 @@ export class PrismaAcademicCalendarRepository
 
   async findById(id: Identifier): Promise<AcademicCalendar | null> {
     const row = await this.prisma.academicCalendar.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
     })
     return row ? AcademicCalendarMapper.toDomain(row) : null
   }

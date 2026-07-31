@@ -20,44 +20,30 @@ export type AttributeDefinitionModel = runtime.Types.Result.DefaultSelection<Pri
 
 export type AggregateAttributeDefinition = {
   _count: AttributeDefinitionCountAggregateOutputType | null
-  _avg: AttributeDefinitionAvgAggregateOutputType | null
-  _sum: AttributeDefinitionSumAggregateOutputType | null
   _min: AttributeDefinitionMinAggregateOutputType | null
   _max: AttributeDefinitionMaxAggregateOutputType | null
-}
-
-export type AttributeDefinitionAvgAggregateOutputType = {
-  id: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type AttributeDefinitionSumAggregateOutputType = {
-  id: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type AttributeDefinitionMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   dataType: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AttributeDefinitionMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   dataType: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AttributeDefinitionCountAggregateOutputType = {
@@ -74,18 +60,6 @@ export type AttributeDefinitionCountAggregateOutputType = {
   _all: number
 }
 
-
-export type AttributeDefinitionAvgAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type AttributeDefinitionSumAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type AttributeDefinitionMinAggregateInputType = {
   createdAt?: true
@@ -161,18 +135,6 @@ export type AttributeDefinitionAggregateArgs<ExtArgs extends runtime.Types.Exten
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: AttributeDefinitionAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: AttributeDefinitionSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: AttributeDefinitionMinAggregateInputType
@@ -203,8 +165,6 @@ export type AttributeDefinitionGroupByArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   _count?: AttributeDefinitionCountAggregateInputType | true
-  _avg?: AttributeDefinitionAvgAggregateInputType
-  _sum?: AttributeDefinitionSumAggregateInputType
   _min?: AttributeDefinitionMinAggregateInputType
   _max?: AttributeDefinitionMaxAggregateInputType
 }
@@ -212,17 +172,15 @@ export type AttributeDefinitionGroupByArgs<ExtArgs extends runtime.Types.Extensi
 export type AttributeDefinitionGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   code: string
   label: runtime.JsonValue
   dataType: string
   description: runtime.JsonValue | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: AttributeDefinitionCountAggregateOutputType | null
-  _avg: AttributeDefinitionAvgAggregateOutputType | null
-  _sum: AttributeDefinitionSumAggregateOutputType | null
   _min: AttributeDefinitionMinAggregateOutputType | null
   _max: AttributeDefinitionMaxAggregateOutputType | null
 }
@@ -248,14 +206,14 @@ export type AttributeDefinitionWhereInput = {
   NOT?: Prisma.AttributeDefinitionWhereInput | Prisma.AttributeDefinitionWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"AttributeDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AttributeDefinition"> | Date | string
-  id?: Prisma.BigIntFilter<"AttributeDefinition"> | bigint | number
+  id?: Prisma.UuidFilter<"AttributeDefinition"> | string
   code?: Prisma.StringFilter<"AttributeDefinition"> | string
   label?: Prisma.JsonFilter<"AttributeDefinition">
   dataType?: Prisma.StringFilter<"AttributeDefinition"> | string
   description?: Prisma.JsonNullableFilter<"AttributeDefinition">
   deletedAt?: Prisma.DateTimeNullableFilter<"AttributeDefinition"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"AttributeDefinition"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"AttributeDefinition"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
   userAttributes?: Prisma.UserAttributeListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
 }
@@ -276,7 +234,7 @@ export type AttributeDefinitionOrderByWithRelationInput = {
 }
 
 export type AttributeDefinitionWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   code?: string
   AND?: Prisma.AttributeDefinitionWhereInput | Prisma.AttributeDefinitionWhereInput[]
   OR?: Prisma.AttributeDefinitionWhereInput[]
@@ -287,8 +245,8 @@ export type AttributeDefinitionWhereUniqueInput = Prisma.AtLeast<{
   dataType?: Prisma.StringFilter<"AttributeDefinition"> | string
   description?: Prisma.JsonNullableFilter<"AttributeDefinition">
   deletedAt?: Prisma.DateTimeNullableFilter<"AttributeDefinition"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"AttributeDefinition"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"AttributeDefinition"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
   userAttributes?: Prisma.UserAttributeListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
 }, "id" | "code">
@@ -305,10 +263,8 @@ export type AttributeDefinitionOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AttributeDefinitionCountOrderByAggregateInput
-  _avg?: Prisma.AttributeDefinitionAvgOrderByAggregateInput
   _max?: Prisma.AttributeDefinitionMaxOrderByAggregateInput
   _min?: Prisma.AttributeDefinitionMinOrderByAggregateInput
-  _sum?: Prisma.AttributeDefinitionSumOrderByAggregateInput
 }
 
 export type AttributeDefinitionScalarWhereWithAggregatesInput = {
@@ -317,27 +273,27 @@ export type AttributeDefinitionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AttributeDefinitionScalarWhereWithAggregatesInput | Prisma.AttributeDefinitionScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AttributeDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AttributeDefinition"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"AttributeDefinition"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"AttributeDefinition"> | string
   code?: Prisma.StringWithAggregatesFilter<"AttributeDefinition"> | string
   label?: Prisma.JsonWithAggregatesFilter<"AttributeDefinition">
   dataType?: Prisma.StringWithAggregatesFilter<"AttributeDefinition"> | string
   description?: Prisma.JsonNullableWithAggregatesFilter<"AttributeDefinition">
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AttributeDefinition"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"AttributeDefinition"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"AttributeDefinition"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"AttributeDefinition"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"AttributeDefinition"> | string | null
 }
 
 export type AttributeDefinitionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeCreateNestedManyWithoutAttributeInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput
 }
@@ -345,14 +301,14 @@ export type AttributeDefinitionCreateInput = {
 export type AttributeDefinitionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeUncheckedCreateNestedManyWithoutAttributeInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutAttributeInput
 }
@@ -360,14 +316,14 @@ export type AttributeDefinitionUncheckedCreateInput = {
 export type AttributeDefinitionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUpdateManyWithoutAttributeNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutAttributeNestedInput
 }
@@ -375,14 +331,14 @@ export type AttributeDefinitionUpdateInput = {
 export type AttributeDefinitionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeNestedInput
 }
@@ -390,40 +346,40 @@ export type AttributeDefinitionUncheckedUpdateInput = {
 export type AttributeDefinitionCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type AttributeDefinitionUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AttributeDefinitionUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AttributeDefinitionCountOrderByAggregateInput = {
@@ -435,12 +391,6 @@ export type AttributeDefinitionCountOrderByAggregateInput = {
   dataType?: Prisma.SortOrder
   description?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type AttributeDefinitionAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -463,12 +413,6 @@ export type AttributeDefinitionMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type AttributeDefinitionSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -509,28 +453,28 @@ export type AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInp
 export type AttributeDefinitionCreateWithoutUserAttributesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUncheckedCreateWithoutUserAttributesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutAttributeInput
 }
 
@@ -553,56 +497,56 @@ export type AttributeDefinitionUpdateToOneWithWhereWithoutUserAttributesInput = 
 export type AttributeDefinitionUpdateWithoutUserAttributesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionUncheckedUpdateWithoutUserAttributesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionCreateWithoutEligibilityRulesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUncheckedCreateWithoutEligibilityRulesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType: string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeUncheckedCreateNestedManyWithoutAttributeInput
 }
 
@@ -625,28 +569,28 @@ export type AttributeDefinitionUpdateToOneWithWhereWithoutEligibilityRulesInput 
 export type AttributeDefinitionUpdateWithoutEligibilityRulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionUncheckedUpdateWithoutEligibilityRulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
@@ -763,14 +707,14 @@ export type $AttributeDefinitionPayload<ExtArgs extends runtime.Types.Extensions
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     code: string
     label: runtime.JsonValue
     dataType: string
     description: runtime.JsonValue | null
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["attributeDefinition"]>
   composites: {}
 }
@@ -1198,14 +1142,14 @@ export interface Prisma__AttributeDefinitionClient<T, Null = never, ExtArgs exte
 export interface AttributeDefinitionFieldRefs {
   readonly createdAt: Prisma.FieldRef<"AttributeDefinition", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AttributeDefinition", 'DateTime'>
-  readonly id: Prisma.FieldRef<"AttributeDefinition", 'BigInt'>
+  readonly id: Prisma.FieldRef<"AttributeDefinition", 'String'>
   readonly code: Prisma.FieldRef<"AttributeDefinition", 'String'>
   readonly label: Prisma.FieldRef<"AttributeDefinition", 'Json'>
   readonly dataType: Prisma.FieldRef<"AttributeDefinition", 'String'>
   readonly description: Prisma.FieldRef<"AttributeDefinition", 'Json'>
   readonly deletedAt: Prisma.FieldRef<"AttributeDefinition", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"AttributeDefinition", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"AttributeDefinition", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"AttributeDefinition", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"AttributeDefinition", 'String'>
 }
     
 

@@ -13,7 +13,7 @@ export class PrismaUserAttributeRepository implements UserAttributeRepository {
 
   async listForUser(userId: Identifier): Promise<UserAttribute[]> {
     const rows = await this.prisma.userAttribute.findMany({
-      where: { userId: BigInt(userId.toString()) },
+      where: { userId: userId.toString() },
       orderBy: { attributeId: 'asc' },
     })
     return rows.map((row) => UserAttributeMapper.toDomain(row))
@@ -24,8 +24,8 @@ export class PrismaUserAttributeRepository implements UserAttributeRepository {
     attributeId: Identifier
     value: unknown
   }): Promise<void> {
-    const userId = BigInt(params.userId.toString())
-    const attributeId = BigInt(params.attributeId.toString())
+    const userId = params.userId.toString()
+    const attributeId = params.attributeId.toString()
     const value = params.value as Prisma.InputJsonValue
     await this.prisma.userAttribute.upsert({
       where: { userId_attributeId: { userId, attributeId } },
@@ -40,8 +40,8 @@ export class PrismaUserAttributeRepository implements UserAttributeRepository {
   }): Promise<void> {
     await this.prisma.userAttribute.deleteMany({
       where: {
-        userId: BigInt(params.userId.toString()),
-        attributeId: BigInt(params.attributeId.toString()),
+        userId: params.userId.toString(),
+        attributeId: params.attributeId.toString(),
       },
     })
   }

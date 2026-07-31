@@ -21,9 +21,9 @@ export const DelegationMapper = {
   toPersistence(delegation: Delegation): Prisma.DelegationUncheckedCreateInput {
     const s = delegation.snapshot()
     return {
-      id: BigInt(delegation.id.toString()),
-      delegatorId: BigInt(s.delegatorId),
-      delegateId: BigInt(s.delegateId),
+      id: delegation.id.toString(),
+      delegatorId: s.delegatorId,
+      delegateId: s.delegateId,
       startDate: s.start,
       endDate: s.end,
       isActive: s.isActive,

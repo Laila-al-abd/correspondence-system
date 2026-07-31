@@ -20,48 +20,30 @@ export type TemplateEligibilityRuleModel = runtime.Types.Result.DefaultSelection
 
 export type AggregateTemplateEligibilityRule = {
   _count: TemplateEligibilityRuleCountAggregateOutputType | null
-  _avg: TemplateEligibilityRuleAvgAggregateOutputType | null
-  _sum: TemplateEligibilityRuleSumAggregateOutputType | null
   _min: TemplateEligibilityRuleMinAggregateOutputType | null
   _max: TemplateEligibilityRuleMaxAggregateOutputType | null
-}
-
-export type TemplateEligibilityRuleAvgAggregateOutputType = {
-  id: number | null
-  templateId: number | null
-  attributeId: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type TemplateEligibilityRuleSumAggregateOutputType = {
-  id: bigint | null
-  templateId: bigint | null
-  attributeId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type TemplateEligibilityRuleMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  templateId: bigint | null
-  attributeId: bigint | null
+  id: string | null
+  templateId: string | null
+  attributeId: string | null
   operator: string | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TemplateEligibilityRuleMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  templateId: bigint | null
-  attributeId: bigint | null
+  id: string | null
+  templateId: string | null
+  attributeId: string | null
   operator: string | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TemplateEligibilityRuleCountAggregateOutputType = {
@@ -78,22 +60,6 @@ export type TemplateEligibilityRuleCountAggregateOutputType = {
   _all: number
 }
 
-
-export type TemplateEligibilityRuleAvgAggregateInputType = {
-  id?: true
-  templateId?: true
-  attributeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type TemplateEligibilityRuleSumAggregateInputType = {
-  id?: true
-  templateId?: true
-  attributeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type TemplateEligibilityRuleMinAggregateInputType = {
   createdAt?: true
@@ -169,18 +135,6 @@ export type TemplateEligibilityRuleAggregateArgs<ExtArgs extends runtime.Types.E
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: TemplateEligibilityRuleAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: TemplateEligibilityRuleSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: TemplateEligibilityRuleMinAggregateInputType
@@ -211,8 +165,6 @@ export type TemplateEligibilityRuleGroupByArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   _count?: TemplateEligibilityRuleCountAggregateInputType | true
-  _avg?: TemplateEligibilityRuleAvgAggregateInputType
-  _sum?: TemplateEligibilityRuleSumAggregateInputType
   _min?: TemplateEligibilityRuleMinAggregateInputType
   _max?: TemplateEligibilityRuleMaxAggregateInputType
 }
@@ -220,17 +172,15 @@ export type TemplateEligibilityRuleGroupByArgs<ExtArgs extends runtime.Types.Ext
 export type TemplateEligibilityRuleGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
-  templateId: bigint
-  attributeId: bigint
+  id: string
+  templateId: string
+  attributeId: string
   operator: string
   value: runtime.JsonValue
   description: runtime.JsonValue | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: TemplateEligibilityRuleCountAggregateOutputType | null
-  _avg: TemplateEligibilityRuleAvgAggregateOutputType | null
-  _sum: TemplateEligibilityRuleSumAggregateOutputType | null
   _min: TemplateEligibilityRuleMinAggregateOutputType | null
   _max: TemplateEligibilityRuleMaxAggregateOutputType | null
 }
@@ -256,14 +206,14 @@ export type TemplateEligibilityRuleWhereInput = {
   NOT?: Prisma.TemplateEligibilityRuleWhereInput | Prisma.TemplateEligibilityRuleWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
-  id?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
-  templateId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
+  id?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
+  templateId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
+  attributeId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }
@@ -284,19 +234,19 @@ export type TemplateEligibilityRuleOrderByWithRelationInput = {
 }
 
 export type TemplateEligibilityRuleWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.TemplateEligibilityRuleWhereInput | Prisma.TemplateEligibilityRuleWhereInput[]
   OR?: Prisma.TemplateEligibilityRuleWhereInput[]
   NOT?: Prisma.TemplateEligibilityRuleWhereInput | Prisma.TemplateEligibilityRuleWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
-  templateId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
+  templateId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
+  attributeId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
   template?: Prisma.XOR<Prisma.TemplateScalarRelationFilter, Prisma.TemplateWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }, "id">
@@ -313,10 +263,8 @@ export type TemplateEligibilityRuleOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TemplateEligibilityRuleCountOrderByAggregateInput
-  _avg?: Prisma.TemplateEligibilityRuleAvgOrderByAggregateInput
   _max?: Prisma.TemplateEligibilityRuleMaxOrderByAggregateInput
   _min?: Prisma.TemplateEligibilityRuleMinOrderByAggregateInput
-  _sum?: Prisma.TemplateEligibilityRuleSumOrderByAggregateInput
 }
 
 export type TemplateEligibilityRuleScalarWhereWithAggregatesInput = {
@@ -325,25 +273,25 @@ export type TemplateEligibilityRuleScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TemplateEligibilityRuleScalarWhereWithAggregatesInput | Prisma.TemplateEligibilityRuleScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TemplateEligibilityRule"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TemplateEligibilityRule"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number
-  templateId?: Prisma.BigIntWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number
-  attributeId?: Prisma.BigIntWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"TemplateEligibilityRule"> | string
+  templateId?: Prisma.UuidWithAggregatesFilter<"TemplateEligibilityRule"> | string
+  attributeId?: Prisma.UuidWithAggregatesFilter<"TemplateEligibilityRule"> | string
   operator?: Prisma.StringWithAggregatesFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonWithAggregatesFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableWithAggregatesFilter<"TemplateEligibilityRule">
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"TemplateEligibilityRule"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"TemplateEligibilityRule"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"TemplateEligibilityRule"> | string | null
 }
 
 export type TemplateEligibilityRuleCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   template: Prisma.TemplateCreateNestedOneWithoutEligibilityRulesInput
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutEligibilityRulesInput
 }
@@ -351,25 +299,25 @@ export type TemplateEligibilityRuleCreateInput = {
 export type TemplateEligibilityRuleUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  templateId: bigint | number
-  attributeId: bigint | number
+  id: string
+  templateId: string
+  attributeId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutEligibilityRulesNestedInput
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
@@ -377,51 +325,51 @@ export type TemplateEligibilityRuleUpdateInput = {
 export type TemplateEligibilityRuleUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  templateId: bigint | number
-  attributeId: bigint | number
+  id: string
+  templateId: string
+  attributeId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleListRelationFilter = {
@@ -447,14 +395,6 @@ export type TemplateEligibilityRuleCountOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
 }
 
-export type TemplateEligibilityRuleAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  templateId?: Prisma.SortOrder
-  attributeId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
 export type TemplateEligibilityRuleMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -473,14 +413,6 @@ export type TemplateEligibilityRuleMinOrderByAggregateInput = {
   templateId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   operator?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type TemplateEligibilityRuleSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  templateId?: Prisma.SortOrder
-  attributeId?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -572,25 +504,25 @@ export type TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateNestedInput
 export type TemplateEligibilityRuleCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   template: Prisma.TemplateCreateNestedOneWithoutEligibilityRulesInput
 }
 
 export type TemplateEligibilityRuleUncheckedCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  templateId: bigint | number
+  id: string
+  templateId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleCreateOrConnectWithoutAttributeInput = {
@@ -625,38 +557,38 @@ export type TemplateEligibilityRuleScalarWhereInput = {
   NOT?: Prisma.TemplateEligibilityRuleScalarWhereInput | Prisma.TemplateEligibilityRuleScalarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TemplateEligibilityRule"> | Date | string
-  id?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
-  templateId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"TemplateEligibilityRule"> | bigint | number
+  id?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
+  templateId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
+  attributeId?: Prisma.UuidFilter<"TemplateEligibilityRule"> | string
   operator?: Prisma.StringFilter<"TemplateEligibilityRule"> | string
   value?: Prisma.JsonFilter<"TemplateEligibilityRule">
   description?: Prisma.JsonNullableFilter<"TemplateEligibilityRule">
-  createdBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"TemplateEligibilityRule"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"TemplateEligibilityRule"> | string | null
 }
 
 export type TemplateEligibilityRuleCreateWithoutTemplateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutEligibilityRulesInput
 }
 
 export type TemplateEligibilityRuleUncheckedCreateWithoutTemplateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  attributeId: bigint | number
+  id: string
+  attributeId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleCreateOrConnectWithoutTemplateInput = {
@@ -688,97 +620,97 @@ export type TemplateEligibilityRuleUpdateManyWithWhereWithoutTemplateInput = {
 export type TemplateEligibilityRuleCreateManyAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  templateId: bigint | number
+  id: string
+  templateId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template?: Prisma.TemplateUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  templateId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleCreateManyTemplateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  attributeId: bigint | number
+  id: string
+  attributeId: string
   operator: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type TemplateEligibilityRuleUpdateWithoutTemplateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInput
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateWithoutTemplateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TemplateEligibilityRuleUncheckedUpdateManyWithoutTemplateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -864,14 +796,14 @@ export type $TemplateEligibilityRulePayload<ExtArgs extends runtime.Types.Extens
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
-    templateId: bigint
-    attributeId: bigint
+    id: string
+    templateId: string
+    attributeId: string
     operator: string
     value: runtime.JsonValue
     description: runtime.JsonValue | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["templateEligibilityRule"]>
   composites: {}
 }
@@ -1299,14 +1231,14 @@ export interface Prisma__TemplateEligibilityRuleClient<T, Null = never, ExtArgs 
 export interface TemplateEligibilityRuleFieldRefs {
   readonly createdAt: Prisma.FieldRef<"TemplateEligibilityRule", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TemplateEligibilityRule", 'DateTime'>
-  readonly id: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
-  readonly templateId: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
-  readonly attributeId: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
+  readonly id: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
+  readonly templateId: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
+  readonly attributeId: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
   readonly operator: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
   readonly value: Prisma.FieldRef<"TemplateEligibilityRule", 'Json'>
   readonly description: Prisma.FieldRef<"TemplateEligibilityRule", 'Json'>
-  readonly createdBy: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"TemplateEligibilityRule", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"TemplateEligibilityRule", 'String'>
 }
     
 

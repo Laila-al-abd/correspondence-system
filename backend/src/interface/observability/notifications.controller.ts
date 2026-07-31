@@ -70,7 +70,7 @@ export class NotificationsController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
     @Inject(NOTIFICATION_STREAM)
-    private readonly stream: NotificationStreamPort,
+    private readonly streamPort: NotificationStreamPort,
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly tokens: AccessTokenService,
   ) {}
@@ -114,7 +114,7 @@ export class NotificationsController {
   stream(@Req() request: StreamRequest): Observable<SseMessage> {
     const userId = this.authenticate(request)
 
-    const notifications = this.notificationStream(userId)
+    const notifications = this.notificationEvents(userId)
     const heartbeat = interval(HEARTBEAT_MS).pipe(
       map(
         (): SseMessage => ({
@@ -163,12 +163,13 @@ export class NotificationsController {
   }
 
   // ----- stream helpers -----
+// ----- stream helpers -----
 
-  private notificationStream(userId: string): Observable<SseMessage> {
-    return this.stream
-      .streamFor(userId)
-      .pipe(map((event): SseMessage => ({ type: 'notification', data: event })))
-  }
+private notificationEvents(userId: string): Observable<SseMessage> {
+  return this.streamPort
+    .streamFor(userId)
+    .pipe(map((event): SseMessage => ({ type: 'notification', data: event })))
+}
 
   /**
    * Resolves the caller from the Authorization header when present, falling

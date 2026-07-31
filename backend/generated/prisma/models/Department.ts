@@ -20,56 +20,38 @@ export type DepartmentModel = runtime.Types.Result.DefaultSelection<Prisma.$Depa
 
 export type AggregateDepartment = {
   _count: DepartmentCountAggregateOutputType | null
-  _avg: DepartmentAvgAggregateOutputType | null
-  _sum: DepartmentSumAggregateOutputType | null
   _min: DepartmentMinAggregateOutputType | null
   _max: DepartmentMaxAggregateOutputType | null
 }
 
-export type DepartmentAvgAggregateOutputType = {
-  id: number | null
-  parentId: number | null
-  unitTypeId: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type DepartmentSumAggregateOutputType = {
-  id: bigint | null
-  parentId: bigint | null
-  unitTypeId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
-}
-
 export type DepartmentMinAggregateOutputType = {
   updatedAt: Date | null
-  id: bigint | null
-  parentId: bigint | null
-  unitTypeId: bigint | null
+  id: string | null
+  parentId: string | null
+  unitTypeId: string | null
   isActive: boolean | null
   externalId: string | null
   sourceSystem: string | null
   lastSyncedAt: Date | null
   createdAt: Date | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DepartmentMaxAggregateOutputType = {
   updatedAt: Date | null
-  id: bigint | null
-  parentId: bigint | null
-  unitTypeId: bigint | null
+  id: string | null
+  parentId: string | null
+  unitTypeId: string | null
   isActive: boolean | null
   externalId: string | null
   sourceSystem: string | null
   lastSyncedAt: Date | null
   createdAt: Date | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DepartmentCountAggregateOutputType = {
@@ -90,22 +72,6 @@ export type DepartmentCountAggregateOutputType = {
   _all: number
 }
 
-
-export type DepartmentAvgAggregateInputType = {
-  id?: true
-  parentId?: true
-  unitTypeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type DepartmentSumAggregateInputType = {
-  id?: true
-  parentId?: true
-  unitTypeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type DepartmentMinAggregateInputType = {
   updatedAt?: true
@@ -193,18 +159,6 @@ export type DepartmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: DepartmentAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: DepartmentSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: DepartmentMinAggregateInputType
@@ -235,17 +189,15 @@ export type DepartmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: DepartmentCountAggregateInputType | true
-  _avg?: DepartmentAvgAggregateInputType
-  _sum?: DepartmentSumAggregateInputType
   _min?: DepartmentMinAggregateInputType
   _max?: DepartmentMaxAggregateInputType
 }
 
 export type DepartmentGroupByOutputType = {
   updatedAt: Date
-  id: bigint
-  parentId: bigint | null
-  unitTypeId: bigint
+  id: string
+  parentId: string | null
+  unitTypeId: string
   name: runtime.JsonValue
   description: runtime.JsonValue | null
   isActive: boolean
@@ -254,11 +206,9 @@ export type DepartmentGroupByOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: DepartmentCountAggregateOutputType | null
-  _avg: DepartmentAvgAggregateOutputType | null
-  _sum: DepartmentSumAggregateOutputType | null
   _min: DepartmentMinAggregateOutputType | null
   _max: DepartmentMaxAggregateOutputType | null
 }
@@ -283,9 +233,9 @@ export type DepartmentWhereInput = {
   OR?: Prisma.DepartmentWhereInput[]
   NOT?: Prisma.DepartmentWhereInput | Prisma.DepartmentWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Department"> | Date | string
-  id?: Prisma.BigIntFilter<"Department"> | bigint | number
-  parentId?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  unitTypeId?: Prisma.BigIntFilter<"Department"> | bigint | number
+  id?: Prisma.UuidFilter<"Department"> | string
+  parentId?: Prisma.UuidNullableFilter<"Department"> | string | null
+  unitTypeId?: Prisma.UuidFilter<"Department"> | string
   name?: Prisma.JsonFilter<"Department">
   description?: Prisma.JsonNullableFilter<"Department">
   isActive?: Prisma.BoolFilter<"Department"> | boolean
@@ -294,8 +244,8 @@ export type DepartmentWhereInput = {
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Department"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Department"> | string | null
   parent?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   children?: Prisma.DepartmentListRelationFilter
   unitType?: Prisma.XOR<Prisma.OrgUnitTypeScalarRelationFilter, Prisma.OrgUnitTypeWhereInput>
@@ -328,14 +278,14 @@ export type DepartmentOrderByWithRelationInput = {
 }
 
 export type DepartmentWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   externalId?: string
   AND?: Prisma.DepartmentWhereInput | Prisma.DepartmentWhereInput[]
   OR?: Prisma.DepartmentWhereInput[]
   NOT?: Prisma.DepartmentWhereInput | Prisma.DepartmentWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Department"> | Date | string
-  parentId?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  unitTypeId?: Prisma.BigIntFilter<"Department"> | bigint | number
+  parentId?: Prisma.UuidNullableFilter<"Department"> | string | null
+  unitTypeId?: Prisma.UuidFilter<"Department"> | string
   name?: Prisma.JsonFilter<"Department">
   description?: Prisma.JsonNullableFilter<"Department">
   isActive?: Prisma.BoolFilter<"Department"> | boolean
@@ -343,8 +293,8 @@ export type DepartmentWhereUniqueInput = Prisma.AtLeast<{
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Department"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Department"> | string | null
   parent?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   children?: Prisma.DepartmentListRelationFilter
   unitType?: Prisma.XOR<Prisma.OrgUnitTypeScalarRelationFilter, Prisma.OrgUnitTypeWhereInput>
@@ -369,10 +319,8 @@ export type DepartmentOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DepartmentCountOrderByAggregateInput
-  _avg?: Prisma.DepartmentAvgOrderByAggregateInput
   _max?: Prisma.DepartmentMaxOrderByAggregateInput
   _min?: Prisma.DepartmentMinOrderByAggregateInput
-  _sum?: Prisma.DepartmentSumOrderByAggregateInput
 }
 
 export type DepartmentScalarWhereWithAggregatesInput = {
@@ -380,9 +328,9 @@ export type DepartmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.DepartmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DepartmentScalarWhereWithAggregatesInput | Prisma.DepartmentScalarWhereWithAggregatesInput[]
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Department"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"Department"> | bigint | number
-  parentId?: Prisma.BigIntNullableWithAggregatesFilter<"Department"> | bigint | number | null
-  unitTypeId?: Prisma.BigIntWithAggregatesFilter<"Department"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"Department"> | string
+  parentId?: Prisma.UuidNullableWithAggregatesFilter<"Department"> | string | null
+  unitTypeId?: Prisma.UuidWithAggregatesFilter<"Department"> | string
   name?: Prisma.JsonWithAggregatesFilter<"Department">
   description?: Prisma.JsonNullableWithAggregatesFilter<"Department">
   isActive?: Prisma.BoolWithAggregatesFilter<"Department"> | boolean
@@ -391,13 +339,13 @@ export type DepartmentScalarWhereWithAggregatesInput = {
   lastSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Department"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Department"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Department"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"Department"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Department"> | string | null
 }
 
 export type DepartmentCreateInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -406,8 +354,8 @@ export type DepartmentCreateInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -418,9 +366,9 @@ export type DepartmentCreateInput = {
 
 export type DepartmentUncheckedCreateInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -429,8 +377,8 @@ export type DepartmentUncheckedCreateInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -439,7 +387,7 @@ export type DepartmentUncheckedCreateInput = {
 
 export type DepartmentUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -448,8 +396,8 @@ export type DepartmentUpdateInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -460,9 +408,9 @@ export type DepartmentUpdateInput = {
 
 export type DepartmentUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -471,8 +419,8 @@ export type DepartmentUncheckedUpdateInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -481,9 +429,9 @@ export type DepartmentUncheckedUpdateInput = {
 
 export type DepartmentCreateManyInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -492,13 +440,13 @@ export type DepartmentCreateManyInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type DepartmentUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -507,15 +455,15 @@ export type DepartmentUpdateManyMutationInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -524,8 +472,8 @@ export type DepartmentUncheckedUpdateManyInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentNullableScalarRelationFilter = {
@@ -560,14 +508,6 @@ export type DepartmentCountOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
 }
 
-export type DepartmentAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  parentId?: Prisma.SortOrder
-  unitTypeId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
 export type DepartmentMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
@@ -594,14 +534,6 @@ export type DepartmentMinOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type DepartmentSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  parentId?: Prisma.SortOrder
-  unitTypeId?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -756,7 +688,7 @@ export type DepartmentUpdateOneWithoutWorkflowStepsNestedInput = {
 
 export type DepartmentCreateWithoutUsersInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -765,8 +697,8 @@ export type DepartmentCreateWithoutUsersInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -776,9 +708,9 @@ export type DepartmentCreateWithoutUsersInput = {
 
 export type DepartmentUncheckedCreateWithoutUsersInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -787,8 +719,8 @@ export type DepartmentUncheckedCreateWithoutUsersInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -812,7 +744,7 @@ export type DepartmentUpdateToOneWithWhereWithoutUsersInput = {
 
 export type DepartmentUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -821,8 +753,8 @@ export type DepartmentUpdateWithoutUsersInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -832,9 +764,9 @@ export type DepartmentUpdateWithoutUsersInput = {
 
 export type DepartmentUncheckedUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -843,8 +775,8 @@ export type DepartmentUncheckedUpdateWithoutUsersInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -852,7 +784,7 @@ export type DepartmentUncheckedUpdateWithoutUsersInput = {
 
 export type DepartmentCreateWithoutUserRolesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -861,8 +793,8 @@ export type DepartmentCreateWithoutUserRolesInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -872,9 +804,9 @@ export type DepartmentCreateWithoutUserRolesInput = {
 
 export type DepartmentUncheckedCreateWithoutUserRolesInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -883,8 +815,8 @@ export type DepartmentUncheckedCreateWithoutUserRolesInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -908,7 +840,7 @@ export type DepartmentUpdateToOneWithWhereWithoutUserRolesInput = {
 
 export type DepartmentUpdateWithoutUserRolesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -917,8 +849,8 @@ export type DepartmentUpdateWithoutUserRolesInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -928,9 +860,9 @@ export type DepartmentUpdateWithoutUserRolesInput = {
 
 export type DepartmentUncheckedUpdateWithoutUserRolesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -939,8 +871,8 @@ export type DepartmentUncheckedUpdateWithoutUserRolesInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -948,7 +880,7 @@ export type DepartmentUncheckedUpdateWithoutUserRolesInput = {
 
 export type DepartmentCreateWithoutUnitTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -957,8 +889,8 @@ export type DepartmentCreateWithoutUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -968,8 +900,8 @@ export type DepartmentCreateWithoutUnitTypeInput = {
 
 export type DepartmentUncheckedCreateWithoutUnitTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
+  id: string
+  parentId?: string | null
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -978,8 +910,8 @@ export type DepartmentUncheckedCreateWithoutUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -1017,9 +949,9 @@ export type DepartmentScalarWhereInput = {
   OR?: Prisma.DepartmentScalarWhereInput[]
   NOT?: Prisma.DepartmentScalarWhereInput | Prisma.DepartmentScalarWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Department"> | Date | string
-  id?: Prisma.BigIntFilter<"Department"> | bigint | number
-  parentId?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  unitTypeId?: Prisma.BigIntFilter<"Department"> | bigint | number
+  id?: Prisma.UuidFilter<"Department"> | string
+  parentId?: Prisma.UuidNullableFilter<"Department"> | string | null
+  unitTypeId?: Prisma.UuidFilter<"Department"> | string
   name?: Prisma.JsonFilter<"Department">
   description?: Prisma.JsonNullableFilter<"Department">
   isActive?: Prisma.BoolFilter<"Department"> | boolean
@@ -1028,13 +960,13 @@ export type DepartmentScalarWhereInput = {
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Department"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Department"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Department"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Department"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Department"> | string | null
 }
 
 export type DepartmentCreateWithoutChildrenInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1043,8 +975,8 @@ export type DepartmentCreateWithoutChildrenInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -1054,9 +986,9 @@ export type DepartmentCreateWithoutChildrenInput = {
 
 export type DepartmentUncheckedCreateWithoutChildrenInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1065,8 +997,8 @@ export type DepartmentUncheckedCreateWithoutChildrenInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
   workflowSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutAssigneeDepartmentInput
@@ -1079,7 +1011,7 @@ export type DepartmentCreateOrConnectWithoutChildrenInput = {
 
 export type DepartmentCreateWithoutParentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1088,8 +1020,8 @@ export type DepartmentCreateWithoutParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
   users?: Prisma.UserCreateNestedManyWithoutDepartmentInput
@@ -1099,8 +1031,8 @@ export type DepartmentCreateWithoutParentInput = {
 
 export type DepartmentUncheckedCreateWithoutParentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  unitTypeId: bigint | number
+  id: string
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1109,8 +1041,8 @@ export type DepartmentUncheckedCreateWithoutParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -1140,7 +1072,7 @@ export type DepartmentUpdateToOneWithWhereWithoutChildrenInput = {
 
 export type DepartmentUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1149,8 +1081,8 @@ export type DepartmentUpdateWithoutChildrenInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1160,9 +1092,9 @@ export type DepartmentUpdateWithoutChildrenInput = {
 
 export type DepartmentUncheckedUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1171,8 +1103,8 @@ export type DepartmentUncheckedUpdateWithoutChildrenInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
   workflowSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentNestedInput
@@ -1196,7 +1128,7 @@ export type DepartmentUpdateManyWithWhereWithoutParentInput = {
 
 export type DepartmentCreateWithoutWorkflowStepsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1205,8 +1137,8 @@ export type DepartmentCreateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   parent?: Prisma.DepartmentCreateNestedOneWithoutChildrenInput
   children?: Prisma.DepartmentCreateNestedManyWithoutParentInput
   unitType: Prisma.OrgUnitTypeCreateNestedOneWithoutDepartmentsInput
@@ -1216,9 +1148,9 @@ export type DepartmentCreateWithoutWorkflowStepsInput = {
 
 export type DepartmentUncheckedCreateWithoutWorkflowStepsInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
-  unitTypeId: bigint | number
+  id: string
+  parentId?: string | null
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1227,8 +1159,8 @@ export type DepartmentUncheckedCreateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   children?: Prisma.DepartmentUncheckedCreateNestedManyWithoutParentInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutDepartmentInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutDepartmentInput
@@ -1252,7 +1184,7 @@ export type DepartmentUpdateToOneWithWhereWithoutWorkflowStepsInput = {
 
 export type DepartmentUpdateWithoutWorkflowStepsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1261,8 +1193,8 @@ export type DepartmentUpdateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
@@ -1272,9 +1204,9 @@ export type DepartmentUpdateWithoutWorkflowStepsInput = {
 
 export type DepartmentUncheckedUpdateWithoutWorkflowStepsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1283,8 +1215,8 @@ export type DepartmentUncheckedUpdateWithoutWorkflowStepsInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1292,8 +1224,8 @@ export type DepartmentUncheckedUpdateWithoutWorkflowStepsInput = {
 
 export type DepartmentCreateManyUnitTypeInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  parentId?: bigint | number | null
+  id: string
+  parentId?: string | null
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1302,13 +1234,13 @@ export type DepartmentCreateManyUnitTypeInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type DepartmentUpdateWithoutUnitTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1317,8 +1249,8 @@ export type DepartmentUpdateWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parent?: Prisma.DepartmentUpdateOneWithoutChildrenNestedInput
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1328,8 +1260,8 @@ export type DepartmentUpdateWithoutUnitTypeInput = {
 
 export type DepartmentUncheckedUpdateWithoutUnitTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1338,8 +1270,8 @@ export type DepartmentUncheckedUpdateWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1348,8 +1280,8 @@ export type DepartmentUncheckedUpdateWithoutUnitTypeInput = {
 
 export type DepartmentUncheckedUpdateManyWithoutUnitTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  parentId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1358,14 +1290,14 @@ export type DepartmentUncheckedUpdateManyWithoutUnitTypeInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DepartmentCreateManyParentInput = {
   updatedAt?: Date | string
-  id?: bigint | number
-  unitTypeId: bigint | number
+  id: string
+  unitTypeId: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: boolean
@@ -1374,13 +1306,13 @@ export type DepartmentCreateManyParentInput = {
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type DepartmentUpdateWithoutParentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1389,8 +1321,8 @@ export type DepartmentUpdateWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUpdateManyWithoutParentNestedInput
   unitType?: Prisma.OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput
   users?: Prisma.UserUpdateManyWithoutDepartmentNestedInput
@@ -1400,8 +1332,8 @@ export type DepartmentUpdateWithoutParentInput = {
 
 export type DepartmentUncheckedUpdateWithoutParentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1410,8 +1342,8 @@ export type DepartmentUncheckedUpdateWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   children?: Prisma.DepartmentUncheckedUpdateManyWithoutParentNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutDepartmentNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutDepartmentNestedInput
@@ -1420,8 +1352,8 @@ export type DepartmentUncheckedUpdateWithoutParentInput = {
 
 export type DepartmentUncheckedUpdateManyWithoutParentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  unitTypeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  unitTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1430,8 +1362,8 @@ export type DepartmentUncheckedUpdateManyWithoutParentInput = {
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1602,9 +1534,9 @@ export type $DepartmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     updatedAt: Date
-    id: bigint
-    parentId: bigint | null
-    unitTypeId: bigint
+    id: string
+    parentId: string | null
+    unitTypeId: string
     name: runtime.JsonValue
     description: runtime.JsonValue | null
     isActive: boolean
@@ -1613,8 +1545,8 @@ export type $DepartmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     lastSyncedAt: Date | null
     createdAt: Date
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["department"]>
   composites: {}
 }
@@ -2045,9 +1977,9 @@ export interface Prisma__DepartmentClient<T, Null = never, ExtArgs extends runti
  */
 export interface DepartmentFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Department", 'DateTime'>
-  readonly id: Prisma.FieldRef<"Department", 'BigInt'>
-  readonly parentId: Prisma.FieldRef<"Department", 'BigInt'>
-  readonly unitTypeId: Prisma.FieldRef<"Department", 'BigInt'>
+  readonly id: Prisma.FieldRef<"Department", 'String'>
+  readonly parentId: Prisma.FieldRef<"Department", 'String'>
+  readonly unitTypeId: Prisma.FieldRef<"Department", 'String'>
   readonly name: Prisma.FieldRef<"Department", 'Json'>
   readonly description: Prisma.FieldRef<"Department", 'Json'>
   readonly isActive: Prisma.FieldRef<"Department", 'Boolean'>
@@ -2056,8 +1988,8 @@ export interface DepartmentFieldRefs {
   readonly lastSyncedAt: Prisma.FieldRef<"Department", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Department", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Department", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"Department", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"Department", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"Department", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Department", 'String'>
 }
     
 

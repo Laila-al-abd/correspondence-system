@@ -19,7 +19,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
 
   async findById(id: Identifier): Promise<Template | null> {
     const row = await this.prisma.template.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
       include: templateInclude,
     })
     return row ? TemplateMapper.toDomain(row) : null
@@ -36,7 +36,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
 
   async listByCategory(categoryId: Identifier): Promise<Template[]> {
     const rows = await this.prisma.template.findMany({
-      where: { categoryId: BigInt(categoryId.toString()), deletedAt: null },
+      where: { categoryId: categoryId.toString(), deletedAt: null },
       include: templateInclude,
       orderBy: { id: 'asc' },
     })
@@ -45,7 +45,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
 
   async save(template: Template): Promise<void> {
     const root = TemplateMapper.toRoot(template)
-    const id = BigInt(template.id.toString())
+    const id = template.id.toString()
     const snapshot = template.snapshot()
 
     await this.prisma.$transaction(async (tx) => {
@@ -63,7 +63,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
       for (const field of snapshot.fields) {
         await tx.templateField.create({
           data: {
-            id: BigInt(field.id),
+            id: field.id,
             templateId: id,
             fieldKey: field.fieldKey,
             label: field.label as Prisma.InputJsonValue,
@@ -84,9 +84,9 @@ export class PrismaTemplateRepository implements TemplateRepository {
       for (const rule of snapshot.eligibilityRules) {
         await tx.templateEligibilityRule.create({
           data: {
-            id: BigInt(rule.id),
+            id: rule.id,
             templateId: id,
-            attributeId: BigInt(rule.attributeId),
+            attributeId: rule.attributeId,
             operator: rule.operator,
             value: rule.value as Prisma.InputJsonValue,
           },

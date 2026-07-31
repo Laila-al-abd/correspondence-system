@@ -71,19 +71,19 @@ const UPDATED_BY_MODELS = new Set<string>([
 
 type WriteArgs = { data?: unknown; create?: unknown; update?: unknown }
 
-/** The current user as a BigInt id, or undefined when there is no request user. */
-function currentActor(): bigint | undefined {
+/** The current user as a UUID string, or undefined when there is no request user. */
+function currentActor(): string | undefined {
   const userId = RequestContextStore.userId()
   if (!userId) return undefined
   try {
-    return BigInt(userId)
+    return userId
   } catch {
     return undefined
   }
 }
 
 /** Returns a copy of `data` with each field set to `actor`, unless already set. */
-function stamp(data: unknown, actor: bigint, fields: readonly string[]): unknown {
+function stamp(data: unknown, actor: string, fields: readonly string[]): unknown {
   const row: Record<string, unknown> =
     data && typeof data === 'object' && !Array.isArray(data)
       ? { ...(data as Record<string, unknown>) }
@@ -95,7 +95,7 @@ function stamp(data: unknown, actor: bigint, fields: readonly string[]): unknown
 }
 
 /** Applies `stamp` to a single row or every row of a createMany payload. */
-function stampAll(data: unknown, actor: bigint, fields: readonly string[]): unknown {
+function stampAll(data: unknown, actor: string, fields: readonly string[]): unknown {
   if (Array.isArray(data)) return data.map((row) => stamp(row, actor, fields))
   return stamp(data, actor, fields)
 }

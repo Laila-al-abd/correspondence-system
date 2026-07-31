@@ -12,7 +12,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
 
   async findById(id: Identifier): Promise<Notification | null> {
     const row = await this.prisma.notification.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
     })
     return row ? NotificationMapper.toDomain(row) : null
   }
@@ -23,7 +23,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
   ): Promise<Notification[]> {
     const rows = await this.prisma.notification.findMany({
       where: {
-        userId: BigInt(userId.toString()),
+        userId: userId.toString(),
         ...(onlyUnread ? { isRead: false } : {}),
       },
       orderBy: { createdAt: 'desc' },
@@ -33,13 +33,13 @@ export class PrismaNotificationRepository implements NotificationRepository {
 
   async countUnread(userId: Identifier): Promise<number> {
     return this.prisma.notification.count({
-      where: { userId: BigInt(userId.toString()), isRead: false },
+      where: { userId: userId.toString(), isRead: false },
     })
   }
 
   async markAllRead(userId: Identifier): Promise<void> {
     await this.prisma.notification.updateMany({
-      where: { userId: BigInt(userId.toString()), isRead: false },
+      where: { userId: userId.toString(), isRead: false },
       data: { isRead: true },
     })
   }
@@ -54,7 +54,7 @@ export class PrismaNotificationRepository implements NotificationRepository {
   async save(notification: Notification): Promise<void> {
     const data = NotificationMapper.toPersistence(notification)
     await this.prisma.notification.upsert({
-      where: { id: BigInt(notification.id.toString()) },
+      where: { id: notification.id.toString() },
       create: data,
       update: data,
     })

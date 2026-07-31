@@ -20,44 +20,30 @@ export type AcademicCalendarModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateAcademicCalendar = {
   _count: AcademicCalendarCountAggregateOutputType | null
-  _avg: AcademicCalendarAvgAggregateOutputType | null
-  _sum: AcademicCalendarSumAggregateOutputType | null
   _min: AcademicCalendarMinAggregateOutputType | null
   _max: AcademicCalendarMaxAggregateOutputType | null
-}
-
-export type AcademicCalendarAvgAggregateOutputType = {
-  id: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type AcademicCalendarSumAggregateOutputType = {
-  id: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type AcademicCalendarMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   periodType: string | null
   startDate: Date | null
   endDate: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AcademicCalendarMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   periodType: string | null
   startDate: Date | null
   endDate: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AcademicCalendarCountAggregateOutputType = {
@@ -74,18 +60,6 @@ export type AcademicCalendarCountAggregateOutputType = {
   _all: number
 }
 
-
-export type AcademicCalendarAvgAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type AcademicCalendarSumAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type AcademicCalendarMinAggregateInputType = {
   createdAt?: true
@@ -161,18 +135,6 @@ export type AcademicCalendarAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: AcademicCalendarAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: AcademicCalendarSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: AcademicCalendarMinAggregateInputType
@@ -203,8 +165,6 @@ export type AcademicCalendarGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: AcademicCalendarCountAggregateInputType | true
-  _avg?: AcademicCalendarAvgAggregateInputType
-  _sum?: AcademicCalendarSumAggregateInputType
   _min?: AcademicCalendarMinAggregateInputType
   _max?: AcademicCalendarMaxAggregateInputType
 }
@@ -212,17 +172,15 @@ export type AcademicCalendarGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type AcademicCalendarGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   name: runtime.JsonValue
   periodType: string
   startDate: Date
   endDate: Date
   description: runtime.JsonValue | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: AcademicCalendarCountAggregateOutputType | null
-  _avg: AcademicCalendarAvgAggregateOutputType | null
-  _sum: AcademicCalendarSumAggregateOutputType | null
   _min: AcademicCalendarMinAggregateOutputType | null
   _max: AcademicCalendarMaxAggregateOutputType | null
 }
@@ -248,14 +206,14 @@ export type AcademicCalendarWhereInput = {
   NOT?: Prisma.AcademicCalendarWhereInput | Prisma.AcademicCalendarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
-  id?: Prisma.BigIntFilter<"AcademicCalendar"> | bigint | number
+  id?: Prisma.UuidFilter<"AcademicCalendar"> | string
   name?: Prisma.JsonFilter<"AcademicCalendar">
   periodType?: Prisma.StringFilter<"AcademicCalendar"> | string
   startDate?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
   endDate?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
   description?: Prisma.JsonNullableFilter<"AcademicCalendar">
-  createdBy?: Prisma.BigIntNullableFilter<"AcademicCalendar"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"AcademicCalendar"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"AcademicCalendar"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"AcademicCalendar"> | string | null
 }
 
 export type AcademicCalendarOrderByWithRelationInput = {
@@ -272,7 +230,7 @@ export type AcademicCalendarOrderByWithRelationInput = {
 }
 
 export type AcademicCalendarWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.AcademicCalendarWhereInput | Prisma.AcademicCalendarWhereInput[]
   OR?: Prisma.AcademicCalendarWhereInput[]
   NOT?: Prisma.AcademicCalendarWhereInput | Prisma.AcademicCalendarWhereInput[]
@@ -283,8 +241,8 @@ export type AcademicCalendarWhereUniqueInput = Prisma.AtLeast<{
   startDate?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
   endDate?: Prisma.DateTimeFilter<"AcademicCalendar"> | Date | string
   description?: Prisma.JsonNullableFilter<"AcademicCalendar">
-  createdBy?: Prisma.BigIntNullableFilter<"AcademicCalendar"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"AcademicCalendar"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"AcademicCalendar"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"AcademicCalendar"> | string | null
 }, "id">
 
 export type AcademicCalendarOrderByWithAggregationInput = {
@@ -299,10 +257,8 @@ export type AcademicCalendarOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AcademicCalendarCountOrderByAggregateInput
-  _avg?: Prisma.AcademicCalendarAvgOrderByAggregateInput
   _max?: Prisma.AcademicCalendarMaxOrderByAggregateInput
   _min?: Prisma.AcademicCalendarMinOrderByAggregateInput
-  _sum?: Prisma.AcademicCalendarSumOrderByAggregateInput
 }
 
 export type AcademicCalendarScalarWhereWithAggregatesInput = {
@@ -311,105 +267,105 @@ export type AcademicCalendarScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AcademicCalendarScalarWhereWithAggregatesInput | Prisma.AcademicCalendarScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AcademicCalendar"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AcademicCalendar"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"AcademicCalendar"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"AcademicCalendar"> | string
   name?: Prisma.JsonWithAggregatesFilter<"AcademicCalendar">
   periodType?: Prisma.StringWithAggregatesFilter<"AcademicCalendar"> | string
   startDate?: Prisma.DateTimeWithAggregatesFilter<"AcademicCalendar"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"AcademicCalendar"> | Date | string
   description?: Prisma.JsonNullableWithAggregatesFilter<"AcademicCalendar">
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"AcademicCalendar"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"AcademicCalendar"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"AcademicCalendar"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"AcademicCalendar"> | string | null
 }
 
 export type AcademicCalendarCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType: string
   startDate: Date | string
   endDate: Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type AcademicCalendarUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType: string
   startDate: Date | string
   endDate: Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type AcademicCalendarUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AcademicCalendarUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AcademicCalendarCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType: string
   startDate: Date | string
   endDate: Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type AcademicCalendarUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AcademicCalendarUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   periodType?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AcademicCalendarCountOrderByAggregateInput = {
@@ -421,12 +377,6 @@ export type AcademicCalendarCountOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type AcademicCalendarAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -449,12 +399,6 @@ export type AcademicCalendarMinOrderByAggregateInput = {
   periodType?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type AcademicCalendarSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -521,14 +465,14 @@ export type $AcademicCalendarPayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     name: runtime.JsonValue
     periodType: string
     startDate: Date
     endDate: Date
     description: runtime.JsonValue | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["academicCalendar"]>
   composites: {}
 }
@@ -954,14 +898,14 @@ export interface Prisma__AcademicCalendarClient<T, Null = never, ExtArgs extends
 export interface AcademicCalendarFieldRefs {
   readonly createdAt: Prisma.FieldRef<"AcademicCalendar", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AcademicCalendar", 'DateTime'>
-  readonly id: Prisma.FieldRef<"AcademicCalendar", 'BigInt'>
+  readonly id: Prisma.FieldRef<"AcademicCalendar", 'String'>
   readonly name: Prisma.FieldRef<"AcademicCalendar", 'Json'>
   readonly periodType: Prisma.FieldRef<"AcademicCalendar", 'String'>
   readonly startDate: Prisma.FieldRef<"AcademicCalendar", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"AcademicCalendar", 'DateTime'>
   readonly description: Prisma.FieldRef<"AcademicCalendar", 'Json'>
-  readonly createdBy: Prisma.FieldRef<"AcademicCalendar", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"AcademicCalendar", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"AcademicCalendar", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"AcademicCalendar", 'String'>
 }
     
 

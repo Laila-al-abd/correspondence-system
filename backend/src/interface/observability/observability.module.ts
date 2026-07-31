@@ -8,7 +8,7 @@ import { PrismaMlPredictionRepository } from '../../infrastructure/observability
 import { PrismaAcademicCalendarRepository } from '../../infrastructure/observability/prisma-academic-calendar.repository'
 import { PrismaSystemSettingRepository } from '../../infrastructure/observability/prisma-system-setting.repository'
 import { NotificationRetentionService } from '../../infrastructure/observability/notification-retention.service'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { NotificationEmitter } from '../../application/observability/services/notification-emitter'
 import { BusinessHoursService } from '../../application/observability/services/business-hours.service'
 import { ListMyNotificationsHandler } from '../../application/observability/queries/list-my-notifications/list-my-notifications.handler'
@@ -75,7 +75,7 @@ const handlers = [
       provide: SYSTEM_SETTING_REPOSITORY,
       useClass: PrismaSystemSettingRepository,
     },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
   ],
   exports: [
     EVENT_LOG_REPOSITORY,

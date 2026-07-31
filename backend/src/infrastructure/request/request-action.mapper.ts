@@ -23,13 +23,13 @@ export const RequestActionMapper = {
   ): Prisma.RequestActionUncheckedCreateInput {
     const s = action.snapshot()
     return {
-      id: BigInt(action.id.toString()),
-      requestId: BigInt(requestId.toString()),
+      id: action.id.toString(),
+      requestId: requestId.toString(),
       requestStepInstanceId: s.requestStepInstanceId
-        ? BigInt(s.requestStepInstanceId)
+        ? s.requestStepInstanceId
         : null,
-      actorId: BigInt(s.actorId),
-      actionTypeId: BigInt(s.actionTypeId),
+      actorId: s.actorId,
+      actionTypeId: s.actionTypeId,
       comment: s.comment ?? null,
       createdAt: s.createdAt,
     }

@@ -28,26 +28,24 @@ export type AggregateRequestNumberSequence = {
 
 export type RequestNumberSequenceAvgAggregateOutputType = {
   currentValue: number | null
-  updatedBy: number | null
 }
 
 export type RequestNumberSequenceSumAggregateOutputType = {
   currentValue: bigint | null
-  updatedBy: bigint | null
 }
 
 export type RequestNumberSequenceMinAggregateOutputType = {
   scope: string | null
   currentValue: bigint | null
   updatedAt: Date | null
-  updatedBy: bigint | null
+  updatedBy: string | null
 }
 
 export type RequestNumberSequenceMaxAggregateOutputType = {
   scope: string | null
   currentValue: bigint | null
   updatedAt: Date | null
-  updatedBy: bigint | null
+  updatedBy: string | null
 }
 
 export type RequestNumberSequenceCountAggregateOutputType = {
@@ -61,12 +59,10 @@ export type RequestNumberSequenceCountAggregateOutputType = {
 
 export type RequestNumberSequenceAvgAggregateInputType = {
   currentValue?: true
-  updatedBy?: true
 }
 
 export type RequestNumberSequenceSumAggregateInputType = {
   currentValue?: true
-  updatedBy?: true
 }
 
 export type RequestNumberSequenceMinAggregateInputType = {
@@ -181,7 +177,7 @@ export type RequestNumberSequenceGroupByOutputType = {
   scope: string
   currentValue: bigint
   updatedAt: Date
-  updatedBy: bigint | null
+  updatedBy: string | null
   _count: RequestNumberSequenceCountAggregateOutputType | null
   _avg: RequestNumberSequenceAvgAggregateOutputType | null
   _sum: RequestNumberSequenceSumAggregateOutputType | null
@@ -211,7 +207,7 @@ export type RequestNumberSequenceWhereInput = {
   scope?: Prisma.StringFilter<"RequestNumberSequence"> | string
   currentValue?: Prisma.BigIntFilter<"RequestNumberSequence"> | bigint | number
   updatedAt?: Prisma.DateTimeFilter<"RequestNumberSequence"> | Date | string
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestNumberSequence"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestNumberSequence"> | string | null
 }
 
 export type RequestNumberSequenceOrderByWithRelationInput = {
@@ -228,7 +224,7 @@ export type RequestNumberSequenceWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RequestNumberSequenceWhereInput | Prisma.RequestNumberSequenceWhereInput[]
   currentValue?: Prisma.BigIntFilter<"RequestNumberSequence"> | bigint | number
   updatedAt?: Prisma.DateTimeFilter<"RequestNumberSequence"> | Date | string
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestNumberSequence"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestNumberSequence"> | string | null
 }, "scope">
 
 export type RequestNumberSequenceOrderByWithAggregationInput = {
@@ -250,56 +246,56 @@ export type RequestNumberSequenceScalarWhereWithAggregatesInput = {
   scope?: Prisma.StringWithAggregatesFilter<"RequestNumberSequence"> | string
   currentValue?: Prisma.BigIntWithAggregatesFilter<"RequestNumberSequence"> | bigint | number
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RequestNumberSequence"> | Date | string
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestNumberSequence"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"RequestNumberSequence"> | string | null
 }
 
 export type RequestNumberSequenceCreateInput = {
   scope: string
   currentValue?: bigint | number
   updatedAt?: Date | string
-  updatedBy?: bigint | number | null
+  updatedBy?: string | null
 }
 
 export type RequestNumberSequenceUncheckedCreateInput = {
   scope: string
   currentValue?: bigint | number
   updatedAt?: Date | string
-  updatedBy?: bigint | number | null
+  updatedBy?: string | null
 }
 
 export type RequestNumberSequenceUpdateInput = {
   scope?: Prisma.StringFieldUpdateOperationsInput | string
   currentValue?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestNumberSequenceUncheckedUpdateInput = {
   scope?: Prisma.StringFieldUpdateOperationsInput | string
   currentValue?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestNumberSequenceCreateManyInput = {
   scope: string
   currentValue?: bigint | number
   updatedAt?: Date | string
-  updatedBy?: bigint | number | null
+  updatedBy?: string | null
 }
 
 export type RequestNumberSequenceUpdateManyMutationInput = {
   scope?: Prisma.StringFieldUpdateOperationsInput | string
   currentValue?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestNumberSequenceUncheckedUpdateManyInput = {
   scope?: Prisma.StringFieldUpdateOperationsInput | string
   currentValue?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestNumberSequenceCountOrderByAggregateInput = {
@@ -311,7 +307,6 @@ export type RequestNumberSequenceCountOrderByAggregateInput = {
 
 export type RequestNumberSequenceAvgOrderByAggregateInput = {
   currentValue?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type RequestNumberSequenceMaxOrderByAggregateInput = {
@@ -330,7 +325,6 @@ export type RequestNumberSequenceMinOrderByAggregateInput = {
 
 export type RequestNumberSequenceSumOrderByAggregateInput = {
   currentValue?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 
@@ -372,7 +366,7 @@ export type $RequestNumberSequencePayload<ExtArgs extends runtime.Types.Extensio
     scope: string
     currentValue: bigint
     updatedAt: Date
-    updatedBy: bigint | null
+    updatedBy: string | null
   }, ExtArgs["result"]["requestNumberSequence"]>
   composites: {}
 }
@@ -799,7 +793,7 @@ export interface RequestNumberSequenceFieldRefs {
   readonly scope: Prisma.FieldRef<"RequestNumberSequence", 'String'>
   readonly currentValue: Prisma.FieldRef<"RequestNumberSequence", 'BigInt'>
   readonly updatedAt: Prisma.FieldRef<"RequestNumberSequence", 'DateTime'>
-  readonly updatedBy: Prisma.FieldRef<"RequestNumberSequence", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"RequestNumberSequence", 'String'>
 }
     
 

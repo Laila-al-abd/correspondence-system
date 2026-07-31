@@ -34,7 +34,7 @@ export class PrismaUserQuery implements UserQueryPort {
     const where: Prisma.UserWhereInput = { deletedAt: null }
     if (filter.userType) where.userType = filter.userType
     if (filter.status) where.status = filter.status
-    if (filter.departmentId) where.departmentId = BigInt(filter.departmentId)
+    if (filter.departmentId) where.departmentId = filter.departmentId
     if (filter.search) {
       const contains = { contains: filter.search, mode: 'insensitive' as const }
       where.OR = [
@@ -60,7 +60,7 @@ export class PrismaUserQuery implements UserQueryPort {
 
   async getDetail(id: string): Promise<UserDetailView | null> {
     const row = await this.prisma.user.findFirst({
-      where: { id: BigInt(id), deletedAt: null },
+      where: { id: id, deletedAt: null },
       include: {
         rolesAssigned: { include: { role: true } },
         attributes: { include: { attribute: true } },
@@ -102,14 +102,14 @@ function toLocalized(
 }
 
 function toSummary(row: {
-  id: bigint
+  id: string
   userType: string
   fullNameAr: string
   fullNameEn: string | null
   email: string
   phone: string | null
   institutionalNumber: string | null
-  departmentId: bigint | null
+  departmentId: string | null
   status: string
   authProvider: string
   preferredLang: string

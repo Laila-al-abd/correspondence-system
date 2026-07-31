@@ -16,7 +16,7 @@ export class PrismaSystemSettingRepository implements SystemSettingRepository {
 
   async findById(id: Identifier): Promise<SystemSetting | null> {
     const row = await this.prisma.systemSetting.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
     })
     return row ? SystemSettingMapper.toDomain(row) : null
   }
@@ -29,7 +29,7 @@ export class PrismaSystemSettingRepository implements SystemSettingRepository {
   async save(setting: SystemSetting): Promise<void> {
     const data = SystemSettingMapper.toPersistence(setting)
     await this.prisma.systemSetting.upsert({
-      where: { id: BigInt(setting.id.toString()) },
+      where: { id: setting.id.toString() },
       create: data,
       update: data,
     })

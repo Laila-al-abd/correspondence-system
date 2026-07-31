@@ -20,7 +20,7 @@ export const RoleMapper = {
 
   toPersistence(role: Role): Prisma.RoleUncheckedCreateInput {
     return {
-      id: BigInt(role.id.toString()),
+      id: role.id.toString(),
       name: role.name.toJSON() as Prisma.InputJsonValue,
       isSystem: role.isSystem,
     }

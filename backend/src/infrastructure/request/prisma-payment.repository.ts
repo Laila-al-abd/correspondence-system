@@ -12,14 +12,14 @@ export class PrismaPaymentRepository implements PaymentRepository {
 
   async findById(id: Identifier): Promise<Payment | null> {
     const row = await this.prisma.payment.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
     })
     return row ? PaymentMapper.toDomain(row) : null
   }
 
   async listByRequest(requestId: Identifier): Promise<Payment[]> {
     const rows = await this.prisma.payment.findMany({
-      where: { requestId: BigInt(requestId.toString()) },
+      where: { requestId: requestId.toString() },
       orderBy: { id: 'asc' },
     })
     return rows.map((row) => PaymentMapper.toDomain(row))
@@ -28,7 +28,7 @@ export class PrismaPaymentRepository implements PaymentRepository {
   async save(payment: Payment): Promise<void> {
     const data = PaymentMapper.toPersistence(payment)
     await this.prisma.payment.upsert({
-      where: { id: BigInt(payment.id.toString()) },
+      where: { id: payment.id.toString() },
       create: data,
       update: data,
     })

@@ -16,7 +16,7 @@ export class PrismaRoleRepository implements RoleRepository {
 
   async findById(id: Identifier): Promise<Role | null> {
     const row = await this.prisma.role.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
       include: { permissions: { include: { permission: true } } },
     })
     if (!row) return null
@@ -26,7 +26,7 @@ export class PrismaRoleRepository implements RoleRepository {
 
   async save(role: Role): Promise<void> {
     const data = RoleMapper.toPersistence(role)
-    const roleId = BigInt(role.id.toString())
+    const roleId = role.id.toString()
     const codes = role.permissions
 
     await this.prisma.$transaction(async (tx) => {
@@ -58,7 +58,7 @@ export class PrismaRoleRepository implements RoleRepository {
           deletedAt: null,
           userRoles: {
             some: {
-              userId: BigInt(userId.toString()),
+              userId: userId.toString(),
               OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
             },
           },
@@ -77,10 +77,10 @@ export class PrismaRoleRepository implements RoleRepository {
     assignedBy?: Identifier
   }): Promise<void> {
     const where = {
-      userId: BigInt(params.userId.toString()),
-      roleId: BigInt(params.roleId.toString()),
+      userId: params.userId.toString(),
+      roleId: params.roleId.toString(),
       departmentId: params.departmentId
-        ? BigInt(params.departmentId.toString())
+        ? params.departmentId.toString()
         : null,
     }
     await this.prisma.$transaction(async (tx) => {
@@ -90,7 +90,7 @@ export class PrismaRoleRepository implements RoleRepository {
           ...where,
           expiresAt: params.expiresAt ?? null,
           assignedBy: params.assignedBy
-            ? BigInt(params.assignedBy.toString())
+            ? params.assignedBy.toString()
             : null,
         },
       })
@@ -104,10 +104,10 @@ export class PrismaRoleRepository implements RoleRepository {
   }): Promise<void> {
     await this.prisma.userRole.deleteMany({
       where: {
-        userId: BigInt(params.userId.toString()),
-        roleId: BigInt(params.roleId.toString()),
+        userId: params.userId.toString(),
+        roleId: params.roleId.toString(),
         departmentId: params.departmentId
-          ? BigInt(params.departmentId.toString())
+          ? params.departmentId.toString()
           : null,
       },
     })

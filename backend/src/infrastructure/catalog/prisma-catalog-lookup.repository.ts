@@ -24,7 +24,7 @@ export class PrismaSensitivityLevelRepository
 
   async findById(id: Identifier): Promise<SensitivityLevel | null> {
     const row = await this.prisma.sensitivityLevel.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? SensitivityLevelMapper.toDomain(row) : null
   }
@@ -47,7 +47,7 @@ export class PrismaRequestCategoryRepository
 
   async findById(id: Identifier): Promise<RequestCategory | null> {
     const row = await this.prisma.requestCategory.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? RequestCategoryMapper.toDomain(row) : null
   }
@@ -68,7 +68,7 @@ export class PrismaActionTypeRepository implements ActionTypeRepository {
 
   async findById(id: Identifier): Promise<ActionType | null> {
     const row = await this.prisma.actionType.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? ActionTypeMapper.toDomain(row) : null
   }
