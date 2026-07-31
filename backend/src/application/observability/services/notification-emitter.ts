@@ -13,8 +13,18 @@ import type { NotificationAudiencePort } from '../ports/notification-audience.po
 import type { NotificationStreamPort } from '../ports/notification-stream.port'
 import { NotificationType } from '../notification-types'
 
-/** Permission that identifies the human-in-the-loop review queue. */
-const REVIEWER_PERMISSION = 'request.act'
+/** Permission that identifies the human-in-the-loop classification queue. */
+const REVIEWER_PERMISSION = 'request.classify'
+
+/**
+ * Who to tell when nobody holds the reviewer permission. An unreviewable
+ * request must not disappear silently, so administrators are told instead --
+ * they are the people who can grant somebody the missing role.
+ */
+const REVIEWER_FALLBACK_PERMISSION = 'user.manage'
+
+/** Permission held by the people who can fix an unroutable workflow step. */
+const WORKFLOW_ADMIN_PERMISSION = 'workflow.manage'
 
 /**
  * The single place that turns a business event into stored notifications.
@@ -108,6 +118,17 @@ export class NotificationEmitter {
       reviewerIds = await this.audience.findUserIdsWithPermission(
         REVIEWER_PERMISSION,
       )
+      // An empty reviewer pool is a configuration fault, not a reason to drop
+      // the request on the floor. Administrators are told instead, because
+      // they are the ones who can assign somebody the reviewer role.
+      if (reviewerIds.length === 0) {
+        this.logger.warn(
+          `Nobody holds ${REVIEWER_PERMISSION}; falling back to ${REVIEWER_FALLBACK_PERMISSION} for request ${input.requestId}.`,
+        )
+        reviewerIds = await this.audience.findUserIdsWithPermission(
+          REVIEWER_FALLBACK_PERMISSION,
+        )
+      }
     } catch (error) {
       this.logger.warn(
         `Could not resolve the review audience: ${describe(error)}`,
@@ -121,6 +142,73 @@ export class NotificationEmitter {
         type: NotificationType.CLASSIFICATION_NEEDS_REVIEW,
         title: 'A request needs manual classification',
         body: `Request ${label(input.referenceNo, input.requestId)} could not be classified confidently and is waiting for a human decision.`,
+        requestId: input.requestId,
+      })
+    }
+  }
+
+  /**
+   * Auto-routing could not find an owner for one or more steps of a request.
+   *
+   * Before this existed those steps were left unassigned and nobody was told,
+   * so a request could sit still indefinitely while looking perfectly healthy.
+   * The people who can actually fix it -- holders of `workflow.manage` -- are
+   * now alerted, with the reason included.
+   *
+   * One notification per request per person, not one per step: the alert is
+   * de-duplicated on (user, request, type), so a retry or a second start
+   * attempt cannot flood an administrator's inbox with the same problem.
+   */
+  async stepAssignmentRequired(input: {
+    requestId: string
+    unassignedStepCount: number
+    referenceNo?: string
+    reason?: string
+  }): Promise<void> {
+    if (input.unassignedStepCount <= 0) return
+
+    let adminIds: string[] = []
+    try {
+      adminIds = await this.audience.findUserIdsWithPermission(
+        WORKFLOW_ADMIN_PERMISSION,
+      )
+    } catch (error) {
+      this.logger.warn(
+        `Could not resolve the workflow-admin audience: ${describe(error)}`,
+      )
+      return
+    }
+
+    const steps =
+      input.unassignedStepCount === 1
+        ? '1 step'
+        : `${input.unassignedStepCount} steps`
+    const reason =
+      input.reason ??
+      'no active user matched the assignee rule for those steps (role, unit, department head or faculty dean)'
+
+    for (const adminId of adminIds) {
+      try {
+        const alreadySent = await this.notifications.existsFor(
+          Identifier.of(adminId),
+          Identifier.of(input.requestId),
+          NotificationType.STEP_ASSIGNMENT_REQUIRED,
+        )
+        if (alreadySent) continue
+      } catch (error) {
+        // If the duplicate check itself fails, prefer a possible duplicate over
+        // a missed alert: a repeated message is an annoyance, a silently
+        // stalled request is a failure.
+        this.logger.warn(
+          `Could not check for a duplicate assignment alert: ${describe(error)}`,
+        )
+      }
+
+      await this.push({
+        userId: adminId,
+        type: NotificationType.STEP_ASSIGNMENT_REQUIRED,
+        title: 'A request has steps with no owner',
+        body: `Request ${label(input.referenceNo, input.requestId)} started with ${steps} left unassigned because ${reason}. Assign them manually so the request can move.`,
         requestId: input.requestId,
       })
     }
