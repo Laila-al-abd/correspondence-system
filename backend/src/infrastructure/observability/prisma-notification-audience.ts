@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import type { NotificationAudiencePort } from '../../application/observability/ports/notification-audience.port'
 import { PrismaService } from '../persistence/prisma.service'
+import { activeRoleAssignment } from '../identity/role-access.where'
 
 /**
  * Prisma adapter for NotificationAudiencePort. Walks user_roles -> roles ->
@@ -15,7 +16,7 @@ export class PrismaNotificationAudience implements NotificationAudiencePort {
   async findUserIdsWithPermission(permissionCode: string): Promise<string[]> {
     const rows = await this.prisma.userRole.findMany({
       where: {
-        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        ...activeRoleAssignment(new Date()),
         role: {
           deletedAt: null,
           permissions: { some: { permission: { code: permissionCode } } },

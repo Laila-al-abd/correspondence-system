@@ -8,4 +8,13 @@ export interface NotificationRepository extends Repository<Notification> {
   markAllRead(userId: Identifier): Promise<void>
   /** Removes notifications created strictly before `cutoff`; returns the row count. */
   deleteOlderThan(cutoff: Date): Promise<number>
+  /**
+   * Whether this user already holds a notification of `type` about `requestId`.
+   * Lets a repeated background alert stay silent instead of duplicating itself.
+   */
+  existsFor(
+    userId: Identifier,
+    requestId: Identifier,
+    type: string,
+  ): Promise<boolean>
 }

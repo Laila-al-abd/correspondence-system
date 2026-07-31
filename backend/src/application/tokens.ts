@@ -53,6 +53,7 @@ export const NOTIFICATION_STREAM = Symbol('NotificationStream')
 export const ML_PREDICTION_REPOSITORY = Symbol('MlPredictionRepository')
 export const ACADEMIC_CALENDAR_REPOSITORY = Symbol('AcademicCalendarRepository')
 export const SYSTEM_SETTING_REPOSITORY = Symbol('SystemSettingRepository')
+export const SLA_SCAN = Symbol('SlaScan')
 
 // reporting
 export const REPORTS_QUERY = Symbol('ReportsQuery')

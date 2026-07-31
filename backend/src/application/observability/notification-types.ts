@@ -16,6 +16,8 @@ export const NotificationType = {
   DELEGATION_GRANTED: 'DELEGATION_GRANTED',
   /** Delegated authority was withdrawn. */
   DELEGATION_REVOKED: 'DELEGATION_REVOKED',
+  /** Auto-routing could not find an owner for one or more steps. */
+  STEP_ASSIGNMENT_REQUIRED: 'STEP_ASSIGNMENT_REQUIRED',
 } as const
 
 export type NotificationTypeCode =

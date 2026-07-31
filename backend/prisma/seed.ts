@@ -124,6 +124,20 @@ async function main(): Promise<void> {
     },
   })
 
+  // --- SLA risk thresholds --------------------------------------------------
+  // atRiskHours is measured in *working* hours remaining, not clock hours, so
+  // a deadline on the far side of a weekend does not raise a flag early.
+  await prisma.systemSetting.upsert({
+    where: { key: 'sla_thresholds' },
+    update: {},
+    create: {
+      key: 'sla_thresholds',
+      value: { atRiskHours: 8 },
+      description:
+        'Working hours of remaining time below which a step counts as at risk.',
+    },
+  })
+
   // --- Sensitivity levels (rank is unique; higher = more sensitive) ---------
   const sensitivity = [
     { id: sensitivityId(1), rank: 1, name: t('عام', 'Public') },
@@ -229,6 +243,7 @@ async function main(): Promise<void> {
     { id: permissionId(4), code: 'workflow.manage', name: t('إدارة مسارات العمل', 'Manage workflows') },
     { id: permissionId(5), code: 'template.manage', name: t('إدارة القوالب', 'Manage templates') },
     { id: permissionId(6), code: 'reports.view', name: t('عرض التقارير', 'View reports') },
+    { id: permissionId(7), code: 'request.classify', name: t('تصنيف الطلبات', 'Classify requests') },
   ]
   for (const p of permissions) {
     await prisma.permission.upsert({
@@ -377,6 +392,39 @@ async function main(): Promise<void> {
       data: { userId: reviewer.id, roleId: reviewerRole.id },
     })
   }
+
+  // --- Classification Reviewer role -----------------------------------------
+  // Classifying a request is now its own permission (request.classify) rather
+  // than part of request.act. That separates two different duties: deciding
+  // which template -- and therefore which workflow -- a request follows, versus
+  // approving a step inside that workflow. This role holds the first without
+  // the second. reviewer1 gets it in addition to Reviewer so the
+  // human-in-the-loop queue is testable straight after seeding.
+  const classifierRole = await prisma.role.upsert({
+    where: { id: roleId(3) },
+    update: {},
+    create: {
+      id: roleId(3),
+      name: t('مصنّف الطلبات', 'Classification Reviewer'),
+      isSystem: false,
+    },
+  })
+  for (const id of [permissionId(2), permissionId(7)]) {
+    // request.read (2) + request.classify (7)
+    await prisma.rolePermission.upsert({
+      where: {
+        roleId_permissionId: { roleId: classifierRole.id, permissionId: id },
+      },
+      update: {},
+      create: { roleId: classifierRole.id, permissionId: id },
+    })
+  }
+  await prisma.userRole.deleteMany({
+    where: { userId: userId(2), roleId: classifierRole.id },
+  })
+  await prisma.userRole.create({
+    data: { userId: userId(2), roleId: classifierRole.id },
+  })
 
   // --- Sample attribute values for the admin (so ABAC returns eligible) -----
   const userAttrValues = [

@@ -6,6 +6,7 @@ import type {
   FindCandidatesQuery,
 } from '../../application/request/ports/assignee-directory.port'
 import { PrismaService } from '../persistence/prisma.service'
+import { activeRoleAssignment } from '../identity/role-access.where'
 
 // A step is "open" (counts as workload) until it reaches a terminal state.
 const OPEN_STATUSES = ['PENDING', 'IN_PROGRESS', 'WAITING']
@@ -23,9 +24,7 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
     query: FindCandidatesQuery,
   ): Promise<AssigneeCandidate[]> {
     const now = new Date()
-    const conditions: Prisma.UserRoleWhereInput[] = [
-      { OR: [{ expiresAt: null }, { expiresAt: { gt: now } }] },
-    ]
+    const conditions: Prisma.UserRoleWhereInput[] = [activeRoleAssignment(now)]
     if (query.roleId) conditions.push({ roleId: query.roleId })
     if (query.departmentId) {
       const dept = query.departmentId
