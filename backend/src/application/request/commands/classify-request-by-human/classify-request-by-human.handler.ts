@@ -6,6 +6,7 @@ import type { RequestRepository } from '../../../../domain/request/ports/request
 import { REQUEST_REPOSITORY, TEMPLATE_REPOSITORY } from '../../../tokens'
 import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
 import { EntityNotFoundError } from '../../../errors'
+import { TemplateSubmissionPolicy } from '../../services/template-submission-policy'
 import { ClassifyRequestByHumanCommand } from './classify-request-by-human.command'
 
 export interface HumanClassificationResult {
@@ -25,6 +26,7 @@ export class ClassifyRequestByHumanHandler
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
     @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
+    private readonly submissionPolicy: TemplateSubmissionPolicy,
   ) {}
 
   async execute({
@@ -37,6 +39,11 @@ export class ClassifyRequestByHumanHandler
       Identifier.of(input.templateId),
     )
     if (!template) throw new EntityNotFoundError('Template', input.templateId)
+
+    // The same gate as the automatic path. A reviewer resolving a low-confidence
+    // classification may not place a request on a template its requester is not
+    // eligible for, and may not bind it to a template its form data contradicts.
+    await this.submissionPolicy.assertMayBeClassifiedAs(request, template)
 
     request.classifyByHuman(
       Identifier.of(input.templateId),

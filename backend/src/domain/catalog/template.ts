@@ -5,6 +5,12 @@ import { InvariantViolationError } from "../shared/domain-error"
 import { TemplateField } from "./template-field"
 import { TemplateEligibilityRule } from "./template-eligibility-rule"
 
+/** One thing wrong with a submitted form, and why it is wrong. */
+export interface FilledDataViolation {
+  fieldKey: string
+  reason: string
+}
+
 interface TemplateProps {
   categoryId: Identifier
   title: LocalizedText
@@ -80,13 +86,41 @@ export class Template extends AggregateRoot {
   get fields(): readonly TemplateField[] { return this.props.fields }
 
   /**
-   * Ensures a submission provides an acceptable value for every field.
-   * Returns the offending field keys (empty array = valid submission).
+   * Checks a submission against this template's declared fields and returns
+   * every problem at once, rather than stopping at the first.
+   *
+   * Two rules, both deliberate:
+   *  - every declared field must hold an acceptable value (required fields must
+   *    be present; every value must match its declared type);
+   *  - no key may appear that the template did not declare. Silently storing
+   *    unknown keys means filled_data drifts away from template_fields, and
+   *    nothing downstream can then be trusted to know a request's shape.
+   */
+  validateFilledData(
+    filledData: Record<string, unknown>,
+  ): FilledDataViolation[] {
+    const violations: FilledDataViolation[] = []
+    for (const field of this.props.fields) {
+      const reason = field.validate(filledData[field.fieldKey])
+      if (reason !== null) violations.push({ fieldKey: field.fieldKey, reason })
+    }
+    const declared = new Set(this.props.fields.map((f) => f.fieldKey))
+    for (const key of Object.keys(filledData)) {
+      if (!declared.has(key))
+        violations.push({
+          fieldKey: key,
+          reason: "This field is not part of this template.",
+        })
+    }
+    return violations
+  }
+
+  /**
+   * Field keys only, for callers that do not need the reasons.
+   * Prefer validateFilledData, which explains each failure.
    */
   validateSubmission(filledData: Record<string, unknown>): string[] {
-    return this.props.fields
-      .filter((f) => !f.accepts(filledData[f.fieldKey]))
-      .map((f) => f.fieldKey)
+    return this.validateFilledData(filledData).map((v) => v.fieldKey)
   }
 
   /**

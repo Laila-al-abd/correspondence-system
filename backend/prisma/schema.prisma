@@ -352,7 +352,7 @@ model TemplateField {
   templateId String   @map("template_id") @db.Uuid
   fieldKey   String   @map("field_key") @db.VarChar(100)
   label      Json     @db.JsonB
-  dataType   String   @map("data_type") @db.VarChar(20) // TEXT | NUMBER | DATE | ENUM
+  dataType   String   @map("data_type") @db.VarChar(20) // TEXT | NUMBER | DATE | BOOLEAN | ENUM
   isRequired Boolean  @default(false) @map("is_required")
   ordinal    Int      @default(0)
 

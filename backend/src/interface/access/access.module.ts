@@ -58,5 +58,8 @@ const handlers = [
       inject: [USER_ATTRIBUTE_REPOSITORY, ATTRIBUTE_DEFINITION_REPOSITORY],
     },
   ],
+  // Exported so the request slice can enforce eligibility on the write path
+  // instead of only answering "am I eligible?" as a read.
+  exports: [EvaluateEligibility],
 })
 export class AccessModule {}

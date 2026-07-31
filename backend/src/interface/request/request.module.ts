@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
+import { AccessModule } from '../access/access.module'
 import { CatalogModule } from '../catalog/catalog.module'
 import { ObservabilityModule } from '../observability/observability.module'
 import {
@@ -36,6 +37,7 @@ import { ListAssignedRequestsHandler } from '../../application/request/queries/l
 import { ListRequestQueueHandler } from '../../application/request/queries/list-request-queue/list-request-queue.handler'
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
+import { TemplateSubmissionPolicy } from '../../application/request/services/template-submission-policy'
 import { PrismaAssigneeDirectory } from '../../infrastructure/request/prisma-assignee-directory'
 import { SlaMonitorService } from '../../application/observability/services/sla-monitor.service'
 import { SlaMonitorScheduler } from '../../infrastructure/observability/sla-monitor.scheduler'
@@ -72,7 +74,7 @@ const handlers = [
  * ObservabilityModule's exports.
  */
 @Module({
-  imports: [CqrsModule, CatalogModule, ObservabilityModule],
+  imports: [CqrsModule, AccessModule, CatalogModule, ObservabilityModule],
   controllers: [RequestController],
   providers: [
     ...handlers,
@@ -96,6 +98,7 @@ const handlers = [
     { provide: ASSIGNEE_DIRECTORY, useClass: PrismaAssigneeDirectory },
     { provide: SLA_SCAN, useClass: PrismaSlaScan },
     AssigneeResolver,
+    TemplateSubmissionPolicy,
     SlaMonitorService,
     SlaMonitorScheduler,
   ],
