@@ -8,6 +8,8 @@ import { ConfigService } from '@nestjs/config'
 import { CommandBus } from '@nestjs/cqrs'
 import { PurgeOldNotificationsCommand } from '../../application/observability/commands/purge-old-notifications/purge-old-notifications.command'
 import { PurgeResult } from '../../application/observability/queries/views/notification.view'
+import { RequestContextStore } from '../shared/request-context'
+import { SYSTEM_USER_ID } from '../shared/system-actor'
 
 const MS_PER_HOUR = 60 * 60 * 1000
 const DEFAULT_RETENTION_DAYS = 30
@@ -69,23 +71,33 @@ export class NotificationRetentionService
     if (this.sweepTimer) clearInterval(this.sweepTimer)
   }
 
-  /** Runs one retention pass. Never throws -- a failed sweep is retried later. */
+  /**
+   * Runs one retention pass. Never throws -- a failed sweep is retried later.
+   *
+   * The whole body runs inside a request context owned by the SYSTEM account,
+   * so the audit extension stamps these writes with a real actor instead of
+   * leaving created_by / updated_by empty. The context must wrap the awaited
+   * work, not just the call that starts it, or it is gone by the time the
+   * repository runs.
+   */
   async sweep(): Promise<void> {
-    try {
-      const result = (await this.commandBus.execute(
-        new PurgeOldNotificationsCommand(this.retentionDays()),
-      )) as PurgeResult
-      if (result.deleted > 0)
-        this.logger.log(
-          `Removed ${result.deleted} notification(s) created before ${result.cutoff}.`,
+    await RequestContextStore.run({ userId: SYSTEM_USER_ID }, async () => {
+      try {
+        const result = (await this.commandBus.execute(
+          new PurgeOldNotificationsCommand(this.retentionDays()),
+        )) as PurgeResult
+        if (result.deleted > 0)
+          this.logger.log(
+            `Removed ${result.deleted} notification(s) created before ${result.cutoff}.`,
+          )
+      } catch (error) {
+        this.logger.warn(
+          `Notification retention sweep failed: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
         )
-    } catch (error) {
-      this.logger.warn(
-        `Notification retention sweep failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      )
-    }
+      }
+    })
   }
 
   private retentionDays(): number {
