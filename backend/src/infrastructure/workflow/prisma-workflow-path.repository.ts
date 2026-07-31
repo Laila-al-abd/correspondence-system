@@ -18,7 +18,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
 
   async findById(id: Identifier): Promise<WorkflowPath | null> {
     const row = await this.prisma.workflowPath.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
       include: workflowPathInclude,
     })
     return row ? WorkflowPathMapper.toDomain(row) : null
@@ -27,7 +27,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
   async findActiveByTemplate(templateId: Identifier): Promise<WorkflowPath | null> {
     const row = await this.prisma.workflowPath.findFirst({
       where: {
-        templateId: BigInt(templateId.toString()),
+        templateId: templateId.toString(),
         isActive: true,
         deletedAt: null,
       },
@@ -39,7 +39,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
 
   async listByTemplate(templateId: Identifier): Promise<WorkflowPath[]> {
     const rows = await this.prisma.workflowPath.findMany({
-      where: { templateId: BigInt(templateId.toString()), deletedAt: null },
+      where: { templateId: templateId.toString(), deletedAt: null },
       include: workflowPathInclude,
       orderBy: { id: 'asc' },
     })
@@ -48,7 +48,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
 
   async save(path: WorkflowPath): Promise<void> {
     const root = WorkflowPathMapper.toRoot(path)
-    const id = BigInt(path.id.toString())
+    const id = path.id.toString()
     const snapshot = path.snapshot()
 
     await this.prisma.$transaction(async (tx) => {
@@ -86,7 +86,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
       for (const step of snapshot.steps) {
         await tx.workflowStep.create({
           data: {
-            id: BigInt(step.id),
+            id: step.id,
             workflowPathId: id,
             name: step.name as Prisma.InputJsonValue,
             description: step.description
@@ -94,13 +94,13 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
               : Prisma.JsonNull,
             assigneeType: step.assigneeType,
             assigneeRoleId: step.assigneeRoleId
-              ? BigInt(step.assigneeRoleId)
+              ? step.assigneeRoleId
               : null,
             assigneeDepartmentId: step.assigneeDepartmentId
-              ? BigInt(step.assigneeDepartmentId)
+              ? step.assigneeDepartmentId
               : null,
             defaultActionTypeId: step.defaultActionTypeId
-              ? BigInt(step.defaultActionTypeId)
+              ? step.defaultActionTypeId
               : null,
             slaHours: step.slaHours ?? null,
             pausesSla: step.pausesSla,
@@ -110,12 +110,12 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
 
       // Then wire up allowed actions and dependency edges between steps.
       for (const step of snapshot.steps) {
-        const stepId = BigInt(step.id)
+        const stepId = step.id
         if (step.allowedActionTypeIds.length) {
           await tx.workflowStepAllowedAction.createMany({
             data: step.allowedActionTypeIds.map((actionTypeId) => ({
               workflowStepId: stepId,
-              actionTypeId: BigInt(actionTypeId),
+              actionTypeId: actionTypeId,
             })),
             skipDuplicates: true,
           })
@@ -124,7 +124,7 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
           await tx.workflowStepDependency.createMany({
             data: step.dependsOnStepIds.map((dependsOnStepId) => ({
               workflowStepId: stepId,
-              dependsOnStepId: BigInt(dependsOnStepId),
+              dependsOnStepId: dependsOnStepId,
             })),
             skipDuplicates: true,
           })

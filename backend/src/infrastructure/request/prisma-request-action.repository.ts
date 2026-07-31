@@ -21,7 +21,7 @@ export class PrismaRequestActionRepository implements RequestActionRepository {
 
   async listByRequest(requestId: Identifier): Promise<RequestAction[]> {
     const rows = await this.prisma.requestAction.findMany({
-      where: { requestId: BigInt(requestId.toString()) },
+      where: { requestId: requestId.toString() },
       orderBy: { id: 'asc' },
     })
     return rows.map((row) => RequestActionMapper.toDomain(row))

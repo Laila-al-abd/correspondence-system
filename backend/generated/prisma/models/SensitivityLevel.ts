@@ -27,37 +27,31 @@ export type AggregateSensitivityLevel = {
 }
 
 export type SensitivityLevelAvgAggregateOutputType = {
-  id: number | null
   rank: number | null
-  createdBy: number | null
-  updatedBy: number | null
 }
 
 export type SensitivityLevelSumAggregateOutputType = {
-  id: bigint | null
   rank: number | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type SensitivityLevelMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   rank: number | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SensitivityLevelMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   rank: number | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SensitivityLevelCountAggregateOutputType = {
@@ -75,17 +69,11 @@ export type SensitivityLevelCountAggregateOutputType = {
 
 
 export type SensitivityLevelAvgAggregateInputType = {
-  id?: true
   rank?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type SensitivityLevelSumAggregateInputType = {
-  id?: true
   rank?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type SensitivityLevelMinAggregateInputType = {
@@ -210,13 +198,13 @@ export type SensitivityLevelGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type SensitivityLevelGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   name: runtime.JsonValue
   rank: number
   description: runtime.JsonValue | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: SensitivityLevelCountAggregateOutputType | null
   _avg: SensitivityLevelAvgAggregateOutputType | null
   _sum: SensitivityLevelSumAggregateOutputType | null
@@ -245,13 +233,13 @@ export type SensitivityLevelWhereInput = {
   NOT?: Prisma.SensitivityLevelWhereInput | Prisma.SensitivityLevelWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"SensitivityLevel"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SensitivityLevel"> | Date | string
-  id?: Prisma.BigIntFilter<"SensitivityLevel"> | bigint | number
+  id?: Prisma.UuidFilter<"SensitivityLevel"> | string
   name?: Prisma.JsonFilter<"SensitivityLevel">
   rank?: Prisma.IntFilter<"SensitivityLevel"> | number
   description?: Prisma.JsonNullableFilter<"SensitivityLevel">
   deletedAt?: Prisma.DateTimeNullableFilter<"SensitivityLevel"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"SensitivityLevel"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"SensitivityLevel"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   templates?: Prisma.TemplateListRelationFilter
   requests?: Prisma.RequestListRelationFilter
 }
@@ -271,7 +259,7 @@ export type SensitivityLevelOrderByWithRelationInput = {
 }
 
 export type SensitivityLevelWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   rank?: number
   AND?: Prisma.SensitivityLevelWhereInput | Prisma.SensitivityLevelWhereInput[]
   OR?: Prisma.SensitivityLevelWhereInput[]
@@ -281,8 +269,8 @@ export type SensitivityLevelWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.JsonFilter<"SensitivityLevel">
   description?: Prisma.JsonNullableFilter<"SensitivityLevel">
   deletedAt?: Prisma.DateTimeNullableFilter<"SensitivityLevel"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"SensitivityLevel"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"SensitivityLevel"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   templates?: Prisma.TemplateListRelationFilter
   requests?: Prisma.RequestListRelationFilter
 }, "id" | "rank">
@@ -310,25 +298,25 @@ export type SensitivityLevelScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SensitivityLevelScalarWhereWithAggregatesInput | Prisma.SensitivityLevelScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SensitivityLevel"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SensitivityLevel"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"SensitivityLevel"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"SensitivityLevel"> | string
   name?: Prisma.JsonWithAggregatesFilter<"SensitivityLevel">
   rank?: Prisma.IntWithAggregatesFilter<"SensitivityLevel"> | number
   description?: Prisma.JsonNullableWithAggregatesFilter<"SensitivityLevel">
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SensitivityLevel"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"SensitivityLevel"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"SensitivityLevel"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"SensitivityLevel"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"SensitivityLevel"> | string | null
 }
 
 export type SensitivityLevelCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateCreateNestedManyWithoutSensitivityLevelInput
   requests?: Prisma.RequestCreateNestedManyWithoutSensitivityLevelInput
 }
@@ -336,13 +324,13 @@ export type SensitivityLevelCreateInput = {
 export type SensitivityLevelUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutSensitivityLevelInput
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutSensitivityLevelInput
 }
@@ -350,13 +338,13 @@ export type SensitivityLevelUncheckedCreateInput = {
 export type SensitivityLevelUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUpdateManyWithoutSensitivityLevelNestedInput
   requests?: Prisma.RequestUpdateManyWithoutSensitivityLevelNestedInput
 }
@@ -364,13 +352,13 @@ export type SensitivityLevelUpdateInput = {
 export type SensitivityLevelUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutSensitivityLevelNestedInput
   requests?: Prisma.RequestUncheckedUpdateManyWithoutSensitivityLevelNestedInput
 }
@@ -378,37 +366,37 @@ export type SensitivityLevelUncheckedUpdateInput = {
 export type SensitivityLevelCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type SensitivityLevelUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SensitivityLevelUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SensitivityLevelCountOrderByAggregateInput = {
@@ -424,10 +412,7 @@ export type SensitivityLevelCountOrderByAggregateInput = {
 }
 
 export type SensitivityLevelAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   rank?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type SensitivityLevelMaxOrderByAggregateInput = {
@@ -451,10 +436,7 @@ export type SensitivityLevelMinOrderByAggregateInput = {
 }
 
 export type SensitivityLevelSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   rank?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type SensitivityLevelScalarRelationFilter = {
@@ -508,26 +490,26 @@ export type SensitivityLevelUpdateOneWithoutRequestsNestedInput = {
 export type SensitivityLevelCreateWithoutTemplatesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   requests?: Prisma.RequestCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelUncheckedCreateWithoutTemplatesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutSensitivityLevelInput
 }
 
@@ -550,52 +532,52 @@ export type SensitivityLevelUpdateToOneWithWhereWithoutTemplatesInput = {
 export type SensitivityLevelUpdateWithoutTemplatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requests?: Prisma.RequestUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelUncheckedUpdateWithoutTemplatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requests?: Prisma.RequestUncheckedUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelCreateWithoutRequestsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelUncheckedCreateWithoutRequestsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank: number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutSensitivityLevelInput
 }
 
@@ -618,26 +600,26 @@ export type SensitivityLevelUpdateToOneWithWhereWithoutRequestsInput = {
 export type SensitivityLevelUpdateWithoutRequestsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelUncheckedUpdateWithoutRequestsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   rank?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutSensitivityLevelNestedInput
 }
 
@@ -750,13 +732,13 @@ export type $SensitivityLevelPayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     name: runtime.JsonValue
     rank: number
     description: runtime.JsonValue | null
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["sensitivityLevel"]>
   composites: {}
 }
@@ -1184,13 +1166,13 @@ export interface Prisma__SensitivityLevelClient<T, Null = never, ExtArgs extends
 export interface SensitivityLevelFieldRefs {
   readonly createdAt: Prisma.FieldRef<"SensitivityLevel", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SensitivityLevel", 'DateTime'>
-  readonly id: Prisma.FieldRef<"SensitivityLevel", 'BigInt'>
+  readonly id: Prisma.FieldRef<"SensitivityLevel", 'String'>
   readonly name: Prisma.FieldRef<"SensitivityLevel", 'Json'>
   readonly rank: Prisma.FieldRef<"SensitivityLevel", 'Int'>
   readonly description: Prisma.FieldRef<"SensitivityLevel", 'Json'>
   readonly deletedAt: Prisma.FieldRef<"SensitivityLevel", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"SensitivityLevel", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"SensitivityLevel", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"SensitivityLevel", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"SensitivityLevel", 'String'>
 }
     
 

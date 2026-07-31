@@ -25,16 +25,16 @@ export const PaymentMapper = {
   toPersistence(payment: Payment): Prisma.PaymentUncheckedCreateInput {
     const s = payment.snapshot()
     return {
-      id: BigInt(payment.id.toString()),
-      requestId: BigInt(s.requestId),
+      id: payment.id.toString(),
+      requestId: s.requestId,
       requestStepInstanceId: s.requestStepInstanceId
-        ? BigInt(s.requestStepInstanceId)
+        ? s.requestStepInstanceId
         : null,
       amount: s.amount,
       currency: s.currency,
       status: s.status,
-      requestedBy: s.requestedBy ? BigInt(s.requestedBy) : null,
-      confirmedBy: s.confirmedBy ? BigInt(s.confirmedBy) : null,
+      requestedBy: s.requestedBy ? s.requestedBy : null,
+      confirmedBy: s.confirmedBy ? s.confirmedBy : null,
       requestedAt: s.requestedAt ?? null,
       confirmedAt: s.confirmedAt ?? null,
     }

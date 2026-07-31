@@ -20,46 +20,28 @@ export type UserAttributeModel = runtime.Types.Result.DefaultSelection<Prisma.$U
 
 export type AggregateUserAttribute = {
   _count: UserAttributeCountAggregateOutputType | null
-  _avg: UserAttributeAvgAggregateOutputType | null
-  _sum: UserAttributeSumAggregateOutputType | null
   _min: UserAttributeMinAggregateOutputType | null
   _max: UserAttributeMaxAggregateOutputType | null
-}
-
-export type UserAttributeAvgAggregateOutputType = {
-  id: number | null
-  userId: number | null
-  attributeId: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type UserAttributeSumAggregateOutputType = {
-  id: bigint | null
-  userId: bigint | null
-  attributeId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type UserAttributeMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  userId: bigint | null
-  attributeId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  id: string | null
+  userId: string | null
+  attributeId: string | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type UserAttributeMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  userId: bigint | null
-  attributeId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  id: string | null
+  userId: string | null
+  attributeId: string | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type UserAttributeCountAggregateOutputType = {
@@ -74,22 +56,6 @@ export type UserAttributeCountAggregateOutputType = {
   _all: number
 }
 
-
-export type UserAttributeAvgAggregateInputType = {
-  id?: true
-  userId?: true
-  attributeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type UserAttributeSumAggregateInputType = {
-  id?: true
-  userId?: true
-  attributeId?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type UserAttributeMinAggregateInputType = {
   createdAt?: true
@@ -161,18 +127,6 @@ export type UserAttributeAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: UserAttributeAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: UserAttributeSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserAttributeMinAggregateInputType
@@ -203,8 +157,6 @@ export type UserAttributeGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: UserAttributeCountAggregateInputType | true
-  _avg?: UserAttributeAvgAggregateInputType
-  _sum?: UserAttributeSumAggregateInputType
   _min?: UserAttributeMinAggregateInputType
   _max?: UserAttributeMaxAggregateInputType
 }
@@ -212,15 +164,13 @@ export type UserAttributeGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type UserAttributeGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
-  userId: bigint
-  attributeId: bigint
+  id: string
+  userId: string
+  attributeId: string
   value: runtime.JsonValue
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: UserAttributeCountAggregateOutputType | null
-  _avg: UserAttributeAvgAggregateOutputType | null
-  _sum: UserAttributeSumAggregateOutputType | null
   _min: UserAttributeMinAggregateOutputType | null
   _max: UserAttributeMaxAggregateOutputType | null
 }
@@ -246,12 +196,12 @@ export type UserAttributeWhereInput = {
   NOT?: Prisma.UserAttributeWhereInput | Prisma.UserAttributeWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
-  id?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
-  userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
+  id?: Prisma.UuidFilter<"UserAttribute"> | string
+  userId?: Prisma.UuidFilter<"UserAttribute"> | string
+  attributeId?: Prisma.UuidFilter<"UserAttribute"> | string
   value?: Prisma.JsonFilter<"UserAttribute">
-  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }
@@ -270,18 +220,18 @@ export type UserAttributeOrderByWithRelationInput = {
 }
 
 export type UserAttributeWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   userId_attributeId?: Prisma.UserAttributeUserIdAttributeIdCompoundUniqueInput
   AND?: Prisma.UserAttributeWhereInput | Prisma.UserAttributeWhereInput[]
   OR?: Prisma.UserAttributeWhereInput[]
   NOT?: Prisma.UserAttributeWhereInput | Prisma.UserAttributeWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
-  userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
+  userId?: Prisma.UuidFilter<"UserAttribute"> | string
+  attributeId?: Prisma.UuidFilter<"UserAttribute"> | string
   value?: Prisma.JsonFilter<"UserAttribute">
-  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   attribute?: Prisma.XOR<Prisma.AttributeDefinitionScalarRelationFilter, Prisma.AttributeDefinitionWhereInput>
 }, "id" | "userId_attributeId">
@@ -296,10 +246,8 @@ export type UserAttributeOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserAttributeCountOrderByAggregateInput
-  _avg?: Prisma.UserAttributeAvgOrderByAggregateInput
   _max?: Prisma.UserAttributeMaxOrderByAggregateInput
   _min?: Prisma.UserAttributeMinOrderByAggregateInput
-  _sum?: Prisma.UserAttributeSumOrderByAggregateInput
 }
 
 export type UserAttributeScalarWhereWithAggregatesInput = {
@@ -308,21 +256,21 @@ export type UserAttributeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserAttributeScalarWhereWithAggregatesInput | Prisma.UserAttributeScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserAttribute"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserAttribute"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"UserAttribute"> | bigint | number
-  userId?: Prisma.BigIntWithAggregatesFilter<"UserAttribute"> | bigint | number
-  attributeId?: Prisma.BigIntWithAggregatesFilter<"UserAttribute"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"UserAttribute"> | string
+  userId?: Prisma.UuidWithAggregatesFilter<"UserAttribute"> | string
+  attributeId?: Prisma.UuidWithAggregatesFilter<"UserAttribute"> | string
   value?: Prisma.JsonWithAggregatesFilter<"UserAttribute">
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"UserAttribute"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"UserAttribute"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"UserAttribute"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"UserAttribute"> | string | null
 }
 
 export type UserAttributeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id?: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutAttributesInput
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutUserAttributesInput
 }
@@ -330,21 +278,21 @@ export type UserAttributeCreateInput = {
 export type UserAttributeUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  userId: bigint | number
-  attributeId: bigint | number
+  id?: string
+  userId: string
+  attributeId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttributesNestedInput
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutUserAttributesNestedInput
 }
@@ -352,43 +300,43 @@ export type UserAttributeUpdateInput = {
 export type UserAttributeUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  userId: bigint | number
-  attributeId: bigint | number
+  id?: string
+  userId: string
+  attributeId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeListRelationFilter = {
@@ -402,8 +350,8 @@ export type UserAttributeOrderByRelationAggregateInput = {
 }
 
 export type UserAttributeUserIdAttributeIdCompoundUniqueInput = {
-  userId: bigint | number
-  attributeId: bigint | number
+  userId: string
+  attributeId: string
 }
 
 export type UserAttributeCountOrderByAggregateInput = {
@@ -413,14 +361,6 @@ export type UserAttributeCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
   value?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type UserAttributeAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  attributeId?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -438,14 +378,6 @@ export type UserAttributeMaxOrderByAggregateInput = {
 export type UserAttributeMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  attributeId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type UserAttributeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   attributeId?: Prisma.SortOrder
@@ -540,21 +472,21 @@ export type UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput = {
 export type UserAttributeCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id?: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   attribute: Prisma.AttributeDefinitionCreateNestedOneWithoutUserAttributesInput
 }
 
 export type UserAttributeUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  attributeId: bigint | number
+  id?: string
+  attributeId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeCreateOrConnectWithoutUserInput = {
@@ -589,32 +521,32 @@ export type UserAttributeScalarWhereInput = {
   NOT?: Prisma.UserAttributeScalarWhereInput | Prisma.UserAttributeScalarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserAttribute"> | Date | string
-  id?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
-  userId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
-  attributeId?: Prisma.BigIntFilter<"UserAttribute"> | bigint | number
+  id?: Prisma.UuidFilter<"UserAttribute"> | string
+  userId?: Prisma.UuidFilter<"UserAttribute"> | string
+  attributeId?: Prisma.UuidFilter<"UserAttribute"> | string
   value?: Prisma.JsonFilter<"UserAttribute">
-  createdBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"UserAttribute"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"UserAttribute"> | string | null
 }
 
 export type UserAttributeCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id?: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutAttributesInput
 }
 
 export type UserAttributeUncheckedCreateWithoutAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  userId: bigint | number
+  id?: string
+  userId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeCreateOrConnectWithoutAttributeInput = {
@@ -646,81 +578,81 @@ export type UserAttributeUpdateManyWithWhereWithoutAttributeInput = {
 export type UserAttributeCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  attributeId: bigint | number
+  id?: string
+  attributeId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attribute?: Prisma.AttributeDefinitionUpdateOneRequiredWithoutUserAttributesNestedInput
 }
 
 export type UserAttributeUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  attributeId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeCreateManyAttributeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  userId: bigint | number
+  id?: string
+  userId: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type UserAttributeUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttributesNestedInput
 }
 
 export type UserAttributeUncheckedUpdateWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserAttributeUncheckedUpdateManyWithoutAttributeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -798,12 +730,12 @@ export type $UserAttributePayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
-    userId: bigint
-    attributeId: bigint
+    id: string
+    userId: string
+    attributeId: string
     value: runtime.JsonValue
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["userAttribute"]>
   composites: {}
 }
@@ -1231,12 +1163,12 @@ export interface Prisma__UserAttributeClient<T, Null = never, ExtArgs extends ru
 export interface UserAttributeFieldRefs {
   readonly createdAt: Prisma.FieldRef<"UserAttribute", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserAttribute", 'DateTime'>
-  readonly id: Prisma.FieldRef<"UserAttribute", 'BigInt'>
-  readonly userId: Prisma.FieldRef<"UserAttribute", 'BigInt'>
-  readonly attributeId: Prisma.FieldRef<"UserAttribute", 'BigInt'>
+  readonly id: Prisma.FieldRef<"UserAttribute", 'String'>
+  readonly userId: Prisma.FieldRef<"UserAttribute", 'String'>
+  readonly attributeId: Prisma.FieldRef<"UserAttribute", 'String'>
   readonly value: Prisma.FieldRef<"UserAttribute", 'Json'>
-  readonly createdBy: Prisma.FieldRef<"UserAttribute", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"UserAttribute", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"UserAttribute", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"UserAttribute", 'String'>
 }
     
 

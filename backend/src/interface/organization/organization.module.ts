@@ -4,7 +4,7 @@ import { PrismaDepartmentRepository } from '../../infrastructure/organization/pr
 import { PrismaOrgUnitTypeRepository } from '../../infrastructure/organization/prisma-org-unit-type.repository'
 import { HttpPersonnelDirectory } from '../../infrastructure/organization/http-personnel-directory'
 import { PrismaDepartmentQuery } from '../../infrastructure/organization/prisma-department-query'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { SyncDepartmentsFromDirectory } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsHandler } from '../../application/organization/commands/sync-departments/sync-departments.handler'
 import { CreateDepartmentHandler } from '../../application/organization/commands/create-department/create-department.handler'
@@ -36,14 +36,14 @@ import { OrganizationController } from './organization.controller'
       useClass: PrismaOrgUnitTypeRepository,
     },
     { provide: PERSONNEL_DIRECTORY, useClass: HttpPersonnelDirectory },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
     {
       provide: SyncDepartmentsFromDirectory,
       useFactory: (
         directory: HttpPersonnelDirectory,
         departments: PrismaDepartmentRepository,
         unitTypes: PrismaOrgUnitTypeRepository,
-        ids: IncrementingIdGenerator,
+        ids: UuidV7IdGenerator,
       ) =>
         new SyncDepartmentsFromDirectory(
           directory,

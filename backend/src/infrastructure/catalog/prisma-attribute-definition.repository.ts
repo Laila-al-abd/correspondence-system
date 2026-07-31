@@ -14,7 +14,7 @@ export class PrismaAttributeDefinitionRepository
 
   async findById(id: Identifier): Promise<AttributeDefinition | null> {
     const row = await this.prisma.attributeDefinition.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? AttributeDefinitionMapper.toDomain(row) : null
   }

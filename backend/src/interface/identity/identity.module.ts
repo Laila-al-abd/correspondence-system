@@ -29,7 +29,7 @@ import { PrismaDelegationRepository } from '../../infrastructure/identity/prisma
 import { BcryptPasswordHasher } from '../../infrastructure/identity/bcrypt-password-hasher'
 import { LocalAuthProvider } from '../../infrastructure/identity/local-auth.provider'
 import { AuthProviderRegistryImpl } from '../../infrastructure/identity/auth-provider.registry'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { JwtAccessTokenService } from '../../infrastructure/identity/jwt-access-token.service'
 import { AuthController } from './auth.controller'
 import { UsersController } from './users.controller'
@@ -90,7 +90,7 @@ import { ObservabilityModule } from '../observability/observability.module'
     { provide: DELEGATION_REPOSITORY, useClass: PrismaDelegationRepository },
     { provide: DELEGATION_QUERY, useClass: PrismaDelegationQuery },
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
     LocalAuthProvider,
     {
       provide: AUTH_PROVIDER_REGISTRY,

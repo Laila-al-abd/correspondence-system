@@ -19,7 +19,7 @@ export class PrismaRequestRepository implements RequestRepository {
 
   async findById(id: Identifier): Promise<Request | null> {
     const row = await this.prisma.request.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
       include: requestInclude,
     })
     return row ? RequestMapper.toDomain(row) : null
@@ -35,7 +35,7 @@ export class PrismaRequestRepository implements RequestRepository {
 
   async listByRequester(requesterId: Identifier): Promise<Request[]> {
     const rows = await this.prisma.request.findMany({
-      where: { requesterId: BigInt(requesterId.toString()) },
+      where: { requesterId: requesterId.toString() },
       include: requestInclude,
       orderBy: { id: 'desc' },
     })
@@ -46,7 +46,7 @@ export class PrismaRequestRepository implements RequestRepository {
     const rows = await this.prisma.request.findMany({
       where: {
         stepInstances: {
-          some: { assignedToUserId: BigInt(userId.toString()) },
+          some: { assignedToUserId: userId.toString() },
         },
       },
       include: requestInclude,
@@ -65,7 +65,7 @@ export class PrismaRequestRepository implements RequestRepository {
   }
 
   async save(request: Request): Promise<void> {
-    const id = BigInt(request.id.toString())
+    const id = request.id.toString()
     const root = RequestMapper.toRoot(request)
     const stepInstances = request.snapshot().stepInstances
 
@@ -74,7 +74,7 @@ export class PrismaRequestRepository implements RequestRepository {
       for (const si of stepInstances) {
         const data = RequestMapper.toStepInstanceRow(si)
         await tx.requestStepInstance.upsert({
-          where: { id: BigInt(si.id) },
+          where: { id: si.id },
           create: data,
           update: data,
         })

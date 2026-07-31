@@ -18,7 +18,7 @@ export class PrismaUserRepository implements UserRepository {
 
   async findById(id: Identifier): Promise<User | null> {
     const row = await this.prisma.user.findFirst({
-      where: { id: BigInt(id.toString()), deletedAt: null },
+      where: { id: id.toString(), deletedAt: null },
     })
     return row ? UserMapper.toDomain(row) : null
   }
@@ -42,7 +42,7 @@ export class PrismaUserRepository implements UserRepository {
   async save(user: User): Promise<void> {
     const data = UserMapper.toPersistence(user)
     await this.prisma.user.upsert({
-      where: { id: BigInt(user.id.toString()) },
+      where: { id: user.id.toString() },
       create: data,
       update: data,
     })

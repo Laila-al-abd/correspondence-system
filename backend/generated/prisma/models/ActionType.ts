@@ -20,44 +20,30 @@ export type ActionTypeModel = runtime.Types.Result.DefaultSelection<Prisma.$Acti
 
 export type AggregateActionType = {
   _count: ActionTypeCountAggregateOutputType | null
-  _avg: ActionTypeAvgAggregateOutputType | null
-  _sum: ActionTypeSumAggregateOutputType | null
   _min: ActionTypeMinAggregateOutputType | null
   _max: ActionTypeMaxAggregateOutputType | null
-}
-
-export type ActionTypeAvgAggregateOutputType = {
-  id: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type ActionTypeSumAggregateOutputType = {
-  id: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type ActionTypeMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   isTerminal: boolean | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type ActionTypeMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   isTerminal: boolean | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type ActionTypeCountAggregateOutputType = {
@@ -74,18 +60,6 @@ export type ActionTypeCountAggregateOutputType = {
   _all: number
 }
 
-
-export type ActionTypeAvgAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type ActionTypeSumAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type ActionTypeMinAggregateInputType = {
   createdAt?: true
@@ -161,18 +135,6 @@ export type ActionTypeAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: ActionTypeAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: ActionTypeSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: ActionTypeMinAggregateInputType
@@ -203,8 +165,6 @@ export type ActionTypeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: ActionTypeCountAggregateInputType | true
-  _avg?: ActionTypeAvgAggregateInputType
-  _sum?: ActionTypeSumAggregateInputType
   _min?: ActionTypeMinAggregateInputType
   _max?: ActionTypeMaxAggregateInputType
 }
@@ -212,17 +172,15 @@ export type ActionTypeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type ActionTypeGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   code: string
   name: runtime.JsonValue
   isTerminal: boolean
   description: runtime.JsonValue | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: ActionTypeCountAggregateOutputType | null
-  _avg: ActionTypeAvgAggregateOutputType | null
-  _sum: ActionTypeSumAggregateOutputType | null
   _min: ActionTypeMinAggregateOutputType | null
   _max: ActionTypeMaxAggregateOutputType | null
 }
@@ -248,14 +206,14 @@ export type ActionTypeWhereInput = {
   NOT?: Prisma.ActionTypeWhereInput | Prisma.ActionTypeWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"ActionType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ActionType"> | Date | string
-  id?: Prisma.BigIntFilter<"ActionType"> | bigint | number
+  id?: Prisma.UuidFilter<"ActionType"> | string
   code?: Prisma.StringFilter<"ActionType"> | string
   name?: Prisma.JsonFilter<"ActionType">
   isTerminal?: Prisma.BoolFilter<"ActionType"> | boolean
   description?: Prisma.JsonNullableFilter<"ActionType">
   deletedAt?: Prisma.DateTimeNullableFilter<"ActionType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"ActionType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"ActionType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"ActionType"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"ActionType"> | string | null
   defaultForSteps?: Prisma.WorkflowStepListRelationFilter
   allowedInSteps?: Prisma.WorkflowStepAllowedActionListRelationFilter
   requestActions?: Prisma.RequestActionListRelationFilter
@@ -280,7 +238,7 @@ export type ActionTypeOrderByWithRelationInput = {
 }
 
 export type ActionTypeWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   code?: string
   AND?: Prisma.ActionTypeWhereInput | Prisma.ActionTypeWhereInput[]
   OR?: Prisma.ActionTypeWhereInput[]
@@ -291,8 +249,8 @@ export type ActionTypeWhereUniqueInput = Prisma.AtLeast<{
   isTerminal?: Prisma.BoolFilter<"ActionType"> | boolean
   description?: Prisma.JsonNullableFilter<"ActionType">
   deletedAt?: Prisma.DateTimeNullableFilter<"ActionType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"ActionType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"ActionType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"ActionType"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"ActionType"> | string | null
   defaultForSteps?: Prisma.WorkflowStepListRelationFilter
   allowedInSteps?: Prisma.WorkflowStepAllowedActionListRelationFilter
   requestActions?: Prisma.RequestActionListRelationFilter
@@ -311,10 +269,8 @@ export type ActionTypeOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ActionTypeCountOrderByAggregateInput
-  _avg?: Prisma.ActionTypeAvgOrderByAggregateInput
   _max?: Prisma.ActionTypeMaxOrderByAggregateInput
   _min?: Prisma.ActionTypeMinOrderByAggregateInput
-  _sum?: Prisma.ActionTypeSumOrderByAggregateInput
 }
 
 export type ActionTypeScalarWhereWithAggregatesInput = {
@@ -323,27 +279,27 @@ export type ActionTypeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ActionTypeScalarWhereWithAggregatesInput | Prisma.ActionTypeScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ActionType"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ActionType"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"ActionType"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"ActionType"> | string
   code?: Prisma.StringWithAggregatesFilter<"ActionType"> | string
   name?: Prisma.JsonWithAggregatesFilter<"ActionType">
   isTerminal?: Prisma.BoolWithAggregatesFilter<"ActionType"> | boolean
   description?: Prisma.JsonNullableWithAggregatesFilter<"ActionType">
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ActionType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"ActionType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"ActionType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"ActionType"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"ActionType"> | string | null
 }
 
 export type ActionTypeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActionTypeInput
@@ -353,14 +309,14 @@ export type ActionTypeCreateInput = {
 export type ActionTypeUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActionTypeInput
@@ -370,14 +326,14 @@ export type ActionTypeUncheckedCreateInput = {
 export type ActionTypeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActionTypeNestedInput
@@ -387,14 +343,14 @@ export type ActionTypeUpdateInput = {
 export type ActionTypeUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActionTypeNestedInput
@@ -404,40 +360,40 @@ export type ActionTypeUncheckedUpdateInput = {
 export type ActionTypeCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type ActionTypeUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ActionTypeUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ActionTypeCountOrderByAggregateInput = {
@@ -449,12 +405,6 @@ export type ActionTypeCountOrderByAggregateInput = {
   isTerminal?: Prisma.SortOrder
   description?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type ActionTypeAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -477,12 +427,6 @@ export type ActionTypeMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   isTerminal?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type ActionTypeSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -560,14 +504,14 @@ export type ActionTypeUpdateOneWithoutEventLogsNestedInput = {
 export type ActionTypeCreateWithoutDefaultForStepsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedInSteps?: Prisma.WorkflowStepAllowedActionCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActionTypeInput
@@ -576,14 +520,14 @@ export type ActionTypeCreateWithoutDefaultForStepsInput = {
 export type ActionTypeUncheckedCreateWithoutDefaultForStepsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActionTypeInput
@@ -608,14 +552,14 @@ export type ActionTypeUpdateToOneWithWhereWithoutDefaultForStepsInput = {
 export type ActionTypeUpdateWithoutDefaultForStepsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActionTypeNestedInput
@@ -624,14 +568,14 @@ export type ActionTypeUpdateWithoutDefaultForStepsInput = {
 export type ActionTypeUncheckedUpdateWithoutDefaultForStepsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActionTypeNestedInput
@@ -640,14 +584,14 @@ export type ActionTypeUncheckedUpdateWithoutDefaultForStepsInput = {
 export type ActionTypeCreateWithoutAllowedInStepsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepCreateNestedManyWithoutDefaultActionTypeInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActionTypeInput
@@ -656,14 +600,14 @@ export type ActionTypeCreateWithoutAllowedInStepsInput = {
 export type ActionTypeUncheckedCreateWithoutAllowedInStepsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutDefaultActionTypeInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActionTypeInput
@@ -688,14 +632,14 @@ export type ActionTypeUpdateToOneWithWhereWithoutAllowedInStepsInput = {
 export type ActionTypeUpdateWithoutAllowedInStepsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUpdateManyWithoutDefaultActionTypeNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActionTypeNestedInput
@@ -704,14 +648,14 @@ export type ActionTypeUpdateWithoutAllowedInStepsInput = {
 export type ActionTypeUncheckedUpdateWithoutAllowedInStepsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActionTypeNestedInput
@@ -720,14 +664,14 @@ export type ActionTypeUncheckedUpdateWithoutAllowedInStepsInput = {
 export type ActionTypeCreateWithoutRequestActionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActionTypeInput
@@ -736,14 +680,14 @@ export type ActionTypeCreateWithoutRequestActionsInput = {
 export type ActionTypeUncheckedCreateWithoutRequestActionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutActionTypeInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActionTypeInput
@@ -768,14 +712,14 @@ export type ActionTypeUpdateToOneWithWhereWithoutRequestActionsInput = {
 export type ActionTypeUpdateWithoutRequestActionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActionTypeNestedInput
@@ -784,14 +728,14 @@ export type ActionTypeUpdateWithoutRequestActionsInput = {
 export type ActionTypeUncheckedUpdateWithoutRequestActionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutActionTypeNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActionTypeNestedInput
@@ -800,14 +744,14 @@ export type ActionTypeUncheckedUpdateWithoutRequestActionsInput = {
 export type ActionTypeCreateWithoutEventLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActionTypeInput
@@ -816,14 +760,14 @@ export type ActionTypeCreateWithoutEventLogsInput = {
 export type ActionTypeUncheckedCreateWithoutEventLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedCreateNestedManyWithoutDefaultActionTypeInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedCreateNestedManyWithoutActionTypeInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActionTypeInput
@@ -848,14 +792,14 @@ export type ActionTypeUpdateToOneWithWhereWithoutEventLogsInput = {
 export type ActionTypeUpdateWithoutEventLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActionTypeNestedInput
@@ -864,14 +808,14 @@ export type ActionTypeUpdateWithoutEventLogsInput = {
 export type ActionTypeUncheckedUpdateWithoutEventLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isTerminal?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultForSteps?: Prisma.WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeNestedInput
   allowedInSteps?: Prisma.WorkflowStepAllowedActionUncheckedUpdateManyWithoutActionTypeNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActionTypeNestedInput
@@ -1014,14 +958,14 @@ export type $ActionTypePayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     code: string
     name: runtime.JsonValue
     isTerminal: boolean
     description: runtime.JsonValue | null
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["actionType"]>
   composites: {}
 }
@@ -1451,14 +1395,14 @@ export interface Prisma__ActionTypeClient<T, Null = never, ExtArgs extends runti
 export interface ActionTypeFieldRefs {
   readonly createdAt: Prisma.FieldRef<"ActionType", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ActionType", 'DateTime'>
-  readonly id: Prisma.FieldRef<"ActionType", 'BigInt'>
+  readonly id: Prisma.FieldRef<"ActionType", 'String'>
   readonly code: Prisma.FieldRef<"ActionType", 'String'>
   readonly name: Prisma.FieldRef<"ActionType", 'Json'>
   readonly isTerminal: Prisma.FieldRef<"ActionType", 'Boolean'>
   readonly description: Prisma.FieldRef<"ActionType", 'Json'>
   readonly deletedAt: Prisma.FieldRef<"ActionType", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"ActionType", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"ActionType", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"ActionType", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"ActionType", 'String'>
 }
     
 

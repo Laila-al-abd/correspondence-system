@@ -26,9 +26,9 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
     const conditions: Prisma.UserRoleWhereInput[] = [
       { OR: [{ expiresAt: null }, { expiresAt: { gt: now } }] },
     ]
-    if (query.roleId) conditions.push({ roleId: BigInt(query.roleId) })
+    if (query.roleId) conditions.push({ roleId: query.roleId })
     if (query.departmentId) {
-      const dept = BigInt(query.departmentId)
+      const dept = query.departmentId
       conditions.push(
         query.requireScoped
           ? { departmentId: dept }
@@ -41,7 +41,7 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
       deletedAt: null,
     }
     if (query.excludeUserId)
-      userWhere.id = { not: BigInt(query.excludeUserId) }
+      userWhere.id = { not: query.excludeUserId }
 
     const holders = await this.prisma.userRole.findMany({
       where: { AND: conditions, user: userWhere },
@@ -71,8 +71,8 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
     candidates.sort((a, b) => {
       if (a.openStepCount !== b.openStepCount)
         return a.openStepCount - b.openStepCount
-      const ai = BigInt(a.userId)
-      const bi = BigInt(b.userId)
+      const ai = a.userId
+      const bi = b.userId
       return ai < bi ? -1 : ai > bi ? 1 : 0
     })
     return candidates
@@ -80,14 +80,14 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
 
   async getUserDepartmentId(userId: string): Promise<string | null> {
     const row = await this.prisma.user.findFirst({
-      where: { id: BigInt(userId), deletedAt: null },
+      where: { id: userId, deletedAt: null },
       select: { departmentId: true },
     })
     return row && row.departmentId !== null ? row.departmentId.toString() : null
   }
 
   async findFacultyId(departmentId: string): Promise<string | null> {
-    let currentId: bigint | null = BigInt(departmentId)
+    let currentId: string | null = departmentId
     const visited = new Set<string>()
     while (currentId !== null) {
       const key = currentId.toString()
@@ -107,7 +107,7 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
 
   async getParentDepartmentId(departmentId: string): Promise<string | null> {
     const row = await this.prisma.department.findFirst({
-      where: { id: BigInt(departmentId), deletedAt: null },
+      where: { id: departmentId, deletedAt: null },
       select: { parentId: true },
     })
     return row && row.parentId !== null ? row.parentId.toString() : null

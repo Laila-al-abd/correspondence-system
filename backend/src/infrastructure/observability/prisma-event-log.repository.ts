@@ -21,7 +21,7 @@ export class PrismaEventLogRepository implements EventLogRepository {
 
   async listByRequest(requestId: Identifier): Promise<EventLog[]> {
     const rows = await this.prisma.eventLog.findMany({
-      where: { requestId: BigInt(requestId.toString()) },
+      where: { requestId: requestId.toString() },
       orderBy: { occurredAt: 'asc' },
     })
     return rows.map((row) => EventLogMapper.toDomain(row))

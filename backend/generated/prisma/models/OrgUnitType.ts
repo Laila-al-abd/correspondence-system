@@ -20,42 +20,28 @@ export type OrgUnitTypeModel = runtime.Types.Result.DefaultSelection<Prisma.$Org
 
 export type AggregateOrgUnitType = {
   _count: OrgUnitTypeCountAggregateOutputType | null
-  _avg: OrgUnitTypeAvgAggregateOutputType | null
-  _sum: OrgUnitTypeSumAggregateOutputType | null
   _min: OrgUnitTypeMinAggregateOutputType | null
   _max: OrgUnitTypeMaxAggregateOutputType | null
-}
-
-export type OrgUnitTypeAvgAggregateOutputType = {
-  id: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type OrgUnitTypeSumAggregateOutputType = {
-  id: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type OrgUnitTypeMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type OrgUnitTypeMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   code: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type OrgUnitTypeCountAggregateOutputType = {
@@ -71,18 +57,6 @@ export type OrgUnitTypeCountAggregateOutputType = {
   _all: number
 }
 
-
-export type OrgUnitTypeAvgAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type OrgUnitTypeSumAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type OrgUnitTypeMinAggregateInputType = {
   createdAt?: true
@@ -155,18 +129,6 @@ export type OrgUnitTypeAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: OrgUnitTypeAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: OrgUnitTypeSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: OrgUnitTypeMinAggregateInputType
@@ -197,8 +159,6 @@ export type OrgUnitTypeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: OrgUnitTypeCountAggregateInputType | true
-  _avg?: OrgUnitTypeAvgAggregateInputType
-  _sum?: OrgUnitTypeSumAggregateInputType
   _min?: OrgUnitTypeMinAggregateInputType
   _max?: OrgUnitTypeMaxAggregateInputType
 }
@@ -206,16 +166,14 @@ export type OrgUnitTypeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type OrgUnitTypeGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   code: string
   name: runtime.JsonValue
   description: runtime.JsonValue | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: OrgUnitTypeCountAggregateOutputType | null
-  _avg: OrgUnitTypeAvgAggregateOutputType | null
-  _sum: OrgUnitTypeSumAggregateOutputType | null
   _min: OrgUnitTypeMinAggregateOutputType | null
   _max: OrgUnitTypeMaxAggregateOutputType | null
 }
@@ -241,13 +199,13 @@ export type OrgUnitTypeWhereInput = {
   NOT?: Prisma.OrgUnitTypeWhereInput | Prisma.OrgUnitTypeWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"OrgUnitType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrgUnitType"> | Date | string
-  id?: Prisma.BigIntFilter<"OrgUnitType"> | bigint | number
+  id?: Prisma.UuidFilter<"OrgUnitType"> | string
   code?: Prisma.StringFilter<"OrgUnitType"> | string
   name?: Prisma.JsonFilter<"OrgUnitType">
   description?: Prisma.JsonNullableFilter<"OrgUnitType">
   deletedAt?: Prisma.DateTimeNullableFilter<"OrgUnitType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"OrgUnitType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"OrgUnitType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"OrgUnitType"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"OrgUnitType"> | string | null
   departments?: Prisma.DepartmentListRelationFilter
 }
 
@@ -265,7 +223,7 @@ export type OrgUnitTypeOrderByWithRelationInput = {
 }
 
 export type OrgUnitTypeWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   code?: string
   AND?: Prisma.OrgUnitTypeWhereInput | Prisma.OrgUnitTypeWhereInput[]
   OR?: Prisma.OrgUnitTypeWhereInput[]
@@ -275,8 +233,8 @@ export type OrgUnitTypeWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.JsonFilter<"OrgUnitType">
   description?: Prisma.JsonNullableFilter<"OrgUnitType">
   deletedAt?: Prisma.DateTimeNullableFilter<"OrgUnitType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"OrgUnitType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"OrgUnitType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"OrgUnitType"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"OrgUnitType"> | string | null
   departments?: Prisma.DepartmentListRelationFilter
 }, "id" | "code">
 
@@ -291,10 +249,8 @@ export type OrgUnitTypeOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OrgUnitTypeCountOrderByAggregateInput
-  _avg?: Prisma.OrgUnitTypeAvgOrderByAggregateInput
   _max?: Prisma.OrgUnitTypeMaxOrderByAggregateInput
   _min?: Prisma.OrgUnitTypeMinOrderByAggregateInput
-  _sum?: Prisma.OrgUnitTypeSumOrderByAggregateInput
 }
 
 export type OrgUnitTypeScalarWhereWithAggregatesInput = {
@@ -303,101 +259,101 @@ export type OrgUnitTypeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrgUnitTypeScalarWhereWithAggregatesInput | Prisma.OrgUnitTypeScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrgUnitType"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrgUnitType"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"OrgUnitType"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"OrgUnitType"> | string
   code?: Prisma.StringWithAggregatesFilter<"OrgUnitType"> | string
   name?: Prisma.JsonWithAggregatesFilter<"OrgUnitType">
   description?: Prisma.JsonNullableWithAggregatesFilter<"OrgUnitType">
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrgUnitType"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"OrgUnitType"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"OrgUnitType"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"OrgUnitType"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"OrgUnitType"> | string | null
 }
 
 export type OrgUnitTypeCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   departments?: Prisma.DepartmentCreateNestedManyWithoutUnitTypeInput
 }
 
 export type OrgUnitTypeUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   departments?: Prisma.DepartmentUncheckedCreateNestedManyWithoutUnitTypeInput
 }
 
 export type OrgUnitTypeUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departments?: Prisma.DepartmentUpdateManyWithoutUnitTypeNestedInput
 }
 
 export type OrgUnitTypeUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departments?: Prisma.DepartmentUncheckedUpdateManyWithoutUnitTypeNestedInput
 }
 
 export type OrgUnitTypeCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type OrgUnitTypeUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OrgUnitTypeUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OrgUnitTypeCountOrderByAggregateInput = {
@@ -408,12 +364,6 @@ export type OrgUnitTypeCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type OrgUnitTypeAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -434,12 +384,6 @@ export type OrgUnitTypeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type OrgUnitTypeSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -466,25 +410,25 @@ export type OrgUnitTypeUpdateOneRequiredWithoutDepartmentsNestedInput = {
 export type OrgUnitTypeCreateWithoutDepartmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type OrgUnitTypeUncheckedCreateWithoutDepartmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   code: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type OrgUnitTypeCreateOrConnectWithoutDepartmentsInput = {
@@ -506,25 +450,25 @@ export type OrgUnitTypeUpdateToOneWithWhereWithoutDepartmentsInput = {
 export type OrgUnitTypeUpdateWithoutDepartmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OrgUnitTypeUncheckedUpdateWithoutDepartmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -624,13 +568,13 @@ export type $OrgUnitTypePayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     code: string
     name: runtime.JsonValue
     description: runtime.JsonValue | null
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["orgUnitType"]>
   composites: {}
 }
@@ -1057,13 +1001,13 @@ export interface Prisma__OrgUnitTypeClient<T, Null = never, ExtArgs extends runt
 export interface OrgUnitTypeFieldRefs {
   readonly createdAt: Prisma.FieldRef<"OrgUnitType", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OrgUnitType", 'DateTime'>
-  readonly id: Prisma.FieldRef<"OrgUnitType", 'BigInt'>
+  readonly id: Prisma.FieldRef<"OrgUnitType", 'String'>
   readonly code: Prisma.FieldRef<"OrgUnitType", 'String'>
   readonly name: Prisma.FieldRef<"OrgUnitType", 'Json'>
   readonly description: Prisma.FieldRef<"OrgUnitType", 'Json'>
   readonly deletedAt: Prisma.FieldRef<"OrgUnitType", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"OrgUnitType", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"OrgUnitType", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"OrgUnitType", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"OrgUnitType", 'String'>
 }
     
 

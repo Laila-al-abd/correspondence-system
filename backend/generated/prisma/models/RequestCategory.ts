@@ -20,40 +20,26 @@ export type RequestCategoryModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateRequestCategory = {
   _count: RequestCategoryCountAggregateOutputType | null
-  _avg: RequestCategoryAvgAggregateOutputType | null
-  _sum: RequestCategorySumAggregateOutputType | null
   _min: RequestCategoryMinAggregateOutputType | null
   _max: RequestCategoryMaxAggregateOutputType | null
-}
-
-export type RequestCategoryAvgAggregateOutputType = {
-  id: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type RequestCategorySumAggregateOutputType = {
-  id: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type RequestCategoryMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RequestCategoryMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
+  id: string | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RequestCategoryCountAggregateOutputType = {
@@ -68,18 +54,6 @@ export type RequestCategoryCountAggregateOutputType = {
   _all: number
 }
 
-
-export type RequestCategoryAvgAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type RequestCategorySumAggregateInputType = {
-  id?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type RequestCategoryMinAggregateInputType = {
   createdAt?: true
@@ -149,18 +123,6 @@ export type RequestCategoryAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: RequestCategoryAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: RequestCategorySumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: RequestCategoryMinAggregateInputType
@@ -191,8 +153,6 @@ export type RequestCategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: RequestCategoryCountAggregateInputType | true
-  _avg?: RequestCategoryAvgAggregateInputType
-  _sum?: RequestCategorySumAggregateInputType
   _min?: RequestCategoryMinAggregateInputType
   _max?: RequestCategoryMaxAggregateInputType
 }
@@ -200,15 +160,13 @@ export type RequestCategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type RequestCategoryGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
+  id: string
   name: runtime.JsonValue
   description: runtime.JsonValue | null
   deletedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: RequestCategoryCountAggregateOutputType | null
-  _avg: RequestCategoryAvgAggregateOutputType | null
-  _sum: RequestCategorySumAggregateOutputType | null
   _min: RequestCategoryMinAggregateOutputType | null
   _max: RequestCategoryMaxAggregateOutputType | null
 }
@@ -234,12 +192,12 @@ export type RequestCategoryWhereInput = {
   NOT?: Prisma.RequestCategoryWhereInput | Prisma.RequestCategoryWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"RequestCategory"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RequestCategory"> | Date | string
-  id?: Prisma.BigIntFilter<"RequestCategory"> | bigint | number
+  id?: Prisma.UuidFilter<"RequestCategory"> | string
   name?: Prisma.JsonFilter<"RequestCategory">
   description?: Prisma.JsonNullableFilter<"RequestCategory">
   deletedAt?: Prisma.DateTimeNullableFilter<"RequestCategory"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"RequestCategory"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestCategory"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"RequestCategory"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestCategory"> | string | null
   templates?: Prisma.TemplateListRelationFilter
 }
 
@@ -256,7 +214,7 @@ export type RequestCategoryOrderByWithRelationInput = {
 }
 
 export type RequestCategoryWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.RequestCategoryWhereInput | Prisma.RequestCategoryWhereInput[]
   OR?: Prisma.RequestCategoryWhereInput[]
   NOT?: Prisma.RequestCategoryWhereInput | Prisma.RequestCategoryWhereInput[]
@@ -265,8 +223,8 @@ export type RequestCategoryWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.JsonFilter<"RequestCategory">
   description?: Prisma.JsonNullableFilter<"RequestCategory">
   deletedAt?: Prisma.DateTimeNullableFilter<"RequestCategory"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"RequestCategory"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestCategory"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"RequestCategory"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestCategory"> | string | null
   templates?: Prisma.TemplateListRelationFilter
 }, "id">
 
@@ -280,10 +238,8 @@ export type RequestCategoryOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RequestCategoryCountOrderByAggregateInput
-  _avg?: Prisma.RequestCategoryAvgOrderByAggregateInput
   _max?: Prisma.RequestCategoryMaxOrderByAggregateInput
   _min?: Prisma.RequestCategoryMinOrderByAggregateInput
-  _sum?: Prisma.RequestCategorySumOrderByAggregateInput
 }
 
 export type RequestCategoryScalarWhereWithAggregatesInput = {
@@ -292,93 +248,93 @@ export type RequestCategoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.RequestCategoryScalarWhereWithAggregatesInput | Prisma.RequestCategoryScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RequestCategory"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RequestCategory"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"RequestCategory"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"RequestCategory"> | string
   name?: Prisma.JsonWithAggregatesFilter<"RequestCategory">
   description?: Prisma.JsonNullableWithAggregatesFilter<"RequestCategory">
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RequestCategory"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestCategory"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestCategory"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"RequestCategory"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"RequestCategory"> | string | null
 }
 
 export type RequestCategoryCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateCreateNestedManyWithoutCategoryInput
 }
 
 export type RequestCategoryUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutCategoryInput
 }
 
 export type RequestCategoryUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUpdateManyWithoutCategoryNestedInput
 }
 
 export type RequestCategoryUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
 export type RequestCategoryCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestCategoryUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestCategoryUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestCategoryCountOrderByAggregateInput = {
@@ -388,12 +344,6 @@ export type RequestCategoryCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type RequestCategoryAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -412,12 +362,6 @@ export type RequestCategoryMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type RequestCategorySumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -444,23 +388,23 @@ export type RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput = {
 export type RequestCategoryCreateWithoutTemplatesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestCategoryUncheckedCreateWithoutTemplatesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   name: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestCategoryCreateOrConnectWithoutTemplatesInput = {
@@ -482,23 +426,23 @@ export type RequestCategoryUpdateToOneWithWhereWithoutTemplatesInput = {
 export type RequestCategoryUpdateWithoutTemplatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestCategoryUncheckedUpdateWithoutTemplatesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -594,12 +538,12 @@ export type $RequestCategoryPayload<ExtArgs extends runtime.Types.Extensions.Int
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
+    id: string
     name: runtime.JsonValue
     description: runtime.JsonValue | null
     deletedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["requestCategory"]>
   composites: {}
 }
@@ -1026,12 +970,12 @@ export interface Prisma__RequestCategoryClient<T, Null = never, ExtArgs extends 
 export interface RequestCategoryFieldRefs {
   readonly createdAt: Prisma.FieldRef<"RequestCategory", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"RequestCategory", 'DateTime'>
-  readonly id: Prisma.FieldRef<"RequestCategory", 'BigInt'>
+  readonly id: Prisma.FieldRef<"RequestCategory", 'String'>
   readonly name: Prisma.FieldRef<"RequestCategory", 'Json'>
   readonly description: Prisma.FieldRef<"RequestCategory", 'Json'>
   readonly deletedAt: Prisma.FieldRef<"RequestCategory", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"RequestCategory", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"RequestCategory", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"RequestCategory", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"RequestCategory", 'String'>
 }
     
 

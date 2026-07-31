@@ -20,42 +20,28 @@ export type SystemSettingModel = runtime.Types.Result.DefaultSelection<Prisma.$S
 
 export type AggregateSystemSetting = {
   _count: SystemSettingCountAggregateOutputType | null
-  _avg: SystemSettingAvgAggregateOutputType | null
-  _sum: SystemSettingSumAggregateOutputType | null
   _min: SystemSettingMinAggregateOutputType | null
   _max: SystemSettingMaxAggregateOutputType | null
 }
 
-export type SystemSettingAvgAggregateOutputType = {
-  id: number | null
-  updatedBy: number | null
-  createdBy: number | null
-}
-
-export type SystemSettingSumAggregateOutputType = {
-  id: bigint | null
-  updatedBy: bigint | null
-  createdBy: bigint | null
-}
-
 export type SystemSettingMinAggregateOutputType = {
   createdAt: Date | null
-  id: bigint | null
+  id: string | null
   key: string | null
   description: string | null
   updatedAt: Date | null
-  updatedBy: bigint | null
-  createdBy: bigint | null
+  updatedBy: string | null
+  createdBy: string | null
 }
 
 export type SystemSettingMaxAggregateOutputType = {
   createdAt: Date | null
-  id: bigint | null
+  id: string | null
   key: string | null
   description: string | null
   updatedAt: Date | null
-  updatedBy: bigint | null
-  createdBy: bigint | null
+  updatedBy: string | null
+  createdBy: string | null
 }
 
 export type SystemSettingCountAggregateOutputType = {
@@ -70,18 +56,6 @@ export type SystemSettingCountAggregateOutputType = {
   _all: number
 }
 
-
-export type SystemSettingAvgAggregateInputType = {
-  id?: true
-  updatedBy?: true
-  createdBy?: true
-}
-
-export type SystemSettingSumAggregateInputType = {
-  id?: true
-  updatedBy?: true
-  createdBy?: true
-}
 
 export type SystemSettingMinAggregateInputType = {
   createdAt?: true
@@ -153,18 +127,6 @@ export type SystemSettingAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: SystemSettingAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: SystemSettingSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: SystemSettingMinAggregateInputType
@@ -195,24 +157,20 @@ export type SystemSettingGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: SystemSettingCountAggregateInputType | true
-  _avg?: SystemSettingAvgAggregateInputType
-  _sum?: SystemSettingSumAggregateInputType
   _min?: SystemSettingMinAggregateInputType
   _max?: SystemSettingMaxAggregateInputType
 }
 
 export type SystemSettingGroupByOutputType = {
   createdAt: Date
-  id: bigint
+  id: string
   key: string
   value: runtime.JsonValue
   description: string | null
   updatedAt: Date
-  updatedBy: bigint | null
-  createdBy: bigint | null
+  updatedBy: string | null
+  createdBy: string | null
   _count: SystemSettingCountAggregateOutputType | null
-  _avg: SystemSettingAvgAggregateOutputType | null
-  _sum: SystemSettingSumAggregateOutputType | null
   _min: SystemSettingMinAggregateOutputType | null
   _max: SystemSettingMaxAggregateOutputType | null
 }
@@ -237,13 +195,13 @@ export type SystemSettingWhereInput = {
   OR?: Prisma.SystemSettingWhereInput[]
   NOT?: Prisma.SystemSettingWhereInput | Prisma.SystemSettingWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"SystemSetting"> | Date | string
-  id?: Prisma.BigIntFilter<"SystemSetting"> | bigint | number
+  id?: Prisma.UuidFilter<"SystemSetting"> | string
   key?: Prisma.StringFilter<"SystemSetting"> | string
   value?: Prisma.JsonFilter<"SystemSetting">
   description?: Prisma.StringNullableFilter<"SystemSetting"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"SystemSetting"> | Date | string
-  updatedBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
-  createdBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
+  createdBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
   updater?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
@@ -260,7 +218,7 @@ export type SystemSettingOrderByWithRelationInput = {
 }
 
 export type SystemSettingWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   key?: string
   AND?: Prisma.SystemSettingWhereInput | Prisma.SystemSettingWhereInput[]
   OR?: Prisma.SystemSettingWhereInput[]
@@ -269,8 +227,8 @@ export type SystemSettingWhereUniqueInput = Prisma.AtLeast<{
   value?: Prisma.JsonFilter<"SystemSetting">
   description?: Prisma.StringNullableFilter<"SystemSetting"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"SystemSetting"> | Date | string
-  updatedBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
-  createdBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
+  createdBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
   updater?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "key">
 
@@ -284,10 +242,8 @@ export type SystemSettingOrderByWithAggregationInput = {
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SystemSettingCountOrderByAggregateInput
-  _avg?: Prisma.SystemSettingAvgOrderByAggregateInput
   _max?: Prisma.SystemSettingMaxOrderByAggregateInput
   _min?: Prisma.SystemSettingMinOrderByAggregateInput
-  _sum?: Prisma.SystemSettingSumOrderByAggregateInput
 }
 
 export type SystemSettingScalarWhereWithAggregatesInput = {
@@ -295,89 +251,89 @@ export type SystemSettingScalarWhereWithAggregatesInput = {
   OR?: Prisma.SystemSettingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SystemSettingScalarWhereWithAggregatesInput | Prisma.SystemSettingScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SystemSetting"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"SystemSetting"> | bigint | number
+  id?: Prisma.UuidWithAggregatesFilter<"SystemSetting"> | string
   key?: Prisma.StringWithAggregatesFilter<"SystemSetting"> | string
   value?: Prisma.JsonWithAggregatesFilter<"SystemSetting">
   description?: Prisma.StringNullableWithAggregatesFilter<"SystemSetting"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SystemSetting"> | Date | string
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"SystemSetting"> | bigint | number | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"SystemSetting"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"SystemSetting"> | string | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"SystemSetting"> | string | null
 }
 
 export type SystemSettingCreateInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
+  createdBy?: string | null
   updater?: Prisma.UserCreateNestedOneWithoutSystemSettingsInput
 }
 
 export type SystemSettingUncheckedCreateInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  updatedBy?: bigint | number | null
-  createdBy?: bigint | number | null
+  updatedBy?: string | null
+  createdBy?: string | null
 }
 
 export type SystemSettingUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updater?: Prisma.UserUpdateOneWithoutSystemSettingsNestedInput
 }
 
 export type SystemSettingUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SystemSettingCreateManyInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  updatedBy?: bigint | number | null
-  createdBy?: bigint | number | null
+  updatedBy?: string | null
+  createdBy?: string | null
 }
 
 export type SystemSettingUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SystemSettingUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SystemSettingListRelationFilter = {
@@ -401,12 +357,6 @@ export type SystemSettingCountOrderByAggregateInput = {
   createdBy?: Prisma.SortOrder
 }
 
-export type SystemSettingAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-}
-
 export type SystemSettingMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
@@ -423,12 +373,6 @@ export type SystemSettingMinOrderByAggregateInput = {
   key?: Prisma.SortOrder
   description?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-}
-
-export type SystemSettingSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
 }
@@ -477,22 +421,22 @@ export type SystemSettingUncheckedUpdateManyWithoutUpdaterNestedInput = {
 
 export type SystemSettingCreateWithoutUpdaterInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
+  createdBy?: string | null
 }
 
 export type SystemSettingUncheckedCreateWithoutUpdaterInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
+  createdBy?: string | null
 }
 
 export type SystemSettingCreateOrConnectWithoutUpdaterInput = {
@@ -526,53 +470,53 @@ export type SystemSettingScalarWhereInput = {
   OR?: Prisma.SystemSettingScalarWhereInput[]
   NOT?: Prisma.SystemSettingScalarWhereInput | Prisma.SystemSettingScalarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"SystemSetting"> | Date | string
-  id?: Prisma.BigIntFilter<"SystemSetting"> | bigint | number
+  id?: Prisma.UuidFilter<"SystemSetting"> | string
   key?: Prisma.StringFilter<"SystemSetting"> | string
   value?: Prisma.JsonFilter<"SystemSetting">
   description?: Prisma.StringNullableFilter<"SystemSetting"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"SystemSetting"> | Date | string
-  updatedBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
-  createdBy?: Prisma.BigIntNullableFilter<"SystemSetting"> | bigint | number | null
+  updatedBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
+  createdBy?: Prisma.UuidNullableFilter<"SystemSetting"> | string | null
 }
 
 export type SystemSettingCreateManyUpdaterInput = {
   createdAt?: Date | string
-  id?: bigint | number
+  id?: string
   key: string
   value: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: string | null
   updatedAt?: Date | string
-  createdBy?: bigint | number | null
+  createdBy?: string | null
 }
 
 export type SystemSettingUpdateWithoutUpdaterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SystemSettingUncheckedUpdateWithoutUpdaterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SystemSettingUncheckedUpdateManyWithoutUpdaterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -642,13 +586,13 @@ export type $SystemSettingPayload<ExtArgs extends runtime.Types.Extensions.Inter
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
-    id: bigint
+    id: string
     key: string
     value: runtime.JsonValue
     description: string | null
     updatedAt: Date
-    updatedBy: bigint | null
-    createdBy: bigint | null
+    updatedBy: string | null
+    createdBy: string | null
   }, ExtArgs["result"]["systemSetting"]>
   composites: {}
 }
@@ -1074,13 +1018,13 @@ export interface Prisma__SystemSettingClient<T, Null = never, ExtArgs extends ru
  */
 export interface SystemSettingFieldRefs {
   readonly createdAt: Prisma.FieldRef<"SystemSetting", 'DateTime'>
-  readonly id: Prisma.FieldRef<"SystemSetting", 'BigInt'>
+  readonly id: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly key: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly value: Prisma.FieldRef<"SystemSetting", 'Json'>
   readonly description: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly updatedAt: Prisma.FieldRef<"SystemSetting", 'DateTime'>
-  readonly updatedBy: Prisma.FieldRef<"SystemSetting", 'BigInt'>
-  readonly createdBy: Prisma.FieldRef<"SystemSetting", 'BigInt'>
+  readonly updatedBy: Prisma.FieldRef<"SystemSetting", 'String'>
+  readonly createdBy: Prisma.FieldRef<"SystemSetting", 'String'>
 }
     
 

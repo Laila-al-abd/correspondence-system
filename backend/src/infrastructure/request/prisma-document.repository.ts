@@ -15,7 +15,7 @@ export class PrismaDocumentRepository implements DocumentRepository {
 
   async findById(id: Identifier): Promise<Document | null> {
     const row = await this.prisma.document.findFirst({
-      where: { id: BigInt(id.toString()) },
+      where: { id: id.toString() },
     })
     return row ? DocumentMapper.toDomain(row) : null
   }
@@ -23,7 +23,7 @@ export class PrismaDocumentRepository implements DocumentRepository {
   async save(document: Document): Promise<void> {
     const data = DocumentMapper.toPersistence(document)
     await this.prisma.document.upsert({
-      where: { id: BigInt(document.id.toString()) },
+      where: { id: document.id.toString() },
       create: data,
       update: data,
     })
@@ -31,7 +31,7 @@ export class PrismaDocumentRepository implements DocumentRepository {
 
   async listByRequest(requestId: Identifier): Promise<Document[]> {
     const rows = await this.prisma.document.findMany({
-      where: { requestId: BigInt(requestId.toString()) },
+      where: { requestId: requestId.toString() },
       orderBy: { id: 'asc' },
     })
     return rows.map((row) => DocumentMapper.toDomain(row))

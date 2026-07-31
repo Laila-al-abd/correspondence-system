@@ -27,59 +27,45 @@ export type AggregatePayment = {
 }
 
 export type PaymentAvgAggregateOutputType = {
-  id: number | null
-  requestId: number | null
-  requestStepInstanceId: number | null
   amount: runtime.Decimal | null
-  requestedBy: number | null
-  confirmedBy: number | null
-  createdBy: number | null
-  updatedBy: number | null
 }
 
 export type PaymentSumAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
   amount: runtime.Decimal | null
-  requestedBy: bigint | null
-  confirmedBy: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type PaymentMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestStepInstanceId: string | null
   amount: runtime.Decimal | null
   currency: string | null
   status: string | null
-  requestedBy: bigint | null
-  confirmedBy: bigint | null
+  requestedBy: string | null
+  confirmedBy: string | null
   requestedAt: Date | null
   confirmedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type PaymentMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  requestId: bigint | null
-  requestStepInstanceId: bigint | null
+  id: string | null
+  requestId: string | null
+  requestStepInstanceId: string | null
   amount: runtime.Decimal | null
   currency: string | null
   status: string | null
-  requestedBy: bigint | null
-  confirmedBy: bigint | null
+  requestedBy: string | null
+  confirmedBy: string | null
   requestedAt: Date | null
   confirmedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type PaymentCountAggregateOutputType = {
@@ -102,25 +88,11 @@ export type PaymentCountAggregateOutputType = {
 
 
 export type PaymentAvgAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestStepInstanceId?: true
   amount?: true
-  requestedBy?: true
-  confirmedBy?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type PaymentSumAggregateInputType = {
-  id?: true
-  requestId?: true
-  requestStepInstanceId?: true
   amount?: true
-  requestedBy?: true
-  confirmedBy?: true
-  createdBy?: true
-  updatedBy?: true
 }
 
 export type PaymentMinAggregateInputType = {
@@ -264,18 +236,18 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PaymentGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
-  requestId: bigint
-  requestStepInstanceId: bigint | null
+  id: string
+  requestId: string
+  requestStepInstanceId: string | null
   amount: runtime.Decimal
   currency: string
   status: string
-  requestedBy: bigint | null
-  confirmedBy: bigint | null
+  requestedBy: string | null
+  confirmedBy: string | null
   requestedAt: Date | null
   confirmedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: PaymentCountAggregateOutputType | null
   _avg: PaymentAvgAggregateOutputType | null
   _sum: PaymentSumAggregateOutputType | null
@@ -304,18 +276,18 @@ export type PaymentWhereInput = {
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  id?: Prisma.BigIntFilter<"Payment"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"Payment"> | bigint | number
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  id?: Prisma.UuidFilter<"Payment"> | string
+  requestId?: Prisma.UuidFilter<"Payment"> | string
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   amount?: Prisma.DecimalFilter<"Payment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
-  requestedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  confirmedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   requester?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -344,23 +316,23 @@ export type PaymentOrderByWithRelationInput = {
 }
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  requestId?: Prisma.BigIntFilter<"Payment"> | bigint | number
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  requestId?: Prisma.UuidFilter<"Payment"> | string
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   amount?: Prisma.DecimalFilter<"Payment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
-  requestedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  confirmedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   requester?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -395,31 +367,31 @@ export type PaymentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Payment"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"Payment"> | bigint | number
-  requestId?: Prisma.BigIntWithAggregatesFilter<"Payment"> | bigint | number
-  requestStepInstanceId?: Prisma.BigIntNullableWithAggregatesFilter<"Payment"> | bigint | number | null
+  id?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
+  requestId?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
+  requestStepInstanceId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   amount?: Prisma.DecimalWithAggregatesFilter<"Payment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   status?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  requestedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Payment"> | bigint | number | null
-  confirmedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Payment"> | bigint | number | null
+  requestedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
+  confirmedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Payment"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Payment"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
 }
 
 export type PaymentCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
@@ -429,31 +401,31 @@ export type PaymentCreateInput = {
 export type PaymentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
@@ -463,65 +435,65 @@ export type PaymentUpdateInput = {
 export type PaymentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentListRelationFilter = {
@@ -552,14 +524,7 @@ export type PaymentCountOrderByAggregateInput = {
 }
 
 export type PaymentAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestStepInstanceId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  requestedBy?: Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type PaymentMaxOrderByAggregateInput = {
@@ -597,14 +562,7 @@ export type PaymentMinOrderByAggregateInput = {
 }
 
 export type PaymentSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  requestStepInstanceId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  requestedBy?: Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
 }
 
 export type PaymentCreateNestedManyWithoutRequesterInput = {
@@ -786,14 +744,14 @@ export type DecimalFieldUpdateOperationsInput = {
 export type PaymentCreateWithoutRequesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
@@ -802,17 +760,17 @@ export type PaymentCreateWithoutRequesterInput = {
 export type PaymentUncheckedCreateWithoutRequesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  confirmedBy?: bigint | number | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentCreateOrConnectWithoutRequesterInput = {
@@ -828,14 +786,14 @@ export type PaymentCreateManyRequesterInputEnvelope = {
 export type PaymentCreateWithoutConfirmerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
@@ -844,17 +802,17 @@ export type PaymentCreateWithoutConfirmerInput = {
 export type PaymentUncheckedCreateWithoutConfirmerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
+  requestedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentCreateOrConnectWithoutConfirmerInput = {
@@ -889,18 +847,18 @@ export type PaymentScalarWhereInput = {
   NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  id?: Prisma.BigIntFilter<"Payment"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"Payment"> | bigint | number
-  requestStepInstanceId?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  id?: Prisma.UuidFilter<"Payment"> | string
+  requestId?: Prisma.UuidFilter<"Payment"> | string
+  requestStepInstanceId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   amount?: Prisma.DecimalFilter<"Payment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
-  requestedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  confirmedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
   confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Payment"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
 }
 
 export type PaymentUpsertWithWhereUniqueWithoutConfirmerInput = {
@@ -922,14 +880,14 @@ export type PaymentUpdateManyWithWhereWithoutConfirmerInput = {
 export type PaymentCreateWithoutRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
   confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
@@ -938,17 +896,17 @@ export type PaymentCreateWithoutRequestInput = {
 export type PaymentUncheckedCreateWithoutRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentCreateOrConnectWithoutRequestInput = {
@@ -980,14 +938,14 @@ export type PaymentUpdateManyWithWhereWithoutRequestInput = {
 export type PaymentCreateWithoutRequestStepInstanceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
   confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
@@ -996,17 +954,17 @@ export type PaymentCreateWithoutRequestStepInstanceInput = {
 export type PaymentUncheckedCreateWithoutRequestStepInstanceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
+  id: string
+  requestId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentCreateOrConnectWithoutRequestStepInstanceInput = {
@@ -1038,46 +996,46 @@ export type PaymentUpdateManyWithWhereWithoutRequestStepInstanceInput = {
 export type PaymentCreateManyRequesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  confirmedBy?: bigint | number | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentCreateManyConfirmerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestId: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
+  requestedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentUpdateWithoutRequesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
@@ -1086,46 +1044,46 @@ export type PaymentUpdateWithoutRequesterInput = {
 export type PaymentUncheckedUpdateWithoutRequesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUncheckedUpdateManyWithoutRequesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUpdateWithoutConfirmerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
@@ -1134,62 +1092,62 @@ export type PaymentUpdateWithoutConfirmerInput = {
 export type PaymentUncheckedUpdateWithoutConfirmerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUncheckedUpdateManyWithoutConfirmerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentCreateManyRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestStepInstanceId?: bigint | number | null
+  id: string
+  requestStepInstanceId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentUpdateWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
   confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
@@ -1198,62 +1156,62 @@ export type PaymentUpdateWithoutRequestInput = {
 export type PaymentUncheckedUpdateWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUncheckedUpdateManyWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestStepInstanceId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestStepInstanceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentCreateManyRequestStepInstanceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
+  id: string
+  requestId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  requestedBy?: bigint | number | null
-  confirmedBy?: bigint | number | null
+  requestedBy?: string | null
+  confirmedBy?: string | null
   requestedAt?: Date | string | null
   confirmedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type PaymentUpdateWithoutRequestStepInstanceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
   confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
@@ -1262,33 +1220,33 @@ export type PaymentUpdateWithoutRequestStepInstanceInput = {
 export type PaymentUncheckedUpdateWithoutRequestStepInstanceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PaymentUncheckedUpdateManyWithoutRequestStepInstanceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  requestedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  confirmedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1404,18 +1362,18 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
-    requestId: bigint
-    requestStepInstanceId: bigint | null
+    id: string
+    requestId: string
+    requestStepInstanceId: string | null
     amount: runtime.Decimal
     currency: string
     status: string
-    requestedBy: bigint | null
-    confirmedBy: bigint | null
+    requestedBy: string | null
+    confirmedBy: string | null
     requestedAt: Date | null
     confirmedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["payment"]>
   composites: {}
 }
@@ -1845,18 +1803,18 @@ export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.
 export interface PaymentFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Payment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Payment", 'DateTime'>
-  readonly id: Prisma.FieldRef<"Payment", 'BigInt'>
-  readonly requestId: Prisma.FieldRef<"Payment", 'BigInt'>
-  readonly requestStepInstanceId: Prisma.FieldRef<"Payment", 'BigInt'>
+  readonly id: Prisma.FieldRef<"Payment", 'String'>
+  readonly requestId: Prisma.FieldRef<"Payment", 'String'>
+  readonly requestStepInstanceId: Prisma.FieldRef<"Payment", 'String'>
   readonly amount: Prisma.FieldRef<"Payment", 'Decimal'>
   readonly currency: Prisma.FieldRef<"Payment", 'String'>
   readonly status: Prisma.FieldRef<"Payment", 'String'>
-  readonly requestedBy: Prisma.FieldRef<"Payment", 'BigInt'>
-  readonly confirmedBy: Prisma.FieldRef<"Payment", 'BigInt'>
+  readonly requestedBy: Prisma.FieldRef<"Payment", 'String'>
+  readonly confirmedBy: Prisma.FieldRef<"Payment", 'String'>
   readonly requestedAt: Prisma.FieldRef<"Payment", 'DateTime'>
   readonly confirmedAt: Prisma.FieldRef<"Payment", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"Payment", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"Payment", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"Payment", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Payment", 'String'>
 }
     
 

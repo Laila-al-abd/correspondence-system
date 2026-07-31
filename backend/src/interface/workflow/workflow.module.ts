@@ -7,7 +7,7 @@ import {
 } from '../../application/tokens'
 import { PrismaWorkflowPathRepository } from '../../infrastructure/workflow/prisma-workflow-path.repository'
 import { PrismaTemplateRepository } from '../../infrastructure/catalog/prisma-template.repository'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { DefineWorkflowPathHandler } from '../../application/workflow/commands/define-workflow-path/define-workflow-path.handler'
 import { ActivateWorkflowPathHandler } from '../../application/workflow/commands/activate-workflow-path/activate-workflow-path.handler'
 import { DeactivateWorkflowPathHandler } from '../../application/workflow/commands/deactivate-workflow-path/deactivate-workflow-path.handler'
@@ -39,7 +39,7 @@ const handlers = [
       useClass: PrismaWorkflowPathRepository,
     },
     { provide: TEMPLATE_REPOSITORY, useClass: PrismaTemplateRepository },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
   ],
   exports: [WORKFLOW_PATH_REPOSITORY],
 })

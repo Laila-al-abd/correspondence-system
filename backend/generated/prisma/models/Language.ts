@@ -20,20 +20,8 @@ export type LanguageModel = runtime.Types.Result.DefaultSelection<Prisma.$Langua
 
 export type AggregateLanguage = {
   _count: LanguageCountAggregateOutputType | null
-  _avg: LanguageAvgAggregateOutputType | null
-  _sum: LanguageSumAggregateOutputType | null
   _min: LanguageMinAggregateOutputType | null
   _max: LanguageMaxAggregateOutputType | null
-}
-
-export type LanguageAvgAggregateOutputType = {
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type LanguageSumAggregateOutputType = {
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type LanguageMinAggregateOutputType = {
@@ -44,8 +32,8 @@ export type LanguageMinAggregateOutputType = {
   nativeName: string | null
   isEnabled: boolean | null
   isDefault: boolean | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type LanguageMaxAggregateOutputType = {
@@ -56,8 +44,8 @@ export type LanguageMaxAggregateOutputType = {
   nativeName: string | null
   isEnabled: boolean | null
   isDefault: boolean | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type LanguageCountAggregateOutputType = {
@@ -73,16 +61,6 @@ export type LanguageCountAggregateOutputType = {
   _all: number
 }
 
-
-export type LanguageAvgAggregateInputType = {
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type LanguageSumAggregateInputType = {
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type LanguageMinAggregateInputType = {
   createdAt?: true
@@ -159,18 +137,6 @@ export type LanguageAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: LanguageAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: LanguageSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: LanguageMinAggregateInputType
@@ -201,8 +167,6 @@ export type LanguageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: LanguageCountAggregateInputType | true
-  _avg?: LanguageAvgAggregateInputType
-  _sum?: LanguageSumAggregateInputType
   _min?: LanguageMinAggregateInputType
   _max?: LanguageMaxAggregateInputType
 }
@@ -215,11 +179,9 @@ export type LanguageGroupByOutputType = {
   nativeName: string
   isEnabled: boolean
   isDefault: boolean
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: LanguageCountAggregateOutputType | null
-  _avg: LanguageAvgAggregateOutputType | null
-  _sum: LanguageSumAggregateOutputType | null
   _min: LanguageMinAggregateOutputType | null
   _max: LanguageMaxAggregateOutputType | null
 }
@@ -250,8 +212,8 @@ export type LanguageWhereInput = {
   nativeName?: Prisma.StringFilter<"Language"> | string
   isEnabled?: Prisma.BoolFilter<"Language"> | boolean
   isDefault?: Prisma.BoolFilter<"Language"> | boolean
-  createdBy?: Prisma.BigIntNullableFilter<"Language"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Language"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Language"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Language"> | string | null
   users?: Prisma.UserListRelationFilter
 }
 
@@ -279,8 +241,8 @@ export type LanguageWhereUniqueInput = Prisma.AtLeast<{
   nativeName?: Prisma.StringFilter<"Language"> | string
   isEnabled?: Prisma.BoolFilter<"Language"> | boolean
   isDefault?: Prisma.BoolFilter<"Language"> | boolean
-  createdBy?: Prisma.BigIntNullableFilter<"Language"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"Language"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"Language"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"Language"> | string | null
   users?: Prisma.UserListRelationFilter
 }, "code">
 
@@ -295,10 +257,8 @@ export type LanguageOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LanguageCountOrderByAggregateInput
-  _avg?: Prisma.LanguageAvgOrderByAggregateInput
   _max?: Prisma.LanguageMaxOrderByAggregateInput
   _min?: Prisma.LanguageMinOrderByAggregateInput
-  _sum?: Prisma.LanguageSumOrderByAggregateInput
 }
 
 export type LanguageScalarWhereWithAggregatesInput = {
@@ -312,8 +272,8 @@ export type LanguageScalarWhereWithAggregatesInput = {
   nativeName?: Prisma.StringWithAggregatesFilter<"Language"> | string
   isEnabled?: Prisma.BoolWithAggregatesFilter<"Language"> | boolean
   isDefault?: Prisma.BoolWithAggregatesFilter<"Language"> | boolean
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"Language"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"Language"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"Language"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Language"> | string | null
 }
 
 export type LanguageCreateInput = {
@@ -324,8 +284,8 @@ export type LanguageCreateInput = {
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   users?: Prisma.UserCreateNestedManyWithoutPreferredLanguageInput
 }
 
@@ -337,8 +297,8 @@ export type LanguageUncheckedCreateInput = {
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   users?: Prisma.UserUncheckedCreateNestedManyWithoutPreferredLanguageInput
 }
 
@@ -350,8 +310,8 @@ export type LanguageUpdateInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   users?: Prisma.UserUpdateManyWithoutPreferredLanguageNestedInput
 }
 
@@ -363,8 +323,8 @@ export type LanguageUncheckedUpdateInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   users?: Prisma.UserUncheckedUpdateManyWithoutPreferredLanguageNestedInput
 }
 
@@ -376,8 +336,8 @@ export type LanguageCreateManyInput = {
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type LanguageUpdateManyMutationInput = {
@@ -388,8 +348,8 @@ export type LanguageUpdateManyMutationInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LanguageUncheckedUpdateManyInput = {
@@ -400,8 +360,8 @@ export type LanguageUncheckedUpdateManyInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LanguageScalarRelationFilter = {
@@ -417,11 +377,6 @@ export type LanguageCountOrderByAggregateInput = {
   nativeName?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type LanguageAvgOrderByAggregateInput = {
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -450,11 +405,6 @@ export type LanguageMinOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
 }
 
-export type LanguageSumOrderByAggregateInput = {
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
 export type LanguageCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.LanguageCreateWithoutUsersInput, Prisma.LanguageUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.LanguageCreateOrConnectWithoutUsersInput
@@ -477,8 +427,8 @@ export type LanguageCreateWithoutUsersInput = {
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type LanguageUncheckedCreateWithoutUsersInput = {
@@ -489,8 +439,8 @@ export type LanguageUncheckedCreateWithoutUsersInput = {
   nativeName: string
   isEnabled?: boolean
   isDefault?: boolean
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type LanguageCreateOrConnectWithoutUsersInput = {
@@ -517,8 +467,8 @@ export type LanguageUpdateWithoutUsersInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LanguageUncheckedUpdateWithoutUsersInput = {
@@ -529,8 +479,8 @@ export type LanguageUncheckedUpdateWithoutUsersInput = {
   nativeName?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -635,8 +585,8 @@ export type $LanguagePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     nativeName: string
     isEnabled: boolean
     isDefault: boolean
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["language"]>
   composites: {}
 }
@@ -1068,8 +1018,8 @@ export interface LanguageFieldRefs {
   readonly nativeName: Prisma.FieldRef<"Language", 'String'>
   readonly isEnabled: Prisma.FieldRef<"Language", 'Boolean'>
   readonly isDefault: Prisma.FieldRef<"Language", 'Boolean'>
-  readonly createdBy: Prisma.FieldRef<"Language", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"Language", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"Language", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Language", 'String'>
 }
     
 

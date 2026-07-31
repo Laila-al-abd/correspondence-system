@@ -25,9 +25,9 @@ export const NotificationMapper = {
   ): Prisma.NotificationUncheckedCreateInput {
     const s = notification.snapshot()
     return {
-      id: BigInt(notification.id.toString()),
-      userId: BigInt(s.userId),
-      requestId: s.requestId ? BigInt(s.requestId) : null,
+      id: notification.id.toString(),
+      userId: s.userId,
+      requestId: s.requestId ? s.requestId : null,
       type: s.type,
       title: s.title,
       body: s.body ?? null,

@@ -20,60 +20,40 @@ export type RequestStepInstanceModel = runtime.Types.Result.DefaultSelection<Pri
 
 export type AggregateRequestStepInstance = {
   _count: RequestStepInstanceCountAggregateOutputType | null
-  _avg: RequestStepInstanceAvgAggregateOutputType | null
-  _sum: RequestStepInstanceSumAggregateOutputType | null
   _min: RequestStepInstanceMinAggregateOutputType | null
   _max: RequestStepInstanceMaxAggregateOutputType | null
-}
-
-export type RequestStepInstanceAvgAggregateOutputType = {
-  id: number | null
-  requestId: number | null
-  workflowStepId: number | null
-  assignedToUserId: number | null
-  createdBy: number | null
-  updatedBy: number | null
-}
-
-export type RequestStepInstanceSumAggregateOutputType = {
-  id: bigint | null
-  requestId: bigint | null
-  workflowStepId: bigint | null
-  assignedToUserId: bigint | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
 }
 
 export type RequestStepInstanceMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  requestId: bigint | null
-  workflowStepId: bigint | null
-  assignedToUserId: bigint | null
+  id: string | null
+  requestId: string | null
+  workflowStepId: string | null
+  assignedToUserId: string | null
   status: string | null
   slaDueAt: Date | null
   slaPaused: boolean | null
   startedAt: Date | null
   completedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RequestStepInstanceMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
-  id: bigint | null
-  requestId: bigint | null
-  workflowStepId: bigint | null
-  assignedToUserId: bigint | null
+  id: string | null
+  requestId: string | null
+  workflowStepId: string | null
+  assignedToUserId: string | null
   status: string | null
   slaDueAt: Date | null
   slaPaused: boolean | null
   startedAt: Date | null
   completedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RequestStepInstanceCountAggregateOutputType = {
@@ -93,24 +73,6 @@ export type RequestStepInstanceCountAggregateOutputType = {
   _all: number
 }
 
-
-export type RequestStepInstanceAvgAggregateInputType = {
-  id?: true
-  requestId?: true
-  workflowStepId?: true
-  assignedToUserId?: true
-  createdBy?: true
-  updatedBy?: true
-}
-
-export type RequestStepInstanceSumAggregateInputType = {
-  id?: true
-  requestId?: true
-  workflowStepId?: true
-  assignedToUserId?: true
-  createdBy?: true
-  updatedBy?: true
-}
 
 export type RequestStepInstanceMinAggregateInputType = {
   createdAt?: true
@@ -199,18 +161,6 @@ export type RequestStepInstanceAggregateArgs<ExtArgs extends runtime.Types.Exten
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: RequestStepInstanceAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: RequestStepInstanceSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: RequestStepInstanceMinAggregateInputType
@@ -241,8 +191,6 @@ export type RequestStepInstanceGroupByArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   _count?: RequestStepInstanceCountAggregateInputType | true
-  _avg?: RequestStepInstanceAvgAggregateInputType
-  _sum?: RequestStepInstanceSumAggregateInputType
   _min?: RequestStepInstanceMinAggregateInputType
   _max?: RequestStepInstanceMaxAggregateInputType
 }
@@ -250,20 +198,18 @@ export type RequestStepInstanceGroupByArgs<ExtArgs extends runtime.Types.Extensi
 export type RequestStepInstanceGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
-  id: bigint
-  requestId: bigint
-  workflowStepId: bigint
-  assignedToUserId: bigint | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId: string | null
   status: string
   slaDueAt: Date | null
   slaPaused: boolean
   startedAt: Date | null
   completedAt: Date | null
-  createdBy: bigint | null
-  updatedBy: bigint | null
+  createdBy: string | null
+  updatedBy: string | null
   _count: RequestStepInstanceCountAggregateOutputType | null
-  _avg: RequestStepInstanceAvgAggregateOutputType | null
-  _sum: RequestStepInstanceSumAggregateOutputType | null
   _min: RequestStepInstanceMinAggregateOutputType | null
   _max: RequestStepInstanceMaxAggregateOutputType | null
 }
@@ -289,17 +235,17 @@ export type RequestStepInstanceWhereInput = {
   NOT?: Prisma.RequestStepInstanceWhereInput | Prisma.RequestStepInstanceWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
-  id?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  workflowStepId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  assignedToUserId?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  id?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  requestId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  workflowStepId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  assignedToUserId?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
   status?: Prisma.StringFilter<"RequestStepInstance"> | string
   slaDueAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   slaPaused?: Prisma.BoolFilter<"RequestStepInstance"> | boolean
   startedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -331,22 +277,22 @@ export type RequestStepInstanceOrderByWithRelationInput = {
 }
 
 export type RequestStepInstanceWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: string
   AND?: Prisma.RequestStepInstanceWhereInput | Prisma.RequestStepInstanceWhereInput[]
   OR?: Prisma.RequestStepInstanceWhereInput[]
   NOT?: Prisma.RequestStepInstanceWhereInput | Prisma.RequestStepInstanceWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
-  requestId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  workflowStepId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  assignedToUserId?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  requestId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  workflowStepId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  assignedToUserId?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
   status?: Prisma.StringFilter<"RequestStepInstance"> | string
   slaDueAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   slaPaused?: Prisma.BoolFilter<"RequestStepInstance"> | boolean
   startedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   workflowStep?: Prisma.XOR<Prisma.WorkflowStepScalarRelationFilter, Prisma.WorkflowStepWhereInput>
   assignedTo?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -370,10 +316,8 @@ export type RequestStepInstanceOrderByWithAggregationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RequestStepInstanceCountOrderByAggregateInput
-  _avg?: Prisma.RequestStepInstanceAvgOrderByAggregateInput
   _max?: Prisma.RequestStepInstanceMaxOrderByAggregateInput
   _min?: Prisma.RequestStepInstanceMinOrderByAggregateInput
-  _sum?: Prisma.RequestStepInstanceSumOrderByAggregateInput
 }
 
 export type RequestStepInstanceScalarWhereWithAggregatesInput = {
@@ -382,30 +326,30 @@ export type RequestStepInstanceScalarWhereWithAggregatesInput = {
   NOT?: Prisma.RequestStepInstanceScalarWhereWithAggregatesInput | Prisma.RequestStepInstanceScalarWhereWithAggregatesInput[]
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RequestStepInstance"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RequestStepInstance"> | Date | string
-  id?: Prisma.BigIntWithAggregatesFilter<"RequestStepInstance"> | bigint | number
-  requestId?: Prisma.BigIntWithAggregatesFilter<"RequestStepInstance"> | bigint | number
-  workflowStepId?: Prisma.BigIntWithAggregatesFilter<"RequestStepInstance"> | bigint | number
-  assignedToUserId?: Prisma.BigIntNullableWithAggregatesFilter<"RequestStepInstance"> | bigint | number | null
+  id?: Prisma.UuidWithAggregatesFilter<"RequestStepInstance"> | string
+  requestId?: Prisma.UuidWithAggregatesFilter<"RequestStepInstance"> | string
+  workflowStepId?: Prisma.UuidWithAggregatesFilter<"RequestStepInstance"> | string
+  assignedToUserId?: Prisma.UuidNullableWithAggregatesFilter<"RequestStepInstance"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"RequestStepInstance"> | string
   slaDueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RequestStepInstance"> | Date | string | null
   slaPaused?: Prisma.BoolWithAggregatesFilter<"RequestStepInstance"> | boolean
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RequestStepInstance"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RequestStepInstance"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestStepInstance"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableWithAggregatesFilter<"RequestStepInstance"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableWithAggregatesFilter<"RequestStepInstance"> | string | null
+  updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"RequestStepInstance"> | string | null
 }
 
 export type RequestStepInstanceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
@@ -417,17 +361,17 @@ export type RequestStepInstanceCreateInput = {
 export type RequestStepInstanceUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
@@ -436,14 +380,14 @@ export type RequestStepInstanceUncheckedCreateInput = {
 export type RequestStepInstanceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
@@ -455,17 +399,17 @@ export type RequestStepInstanceUpdateInput = {
 export type RequestStepInstanceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
@@ -474,46 +418,46 @@ export type RequestStepInstanceUncheckedUpdateInput = {
 export type RequestStepInstanceCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestStepInstanceUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestStepInstanceUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestStepInstanceListRelationFilter = {
@@ -538,15 +482,6 @@ export type RequestStepInstanceCountOrderByAggregateInput = {
   slaPaused?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type RequestStepInstanceAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  workflowStepId?: Prisma.SortOrder
-  assignedToUserId?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -579,15 +514,6 @@ export type RequestStepInstanceMinOrderByAggregateInput = {
   slaPaused?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
-  updatedBy?: Prisma.SortOrder
-}
-
-export type RequestStepInstanceSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  requestId?: Prisma.SortOrder
-  workflowStepId?: Prisma.SortOrder
-  assignedToUserId?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -774,14 +700,14 @@ export type RequestStepInstanceUpdateOneWithoutEventLogsNestedInput = {
 export type RequestStepInstanceCreateWithoutAssignedToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   actions?: Prisma.RequestActionCreateNestedManyWithoutRequestStepInstanceInput
@@ -792,16 +718,16 @@ export type RequestStepInstanceCreateWithoutAssignedToInput = {
 export type RequestStepInstanceUncheckedCreateWithoutAssignedToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
+  id: string
+  requestId: string
+  workflowStepId: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
@@ -839,30 +765,30 @@ export type RequestStepInstanceScalarWhereInput = {
   NOT?: Prisma.RequestStepInstanceScalarWhereInput | Prisma.RequestStepInstanceScalarWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RequestStepInstance"> | Date | string
-  id?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  requestId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  workflowStepId?: Prisma.BigIntFilter<"RequestStepInstance"> | bigint | number
-  assignedToUserId?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  id?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  requestId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  workflowStepId?: Prisma.UuidFilter<"RequestStepInstance"> | string
+  assignedToUserId?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
   status?: Prisma.StringFilter<"RequestStepInstance"> | string
   slaDueAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   slaPaused?: Prisma.BoolFilter<"RequestStepInstance"> | boolean
   startedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"RequestStepInstance"> | Date | string | null
-  createdBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
-  updatedBy?: Prisma.BigIntNullableFilter<"RequestStepInstance"> | bigint | number | null
+  createdBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
+  updatedBy?: Prisma.UuidNullableFilter<"RequestStepInstance"> | string | null
 }
 
 export type RequestStepInstanceCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
   actions?: Prisma.RequestActionCreateNestedManyWithoutRequestStepInstanceInput
@@ -873,16 +799,16 @@ export type RequestStepInstanceCreateWithoutWorkflowStepInput = {
 export type RequestStepInstanceUncheckedCreateWithoutWorkflowStepInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
@@ -917,14 +843,14 @@ export type RequestStepInstanceUpdateManyWithWhereWithoutWorkflowStepInput = {
 export type RequestStepInstanceCreateWithoutRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
   actions?: Prisma.RequestActionCreateNestedManyWithoutRequestStepInstanceInput
@@ -935,16 +861,16 @@ export type RequestStepInstanceCreateWithoutRequestInput = {
 export type RequestStepInstanceUncheckedCreateWithoutRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
@@ -979,14 +905,14 @@ export type RequestStepInstanceUpdateManyWithWhereWithoutRequestInput = {
 export type RequestStepInstanceCreateWithoutActionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
@@ -997,17 +923,17 @@ export type RequestStepInstanceCreateWithoutActionsInput = {
 export type RequestStepInstanceUncheckedCreateWithoutActionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
 }
@@ -1031,14 +957,14 @@ export type RequestStepInstanceUpdateToOneWithWhereWithoutActionsInput = {
 export type RequestStepInstanceUpdateWithoutActionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
@@ -1049,17 +975,17 @@ export type RequestStepInstanceUpdateWithoutActionsInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutActionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
 }
@@ -1067,14 +993,14 @@ export type RequestStepInstanceUncheckedUpdateWithoutActionsInput = {
 export type RequestStepInstanceCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
@@ -1085,17 +1011,17 @@ export type RequestStepInstanceCreateWithoutPaymentsInput = {
 export type RequestStepInstanceUncheckedCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutRequestStepInstanceInput
 }
@@ -1119,14 +1045,14 @@ export type RequestStepInstanceUpdateToOneWithWhereWithoutPaymentsInput = {
 export type RequestStepInstanceUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
@@ -1137,17 +1063,17 @@ export type RequestStepInstanceUpdateWithoutPaymentsInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
 }
@@ -1155,14 +1081,14 @@ export type RequestStepInstanceUncheckedUpdateWithoutPaymentsInput = {
 export type RequestStepInstanceCreateWithoutEventLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
+  id: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutStepInstancesInput
   workflowStep: Prisma.WorkflowStepCreateNestedOneWithoutStepInstancesInput
   assignedTo?: Prisma.UserCreateNestedOneWithoutAssignedStepInstancesInput
@@ -1173,17 +1099,17 @@ export type RequestStepInstanceCreateWithoutEventLogsInput = {
 export type RequestStepInstanceUncheckedCreateWithoutEventLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestStepInstanceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequestStepInstanceInput
 }
@@ -1207,14 +1133,14 @@ export type RequestStepInstanceUpdateToOneWithWhereWithoutEventLogsInput = {
 export type RequestStepInstanceUpdateWithoutEventLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
@@ -1225,17 +1151,17 @@ export type RequestStepInstanceUpdateWithoutEventLogsInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutEventLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
 }
@@ -1243,29 +1169,29 @@ export type RequestStepInstanceUncheckedUpdateWithoutEventLogsInput = {
 export type RequestStepInstanceCreateManyAssignedToInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  workflowStepId: bigint | number
+  id: string
+  requestId: string
+  workflowStepId: string
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestStepInstanceUpdateWithoutAssignedToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   actions?: Prisma.RequestActionUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1276,16 +1202,16 @@ export type RequestStepInstanceUpdateWithoutAssignedToInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutAssignedToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1294,44 +1220,44 @@ export type RequestStepInstanceUncheckedUpdateWithoutAssignedToInput = {
 export type RequestStepInstanceUncheckedUpdateManyWithoutAssignedToInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestStepInstanceCreateManyWorkflowStepInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  requestId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  requestId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestStepInstanceUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
   actions?: Prisma.RequestActionUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1342,16 +1268,16 @@ export type RequestStepInstanceUpdateWithoutWorkflowStepInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1360,44 +1286,44 @@ export type RequestStepInstanceUncheckedUpdateWithoutWorkflowStepInput = {
 export type RequestStepInstanceUncheckedUpdateManyWithoutWorkflowStepInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  requestId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  requestId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RequestStepInstanceCreateManyRequestInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
-  id?: bigint | number
-  workflowStepId: bigint | number
-  assignedToUserId?: bigint | number | null
+  id: string
+  workflowStepId: string
+  assignedToUserId?: string | null
   status?: string
   slaDueAt?: Date | string | null
   slaPaused?: boolean
   startedAt?: Date | string | null
   completedAt?: Date | string | null
-  createdBy?: bigint | number | null
-  updatedBy?: bigint | number | null
+  createdBy?: string | null
+  updatedBy?: string | null
 }
 
 export type RequestStepInstanceUpdateWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflowStep?: Prisma.WorkflowStepUpdateOneRequiredWithoutStepInstancesNestedInput
   assignedTo?: Prisma.UserUpdateOneWithoutAssignedStepInstancesNestedInput
   actions?: Prisma.RequestActionUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1408,16 +1334,16 @@ export type RequestStepInstanceUpdateWithoutRequestInput = {
 export type RequestStepInstanceUncheckedUpdateWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutRequestStepInstanceNestedInput
@@ -1426,16 +1352,16 @@ export type RequestStepInstanceUncheckedUpdateWithoutRequestInput = {
 export type RequestStepInstanceUncheckedUpdateManyWithoutRequestInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  workflowStepId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  assignedToUserId?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workflowStepId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   slaPaused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-  updatedBy?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1598,17 +1524,17 @@ export type $RequestStepInstancePayload<ExtArgs extends runtime.Types.Extensions
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
     updatedAt: Date
-    id: bigint
-    requestId: bigint
-    workflowStepId: bigint
-    assignedToUserId: bigint | null
+    id: string
+    requestId: string
+    workflowStepId: string
+    assignedToUserId: string | null
     status: string
     slaDueAt: Date | null
     slaPaused: boolean
     startedAt: Date | null
     completedAt: Date | null
-    createdBy: bigint | null
-    updatedBy: bigint | null
+    createdBy: string | null
+    updatedBy: string | null
   }, ExtArgs["result"]["requestStepInstance"]>
   composites: {}
 }
@@ -2040,17 +1966,17 @@ export interface Prisma__RequestStepInstanceClient<T, Null = never, ExtArgs exte
 export interface RequestStepInstanceFieldRefs {
   readonly createdAt: Prisma.FieldRef<"RequestStepInstance", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"RequestStepInstance", 'DateTime'>
-  readonly id: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
-  readonly requestId: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
-  readonly workflowStepId: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
-  readonly assignedToUserId: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
+  readonly id: Prisma.FieldRef<"RequestStepInstance", 'String'>
+  readonly requestId: Prisma.FieldRef<"RequestStepInstance", 'String'>
+  readonly workflowStepId: Prisma.FieldRef<"RequestStepInstance", 'String'>
+  readonly assignedToUserId: Prisma.FieldRef<"RequestStepInstance", 'String'>
   readonly status: Prisma.FieldRef<"RequestStepInstance", 'String'>
   readonly slaDueAt: Prisma.FieldRef<"RequestStepInstance", 'DateTime'>
   readonly slaPaused: Prisma.FieldRef<"RequestStepInstance", 'Boolean'>
   readonly startedAt: Prisma.FieldRef<"RequestStepInstance", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"RequestStepInstance", 'DateTime'>
-  readonly createdBy: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
-  readonly updatedBy: Prisma.FieldRef<"RequestStepInstance", 'BigInt'>
+  readonly createdBy: Prisma.FieldRef<"RequestStepInstance", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"RequestStepInstance", 'String'>
 }
     
 

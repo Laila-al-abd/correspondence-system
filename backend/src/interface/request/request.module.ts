@@ -19,7 +19,7 @@ import { PrismaPaymentRepository } from '../../infrastructure/request/prisma-pay
 import { PrismaDocumentRepository } from '../../infrastructure/request/prisma-document.repository'
 import { PrismaWorkflowPathRepository } from '../../infrastructure/workflow/prisma-workflow-path.repository'
 import { MinioObjectStorage } from '../../infrastructure/storage/minio-object-storage'
-import { IncrementingIdGenerator } from '../../infrastructure/shared/incrementing-id.generator'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { PrismaReferenceNumberGenerator } from '../../infrastructure/shared/prisma-reference-number.generator'
 import { SubmitRequestHandler } from '../../application/request/commands/submit-request/submit-request.handler'
 import { ClassifyRequestByModelHandler } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.handler'
@@ -74,7 +74,7 @@ const handlers = [
       provide: WORKFLOW_PATH_REPOSITORY,
       useClass: PrismaWorkflowPathRepository,
     },
-    { provide: ID_GENERATOR, useClass: IncrementingIdGenerator },
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
     {
       provide: REFERENCE_NUMBER_GENERATOR,
       useClass: PrismaReferenceNumberGenerator,
