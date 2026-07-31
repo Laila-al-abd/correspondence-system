@@ -23,8 +23,12 @@ export class MinioObjectStorage implements ObjectStorage {
       endPoint: config.get<string>('MINIO_ENDPOINT', 'localhost'),
       port: Number(config.get('MINIO_PORT', 9000)),
       useSSL: config.get<string>('MINIO_USE_SSL', 'false') === 'true',
-      accessKey: config.get<string>('MINIO_ACCESS_KEY', 'minioadmin'),
-      secretKey: config.get<string>('MINIO_SECRET_KEY', 'minioadmin'),
+      // No fallback on purpose: a missing credential must stop the process at
+      // startup rather than silently connect with the well-known default
+      // account. Endpoint, port, bucket and SSL keep their defaults because
+      // they are configuration, not secrets.
+      accessKey: config.getOrThrow<string>('MINIO_ACCESS_KEY'),
+      secretKey: config.getOrThrow<string>('MINIO_SECRET_KEY'),
     })
   }
 
@@ -55,8 +59,15 @@ export class MinioObjectStorage implements ObjectStorage {
     })
   }
 
+  /**
+   * A time-limited download link. The response headers force the browser to
+   * download the file instead of rendering it, so a stored HTML or SVG file
+   * can never execute in the user's session against this origin.
+   */
   async getPresignedUrl(key: string, expirySeconds = 3600): Promise<string> {
-    return this.client.presignedGetObject(this.bucket, key, expirySeconds)
+    return this.client.presignedGetObject(this.bucket, key, expirySeconds, {
+      'response-content-disposition': 'attachment',
+    })
   }
 
   async remove(key: string): Promise<void> {

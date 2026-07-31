@@ -2,6 +2,10 @@ import 'dotenv/config'
 import * as bcrypt from 'bcryptjs'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../generated/prisma/client'
+import {
+  SYSTEM_USER_EMAIL,
+  SYSTEM_USER_ID,
+} from '../src/infrastructure/shared/system-actor'
 
 /**
  * System seed: the reference data the ICS needs to run, plus a small demo set
@@ -257,6 +261,27 @@ async function main(): Promise<void> {
   // 2) DEMO DATA (replace for production)
   // ==========================================================================
 
+  // --- SYSTEM account (reference data, not demo data) -----------------------
+  // Background jobs and the seed itself write rows too. Without an account of
+  // their own, those rows carry an empty created_by / updated_by and the audit
+  // trail cannot tell "nobody recorded it" apart from "the system did it".
+  // Nobody can sign in as this account: it has no password hash and its status
+  // is INACTIVE, both of which the local auth provider rejects.
+  await prisma.user.upsert({
+    where: { id: SYSTEM_USER_ID },
+    update: { status: 'INACTIVE', passwordHash: null },
+    create: {
+      id: SYSTEM_USER_ID,
+      userType: 'ADMIN',
+      fullNameAr: 'النظام',
+      fullNameEn: 'System',
+      email: SYSTEM_USER_EMAIL,
+      authProvider: 'SYSTEM',
+      preferredLang: 'ar',
+      status: 'INACTIVE',
+    },
+  })
+
   // --- Bootstrap admin you can log in as ------------------------------------
   // Email:    admin@correspondence.local
   // Password: Admin@12345      <-- change this after first login
@@ -455,6 +480,7 @@ async function main(): Promise<void> {
   console.log('  Reviewer 2   : reviewer2@correspondence.local / Review@12345')
   console.log('')
   console.log('  Seeded ids (stable across resets):')
+  console.log(`    SYSTEM account : ${SYSTEM_USER_ID}`)
   console.log(`    admin user     : ${userId(1)}`)
   console.log(`    reviewer 1     : ${userId(2)}`)
   console.log(`    reviewer 2     : ${userId(3)}`)

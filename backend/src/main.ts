@@ -1,9 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { DomainExceptionFilter } from './interface/shared/domain-exception.filter';
 import { requestContextMiddleware } from './interface/shared/request-context.middleware';
+
+/**
+ * Largest JSON body the API accepts. Documents arrive base64-encoded inside
+ * the JSON payload, and base64 inflates bytes by about one third, so a 10 MB
+ * file becomes roughly 13.4 MB on the wire. 15 MB leaves room for that plus
+ * the surrounding fields. Without this, Express' 100 KB default would reject
+ * every real upload, and without an explicit cap a single request could pin
+ * the process while it buffers an unbounded body.
+ */
+const MAX_BODY_SIZE = '15mb';
 
 /** Frontend origins allowed by default, for local development. */
 const DEFAULT_ORIGINS = ['http://localhost:3001', 'http://127.0.0.1:3001'];
@@ -25,6 +36,11 @@ function allowedOrigins(): string[] {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Body parsers first, so the size cap applies before any route runs.
+  app.use(json({ limit: MAX_BODY_SIZE }));
+  app.use(urlencoded({ extended: true, limit: MAX_BODY_SIZE }));
+
   app.use(requestContextMiddleware);
 
   // ── CORS ─────────────────────────────────────────────────────────────
