@@ -123,12 +123,24 @@ export class StartRequestWorkflowHandler
       status: request.status,
     })
 
+    // Starting a request never fails just because a step could not be routed,
+    // but staying silent was the wrong answer: the request would sit still
+    // while looking healthy. Whoever can fix the routing is now told.
+    const unassignedStepCount = stepInstances.length - assignedStepCount
+    if (unassignedStepCount > 0) {
+      await this.notifier.stepAssignmentRequired({
+        requestId: request.id.toString(),
+        referenceNo: request.referenceNo,
+        unassignedStepCount,
+      })
+    }
+
     return {
       id: request.id.toString(),
       workflowPathId: path.id.toString(),
       stepCount: stepInstances.length,
       assignedStepCount,
-      unassignedStepCount: stepInstances.length - assignedStepCount,
+      unassignedStepCount,
     }
   }
 }

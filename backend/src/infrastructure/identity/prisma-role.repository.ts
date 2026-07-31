@@ -4,6 +4,7 @@ import { RoleRepository } from '../../domain/identity/ports/role.repository'
 import { Identifier } from '../../domain/shared/identifier'
 import { PrismaService } from '../persistence/prisma.service'
 import { RoleMapper } from './role.mapper'
+import { activeRoleAssignment } from './role-access.where'
 
 /**
  * Prisma-backed RoleRepository. A role and its permission assignments span two
@@ -59,7 +60,7 @@ export class PrismaRoleRepository implements RoleRepository {
           userRoles: {
             some: {
               userId: userId.toString(),
-              OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+              ...activeRoleAssignment(now),
             },
           },
         },

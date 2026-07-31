@@ -79,8 +79,14 @@ export class RequestController {
     )
   }
 
+  // Classification is its own permission, not a side effect of request.act.
+  // Choosing a request's template decides which workflow it will follow, so it
+  // is a different duty from approving a step inside that workflow, and it is
+  // held by a different role. Separating the two means a clerk who approves
+  // steps cannot silently reroute a request, and a classification reviewer
+  // needs no approval rights at all.
   @Post(':id/classify/model')
-  @RequirePermissions('request.act')
+  @RequirePermissions('request.classify')
   classifyByModel(@Param('id') id: string, @Body() dto: ClassifyByModelDto) {
     return this.commandBus.execute(
       new ClassifyRequestByModelCommand({ requestId: id, ...dto }),
@@ -88,7 +94,7 @@ export class RequestController {
   }
 
   @Post(':id/classify/human')
-  @RequirePermissions('request.act')
+  @RequirePermissions('request.classify')
   classifyByHuman(@Param('id') id: string, @Body() dto: ClassifyByHumanDto) {
     return this.commandBus.execute(
       new ClassifyRequestByHumanCommand({ requestId: id, ...dto }),

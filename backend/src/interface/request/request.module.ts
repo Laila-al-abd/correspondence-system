@@ -11,6 +11,7 @@ import {
   REFERENCE_NUMBER_GENERATOR,
   REQUEST_ACTION_REPOSITORY,
   REQUEST_REPOSITORY,
+  SLA_SCAN,
   WORKFLOW_PATH_REPOSITORY,
 } from '../../application/tokens'
 import { PrismaRequestRepository } from '../../infrastructure/request/prisma-request.repository'
@@ -36,6 +37,9 @@ import { ListRequestQueueHandler } from '../../application/request/queries/list-
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
 import { PrismaAssigneeDirectory } from '../../infrastructure/request/prisma-assignee-directory'
+import { SlaMonitorService } from '../../application/observability/services/sla-monitor.service'
+import { SlaMonitorScheduler } from '../../infrastructure/observability/sla-monitor.scheduler'
+import { PrismaSlaScan } from '../../infrastructure/observability/prisma-sla-scan'
 
 const handlers = [
   SubmitRequestHandler,
@@ -57,6 +61,15 @@ const handlers = [
  * aggregate, its audit-action log, payments, documents, the workflow path it
  * routes onto, id generation, and object storage -- then registers the command
  * and query handlers that run a request through its lifecycle over HTTP.
+ *
+ * The SLA monitor is registered here rather than in ObservabilityModule on
+ * purpose: it has to load and save request aggregates, and REQUEST_REPOSITORY
+ * is bound in this module. Since RequestModule already imports
+ * ObservabilityModule, registering it the other way round would create a
+ * circular import. Keeping it here leaves the dependency arrow pointing one
+ * way, and it still reaches ML_PREDICTION_REPOSITORY,
+ * SYSTEM_SETTING_REPOSITORY and BusinessHoursService through
+ * ObservabilityModule's exports.
  */
 @Module({
   imports: [CqrsModule, CatalogModule, ObservabilityModule],
@@ -81,7 +94,10 @@ const handlers = [
     },
     { provide: OBJECT_STORAGE, useClass: MinioObjectStorage },
     { provide: ASSIGNEE_DIRECTORY, useClass: PrismaAssigneeDirectory },
+    { provide: SLA_SCAN, useClass: PrismaSlaScan },
     AssigneeResolver,
+    SlaMonitorService,
+    SlaMonitorScheduler,
   ],
   exports: [
     REQUEST_REPOSITORY,

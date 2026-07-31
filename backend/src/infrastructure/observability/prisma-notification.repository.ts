@@ -51,6 +51,22 @@ export class PrismaNotificationRepository implements NotificationRepository {
     return count
   }
 
+  async existsFor(
+    userId: Identifier,
+    requestId: Identifier,
+    type: string,
+  ): Promise<boolean> {
+    const found = await this.prisma.notification.findFirst({
+      where: {
+        userId: userId.toString(),
+        requestId: requestId.toString(),
+        type,
+      },
+      select: { id: true },
+    })
+    return found !== null
+  }
+
   async save(notification: Notification): Promise<void> {
     const data = NotificationMapper.toPersistence(notification)
     await this.prisma.notification.upsert({
