@@ -14,6 +14,7 @@ import {
   REQUEST_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { assertUploadIsAcceptable } from '../../document-rules'
 import { UploadDocumentCommand } from './upload-document.command'
 
 export interface UploadDocumentResult {
@@ -43,8 +44,12 @@ export class UploadDocumentHandler
     const request = await this.requests.findById(requestId)
     if (!request) throw new EntityNotFoundError('Request', input.requestId)
 
-    const id = this.ids.next()
     const body = Buffer.from(input.contentBase64, 'base64')
+    // Size and format are checked before anything is written: nothing reaches
+    // object storage or the database unless the file is one we accept.
+    assertUploadIsAcceptable(input.mimeType, body)
+
+    const id = this.ids.next()
     const storageKey = `requests/${input.requestId}/${id.toString()}/${input.fileName}`
 
     await this.storage.save({
