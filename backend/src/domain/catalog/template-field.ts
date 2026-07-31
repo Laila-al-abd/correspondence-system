@@ -46,17 +46,42 @@ export class TemplateField extends Entity {
   get ordinal(): number { return this.props.ordinal }
   get options(): readonly TemplateFieldOption[] { return this.props.options ?? [] }
 
-  /** Validates a submitted value against this field's declared type. */
-  accepts(value: unknown): boolean {
+  /**
+   * Validates a submitted value against this field's declared type.
+   * Returns null when the value is acceptable, or a human-readable reason.
+   *
+   * A reason rather than a boolean, because a requester who is told only that
+   * their form is invalid cannot fix it. The reason travels all the way out to
+   * the API response.
+   */
+  validate(value: unknown): string | null {
     const empty = value === null || value === undefined || value === ""
-    if (empty) return !this.props.isRequired
+    if (empty) return this.props.isRequired ? "This field is required." : null
     switch (this.props.dataType) {
-      case FieldDataType.NUMBER: return !Number.isNaN(Number(value))
-      case FieldDataType.DATE: return !Number.isNaN(Date.parse(String(value)))
-      case FieldDataType.ENUM: return this.options.some((o) => o.value === String(value))
-      case FieldDataType.TEXT: return String(value).length > 0
-      default: return true
+      case FieldDataType.NUMBER:
+        return Number.isFinite(Number(value)) ? null : "Expected a number."
+      case FieldDataType.DATE:
+        return isCalendarDate(String(value))
+          ? null
+          : "Expected a real calendar date written as YYYY-MM-DD."
+      case FieldDataType.BOOLEAN:
+        return isBooleanLike(value) ? null : "Expected true or false."
+      case FieldDataType.ENUM: {
+        const allowed = this.options.map((o) => o.value)
+        return allowed.includes(String(value))
+          ? null
+          : `Expected one of: ${allowed.join(", ")}.`
+      }
+      case FieldDataType.TEXT:
+        return String(value).length > 0 ? null : "Expected text."
+      default:
+        return null
     }
+  }
+
+  /** Boolean form of validate(), kept for callers that only need a yes or no. */
+  accepts(value: unknown): boolean {
+    return this.validate(value) === null
   }
 
   snapshot(): {
@@ -82,4 +107,34 @@ export class TemplateField extends Entity {
       })),
     }
   }
+}
+
+
+/**
+ * A strict calendar-date check.
+ *
+ * Date.parse is not usable here: in JavaScript `new Date("2026-02-31")` does not
+ * fail, it rolls over to 3 March. A validator built on Date.parse therefore
+ * accepts dates that do not exist, and the wrong date is stored silently. This
+ * parses the parts and confirms the date survives the round trip unchanged.
+ */
+function isCalendarDate(value: string): boolean {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim())
+  if (!match) return false
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+  const date = new Date(Date.UTC(year, month - 1, day))
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  )
+}
+
+/** Accepts real booleans and the two strings a JSON form is likely to send. */
+function isBooleanLike(value: unknown): boolean {
+  if (typeof value === "boolean") return true
+  const text = String(value).toLowerCase()
+  return text === "true" || text === "false"
 }

@@ -223,6 +223,7 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   get classificationStatus(): ClassificationStatus { return this.props.classificationStatus }
   get templateId(): Identifier | undefined { return this.props.templateId }
   get requesterId(): Identifier { return this.props.requesterId }
+  get filledData(): Record<string, unknown> | undefined { return this.props.filledData }
   get priority(): Priority { return this.props.priority }
   get slaRisk(): SlaRisk { return this.props.slaRisk }
   get slaDueAt(): Date | undefined { return this.props.slaDueAt }
