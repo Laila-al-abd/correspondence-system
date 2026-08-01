@@ -29,6 +29,7 @@ interface RequestProps {
   sensitivityLevelId?: Identifier
   slaDueAt?: Date
   completedAt?: Date
+  version: number
   stepInstances: RequestStepInstance[]
 }
 
@@ -48,6 +49,7 @@ export interface RequestSnapshot {
   sensitivityLevelId?: string
   slaDueAt?: Date
   completedAt?: Date
+  version: number
   stepInstances: StepInstanceSnapshot[]
 }
 
@@ -94,6 +96,7 @@ export class Request extends AggregateRoot {
       currentStatus: RequestStatus.DRAFT,
       priority: p.priority ?? Priority.NORMAL,
       slaRisk: SlaRisk.ON_TRACK,
+      version: 0,
       stepInstances: [],
     })
   }
@@ -224,6 +227,12 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   get templateId(): Identifier | undefined { return this.props.templateId }
   get requesterId(): Identifier { return this.props.requesterId }
   get filledData(): Record<string, unknown> | undefined { return this.props.filledData }
+  /**
+   * How many times this request has been written. The repository refuses a save
+   * whose version no longer matches the database, which is how two people
+   * acting on the same request at the same moment stop overwriting each other.
+   */
+  get version(): number { return this.props.version }
   get priority(): Priority { return this.props.priority }
   get slaRisk(): SlaRisk { return this.props.slaRisk }
   get slaDueAt(): Date | undefined { return this.props.slaDueAt }
@@ -246,6 +255,7 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
       sensitivityLevelId: this.props.sensitivityLevelId?.toString(),
       slaDueAt: this.props.slaDueAt,
       completedAt: this.props.completedAt,
+      version: this.props.version,
       stepInstances: this.props.stepInstances.map((si) => si.snapshot()),
     }
   }

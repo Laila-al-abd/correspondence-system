@@ -7,10 +7,12 @@ import { InvariantViolationError } from '../../../../domain/shared/domain-error'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
 import type { RequestActionRepository } from '../../../../domain/request/ports/request-action.repository'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
+import type { TransactionRunner } from '../../../../domain/shared/transaction-runner'
 import {
   ID_GENERATOR,
   REQUEST_ACTION_REPOSITORY,
   REQUEST_REPOSITORY,
+  TRANSACTION_RUNNER,
 } from '../../../tokens'
 import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
@@ -38,10 +40,56 @@ export class ActOnStepHandler
     @Inject(REQUEST_ACTION_REPOSITORY)
     private readonly actions: RequestActionRepository,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
+    @Inject(TRANSACTION_RUNNER)
+    private readonly transactions: TransactionRunner,
     private readonly notifier: NotificationEmitter,
   ) {}
 
-  async execute({ input }: ActOnStepCommand): Promise<ActOnStepResult> {
+  /**
+   * The decision is committed first, then people are told about it.
+   *
+   * Everything that changes the database -- the step transition, the audit
+   * action row and the request root -- happens inside one transaction, so a
+   * failure halfway through cannot leave an action logged against a step that
+   * never moved. Notifications are deliberately sent afterwards: a message
+   * cannot be un-sent, so announcing an approval that then rolls back would be
+   * worse than announcing it a moment late.
+   */
+  async execute(command: ActOnStepCommand): Promise<ActOnStepResult> {
+    const { input } = command
+    const { request, step, statusBefore } = await this.transactions.run(() =>
+      this.applyAction(command),
+    )
+
+    // Tell the owner what happened. Notifying is best-effort inside the
+    // emitter, so a notification failure can never undo the decision above.
+    const requesterId = request.requesterId.toString()
+    await this.notifier.actionTaken({
+      userId: requesterId,
+      actorId: input.actorId,
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+      action: input.action,
+    })
+    if (request.status !== statusBefore) {
+      await this.notifier.requestStateChanged({
+        userId: requesterId,
+        actorId: input.actorId,
+        requestId: request.id.toString(),
+        referenceNo: request.referenceNo,
+        status: request.status,
+      })
+    }
+
+    return {
+      stepInstanceId: step.id.toString(),
+      stepStatus: step.status,
+      requestStatus: request.status,
+    }
+  }
+
+  private async applyAction(command: ActOnStepCommand) {
+    const { input } = command
     const request = await this.requests.findById(Identifier.of(input.requestId))
     if (!request) throw new EntityNotFoundError('Request', input.requestId)
 
@@ -96,30 +144,6 @@ export class ActOnStepHandler
 
     await this.requests.save(request)
 
-    // Tell the owner what happened. Notifying is best-effort inside the
-    // emitter, so a notification failure can never undo the decision above.
-    const requesterId = request.requesterId.toString()
-    await this.notifier.actionTaken({
-      userId: requesterId,
-      actorId: input.actorId,
-      requestId: request.id.toString(),
-      referenceNo: request.referenceNo,
-      action: input.action,
-    })
-    if (request.status !== statusBefore) {
-      await this.notifier.requestStateChanged({
-        userId: requesterId,
-        actorId: input.actorId,
-        requestId: request.id.toString(),
-        referenceNo: request.referenceNo,
-        status: request.status,
-      })
-    }
-
-    return {
-      stepInstanceId: step.id.toString(),
-      stepStatus: step.status,
-      requestStatus: request.status,
-    }
+    return { request, step, statusBefore }
   }
 }
