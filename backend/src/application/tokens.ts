@@ -6,6 +6,7 @@
 
 // shared
 export const ID_GENERATOR = Symbol('IdGenerator')
+export const TRANSACTION_RUNNER = Symbol('TransactionRunner')
 
 // identity
 export const USER_REPOSITORY = Symbol('UserRepository')

@@ -466,6 +466,7 @@ export type WorkflowStepDependencyScalarFieldEnum = (typeof WorkflowStepDependen
 export const RequestScalarFieldEnum = {
   updatedAt: 'updatedAt',
   id: 'id',
+  version: 'version',
   referenceNo: 'referenceNo',
   requesterId: 'requesterId',
   rawText: 'rawText',

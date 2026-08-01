@@ -4,7 +4,9 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common'
+import { TRANSACTION_RUNNER } from '../../application/tokens'
 import { PrismaService } from './prisma.service'
+import { PrismaTransactionRunner } from './prisma-transaction-runner'
 
 /**
  * Makes the shared PrismaService available application-wide. Imported once in
@@ -17,8 +19,15 @@ import { PrismaService } from './prisma.service'
  */
 @Global()
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  providers: [
+    PrismaService,
+    PrismaTransactionRunner,
+    // Two names for one object: infrastructure injects the class directly,
+    // while application handlers depend only on the TransactionRunner port.
+    // useExisting (not useClass) keeps it a single instance.
+    { provide: TRANSACTION_RUNNER, useExisting: PrismaTransactionRunner },
+  ],
+  exports: [PrismaService, PrismaTransactionRunner, TRANSACTION_RUNNER],
 })
 export class PersistenceModule implements OnModuleInit, OnModuleDestroy {
   constructor(private readonly prisma: PrismaService) {}

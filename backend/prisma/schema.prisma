@@ -514,6 +514,7 @@ model WorkflowStepDependency {
 model Request {
   updatedAt                DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
   id                       String    @id @db.Uuid
+  version                  Int       @default(0)
   referenceNo              String?   @unique @map("reference_no") @db.VarChar(50)
   requesterId              String    @map("requester_id") @db.Uuid
   rawText                  String?   @map("raw_text") @db.Text

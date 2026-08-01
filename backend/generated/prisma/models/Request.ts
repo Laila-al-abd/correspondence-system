@@ -27,16 +27,19 @@ export type AggregateRequest = {
 }
 
 export type RequestAvgAggregateOutputType = {
+  version: number | null
   classificationConfidence: runtime.Decimal | null
 }
 
 export type RequestSumAggregateOutputType = {
+  version: number | null
   classificationConfidence: runtime.Decimal | null
 }
 
 export type RequestMinAggregateOutputType = {
   updatedAt: Date | null
   id: string | null
+  version: number | null
   referenceNo: string | null
   requesterId: string | null
   rawText: string | null
@@ -59,6 +62,7 @@ export type RequestMinAggregateOutputType = {
 export type RequestMaxAggregateOutputType = {
   updatedAt: Date | null
   id: string | null
+  version: number | null
   referenceNo: string | null
   requesterId: string | null
   rawText: string | null
@@ -81,6 +85,7 @@ export type RequestMaxAggregateOutputType = {
 export type RequestCountAggregateOutputType = {
   updatedAt: number
   id: number
+  version: number
   referenceNo: number
   requesterId: number
   rawText: number
@@ -104,16 +109,19 @@ export type RequestCountAggregateOutputType = {
 
 
 export type RequestAvgAggregateInputType = {
+  version?: true
   classificationConfidence?: true
 }
 
 export type RequestSumAggregateInputType = {
+  version?: true
   classificationConfidence?: true
 }
 
 export type RequestMinAggregateInputType = {
   updatedAt?: true
   id?: true
+  version?: true
   referenceNo?: true
   requesterId?: true
   rawText?: true
@@ -136,6 +144,7 @@ export type RequestMinAggregateInputType = {
 export type RequestMaxAggregateInputType = {
   updatedAt?: true
   id?: true
+  version?: true
   referenceNo?: true
   requesterId?: true
   rawText?: true
@@ -158,6 +167,7 @@ export type RequestMaxAggregateInputType = {
 export type RequestCountAggregateInputType = {
   updatedAt?: true
   id?: true
+  version?: true
   referenceNo?: true
   requesterId?: true
   rawText?: true
@@ -268,6 +278,7 @@ export type RequestGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type RequestGroupByOutputType = {
   updatedAt: Date
   id: string
+  version: number
   referenceNo: string | null
   requesterId: string
   rawText: string | null
@@ -314,6 +325,7 @@ export type RequestWhereInput = {
   NOT?: Prisma.RequestWhereInput | Prisma.RequestWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Request"> | Date | string
   id?: Prisma.UuidFilter<"Request"> | string
+  version?: Prisma.IntFilter<"Request"> | number
   referenceNo?: Prisma.StringNullableFilter<"Request"> | string | null
   requesterId?: Prisma.UuidFilter<"Request"> | string
   rawText?: Prisma.StringNullableFilter<"Request"> | string | null
@@ -348,6 +360,7 @@ export type RequestWhereInput = {
 export type RequestOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   referenceNo?: Prisma.SortOrderInput | Prisma.SortOrder
   requesterId?: Prisma.SortOrder
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -386,6 +399,7 @@ export type RequestWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.RequestWhereInput[]
   NOT?: Prisma.RequestWhereInput | Prisma.RequestWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Request"> | Date | string
+  version?: Prisma.IntFilter<"Request"> | number
   requesterId?: Prisma.UuidFilter<"Request"> | string
   rawText?: Prisma.StringNullableFilter<"Request"> | string | null
   templateId?: Prisma.UuidNullableFilter<"Request"> | string | null
@@ -419,6 +433,7 @@ export type RequestWhereUniqueInput = Prisma.AtLeast<{
 export type RequestOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   referenceNo?: Prisma.SortOrderInput | Prisma.SortOrder
   requesterId?: Prisma.SortOrder
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -450,6 +465,7 @@ export type RequestScalarWhereWithAggregatesInput = {
   NOT?: Prisma.RequestScalarWhereWithAggregatesInput | Prisma.RequestScalarWhereWithAggregatesInput[]
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Request"> | Date | string
   id?: Prisma.UuidWithAggregatesFilter<"Request"> | string
+  version?: Prisma.IntWithAggregatesFilter<"Request"> | number
   referenceNo?: Prisma.StringNullableWithAggregatesFilter<"Request"> | string | null
   requesterId?: Prisma.UuidWithAggregatesFilter<"Request"> | string
   rawText?: Prisma.StringNullableWithAggregatesFilter<"Request"> | string | null
@@ -473,6 +489,7 @@ export type RequestScalarWhereWithAggregatesInput = {
 export type RequestCreateInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -503,6 +520,7 @@ export type RequestCreateInput = {
 export type RequestUncheckedCreateInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -533,6 +551,7 @@ export type RequestUncheckedCreateInput = {
 export type RequestUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -563,6 +582,7 @@ export type RequestUpdateInput = {
 export type RequestUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -593,6 +613,7 @@ export type RequestUncheckedUpdateInput = {
 export type RequestCreateManyInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -616,6 +637,7 @@ export type RequestCreateManyInput = {
 export type RequestUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -635,6 +657,7 @@ export type RequestUpdateManyMutationInput = {
 export type RequestUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -668,6 +691,7 @@ export type RequestOrderByRelationAggregateInput = {
 export type RequestCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   referenceNo?: Prisma.SortOrder
   requesterId?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
@@ -689,12 +713,14 @@ export type RequestCountOrderByAggregateInput = {
 }
 
 export type RequestAvgOrderByAggregateInput = {
+  version?: Prisma.SortOrder
   classificationConfidence?: Prisma.SortOrder
 }
 
 export type RequestMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   referenceNo?: Prisma.SortOrder
   requesterId?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
@@ -717,6 +743,7 @@ export type RequestMaxOrderByAggregateInput = {
 export type RequestMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   referenceNo?: Prisma.SortOrder
   requesterId?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
@@ -737,6 +764,7 @@ export type RequestMinOrderByAggregateInput = {
 }
 
 export type RequestSumOrderByAggregateInput = {
+  version?: Prisma.SortOrder
   classificationConfidence?: Prisma.SortOrder
 }
 
@@ -1023,6 +1051,7 @@ export type RequestUpdateOneRequiredWithoutPredictionsNestedInput = {
 export type RequestCreateWithoutRequesterInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1052,6 +1081,7 @@ export type RequestCreateWithoutRequesterInput = {
 export type RequestUncheckedCreateWithoutRequesterInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   templateId?: string | null
@@ -1110,6 +1140,7 @@ export type RequestScalarWhereInput = {
   NOT?: Prisma.RequestScalarWhereInput | Prisma.RequestScalarWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Request"> | Date | string
   id?: Prisma.UuidFilter<"Request"> | string
+  version?: Prisma.IntFilter<"Request"> | number
   referenceNo?: Prisma.StringNullableFilter<"Request"> | string | null
   requesterId?: Prisma.UuidFilter<"Request"> | string
   rawText?: Prisma.StringNullableFilter<"Request"> | string | null
@@ -1133,6 +1164,7 @@ export type RequestScalarWhereInput = {
 export type RequestCreateWithoutSensitivityLevelInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1162,6 +1194,7 @@ export type RequestCreateWithoutSensitivityLevelInput = {
 export type RequestUncheckedCreateWithoutSensitivityLevelInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1217,6 +1250,7 @@ export type RequestUpdateManyWithWhereWithoutSensitivityLevelInput = {
 export type RequestCreateWithoutTemplateInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1246,6 +1280,7 @@ export type RequestCreateWithoutTemplateInput = {
 export type RequestUncheckedCreateWithoutTemplateInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1301,6 +1336,7 @@ export type RequestUpdateManyWithWhereWithoutTemplateInput = {
 export type RequestCreateWithoutWorkflowPathInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1330,6 +1366,7 @@ export type RequestCreateWithoutWorkflowPathInput = {
 export type RequestUncheckedCreateWithoutWorkflowPathInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1385,6 +1422,7 @@ export type RequestUpdateManyWithWhereWithoutWorkflowPathInput = {
 export type RequestCreateWithoutStepInstancesInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1414,6 +1452,7 @@ export type RequestCreateWithoutStepInstancesInput = {
 export type RequestUncheckedCreateWithoutStepInstancesInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1459,6 +1498,7 @@ export type RequestUpdateToOneWithWhereWithoutStepInstancesInput = {
 export type RequestUpdateWithoutStepInstancesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1488,6 +1528,7 @@ export type RequestUpdateWithoutStepInstancesInput = {
 export type RequestUncheckedUpdateWithoutStepInstancesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1517,6 +1558,7 @@ export type RequestUncheckedUpdateWithoutStepInstancesInput = {
 export type RequestCreateWithoutActionsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1546,6 +1588,7 @@ export type RequestCreateWithoutActionsInput = {
 export type RequestUncheckedCreateWithoutActionsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1591,6 +1634,7 @@ export type RequestUpdateToOneWithWhereWithoutActionsInput = {
 export type RequestUpdateWithoutActionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1620,6 +1664,7 @@ export type RequestUpdateWithoutActionsInput = {
 export type RequestUncheckedUpdateWithoutActionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1649,6 +1694,7 @@ export type RequestUncheckedUpdateWithoutActionsInput = {
 export type RequestCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1678,6 +1724,7 @@ export type RequestCreateWithoutPaymentsInput = {
 export type RequestUncheckedCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1723,6 +1770,7 @@ export type RequestUpdateToOneWithWhereWithoutPaymentsInput = {
 export type RequestUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1752,6 +1800,7 @@ export type RequestUpdateWithoutPaymentsInput = {
 export type RequestUncheckedUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1781,6 +1830,7 @@ export type RequestUncheckedUpdateWithoutPaymentsInput = {
 export type RequestCreateWithoutDocumentsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1810,6 +1860,7 @@ export type RequestCreateWithoutDocumentsInput = {
 export type RequestUncheckedCreateWithoutDocumentsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1855,6 +1906,7 @@ export type RequestUpdateToOneWithWhereWithoutDocumentsInput = {
 export type RequestUpdateWithoutDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1884,6 +1936,7 @@ export type RequestUpdateWithoutDocumentsInput = {
 export type RequestUncheckedUpdateWithoutDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1913,6 +1966,7 @@ export type RequestUncheckedUpdateWithoutDocumentsInput = {
 export type RequestCreateWithoutEventLogsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1942,6 +1996,7 @@ export type RequestCreateWithoutEventLogsInput = {
 export type RequestUncheckedCreateWithoutEventLogsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -1987,6 +2042,7 @@ export type RequestUpdateToOneWithWhereWithoutEventLogsInput = {
 export type RequestUpdateWithoutEventLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2016,6 +2072,7 @@ export type RequestUpdateWithoutEventLogsInput = {
 export type RequestUncheckedUpdateWithoutEventLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2045,6 +2102,7 @@ export type RequestUncheckedUpdateWithoutEventLogsInput = {
 export type RequestCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2074,6 +2132,7 @@ export type RequestCreateWithoutNotificationsInput = {
 export type RequestUncheckedCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -2119,6 +2178,7 @@ export type RequestUpdateToOneWithWhereWithoutNotificationsInput = {
 export type RequestUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2148,6 +2208,7 @@ export type RequestUpdateWithoutNotificationsInput = {
 export type RequestUncheckedUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2177,6 +2238,7 @@ export type RequestUncheckedUpdateWithoutNotificationsInput = {
 export type RequestCreateWithoutPredictionsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2206,6 +2268,7 @@ export type RequestCreateWithoutPredictionsInput = {
 export type RequestUncheckedCreateWithoutPredictionsInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -2251,6 +2314,7 @@ export type RequestUpdateToOneWithWhereWithoutPredictionsInput = {
 export type RequestUpdateWithoutPredictionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2280,6 +2344,7 @@ export type RequestUpdateWithoutPredictionsInput = {
 export type RequestUncheckedUpdateWithoutPredictionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2309,6 +2374,7 @@ export type RequestUncheckedUpdateWithoutPredictionsInput = {
 export type RequestCreateManyRequesterInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   rawText?: string | null
   templateId?: string | null
@@ -2331,6 +2397,7 @@ export type RequestCreateManyRequesterInput = {
 export type RequestUpdateWithoutRequesterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2360,6 +2427,7 @@ export type RequestUpdateWithoutRequesterInput = {
 export type RequestUncheckedUpdateWithoutRequesterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2389,6 +2457,7 @@ export type RequestUncheckedUpdateWithoutRequesterInput = {
 export type RequestUncheckedUpdateManyWithoutRequesterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2411,6 +2480,7 @@ export type RequestUncheckedUpdateManyWithoutRequesterInput = {
 export type RequestCreateManySensitivityLevelInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -2433,6 +2503,7 @@ export type RequestCreateManySensitivityLevelInput = {
 export type RequestUpdateWithoutSensitivityLevelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2462,6 +2533,7 @@ export type RequestUpdateWithoutSensitivityLevelInput = {
 export type RequestUncheckedUpdateWithoutSensitivityLevelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2491,6 +2563,7 @@ export type RequestUncheckedUpdateWithoutSensitivityLevelInput = {
 export type RequestUncheckedUpdateManyWithoutSensitivityLevelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2513,6 +2586,7 @@ export type RequestUncheckedUpdateManyWithoutSensitivityLevelInput = {
 export type RequestCreateManyTemplateInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -2535,6 +2609,7 @@ export type RequestCreateManyTemplateInput = {
 export type RequestUpdateWithoutTemplateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2564,6 +2639,7 @@ export type RequestUpdateWithoutTemplateInput = {
 export type RequestUncheckedUpdateWithoutTemplateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2593,6 +2669,7 @@ export type RequestUncheckedUpdateWithoutTemplateInput = {
 export type RequestUncheckedUpdateManyWithoutTemplateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2615,6 +2692,7 @@ export type RequestUncheckedUpdateManyWithoutTemplateInput = {
 export type RequestCreateManyWorkflowPathInput = {
   updatedAt?: Date | string
   id: string
+  version?: number
   referenceNo?: string | null
   requesterId: string
   rawText?: string | null
@@ -2637,6 +2715,7 @@ export type RequestCreateManyWorkflowPathInput = {
 export type RequestUpdateWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   filledData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2666,6 +2745,7 @@ export type RequestUpdateWithoutWorkflowPathInput = {
 export type RequestUncheckedUpdateWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2695,6 +2775,7 @@ export type RequestUncheckedUpdateWithoutWorkflowPathInput = {
 export type RequestUncheckedUpdateManyWithoutWorkflowPathInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   referenceNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2802,6 +2883,7 @@ export type RequestCountOutputTypeCountPredictionsArgs<ExtArgs extends runtime.T
 export type RequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   updatedAt?: boolean
   id?: boolean
+  version?: boolean
   referenceNo?: boolean
   requesterId?: boolean
   rawText?: boolean
@@ -2837,6 +2919,7 @@ export type RequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type RequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   updatedAt?: boolean
   id?: boolean
+  version?: boolean
   referenceNo?: boolean
   requesterId?: boolean
   rawText?: boolean
@@ -2864,6 +2947,7 @@ export type RequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type RequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   updatedAt?: boolean
   id?: boolean
+  version?: boolean
   referenceNo?: boolean
   requesterId?: boolean
   rawText?: boolean
@@ -2891,6 +2975,7 @@ export type RequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type RequestSelectScalar = {
   updatedAt?: boolean
   id?: boolean
+  version?: boolean
   referenceNo?: boolean
   requesterId?: boolean
   rawText?: boolean
@@ -2911,7 +2996,7 @@ export type RequestSelectScalar = {
   updatedBy?: boolean
 }
 
-export type RequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "referenceNo" | "requesterId" | "rawText" | "templateId" | "workflowPathId" | "filledData" | "classificationStatus" | "classificationConfidence" | "classifiedBy" | "currentStatus" | "priority" | "slaRisk" | "sensitivityLevelId" | "slaDueAt" | "createdAt" | "completedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["request"]>
+export type RequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "version" | "referenceNo" | "requesterId" | "rawText" | "templateId" | "workflowPathId" | "filledData" | "classificationStatus" | "classificationConfidence" | "classifiedBy" | "currentStatus" | "priority" | "slaRisk" | "sensitivityLevelId" | "slaDueAt" | "createdAt" | "completedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["request"]>
 export type RequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   template?: boolean | Prisma.Request$templateArgs<ExtArgs>
@@ -2957,6 +3042,7 @@ export type $RequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     updatedAt: Date
     id: string
+    version: number
     referenceNo: string | null
     requesterId: string
     rawText: string | null
@@ -3411,6 +3497,7 @@ export interface Prisma__RequestClient<T, Null = never, ExtArgs extends runtime.
 export interface RequestFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Request", 'DateTime'>
   readonly id: Prisma.FieldRef<"Request", 'String'>
+  readonly version: Prisma.FieldRef<"Request", 'Int'>
   readonly referenceNo: Prisma.FieldRef<"Request", 'String'>
   readonly requesterId: Prisma.FieldRef<"Request", 'String'>
   readonly rawText: Prisma.FieldRef<"Request", 'String'>

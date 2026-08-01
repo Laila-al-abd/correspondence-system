@@ -5,6 +5,7 @@ import {
   NumberingSchemeConfig,
 } from '../../domain/request/value-objects/numbering-scheme'
 import { PrismaService } from '../persistence/prisma.service'
+import { dbClient } from '../persistence/transaction-context'
 
 const SETTING_KEY = 'request_numbering'
 
@@ -24,6 +25,14 @@ export class PrismaReferenceNumberGenerator
 {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * Reads and writes go through the open transaction when the caller started a
+   * unit of work, and through the plain client otherwise.
+   */
+  private get db() {
+    return dbClient(this.prisma)
+  }
+
   async next(at: Date = new Date()): Promise<string> {
     const scheme = await this.loadScheme()
     const scope = scheme.scopeFor(at)
@@ -32,7 +41,7 @@ export class PrismaReferenceNumberGenerator
   }
 
   private async loadScheme(): Promise<NumberingScheme> {
-    const setting = await this.prisma.systemSetting.findUnique({
+    const setting = await this.db.systemSetting.findUnique({
       where: { key: SETTING_KEY },
     })
     const config = (setting?.value ?? {}) as unknown as NumberingSchemeConfig
@@ -40,7 +49,7 @@ export class PrismaReferenceNumberGenerator
   }
 
   private async reserve(scope: string): Promise<number> {
-    const rows = await this.prisma.$queryRaw<{ current_value: bigint }[]>`
+    const rows = await this.db.$queryRaw<{ current_value: bigint }[]>`
       INSERT INTO request_number_sequences (scope, current_value, updated_at)
       VALUES (${scope}, 1, now())
       ON CONFLICT (scope) DO UPDATE
