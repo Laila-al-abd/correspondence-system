@@ -41,6 +41,7 @@ import { GetDocumentDownloadUrlHandler } from '../../application/request/queries
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
 import { TemplateSubmissionPolicy } from '../../application/request/services/template-submission-policy'
+import { RequestReadAccessPolicy } from '../../application/request/policies/request-read-access.policy'
 import { PrismaAssigneeDirectory } from '../../infrastructure/request/prisma-assignee-directory'
 import { SlaMonitorService } from '../../application/observability/services/sla-monitor.service'
 import { SlaMonitorScheduler } from '../../infrastructure/observability/sla-monitor.scheduler'
@@ -108,6 +109,7 @@ const handlers = [
     { provide: SLA_SCAN, useClass: PrismaSlaScan },
     AssigneeResolver,
     TemplateSubmissionPolicy,
+    RequestReadAccessPolicy,
     SlaMonitorService,
     SlaMonitorScheduler,
   ],

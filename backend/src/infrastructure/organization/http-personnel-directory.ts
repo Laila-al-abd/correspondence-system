@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { readFileSync } from 'node:fs'
+import { readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type {
   ExternalOrgUnit,
@@ -27,6 +27,8 @@ const DEFAULT_TIMEOUT_MS = 10_000
 @Injectable()
 export class HttpPersonnelDirectory implements PersonnelDirectory {
   private mappingCache?: PersonnelDirectoryMapping
+  /** Modification time of the file the cache was built from. */
+  private mappingCacheMtimeMs?: number
 
   constructor(private readonly config: ConfigService) {}
 
@@ -44,14 +46,36 @@ export class HttpPersonnelDirectory implements PersonnelDirectory {
     )
   }
 
+  /**
+   * Returns the field-mapping, re-reading the file whenever it has changed on
+   * disk.
+   *
+   * The point of putting the mapping in YAML was that an operator could adapt
+   * to the personnel system renaming a field without a developer. Caching it
+   * for the lifetime of the process undermined exactly that: the edit was free,
+   * but it took a restart to have any effect. Comparing the modification time
+   * costs one stat() per sync -- negligible next to the HTTP call that follows
+   * -- and makes the file behave the way its own comment promises.
+   *
+   * If the edited file is malformed, parseMapping throws and the previous cache
+   * is left untouched, so a typo fails that one sync rather than poisoning the
+   * cache with a half-parsed mapping.
+   */
   private loadMapping(): PersonnelDirectoryMapping {
-    if (this.mappingCache) return this.mappingCache
     const mappingPath =
       this.config.get<string>('PERSONNEL_DIRECTORY_MAPPING_PATH') ??
       DEFAULT_MAPPING_PATH
-    const text = readFileSync(resolve(process.cwd(), mappingPath), 'utf-8')
-    this.mappingCache = parseMapping(text)
-    return this.mappingCache
+    const absolutePath = resolve(process.cwd(), mappingPath)
+    const mtimeMs = statSync(absolutePath).mtimeMs
+
+    if (this.mappingCache && this.mappingCacheMtimeMs === mtimeMs)
+      return this.mappingCache
+
+    const text = readFileSync(absolutePath, 'utf-8')
+    const parsed = parseMapping(text)
+    this.mappingCache = parsed
+    this.mappingCacheMtimeMs = mtimeMs
+    return parsed
   }
 
   private async get(url: string): Promise<unknown> {

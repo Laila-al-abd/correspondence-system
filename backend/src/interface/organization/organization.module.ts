@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import type { TransactionRunner } from '../../domain/shared/transaction-runner'
 import { CqrsModule } from '@nestjs/cqrs'
 import { PrismaDepartmentRepository } from '../../infrastructure/organization/prisma-department.repository'
 import { PrismaOrgUnitTypeRepository } from '../../infrastructure/organization/prisma-org-unit-type.repository'
@@ -14,6 +15,7 @@ import {
   ID_GENERATOR,
   ORG_UNIT_TYPE_REPOSITORY,
   PERSONNEL_DIRECTORY,
+  TRANSACTION_RUNNER,
 } from '../../application/tokens'
 import { OrganizationController } from './organization.controller'
 
@@ -44,18 +46,21 @@ import { OrganizationController } from './organization.controller'
         departments: PrismaDepartmentRepository,
         unitTypes: PrismaOrgUnitTypeRepository,
         ids: UuidV7IdGenerator,
+        transaction: TransactionRunner,
       ) =>
         new SyncDepartmentsFromDirectory(
           directory,
           departments,
           unitTypes,
           ids,
+          transaction,
         ),
       inject: [
         PERSONNEL_DIRECTORY,
         DEPARTMENT_REPOSITORY,
         ORG_UNIT_TYPE_REPOSITORY,
         ID_GENERATOR,
+        TRANSACTION_RUNNER,
       ],
     },
   ],
