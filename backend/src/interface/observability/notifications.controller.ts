@@ -11,12 +11,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { SkipThrottle } from '@nestjs/throttler'
 import { Observable, interval, map, merge } from 'rxjs'
-import type { AccessTokenService } from '../../domain/identity/ports/access-token.service'
-import {
-  ACCESS_TOKEN_SERVICE,
-  NOTIFICATION_STREAM,
-} from '../../application/tokens'
+import { NOTIFICATION_STREAM } from '../../application/tokens'
+import { StreamTicketService } from '../../infrastructure/observability/stream-ticket.service'
 import type { NotificationStreamPort } from '../../application/observability/ports/notification-stream.port'
 import { CurrentUserId } from '../identity/current-user.decorator'
 import { RequirePermissions } from '../identity/permissions.decorator'
@@ -71,8 +69,7 @@ export class NotificationsController {
     private readonly queryBus: QueryBus,
     @Inject(NOTIFICATION_STREAM)
     private readonly streamPort: NotificationStreamPort,
-    @Inject(ACCESS_TOKEN_SERVICE)
-    private readonly tokens: AccessTokenService,
+    private readonly tickets: StreamTicketService,
   ) {}
 
   // ----- reads (literal paths first so they win the route match) -----
@@ -104,15 +101,23 @@ export class NotificationsController {
    *
    * Authentication is done by hand, and the route is marked @Public() only so
    * that the global JwtAuthGuard steps aside -- it is emphatically not open.
-   * EventSource cannot set an Authorization header, so the token may also arrive
-   * as `?access_token=`. Confining that to this one route, verified with the
-   * same AccessTokenService as everything else, keeps a query-string token from
-   * becoming a way in anywhere else in the API.
+   * EventSource cannot set an Authorization header, so the caller first asks
+   * POST /notifications/stream-ticket for a single-use ticket (with a normal
+   * Bearer token) and presents it here as `?ticket=`. What travels in the URL is
+   * therefore a credential that expires in thirty seconds, is consumed on use,
+   * and opens nothing but this one stream -- not an access token that opens the
+   * whole API and lives in nginx logs and browser history for an hour.
+   *
+   * Exempt from rate limiting: this is one long-lived connection per session,
+   * and the browser reconnects automatically after a drop. Counting a
+   * reconnection storm after a deploy as abuse would keep the inbox dark
+   * precisely when people are watching it.
    */
   @Sse('stream')
   @Public()
+  @SkipThrottle()
   stream(@Req() request: StreamRequest): Observable<SseMessage> {
-    const userId = this.authenticate(request)
+    const userId = this.authenticateByTicket(request)
 
     const notifications = this.notificationEvents(userId)
     const heartbeat = interval(HEARTBEAT_MS).pipe(
@@ -130,6 +135,21 @@ export class NotificationsController {
   }
 
   // ----- writes -----
+
+  /**
+   * Mints a single-use ticket for opening the notification stream.
+   *
+   * Authenticated the ordinary way, by the global JwtAuthGuard reading the
+   * Authorization header, which is the whole point: the strong credential is
+   * exchanged over a normal request for a weak, short-lived one that is safe to
+   * put in a URL.
+   */
+  @Post('stream-ticket')
+  streamTicket(
+    @CurrentUserId() userId: string,
+  ): { ticket: string; expiresInSeconds: number } {
+    return this.tickets.issue(userId)
+  }
 
   @Post('read-all')
   markAllRead(@CurrentUserId() userId: string): Promise<MarkReadResult> {
@@ -172,32 +192,31 @@ private notificationEvents(userId: string): Observable<SseMessage> {
 }
 
   /**
-   * Resolves the caller from the Authorization header when present, falling
-   * back to the `access_token` query parameter for browser EventSource clients.
+   * Resolves the caller from a single-use stream ticket.
+   *
+   * Only tickets are accepted -- there is no Authorization-header path and no
+   * access_token fallback. Leaving either in place would defeat the change: the
+   * insecure route would stay reachable, and any client still using it would
+   * keep working, so nothing would ever migrate off it.
+   *
+   * The failure message says how to obtain a ticket rather than merely refusing,
+   * because the caller here is a browser that cannot set headers and the correct
+   * next step is genuinely not obvious.
    */
-  private authenticate(request: StreamRequest): string {
-    const header = request.headers?.['authorization']
-    const bearer =
-      typeof header === 'string' && header.startsWith('Bearer ')
-        ? header.slice('Bearer '.length).trim()
-        : undefined
-
-    const queryToken = request.query?.['access_token']
-    const fromQuery =
-      typeof queryToken === 'string' && queryToken.length > 0
-        ? queryToken.trim()
-        : undefined
-
-    const token = bearer ?? fromQuery
-    if (!token)
+  private authenticateByTicket(request: StreamRequest): string {
+    const raw = request.query?.['ticket']
+    const ticket = typeof raw === 'string' ? raw.trim() : ''
+    if (ticket.length === 0)
       throw new UnauthorizedException(
-        'Provide the access token in the Authorization header or as ?access_token=.',
+        'Provide a stream ticket as ?ticket=. Obtain one from POST /notifications/stream-ticket.',
       )
 
-    try {
-      return this.tokens.verify(token).userId
-    } catch {
-      throw new UnauthorizedException('Invalid or expired access token.')
-    }
+    const userId = this.tickets.redeem(ticket)
+    if (!userId)
+      throw new UnauthorizedException(
+        'That stream ticket is expired or has already been used. Request a new one.',
+      )
+
+    return userId
   }
 }

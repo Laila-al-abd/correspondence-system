@@ -63,11 +63,33 @@ export class MinioObjectStorage implements ObjectStorage {
    * A time-limited download link. The response headers force the browser to
    * download the file instead of rendering it, so a stored HTML or SVG file
    * can never execute in the user's session against this origin.
+   *
+   * The default window is one minute, not one hour. A presigned URL carries its
+   * own authority: whoever holds the string can fetch the object, with no token,
+   * no session, and no further check against this API. An hour is long enough
+   * for that string to be pasted into a chat, forwarded in an email, or left in
+   * a browser history, and for a document the sender is no longer allowed to
+   * see to be read by someone who never was. A minute is comfortably longer than
+   * the time between clicking a link and the download starting, and short enough
+   * that a leaked URL is almost always already dead.
+   *
+   * This is why links are minted at click time rather than embedded in list
+   * responses — see the download-url endpoint.
    */
-  async getPresignedUrl(key: string, expirySeconds = 3600): Promise<string> {
+  async getPresignedUrl(key: string, expirySeconds = 60): Promise<string> {
     return this.client.presignedGetObject(this.bucket, key, expirySeconds, {
       'response-content-disposition': 'attachment',
     })
+  }
+
+  /**
+   * Asks whether the configured bucket exists. This touches the network and the
+   * credentials without listing, reading, or writing any object, so a failure
+   * means the store is genuinely unreachable or the credentials are wrong,
+   * which is exactly what a health check should distinguish.
+   */
+  async ping(): Promise<void> {
+    await this.client.bucketExists(this.bucket)
   }
 
   async remove(key: string): Promise<void> {

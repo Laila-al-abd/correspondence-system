@@ -13,4 +13,10 @@ export interface ObjectStorage {
   get(key: string): Promise<Buffer>
   getPresignedUrl(key: string, expirySeconds?: number): Promise<string>
   remove(key: string): Promise<void>
+  /**
+   * Cheapest possible round-trip to the store, for health checks. Resolves if
+   * the store answered, throws if it did not. Deliberately returns nothing:
+   * a health probe should not be able to read or change a single document.
+   */
+  ping(): Promise<void>
 }

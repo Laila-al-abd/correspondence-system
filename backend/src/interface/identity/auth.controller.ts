@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { Throttle } from '@nestjs/throttler'
 import { RegisterUserCommand } from '../../application/identity/commands/register-user/register-user.command'
 import {
   AuthenticateUserCommand,
@@ -35,6 +36,7 @@ export class AuthController {
    * email addresses have accounts.
    */
   @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post('register')
   @HttpCode(HttpStatus.ACCEPTED)
   async register(@Body() dto: RegisterUserDto) {
@@ -46,7 +48,18 @@ export class AuthController {
     }
   }
 
+  /**
+   * Five attempts a minute per address. The global ceiling of 100 is sized for
+   * ordinary browsing and is uselessly generous here -- 100 password guesses a
+   * minute is a working credential-stuffing rate. Five is above what a person
+   * mistyping a password produces and far below what makes guessing viable.
+   *
+   * This limits attempts per source address, which is the layer available at
+   * the edge; it is not a per-account lockout, and it is not a substitute for
+   * one. It buys time rather than providing an answer.
+   */
   @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.commandBus.execute(

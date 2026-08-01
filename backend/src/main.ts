@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
@@ -35,7 +36,15 @@ function allowedOrigins(): string[] {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Behind nginx every request arrives from the proxy, so without this the
+  // rate limiter sees one client making all the traffic and either throttles
+  // the whole university at once or is tuned so loosely it throttles nobody.
+  // The 1 says "trust exactly one hop": the proxy we put there. Trusting all
+  // hops would let a caller forge X-Forwarded-For and get a fresh quota per
+  // request, which is worse than having no limiter at all.
+  app.set('trust proxy', 1);
 
   // Body parsers first, so the size cap applies before any route runs.
   app.use(json({ limit: MAX_BODY_SIZE }));

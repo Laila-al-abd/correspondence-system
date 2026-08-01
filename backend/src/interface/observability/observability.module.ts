@@ -8,6 +8,7 @@ import { PrismaMlPredictionRepository } from '../../infrastructure/observability
 import { PrismaAcademicCalendarRepository } from '../../infrastructure/observability/prisma-academic-calendar.repository'
 import { PrismaSystemSettingRepository } from '../../infrastructure/observability/prisma-system-setting.repository'
 import { NotificationRetentionService } from '../../infrastructure/observability/notification-retention.service'
+import { StreamTicketService } from '../../infrastructure/observability/stream-ticket.service'
 import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { NotificationEmitter } from '../../application/observability/services/notification-emitter'
 import { BusinessHoursService } from '../../application/observability/services/business-hours.service'
@@ -56,6 +57,7 @@ const handlers = [
     NotificationEmitter,
     BusinessHoursService,
     NotificationRetentionService,
+    StreamTicketService,
     { provide: EVENT_LOG_REPOSITORY, useClass: PrismaEventLogRepository },
     {
       provide: NOTIFICATION_REPOSITORY,
