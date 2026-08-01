@@ -114,3 +114,17 @@ export class FilledDataInvalidError extends ApplicationError {
     )
   }
 }
+
+export class ConcurrentModificationError extends ApplicationError {
+  readonly code = 'CONCURRENT_MODIFICATION'
+  readonly status = 409
+  constructor(
+    readonly entity: string,
+    readonly entityId: string,
+  ) {
+    super(
+      `This ${entity} was changed by someone else while you were working on it. ` +
+        'Reload it and try your action again.',
+    )
+  }
+}

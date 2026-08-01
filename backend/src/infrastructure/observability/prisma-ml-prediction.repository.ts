@@ -4,6 +4,7 @@ import { MlPredictionRepository } from '../../domain/observability/ports/ml-pred
 import { ModelType } from '../../domain/observability/enums'
 import { Identifier } from '../../domain/shared/identifier'
 import { PrismaService } from '../persistence/prisma.service'
+import { dbClient } from '../persistence/transaction-context'
 import { MlPredictionMapper } from './ml-prediction.mapper'
 
 /**
@@ -15,9 +16,17 @@ import { MlPredictionMapper } from './ml-prediction.mapper'
 export class PrismaMlPredictionRepository implements MlPredictionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * Reads and writes go through the open transaction when the caller started a
+   * unit of work, and through the plain client otherwise.
+   */
+  private get db() {
+    return dbClient(this.prisma)
+  }
+
   async save(prediction: MlPrediction): Promise<void> {
     const data = MlPredictionMapper.toPersistence(prediction)
-    await this.prisma.mlPrediction.upsert({
+    await this.db.mlPrediction.upsert({
       where: { id: prediction.id.toString() },
       create: data,
       update: data,
@@ -25,7 +34,7 @@ export class PrismaMlPredictionRepository implements MlPredictionRepository {
   }
 
   async listByRequest(requestId: Identifier): Promise<MlPrediction[]> {
-    const rows = await this.prisma.mlPrediction.findMany({
+    const rows = await this.db.mlPrediction.findMany({
       where: { requestId: requestId.toString() },
       orderBy: { id: 'asc' },
     })
@@ -36,7 +45,7 @@ export class PrismaMlPredictionRepository implements MlPredictionRepository {
     requestId: Identifier,
     modelType: ModelType,
   ): Promise<MlPrediction | null> {
-    const row = await this.prisma.mlPrediction.findFirst({
+    const row = await this.db.mlPrediction.findFirst({
       where: { requestId: requestId.toString(), modelType },
       orderBy: { id: 'desc' },
     })

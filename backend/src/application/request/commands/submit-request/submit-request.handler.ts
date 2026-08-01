@@ -6,10 +6,12 @@ import { Identifier } from '../../../../domain/shared/identifier'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
 import type { ReferenceNumberGenerator } from '../../../../domain/request/ports/reference-number-generator'
+import type { TransactionRunner } from '../../../../domain/shared/transaction-runner'
 import {
   ID_GENERATOR,
   REFERENCE_NUMBER_GENERATOR,
   REQUEST_REPOSITORY,
+  TRANSACTION_RUNNER,
 } from '../../../tokens'
 import { SubmitRequestCommand } from './submit-request.command'
 
@@ -31,9 +33,24 @@ export class SubmitRequestHandler
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
     @Inject(REFERENCE_NUMBER_GENERATOR)
     private readonly referenceNumbers: ReferenceNumberGenerator,
+    @Inject(TRANSACTION_RUNNER)
+    private readonly transactions: TransactionRunner,
   ) {}
 
-  async execute({ input }: SubmitRequestCommand): Promise<SubmitRequestResult> {
+  /**
+   * Reserving the reference number and inserting the request are one unit of
+   * work. Previously the counter was bumped first and committed on its own, so
+   * a request that failed to insert still consumed a number and left a hole in
+   * a sequence the registry treats as gapless. Inside the transaction, a failed
+   * submission rolls the counter back with it.
+   */
+  async execute(command: SubmitRequestCommand): Promise<SubmitRequestResult> {
+    return this.transactions.run(() => this.createRequest(command))
+  }
+
+  private async createRequest({
+    input,
+  }: SubmitRequestCommand): Promise<SubmitRequestResult> {
     const referenceNo = await this.referenceNumbers.next()
     const request = Request.create(this.ids.next(), {
       requesterId: Identifier.of(input.requesterId),
