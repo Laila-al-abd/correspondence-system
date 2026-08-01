@@ -13,11 +13,19 @@ import { ObservabilityModule } from './interface/observability/observability.mod
 import { AccessModule } from './interface/access/access.module';
 import { ReportsModule } from './interface/reporting/reports.module';
 import { AuditContextInterceptor } from './interface/shared/audit-context.interceptor';
+import { RateLimitModule } from './interface/shared/rate-limit.module';
+import { HealthModule } from './interface/health/health.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    // Listed before IdentityModule on purpose. Nest registers APP_GUARD
+    // providers in module resolution order, so this is what puts the throttler
+    // ahead of JwtAuthGuard: a flood of requests bearing garbage tokens should
+    // be turned away by a counter, not by verifying every signature first.
+    RateLimitModule,
     PersistenceModule,
+    HealthModule,
     CatalogModule,
     IdentityModule,
     OrganizationModule,

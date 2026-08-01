@@ -25,6 +25,19 @@ import { GrantDelegationCommand } from './grant-delegation.command'
  * their behalf for a date window. Validates both users exist, then lets the
  * Delegation aggregate enforce its rules (no self-delegation; end not before
  * start). Returns the created delegation with names resolved.
+ *
+ * On top of those, one rule the aggregate cannot see because it needs the other
+ * delegations in the system: authority may be handed over once, never relayed.
+ * A may authorize B, but B may not then authorize C. Chains are refused for two
+ * reasons. Accountability is the first: a signature two hops from its source is
+ * one nobody can meaningfully answer for, and the point of recording an action
+ * against a person is that the person can be asked about it. The second is that
+ * chains have no natural end — without a depth limit a cycle is possible, and
+ * resolving authority becomes a graph walk on a request path that already has a
+ * permission check and a working-hours check in front of it.
+ *
+ * Depth-1 collapses to a rule that can be stated in one line and checked in two
+ * queries: nobody may be a delegator and a delegate at the same time.
  */
 @CommandHandler(GrantDelegationCommand)
 export class GrantDelegationHandler
@@ -49,11 +62,27 @@ export class GrantDelegationHandler
     if (!(await this.users.findById(delegateId)))
       throw new EntityNotFoundError('User', input.delegateId)
 
+    const start = parseDate(input.startDate)
+    const end = parseDate(input.endDate)
+
+    // Checked at the start of the new window rather than at "now": a
+    // delegation granted today for next month must not create a chain next
+    // month either, and a check against the current clock would miss it.
+    if (await this.delegations.activeToDelegate(delegatorId, start))
+      throw new InvariantViolationError(
+        'You are currently acting on behalf of someone else and cannot pass that authority on. Delegation is limited to one step.',
+      )
+
+    if (await this.delegations.activeFor(delegateId, start))
+      throw new InvariantViolationError(
+        'The chosen delegate has already delegated their own authority to someone else. Delegation is limited to one step.',
+      )
+
     const delegation = Delegation.create(this.ids.next(), {
       delegatorId,
       delegateId,
-      start: parseDate(input.startDate),
-      end: parseDate(input.endDate),
+      start,
+      end,
       reason: input.reason,
     })
     await this.delegations.save(delegation)

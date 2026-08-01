@@ -3,7 +3,11 @@ import { Identifier } from '../../domain/shared/identifier'
 import { Email } from '../../domain/identity/value-objects/email'
 import { PersonName } from '../../domain/identity/value-objects/person-name'
 import { InstitutionalNumber } from '../../domain/identity/value-objects/institutional-number'
-import { ApplicantPurpose, UserStatus, UserType } from '../../domain/identity/enums'
+import {
+  ApplicantPurpose,
+  UserStatus,
+  parseUserType,
+} from '../../domain/identity/enums'
 import type { Prisma, User as UserRow } from '../../../generated/prisma/client'
 
 /**
@@ -14,7 +18,7 @@ import type { Prisma, User as UserRow } from '../../../generated/prisma/client'
 export const UserMapper = {
   toDomain(row: UserRow): User {
     return User.rehydrate(Identifier.of(row.id), {
-      type: row.userType as UserType,
+      type: parseUserType(row.userType),
       name: PersonName.create(row.fullNameAr, row.fullNameEn ?? undefined),
       email: Email.create(row.email),
       phone: row.phone ?? undefined,
