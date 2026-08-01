@@ -4,7 +4,7 @@ import { RoleRepository } from '../../domain/identity/ports/role.repository'
 import { Identifier } from '../../domain/shared/identifier'
 import { PrismaService } from '../persistence/prisma.service'
 import { RoleMapper } from './role.mapper'
-import { activeRoleAssignment } from './role-access.where'
+import { activeRoleAssignment, liveRole } from './role-access.where'
 
 /**
  * Prisma-backed RoleRepository. A role and its permission assignments span two
@@ -68,6 +68,52 @@ export class PrismaRoleRepository implements RoleRepository {
       include: { permission: true },
     })
     return new Set(rows.map((rp) => rp.permission.code))
+  }
+
+  async roleCarries(roleId: Identifier, permissionCode: string): Promise<boolean> {
+    const match = await this.prisma.rolePermission.findFirst({
+      where: {
+        roleId: roleId.toString(),
+        role: liveRole,
+        permission: { code: permissionCode },
+      },
+      select: { roleId: true },
+    })
+    return match !== null
+  }
+
+  /**
+   * Counts the users who can still exercise a permission right now.
+   *
+   * The filters are not incidental: an assignment that has expired, a role that
+   * has been soft-deleted, a user who has been soft-deleted, and a user who is
+   * suspended all produce someone who *looks* like an administrator in the
+   * user_roles table but cannot actually log in and use the permission. Counting
+   * any of them would let the system be left with an administrator who cannot
+   * administer it, which is the exact failure this count exists to prevent.
+   *
+   * `distinct` matters because one user holding a permission through two roles
+   * is one holder, not two.
+   */
+  async countHoldersOf(
+    permissionCode: string,
+    options?: { excludingUserId?: Identifier },
+  ): Promise<number> {
+    const excluded = options?.excludingUserId?.toString()
+    const rows = await this.prisma.userRole.findMany({
+      where: {
+        ...activeRoleAssignment(new Date()),
+        ...(excluded ? { userId: { not: excluded } } : {}),
+        role: {
+          ...liveRole,
+          permissions: { some: { permission: { code: permissionCode } } },
+        },
+        user: { deletedAt: null, status: 'ACTIVE' },
+      },
+      select: { userId: true },
+      distinct: ['userId'],
+    })
+    return rows.length
   }
 
   async assignToUser(params: {

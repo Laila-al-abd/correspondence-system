@@ -5,6 +5,7 @@ import { RegisterUserHandler } from '../../application/identity/commands/registe
 import { AuthenticateUserHandler } from '../../application/identity/commands/authenticate-user/authenticate-user.handler'
 import { AssignRoleToUserHandler } from '../../application/identity/commands/assign-role-to-user/assign-role-to-user.handler'
 import { RevokeRoleFromUserHandler } from '../../application/identity/commands/revoke-role-from-user/revoke-role-from-user.handler'
+import { AdministrativeFloorPolicy } from '../../application/identity/policies/administrative-floor.policy'
 import { SetUserAttributeHandler } from '../../application/identity/commands/set-user-attribute/set-user-attribute.handler'
 import { ClearUserAttributeHandler } from '../../application/identity/commands/clear-user-attribute/clear-user-attribute.handler'
 import {
@@ -63,6 +64,7 @@ import { ObservabilityModule } from '../observability/observability.module'
     GetEffectivePermissionsHandler,
     AssignRoleToUserHandler,
     RevokeRoleFromUserHandler,
+    AdministrativeFloorPolicy,
     SetUserAttributeHandler,
     ClearUserAttributeHandler,
     GrantDelegationHandler,

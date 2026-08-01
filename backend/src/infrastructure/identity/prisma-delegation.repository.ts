@@ -26,6 +26,23 @@ export class PrismaDelegationRepository implements DelegationRepository {
     })
   }
 
+  async activeToDelegate(
+    delegateId: Identifier,
+    on: Date,
+  ): Promise<Delegation | null> {
+    const row = await this.prisma.delegation.findFirst({
+      where: {
+        delegateId: delegateId.toString(),
+        isActive: true,
+        deletedAt: null,
+        startDate: { lte: on },
+        endDate: { gte: on },
+      },
+      orderBy: { startDate: 'desc' },
+    })
+    return row ? DelegationMapper.toDomain(row) : null
+  }
+
   async activeFor(
     delegatorId: Identifier,
     on: Date,
