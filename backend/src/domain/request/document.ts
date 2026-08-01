@@ -65,6 +65,9 @@ export class Document extends Entity {
 
   get storageKey(): string { return this.props.storageKey }
   get docKind(): DocKind { return this.props.docKind }
+  /** The request this file belongs to. Checked before any link is issued. */
+  get requestId(): Identifier { return this.props.requestId }
+  get fileName(): string { return this.props.fileName }
 
   snapshot(): DocumentSnapshot {
     return {

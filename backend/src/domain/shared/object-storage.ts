@@ -8,6 +8,26 @@ export interface PutObjectInput {
   size?: number
 }
 
+/** One stored object as the reconciliation sweep sees it. */
+export interface StoredObject {
+  key: string
+  size: number
+  lastModified: Date
+}
+
+export interface ListKeysInput {
+  prefix?: string
+  /** Resume marker: list keys ordered after this one. */
+  startAfter?: string
+  limit?: number
+}
+
+export interface ListKeysResult {
+  objects: StoredObject[]
+  /** Pass back as startAfter to continue; undefined when the listing is done. */
+  nextStartAfter?: string
+}
+
 export interface ObjectStorage {
   save(input: PutObjectInput): Promise<void>
   get(key: string): Promise<Buffer>
@@ -19,4 +39,10 @@ export interface ObjectStorage {
    * a health probe should not be able to read or change a single document.
    */
   ping(): Promise<void>
+  /**
+   * One page of stored objects. Paginated because a bucket can hold far more
+   * keys than fit in memory, and a maintenance sweep must never be the reason
+   * the process runs out of it.
+   */
+  listKeys(input?: ListKeysInput): Promise<ListKeysResult>
 }

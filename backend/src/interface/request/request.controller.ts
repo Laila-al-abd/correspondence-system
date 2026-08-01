@@ -9,6 +9,7 @@ import { AssignStepCommand } from '../../application/request/commands/assign-ste
 import { ActOnStepCommand } from '../../application/request/commands/act-on-step/act-on-step.command'
 import { UploadDocumentCommand } from '../../application/request/commands/upload-document/upload-document.command'
 import { GetRequestQuery } from '../../application/request/queries/get-request/get-request.query'
+import { GetDocumentDownloadUrlQuery } from '../../application/request/queries/get-document-download-url/get-document-download-url.query'
 import { GetRequestByReferenceQuery } from '../../application/request/queries/get-request-by-reference/get-request-by-reference.query'
 import { ListMyRequestsQuery } from '../../application/request/queries/list-my-requests/list-my-requests.query'
 import { ListAssignedRequestsQuery } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.query'
@@ -23,6 +24,7 @@ import { ClassifyByHumanDto } from './dto/classify-by-human.dto'
 import { AssignStepDto } from './dto/assign-step.dto'
 import { ActOnStepDto } from './dto/act-on-step.dto'
 import { UploadDocumentDto } from './dto/upload-document.dto'
+import { DocumentDownloadUrlView } from '../../application/request/queries/get-document-download-url/get-document-download-url.handler'
 import { RequirePermissions } from '../identity/permissions.decorator'
 
 /**
@@ -140,6 +142,25 @@ export class RequestController {
         actionTypeId: dto.actionTypeId,
         comment: dto.comment,
       }),
+    )
+  }
+
+  /**
+   * Mints a one-minute download link for a single document, on demand.
+   *
+   * Declared with no @RequirePermissions because the applicant who filed the
+   * request must be able to fetch their own attachments, and applicants hold
+   * no permissions. The handler authorizes instead: owner, or staff who may
+   * read requests.
+   */
+  @Get(':id/documents/:documentId/download-url')
+  getDocumentDownloadUrl(
+    @CurrentUserId() userId: string,
+    @Param('id') id: string,
+    @Param('documentId') documentId: string,
+  ): Promise<DocumentDownloadUrlView> {
+    return this.queryBus.execute(
+      new GetDocumentDownloadUrlQuery(id, documentId, userId),
     )
   }
 

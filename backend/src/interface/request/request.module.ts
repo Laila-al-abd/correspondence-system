@@ -12,6 +12,7 @@ import {
   REFERENCE_NUMBER_GENERATOR,
   REQUEST_ACTION_REPOSITORY,
   REQUEST_REPOSITORY,
+  ROLE_REPOSITORY,
   SLA_SCAN,
   WORKFLOW_PATH_REPOSITORY,
 } from '../../application/tokens'
@@ -19,6 +20,7 @@ import { PrismaRequestRepository } from '../../infrastructure/request/prisma-req
 import { PrismaRequestActionRepository } from '../../infrastructure/request/prisma-request-action.repository'
 import { PrismaPaymentRepository } from '../../infrastructure/request/prisma-payment.repository'
 import { PrismaDocumentRepository } from '../../infrastructure/request/prisma-document.repository'
+import { PrismaRoleRepository } from '../../infrastructure/identity/prisma-role.repository'
 import { PrismaWorkflowPathRepository } from '../../infrastructure/workflow/prisma-workflow-path.repository'
 import { MinioObjectStorage } from '../../infrastructure/storage/minio-object-storage'
 import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
@@ -35,6 +37,7 @@ import { GetRequestByReferenceHandler } from '../../application/request/queries/
 import { ListMyRequestsHandler } from '../../application/request/queries/list-my-requests/list-my-requests.handler'
 import { ListAssignedRequestsHandler } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.handler'
 import { ListRequestQueueHandler } from '../../application/request/queries/list-request-queue/list-request-queue.handler'
+import { GetDocumentDownloadUrlHandler } from '../../application/request/queries/get-document-download-url/get-document-download-url.handler'
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
 import { TemplateSubmissionPolicy } from '../../application/request/services/template-submission-policy'
@@ -56,6 +59,7 @@ const handlers = [
   ListMyRequestsHandler,
   ListAssignedRequestsHandler,
   ListRequestQueueHandler,
+  GetDocumentDownloadUrlHandler,
 ]
 
 /**
@@ -96,6 +100,11 @@ const handlers = [
     },
     { provide: OBJECT_STORAGE, useClass: MinioObjectStorage },
     { provide: ASSIGNEE_DIRECTORY, useClass: PrismaAssigneeDirectory },
+    // Bound locally on purpose. IdentityModule provides ROLE_REPOSITORY but
+    // does not export it, and PrismaRoleRepository depends only on
+    // PrismaService, which PersistenceModule supplies globally. The download
+    // handler needs it to tell an owner from a member of staff.
+    { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
     { provide: SLA_SCAN, useClass: PrismaSlaScan },
     AssigneeResolver,
     TemplateSubmissionPolicy,

@@ -14,7 +14,8 @@ import { AccessModule } from './interface/access/access.module';
 import { ReportsModule } from './interface/reporting/reports.module';
 import { AuditContextInterceptor } from './interface/shared/audit-context.interceptor';
 import { RateLimitModule } from './interface/shared/rate-limit.module';
-import { HealthModule } from './interface/health/health.module';
+import { HealthModule } from './interface/health/health.module'
+import { MaintenanceModule } from './interface/maintenance/maintenance.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { HealthModule } from './interface/health/health.module';
     WorkflowModule,
     RequestModule,
     ObservabilityModule,
+    MaintenanceModule,
     AccessModule,
     ReportsModule,
   ],

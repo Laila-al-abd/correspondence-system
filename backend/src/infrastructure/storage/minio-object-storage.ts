@@ -2,8 +2,11 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Client } from 'minio'
 import {
+  ListKeysInput,
+  ListKeysResult,
   ObjectStorage,
   PutObjectInput,
+  StoredObject,
 } from '../../domain/shared/object-storage'
 
 /**
@@ -94,5 +97,65 @@ export class MinioObjectStorage implements ObjectStorage {
 
   async remove(key: string): Promise<void> {
     await this.client.removeObject(this.bucket, key)
+  }
+
+  /**
+   * Lists one page of objects.
+   *
+   * The MinIO client exposes listing as a stream rather than a paged call, so
+   * pagination is done here: read until the page is full, stop the stream, and
+   * hand back the last key as the resume marker. Destroying the stream matters
+   * -- without it the client keeps fetching the rest of the bucket into a
+   * listener nobody is reading.
+   *
+   * `settled` guards the promise because a stream can emit 'error' after we
+   * have already resolved on a full page, and resolving twice would be a
+   * silent no-op that hides a real failure on the next call instead.
+   */
+  async listKeys(input: ListKeysInput = {}): Promise<ListKeysResult> {
+    const limit = input.limit && input.limit > 0 ? input.limit : 1000
+    const objects: StoredObject[] = []
+
+    return new Promise<ListKeysResult>((resolve, reject) => {
+      const stream = this.client.listObjectsV2(
+        this.bucket,
+        input.prefix ?? '',
+        true,
+        input.startAfter ?? '',
+      )
+      let settled = false
+
+      const finish = (): void => {
+        if (settled) return
+        settled = true
+        const full = objects.length >= limit
+        resolve({
+          objects,
+          nextStartAfter: full ? objects[objects.length - 1].key : undefined,
+        })
+      }
+
+      stream.on('data', (item) => {
+        if (settled) return
+        // Directory placeholders have no name; skip anything unnamed.
+        if (!item.name) return
+        objects.push({
+          key: item.name,
+          size: item.size ?? 0,
+          lastModified: item.lastModified ?? new Date(0),
+        })
+        if (objects.length >= limit) {
+          stream.destroy()
+          finish()
+        }
+      })
+      stream.on('end', finish)
+      stream.on('close', finish)
+      stream.on('error', (error) => {
+        if (settled) return
+        settled = true
+        reject(error)
+      })
+    })
   }
 }

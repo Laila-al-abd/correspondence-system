@@ -38,6 +38,15 @@ export class PrismaDocumentRepository implements DocumentRepository {
     })
   }
 
+  async findExistingStorageKeys(keys: string[]): Promise<Set<string>> {
+    if (keys.length === 0) return new Set<string>()
+    const rows = await this.db.document.findMany({
+      where: { storageKey: { in: keys } },
+      select: { storageKey: true },
+    })
+    return new Set(rows.map((row) => row.storageKey))
+  }
+
   async listByRequest(requestId: Identifier): Promise<Document[]> {
     const rows = await this.db.document.findMany({
       where: { requestId: requestId.toString() },
