@@ -66,10 +66,20 @@ export class RequestController {
     return this.queryBus.execute(new GetRequestByReferenceQuery(referenceNo))
   }
 
+  /**
+   * Deliberately declares no permission. `request.read` is a staff permission,
+   * and requiring it here locked applicants out of the one request that is
+   * unambiguously theirs -- they could see a one-line summary in /requests/mine
+   * and follow a document link, but never open the request itself. Ownership is
+   * checked inside the handler by RequestReadAccessPolicy, which admits the
+   * requester or any holder of `request.read` and refuses everyone else.
+   */
   @Get(':id')
-  @RequirePermissions('request.read')
-  getOne(@Param('id') id: string): Promise<RequestDetailView> {
-    return this.queryBus.execute(new GetRequestQuery(id))
+  getOne(
+    @CurrentUserId() userId: string,
+    @Param('id') id: string,
+  ): Promise<RequestDetailView> {
+    return this.queryBus.execute(new GetRequestQuery(id, userId))
   }
 
   // ----- writes -----

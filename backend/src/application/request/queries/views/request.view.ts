@@ -71,6 +71,16 @@ export interface RequestSummaryView {
 }
 
 export interface RequestDetailView extends RequestSummaryView {
+  /**
+   * The citizen's original free text, verbatim and complete -- never a summary
+   * or a truncation. This is the input the NLP classifier reads, and it is also
+   * what a reviewer needs in order to check that the chosen template was the
+   * right one. Deliberately on the detail view only: list endpoints return many
+   * rows and must stay small.
+   */
+  rawText?: string
+  /** The submitted form values, once a template has been applied. */
+  filledData?: Record<string, unknown>
   stepInstances: StepInstanceView[]
   actions: RequestActionView[]
   documents: DocumentView[]
@@ -164,9 +174,12 @@ export function toRequestDetail(
   documents: Document[],
   payments: Payment[],
 ): RequestDetailView {
+  const snapshot = request.snapshot()
   return {
     ...toRequestSummary(request),
-    stepInstances: request.snapshot().stepInstances.map(toStepInstanceView),
+    rawText: snapshot.rawText,
+    filledData: snapshot.filledData,
+    stepInstances: snapshot.stepInstances.map(toStepInstanceView),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),
     payments: payments.map(toPaymentView),

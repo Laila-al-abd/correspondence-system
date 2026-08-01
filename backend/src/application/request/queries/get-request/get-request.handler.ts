@@ -12,6 +12,7 @@ import {
   REQUEST_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { RequestReadAccessPolicy } from '../../policies/request-read-access.policy'
 import { GetRequestQuery } from './get-request.query'
 import { RequestDetailView, toRequestDetail } from '../views/request.view'
 
@@ -30,12 +31,20 @@ export class GetRequestHandler
     private readonly actions: RequestActionRepository,
     @Inject(DOCUMENT_REPOSITORY) private readonly documents: DocumentRepository,
     @Inject(PAYMENT_REPOSITORY) private readonly payments: PaymentRepository,
+    private readonly readAccess: RequestReadAccessPolicy,
   ) {}
 
   async execute(query: GetRequestQuery): Promise<RequestDetailView> {
     const id = Identifier.of(query.requestId)
     const request = await this.requests.findById(id)
     if (!request) throw new EntityNotFoundError('Request', query.requestId)
+
+    // Authorized here rather than by a route decorator: the applicant who filed
+    // this request must be able to read it, and applicants hold no permissions.
+    await this.readAccess.assertMayRead(
+      query.requestedBy,
+      request.requesterId.toString(),
+    )
 
     const [actions, documents, payments] = await Promise.all([
       this.actions.listByRequest(id),

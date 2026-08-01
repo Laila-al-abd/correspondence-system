@@ -26,4 +26,8 @@ export class ClassifyByModelDto {
   @IsOptional()
   @IsEnum(Priority)
   suggestedPriority?: Priority
+
+  @IsOptional()
+  @IsString()
+  modelVersion?: string
 }
