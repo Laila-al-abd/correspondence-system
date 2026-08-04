@@ -11,7 +11,7 @@ import type { RoleRepository } from '../../domain/identity/ports/role.repository
 import { Identifier } from '../../domain/shared/identifier'
 import { ROLE_REPOSITORY } from '../../application/tokens'
 import { AuthenticatedRequestUser } from './authenticated-request'
-import { PERMISSIONS_KEY } from './permissions.decorator'
+import { ANY_PERMISSION_KEY, PERMISSIONS_KEY } from './permissions.decorator'
 
 /**
  * RBAC guard. Reads the permission codes declared by @RequirePermissions and
@@ -36,7 +36,13 @@ export class PermissionsGuard implements CanActivate {
       PERMISSIONS_KEY,
       [context.getHandler(), context.getClass()],
     )
-    if (!required || required.length === 0) return true
+    const anyOf = this.reflector.getAllAndOverride<string[]>(
+      ANY_PERMISSION_KEY,
+      [context.getHandler(), context.getClass()],
+    )
+    const requiresAll = (required?.length ?? 0) > 0
+    const requiresAny = (anyOf?.length ?? 0) > 0
+    if (!requiresAll && !requiresAny) return true
 
     const request = context
       .switchToHttp()
@@ -45,10 +51,18 @@ export class PermissionsGuard implements CanActivate {
     if (!userId) throw new UnauthorizedException('Not authenticated.')
 
     const granted = await this.roles.effectivePermissions(Identifier.of(userId))
-    const missing = required.filter((code) => !granted.has(code))
-    if (missing.length > 0)
+
+    if (requiresAll) {
+      const missing = (required ?? []).filter((code) => !granted.has(code))
+      if (missing.length > 0)
+        throw new ForbiddenException(
+          `Missing required permission(s): ${missing.join(', ')}`,
+        )
+    }
+
+    if (requiresAny && !(anyOf ?? []).some((code) => granted.has(code)))
       throw new ForbiddenException(
-        `Missing required permission(s): ${missing.join(', ')}`,
+        `Requires one of: ${(anyOf ?? []).join(', ')}`,
       )
 
     return true

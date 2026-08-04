@@ -21,6 +21,8 @@ import type {
   DepartmentView,
 } from '../../application/organization/ports/department-query.port'
 import { DEPARTMENT_QUERY } from '../../application/tokens'
+import { OffsetPage } from '../../application/shared/pagination'
+import { toNumber } from '../shared/dto/page-query.dto'
 import { EntityNotFoundError } from '../../application/errors'
 import { RequirePermissions } from '../identity/permissions.decorator'
 
@@ -52,11 +54,13 @@ export class OrganizationController {
 
   // Flat list, optionally filtered by name substring, parent, or active state.
   @Get()
-  list(@Query() dto: ListDepartmentsDto): Promise<DepartmentView[]> {
+  list(@Query() dto: ListDepartmentsDto): Promise<OffsetPage<DepartmentView>> {
     return this.departments.list({
       search: dto.search,
       parentId: dto.parentId,
       activeOnly: dto.activeOnly === 'true',
+      limit: toNumber(dto.limit),
+      offset: toNumber(dto.offset),
     })
   }
 

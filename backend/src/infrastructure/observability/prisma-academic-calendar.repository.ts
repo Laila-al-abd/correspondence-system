@@ -8,7 +8,8 @@ import { AcademicCalendarMapper } from './academic-calendar.mapper'
 /**
  * Prisma-backed AcademicCalendarRepository over the `academic_calendar` table.
  * `findPeriodsOn` returns every period whose date range contains a given day --
- * used by SLA logic and the LSTM feature pipeline (e.g. exam / holiday flags).
+ * used by the working-hours calculation to exclude holidays from every deadline
+ * and every measured duration.
  */
 @Injectable()
 export class PrismaAcademicCalendarRepository

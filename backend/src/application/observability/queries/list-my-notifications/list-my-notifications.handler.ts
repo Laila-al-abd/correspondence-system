@@ -4,12 +4,18 @@ import { Notification } from '../../../../domain/observability/notification'
 import type { NotificationRepository } from '../../../../domain/observability/ports/notification.repository'
 import { Identifier } from '../../../../domain/shared/identifier'
 import { NOTIFICATION_REPOSITORY } from '../../../tokens'
+import {
+  OffsetPage,
+  clampLimit,
+  clampOffset,
+} from '../../../shared/pagination'
 import { NotificationView } from '../views/notification.view'
 import { ListMyNotificationsQuery } from './list-my-notifications.query'
 
 @QueryHandler(ListMyNotificationsQuery)
 export class ListMyNotificationsHandler
-  implements IQueryHandler<ListMyNotificationsQuery, NotificationView[]>
+  implements
+    IQueryHandler<ListMyNotificationsQuery, OffsetPage<NotificationView>>
 {
   constructor(
     @Inject(NOTIFICATION_REPOSITORY)
@@ -18,12 +24,19 @@ export class ListMyNotificationsHandler
 
   async execute(
     query: ListMyNotificationsQuery,
-  ): Promise<NotificationView[]> {
-    const rows = await this.notifications.listForUser(
+  ): Promise<OffsetPage<NotificationView>> {
+    const limit = clampLimit(query.limit)
+    const offset = clampOffset(query.offset)
+    const { rows, total } = await this.notifications.pageForUser(
       Identifier.of(query.userId),
-      query.onlyUnread,
+      { onlyUnread: query.onlyUnread, limit, offset },
     )
-    return rows.map((row) => toNotificationView(row))
+    return {
+      total,
+      limit,
+      offset,
+      items: rows.map((row) => toNotificationView(row)),
+    }
   }
 }
 

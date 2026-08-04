@@ -5,6 +5,11 @@ import type {
   DelegationView,
   ListDelegationsFilter,
 } from '../../application/identity/ports/delegation-query.port'
+import {
+  OffsetPage,
+  clampLimit,
+  clampOffset,
+} from '../../application/shared/pagination'
 import { PrismaService } from '../persistence/prisma.service'
 
 const withUsers = {
@@ -22,7 +27,11 @@ type DelegationRow = Prisma.DelegationGetPayload<{ include: typeof withUsers }>
 export class PrismaDelegationQuery implements DelegationQueryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(filter: ListDelegationsFilter): Promise<DelegationView[]> {
+  async list(
+    filter: ListDelegationsFilter,
+  ): Promise<OffsetPage<DelegationView>> {
+    const limit = clampLimit(filter.limit)
+    const offset = clampOffset(filter.offset)
     const where: Prisma.DelegationWhereInput = { deletedAt: null }
     if (filter.delegatorId) where.delegatorId = filter.delegatorId
     if (filter.delegateId) where.delegateId = filter.delegateId
@@ -33,12 +42,20 @@ export class PrismaDelegationQuery implements DelegationQueryPort {
       where.endDate = { gte: day }
     }
 
-    const rows = await this.prisma.delegation.findMany({
-      where,
-      include: withUsers,
-      orderBy: { startDate: 'desc' },
-    })
-    return rows.map((row) => toView(row))
+    const [total, rows] = await Promise.all([
+      this.prisma.delegation.count({ where }),
+      this.prisma.delegation.findMany({
+        where,
+        include: withUsers,
+        // startDate is not unique, so it cannot order a page on its own: two
+        // delegations starting the same day could swap places between page one
+        // and page two and one of them would never be shown. id breaks the tie.
+        orderBy: [{ startDate: 'desc' }, { id: 'desc' }],
+        skip: offset,
+        take: limit,
+      }),
+    ])
+    return { total, limit, offset, items: rows.map((row) => toView(row)) }
   }
 
   async getById(id: string): Promise<DelegationView | null> {

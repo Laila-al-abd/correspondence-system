@@ -102,6 +102,47 @@ activate(): void { this.props.status = UserStatus.ACTIVE }
 changeEmail(email: Email): void { this.props.email = email 
 }
 markSynced(at: Date): void { this.props.lastSyncedAt = at }
+/**
+ * Turns an existing account into a directory-backed one, KEEPING THE SAME id.
+ *
+ * This is what happens when someone who self-registered as an applicant later
+ * appears in the personnel feed as staff. Creating a second account instead
+ * would be impossible anyway -- email is unique -- but the real reason is that
+ * the first account may already have filed requests, uploaded documents and
+ * accumulated notifications, all pointing at this id. Reusing it keeps every
+ * one of those foreign keys valid and leaves the person's history attached to
+ * them; it is the same reasoning as Department.applyExternalUpdate.
+ *
+ * Deliberately does NOT touch authProvider or passwordHash. If this person has
+ * been signing in with a password they chose themselves, the directory has no
+ * business taking that away: they were never issued a credential by an admin,
+ * and revoking it locks a real user out for no security gain. Only accounts
+ * the sync CREATES are directory-authenticated with no local password.
+ */
+upgradeToDirectoryUser(p: {
+type: UserType
+institutionalNumber: InstitutionalNumber
+name?: PersonName
+email?: Email
+phone?: string
+departmentId?: Identifier
+syncedAt: Date
+}): void {
+if (p.type === UserType.APPLICANT)
+throw new InvariantViolationError("A directory record cannot turn someone into an applicant.")
+this.props.type = p.type
+this.props.institutionalNumber = p.institutionalNumber
+if (p.name) this.props.name = p.name
+if (p.email) this.props.email = p.email
+if (p.phone) this.props.phone = p.phone
+if (p.departmentId) this.props.departmentId = p.departmentId
+// Required by the create-time invariant: applicantPurpose is meaningless on a
+// non-applicant, so the upgrade must clear it rather than leave it dangling.
+this.props.applicantPurpose = undefined
+this.props.lastSyncedAt = p.syncedAt
+}
+/** The user's type, for callers that must branch on applicant vs staff. */
+get type(): UserType { return this.props.type }
 /** Idempotent refresh from the directory; keeps the user's identity and local edits stable. */
 applyDirectoryUpdate(p: { name?: PersonName; email?: Email; departmentId?: Identifier }, syncedAt: Date): void {
 if (p.name) this.props.name = p.name

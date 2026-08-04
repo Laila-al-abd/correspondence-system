@@ -27,8 +27,9 @@ const DEFAULT_AT_RISK_HOURS = 8
 export const DEFAULT_SCAN_LIMIT = 500
 
 /**
- * Version stamp written to `ml_predictions`. The LSTM will write to the same
- * table under its own version, which is what makes the two comparable.
+ * Version stamp written to `ml_predictions`. Any future learned estimator writes
+ * to the same table under its own version, which is what would make the two
+ * comparable: the rule is the number to beat.
  */
 export const BASELINE_MODEL_VERSION = 'baseline-rule-v1'
 
@@ -66,8 +67,11 @@ interface RequestVerdict {
  *    back to ON_TRACK -- risk has to be able to go down, not only up.
  *
  * 3. **Every verdict that changes something is recorded to `ml_predictions`**
- *    under a fixed model version. That gives the LSTM a published baseline to
- *    be measured against, instead of an accuracy number with nothing behind it.
+ *    under a fixed model version. The row is an event: this risk was decided at
+ *    this moment against this threshold, which cannot be recomputed afterwards
+ *    once the threshold or the calendar changes. It also publishes a baseline
+ *    for any future learned estimator to be measured against, instead of an
+ *    accuracy number with nothing behind it.
  */
 @Injectable()
 export class SlaMonitorService {
@@ -191,7 +195,7 @@ export class SlaMonitorService {
       await this.predictions.save(
         MlPrediction.create(this.ids.next(), {
           requestId: Identifier.of(requestId),
-          modelType: ModelType.LSTM_REMAINING_TIME,
+          modelType: ModelType.SLA_RISK_BASELINE,
           modelVersion: BASELINE_MODEL_VERSION,
           predictedValue: {
             risk: verdict.risk,

@@ -26,7 +26,7 @@ export const PRIORITY_RANK: Record<Priority, number> = {
 [Priority.URGENT]: 3,
 }
 
-/** Higher number = more time pressure. SLA-urgency axis, set by the LSTM monitor. */
+/** Higher number = more time pressure. SLA-urgency axis, set by the SLA monitor. */
 export const SLA_RISK_RANK: Record<SlaRisk, number> = {
 [SlaRisk.ON_TRACK]: 0,
 [SlaRisk.AT_RISK]: 1,

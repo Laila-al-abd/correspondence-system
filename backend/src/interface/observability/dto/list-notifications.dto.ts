@@ -1,4 +1,4 @@
-import { IsIn, IsOptional } from 'class-validator'
+import { IsIn, IsNumberString, IsOptional } from 'class-validator'
 
 /**
  * Query string for GET /notifications. Values arrive as text, so the flag is
@@ -8,4 +8,14 @@ export class ListNotificationsDto {
   @IsOptional()
   @IsIn(['true', 'false'])
   unreadOnly?: string
+
+  // Page size (1..200, default 50).
+  @IsOptional()
+  @IsNumberString()
+  limit?: string
+
+  // Zero-based offset.
+  @IsOptional()
+  @IsNumberString()
+  offset?: string
 }

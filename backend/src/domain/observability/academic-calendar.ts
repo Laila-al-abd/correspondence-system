@@ -13,9 +13,9 @@ interface CalendarProps {
 }
 
 /**
- * A named academic period (exam, registration, holiday, regular). Feeds the
- * LSTM feature pipeline and SLA logic — e.g. holidays can pause timers and
- * exam periods are a strong signal for processing delays.
+ * A named academic period (exam, registration, holiday, regular). Feeds the SLA
+ * logic and duration measurement — holidays are not working time, so they do
+ * not count against a deadline or inflate a recorded duration.
  */
 export class AcademicCalendar extends Entity {
   private constructor(id: Identifier, private props: CalendarProps) {

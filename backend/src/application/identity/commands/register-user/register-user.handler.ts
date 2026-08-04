@@ -11,11 +11,14 @@ import { PersonName } from '../../../../domain/identity/value-objects/person-nam
 import type { UserRepository } from '../../../../domain/identity/ports/user.repository'
 import type { PasswordHasher } from '../../../../domain/identity/ports/password-hasher'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
+import type { TransactionRunner } from '../../../../domain/shared/transaction-runner'
 import {
   ID_GENERATOR,
   PASSWORD_HASHER,
+  TRANSACTION_RUNNER,
   USER_REPOSITORY,
 } from '../../../tokens'
+import { UserTypeAttributeWriter } from '../../services/user-type-attribute.writer'
 import { RegisterUserCommand } from './register-user.command'
 
 /**
@@ -45,6 +48,8 @@ export class RegisterUserHandler
     @Inject(USER_REPOSITORY) private readonly users: UserRepository,
     @Inject(PASSWORD_HASHER) private readonly hasher: PasswordHasher,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
+    @Inject(TRANSACTION_RUNNER) private readonly transaction: TransactionRunner,
+    private readonly userTypeAttribute: UserTypeAttributeWriter,
   ) {}
 
   async execute({ input }: RegisterUserCommand): Promise<RegisterUserResult> {
@@ -78,7 +83,14 @@ export class RegisterUserHandler
       status: UserStatus.ACTIVE,
     })
 
-    await this.users.save(user)
+    // Registration used to be a bare save. It now writes the account and its
+    // ABAC user_type together, because an applicant without that attribute is
+    // denied every template an eligibility rule guards -- an account that
+    // exists and can do nothing, with no error to explain why.
+    await this.transaction.run(async () => {
+      await this.users.save(user)
+      await this.userTypeAttribute.write(user.id, user.type)
+    })
     return { accepted: true }
   }
 }

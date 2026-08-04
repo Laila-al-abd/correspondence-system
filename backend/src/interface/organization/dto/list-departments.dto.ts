@@ -1,4 +1,10 @@
-import { IsBooleanString, IsOptional, IsString, Length } from 'class-validator'
+import {
+  IsBooleanString,
+  IsNumberString,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator'
 
 /** Query params for GET /organization/departments. */
 export class ListDepartmentsDto {
@@ -17,4 +23,14 @@ export class ListDepartmentsDto {
   @IsOptional()
   @IsBooleanString()
   activeOnly?: string
+
+  // Page size (1..200, default 50).
+  @IsOptional()
+  @IsNumberString()
+  limit?: string
+
+  // Zero-based offset.
+  @IsOptional()
+  @IsNumberString()
+  offset?: string
 }

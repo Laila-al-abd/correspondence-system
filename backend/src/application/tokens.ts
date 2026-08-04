@@ -22,6 +22,7 @@ export const USER_QUERY = Symbol('UserQuery')
 // catalog
 export const LANGUAGE_REPOSITORY = Symbol('LanguageRepository')
 export const TEMPLATE_REPOSITORY = Symbol('TemplateRepository')
+export const TEMPLATE_CATALOG_QUERY = Symbol('TemplateCatalogQuery')
 export const SENSITIVITY_LEVEL_REPOSITORY = Symbol('SensitivityLevelRepository')
 export const REQUEST_CATEGORY_REPOSITORY = Symbol('RequestCategoryRepository')
 export const ACTION_TYPE_REPOSITORY = Symbol('ActionTypeRepository')
@@ -40,6 +41,7 @@ export const WORKFLOW_PATH_REPOSITORY = Symbol('WorkflowPathRepository')
 
 // request
 export const REQUEST_REPOSITORY = Symbol('RequestRepository')
+export const REQUEST_QUERY = Symbol('RequestQuery')
 export const ASSIGNEE_DIRECTORY = Symbol('AssigneeDirectory')
 export const REQUEST_ACTION_REPOSITORY = Symbol('RequestActionRepository')
 export const PAYMENT_REPOSITORY = Symbol('PaymentRepository')

@@ -18,3 +18,35 @@ unitTypeMap:
   UNI: UNIVERSITY
   FAC: FACULTY
   DEP: DEPARTMENT
+
+# ---------------------------------------------------------------------------
+# Employee/student feed. Optional: omit this whole block and POST /users/sync
+# reports that the directory exposes no user feed, while department sync keeps
+# working.
+#
+# Only the fields below are read. Everything else the personnel system returns
+# about a person is ignored on purpose -- this system stores what its own users
+# table needs and nothing more.
+users:
+  # Appended to PERSONNEL_DIRECTORY_URL. Omit to reuse the base URL as-is.
+  endpoint: /employees
+
+  # Dot-path to the array of records inside the HTTP response.
+  recordsPath: data.employees
+
+  fields:
+    institutionalNumber: empNo
+    fullNameAr: name.ar
+    fullNameEn: name.en
+    email: contact.email
+    phone: contact.mobile
+    userType: category
+    # Links a person to the department tree synced above, by the SAME external
+    # id the department feed uses.
+    departmentExternalId: unitId
+
+  # Translate the source's person categories to our UserType codes.
+  # APPLICANT is rejected: applicants self-register and are never imported.
+  userTypeMap:
+    EMP: EMPLOYEE
+    STU: STUDENT
