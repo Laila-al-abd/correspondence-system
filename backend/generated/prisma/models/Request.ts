@@ -29,11 +29,13 @@ export type AggregateRequest = {
 export type RequestAvgAggregateOutputType = {
   version: number | null
   classificationConfidence: runtime.Decimal | null
+  businessDurationMinutes: number | null
 }
 
 export type RequestSumAggregateOutputType = {
   version: number | null
   classificationConfidence: runtime.Decimal | null
+  businessDurationMinutes: number | null
 }
 
 export type RequestMinAggregateOutputType = {
@@ -55,6 +57,8 @@ export type RequestMinAggregateOutputType = {
   slaDueAt: Date | null
   createdAt: Date | null
   completedAt: Date | null
+  confirmedAt: Date | null
+  businessDurationMinutes: number | null
   createdBy: string | null
   updatedBy: string | null
 }
@@ -78,6 +82,8 @@ export type RequestMaxAggregateOutputType = {
   slaDueAt: Date | null
   createdAt: Date | null
   completedAt: Date | null
+  confirmedAt: Date | null
+  businessDurationMinutes: number | null
   createdBy: string | null
   updatedBy: string | null
 }
@@ -102,6 +108,8 @@ export type RequestCountAggregateOutputType = {
   slaDueAt: number
   createdAt: number
   completedAt: number
+  confirmedAt: number
+  businessDurationMinutes: number
   createdBy: number
   updatedBy: number
   _all: number
@@ -111,11 +119,13 @@ export type RequestCountAggregateOutputType = {
 export type RequestAvgAggregateInputType = {
   version?: true
   classificationConfidence?: true
+  businessDurationMinutes?: true
 }
 
 export type RequestSumAggregateInputType = {
   version?: true
   classificationConfidence?: true
+  businessDurationMinutes?: true
 }
 
 export type RequestMinAggregateInputType = {
@@ -137,6 +147,8 @@ export type RequestMinAggregateInputType = {
   slaDueAt?: true
   createdAt?: true
   completedAt?: true
+  confirmedAt?: true
+  businessDurationMinutes?: true
   createdBy?: true
   updatedBy?: true
 }
@@ -160,6 +172,8 @@ export type RequestMaxAggregateInputType = {
   slaDueAt?: true
   createdAt?: true
   completedAt?: true
+  confirmedAt?: true
+  businessDurationMinutes?: true
   createdBy?: true
   updatedBy?: true
 }
@@ -184,6 +198,8 @@ export type RequestCountAggregateInputType = {
   slaDueAt?: true
   createdAt?: true
   completedAt?: true
+  confirmedAt?: true
+  businessDurationMinutes?: true
   createdBy?: true
   updatedBy?: true
   _all?: true
@@ -295,6 +311,8 @@ export type RequestGroupByOutputType = {
   slaDueAt: Date | null
   createdAt: Date
   completedAt: Date | null
+  confirmedAt: Date | null
+  businessDurationMinutes: number | null
   createdBy: string | null
   updatedBy: string | null
   _count: RequestCountAggregateOutputType | null
@@ -342,6 +360,8 @@ export type RequestWhereInput = {
   slaDueAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Request"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  businessDurationMinutes?: Prisma.IntNullableFilter<"Request"> | number | null
   createdBy?: Prisma.UuidNullableFilter<"Request"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Request"> | string | null
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -377,6 +397,8 @@ export type RequestOrderByWithRelationInput = {
   slaDueAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   requester?: Prisma.UserOrderByWithRelationInput
@@ -415,6 +437,8 @@ export type RequestWhereUniqueInput = Prisma.AtLeast<{
   slaDueAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Request"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  businessDurationMinutes?: Prisma.IntNullableFilter<"Request"> | number | null
   createdBy?: Prisma.UuidNullableFilter<"Request"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Request"> | string | null
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -450,6 +474,8 @@ export type RequestOrderByWithAggregationInput = {
   slaDueAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RequestCountOrderByAggregateInput
@@ -482,6 +508,8 @@ export type RequestScalarWhereWithAggregatesInput = {
   slaDueAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Request"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Request"> | Date | string
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Request"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Request"> | Date | string | null
+  businessDurationMinutes?: Prisma.IntNullableWithAggregatesFilter<"Request"> | number | null
   createdBy?: Prisma.UuidNullableWithAggregatesFilter<"Request"> | string | null
   updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Request"> | string | null
 }
@@ -502,6 +530,8 @@ export type RequestCreateInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -537,6 +567,8 @@ export type RequestUncheckedCreateInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -564,6 +596,8 @@ export type RequestUpdateInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -599,6 +633,8 @@ export type RequestUncheckedUpdateInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -630,6 +666,8 @@ export type RequestCreateManyInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -650,6 +688,8 @@ export type RequestUpdateManyMutationInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -674,6 +714,8 @@ export type RequestUncheckedUpdateManyInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -708,6 +750,8 @@ export type RequestCountOrderByAggregateInput = {
   slaDueAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -715,6 +759,7 @@ export type RequestCountOrderByAggregateInput = {
 export type RequestAvgOrderByAggregateInput = {
   version?: Prisma.SortOrder
   classificationConfidence?: Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrder
 }
 
 export type RequestMaxOrderByAggregateInput = {
@@ -736,6 +781,8 @@ export type RequestMaxOrderByAggregateInput = {
   slaDueAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -759,6 +806,8 @@ export type RequestMinOrderByAggregateInput = {
   slaDueAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
+  confirmedAt?: Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -766,6 +815,7 @@ export type RequestMinOrderByAggregateInput = {
 export type RequestSumOrderByAggregateInput = {
   version?: Prisma.SortOrder
   classificationConfidence?: Prisma.SortOrder
+  businessDurationMinutes?: Prisma.SortOrder
 }
 
 export type RequestScalarRelationFilter = {
@@ -946,6 +996,14 @@ export type RequestUncheckedUpdateManyWithoutWorkflowPathNestedInput = {
   deleteMany?: Prisma.RequestScalarWhereInput | Prisma.RequestScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type RequestCreateNestedOneWithoutStepInstancesInput = {
   create?: Prisma.XOR<Prisma.RequestCreateWithoutStepInstancesInput, Prisma.RequestUncheckedCreateWithoutStepInstancesInput>
   connectOrCreate?: Prisma.RequestCreateOrConnectWithoutStepInstancesInput
@@ -1064,6 +1122,8 @@ export type RequestCreateWithoutRequesterInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   template?: Prisma.TemplateCreateNestedOneWithoutRequestsInput
@@ -1097,6 +1157,8 @@ export type RequestUncheckedCreateWithoutRequesterInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1157,6 +1219,8 @@ export type RequestScalarWhereInput = {
   slaDueAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Request"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  confirmedAt?: Prisma.DateTimeNullableFilter<"Request"> | Date | string | null
+  businessDurationMinutes?: Prisma.IntNullableFilter<"Request"> | number | null
   createdBy?: Prisma.UuidNullableFilter<"Request"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Request"> | string | null
 }
@@ -1177,6 +1241,8 @@ export type RequestCreateWithoutSensitivityLevelInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1210,6 +1276,8 @@ export type RequestUncheckedCreateWithoutSensitivityLevelInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1263,6 +1331,8 @@ export type RequestCreateWithoutTemplateInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1296,6 +1366,8 @@ export type RequestUncheckedCreateWithoutTemplateInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1349,6 +1421,8 @@ export type RequestCreateWithoutWorkflowPathInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1382,6 +1456,8 @@ export type RequestUncheckedCreateWithoutWorkflowPathInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1435,6 +1511,8 @@ export type RequestCreateWithoutStepInstancesInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1469,6 +1547,8 @@ export type RequestUncheckedCreateWithoutStepInstancesInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   actions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutRequestInput
@@ -1511,6 +1591,8 @@ export type RequestUpdateWithoutStepInstancesInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -1545,6 +1627,8 @@ export type RequestUncheckedUpdateWithoutStepInstancesInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   actions?: Prisma.RequestActionUncheckedUpdateManyWithoutRequestNestedInput
@@ -1571,6 +1655,8 @@ export type RequestCreateWithoutActionsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1605,6 +1691,8 @@ export type RequestUncheckedCreateWithoutActionsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1647,6 +1735,8 @@ export type RequestUpdateWithoutActionsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -1681,6 +1771,8 @@ export type RequestUncheckedUpdateWithoutActionsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -1707,6 +1799,8 @@ export type RequestCreateWithoutPaymentsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1741,6 +1835,8 @@ export type RequestUncheckedCreateWithoutPaymentsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1783,6 +1879,8 @@ export type RequestUpdateWithoutPaymentsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -1817,6 +1915,8 @@ export type RequestUncheckedUpdateWithoutPaymentsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -1843,6 +1943,8 @@ export type RequestCreateWithoutDocumentsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -1877,6 +1979,8 @@ export type RequestUncheckedCreateWithoutDocumentsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -1919,6 +2023,8 @@ export type RequestUpdateWithoutDocumentsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -1953,6 +2059,8 @@ export type RequestUncheckedUpdateWithoutDocumentsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -1979,6 +2087,8 @@ export type RequestCreateWithoutEventLogsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -2013,6 +2123,8 @@ export type RequestUncheckedCreateWithoutEventLogsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -2055,6 +2167,8 @@ export type RequestUpdateWithoutEventLogsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2089,6 +2203,8 @@ export type RequestUncheckedUpdateWithoutEventLogsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2115,6 +2231,8 @@ export type RequestCreateWithoutNotificationsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -2149,6 +2267,8 @@ export type RequestUncheckedCreateWithoutNotificationsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -2191,6 +2311,8 @@ export type RequestUpdateWithoutNotificationsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2225,6 +2347,8 @@ export type RequestUncheckedUpdateWithoutNotificationsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2251,6 +2375,8 @@ export type RequestCreateWithoutPredictionsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   requester: Prisma.UserCreateNestedOneWithoutRequestsInput
@@ -2285,6 +2411,8 @@ export type RequestUncheckedCreateWithoutPredictionsInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutRequestInput
@@ -2327,6 +2455,8 @@ export type RequestUpdateWithoutPredictionsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2361,6 +2491,8 @@ export type RequestUncheckedUpdateWithoutPredictionsInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2390,6 +2522,8 @@ export type RequestCreateManyRequesterInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -2410,6 +2544,8 @@ export type RequestUpdateWithoutRequesterInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   template?: Prisma.TemplateUpdateOneWithoutRequestsNestedInput
@@ -2443,6 +2579,8 @@ export type RequestUncheckedUpdateWithoutRequesterInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2473,6 +2611,8 @@ export type RequestUncheckedUpdateManyWithoutRequesterInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -2496,6 +2636,8 @@ export type RequestCreateManySensitivityLevelInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -2516,6 +2658,8 @@ export type RequestUpdateWithoutSensitivityLevelInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2549,6 +2693,8 @@ export type RequestUncheckedUpdateWithoutSensitivityLevelInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2579,6 +2725,8 @@ export type RequestUncheckedUpdateManyWithoutSensitivityLevelInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -2602,6 +2750,8 @@ export type RequestCreateManyTemplateInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -2622,6 +2772,8 @@ export type RequestUpdateWithoutTemplateInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2655,6 +2807,8 @@ export type RequestUncheckedUpdateWithoutTemplateInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2685,6 +2839,8 @@ export type RequestUncheckedUpdateManyWithoutTemplateInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -2708,6 +2864,8 @@ export type RequestCreateManyWorkflowPathInput = {
   slaDueAt?: Date | string | null
   createdAt?: Date | string
   completedAt?: Date | string | null
+  confirmedAt?: Date | string | null
+  businessDurationMinutes?: number | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -2728,6 +2886,8 @@ export type RequestUpdateWithoutWorkflowPathInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestsNestedInput
@@ -2761,6 +2921,8 @@ export type RequestUncheckedUpdateWithoutWorkflowPathInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutRequestNestedInput
@@ -2791,6 +2953,8 @@ export type RequestUncheckedUpdateManyWithoutWorkflowPathInput = {
   slaDueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  businessDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -2900,6 +3064,8 @@ export type RequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   slaDueAt?: boolean
   createdAt?: boolean
   completedAt?: boolean
+  confirmedAt?: boolean
+  businessDurationMinutes?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2936,6 +3102,8 @@ export type RequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   slaDueAt?: boolean
   createdAt?: boolean
   completedAt?: boolean
+  confirmedAt?: boolean
+  businessDurationMinutes?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2964,6 +3132,8 @@ export type RequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   slaDueAt?: boolean
   createdAt?: boolean
   completedAt?: boolean
+  confirmedAt?: boolean
+  businessDurationMinutes?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2992,11 +3162,13 @@ export type RequestSelectScalar = {
   slaDueAt?: boolean
   createdAt?: boolean
   completedAt?: boolean
+  confirmedAt?: boolean
+  businessDurationMinutes?: boolean
   createdBy?: boolean
   updatedBy?: boolean
 }
 
-export type RequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "version" | "referenceNo" | "requesterId" | "rawText" | "templateId" | "workflowPathId" | "filledData" | "classificationStatus" | "classificationConfidence" | "classifiedBy" | "currentStatus" | "priority" | "slaRisk" | "sensitivityLevelId" | "slaDueAt" | "createdAt" | "completedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["request"]>
+export type RequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "version" | "referenceNo" | "requesterId" | "rawText" | "templateId" | "workflowPathId" | "filledData" | "classificationStatus" | "classificationConfidence" | "classifiedBy" | "currentStatus" | "priority" | "slaRisk" | "sensitivityLevelId" | "slaDueAt" | "createdAt" | "completedAt" | "confirmedAt" | "businessDurationMinutes" | "createdBy" | "updatedBy", ExtArgs["result"]["request"]>
 export type RequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   template?: boolean | Prisma.Request$templateArgs<ExtArgs>
@@ -3059,6 +3231,8 @@ export type $RequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     slaDueAt: Date | null
     createdAt: Date
     completedAt: Date | null
+    confirmedAt: Date | null
+    businessDurationMinutes: number | null
     createdBy: string | null
     updatedBy: string | null
   }, ExtArgs["result"]["request"]>
@@ -3514,6 +3688,8 @@ export interface RequestFieldRefs {
   readonly slaDueAt: Prisma.FieldRef<"Request", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Request", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"Request", 'DateTime'>
+  readonly confirmedAt: Prisma.FieldRef<"Request", 'DateTime'>
+  readonly businessDurationMinutes: Prisma.FieldRef<"Request", 'Int'>
   readonly createdBy: Prisma.FieldRef<"Request", 'String'>
   readonly updatedBy: Prisma.FieldRef<"Request", 'String'>
 }

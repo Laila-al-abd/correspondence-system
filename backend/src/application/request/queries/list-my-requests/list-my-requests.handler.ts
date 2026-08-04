@@ -1,24 +1,31 @@
 import { Inject } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
-import { Identifier } from '../../../../domain/shared/identifier'
-import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
-import { REQUEST_REPOSITORY } from '../../../tokens'
+import type { RequestQueryPort } from '../../ports/request-query.port'
+import { REQUEST_QUERY } from '../../../tokens'
+import { KeysetPage } from '../../../shared/pagination'
 import { ListMyRequestsQuery } from './list-my-requests.query'
-import { RequestSummaryView, toRequestSummary } from '../views/request.view'
+import { RequestSummaryView } from '../views/request.view'
 
-/** Every request the caller has submitted, newest first. */
+/**
+ * One page of the caller's own requests, newest first.
+ *
+ * Reads through the request read model rather than the repository: this screen
+ * needs summary rows, not aggregates, and an applicant with a long history
+ * should not cost the server their entire request graph to render a table.
+ */
 @QueryHandler(ListMyRequestsQuery)
 export class ListMyRequestsHandler
-  implements IQueryHandler<ListMyRequestsQuery, RequestSummaryView[]>
+  implements IQueryHandler<ListMyRequestsQuery, KeysetPage<RequestSummaryView>>
 {
   constructor(
-    @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    @Inject(REQUEST_QUERY) private readonly requests: RequestQueryPort,
   ) {}
 
-  async execute(query: ListMyRequestsQuery): Promise<RequestSummaryView[]> {
-    const rows = await this.requests.listByRequester(
-      Identifier.of(query.requesterId),
-    )
-    return rows.map(toRequestSummary)
+  execute(query: ListMyRequestsQuery): Promise<KeysetPage<RequestSummaryView>> {
+    return this.requests.listByRequester({
+      requesterId: query.requesterId,
+      limit: query.limit,
+      cursor: query.cursor,
+    })
   }
 }

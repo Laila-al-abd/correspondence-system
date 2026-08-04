@@ -115,6 +115,19 @@ export class FilledDataInvalidError extends ApplicationError {
   }
 }
 
+export class RequestNotExtractableError extends ApplicationError {
+  readonly code = 'REQUEST_NOT_EXTRACTABLE'
+  readonly status = 409
+  constructor(
+    readonly requestId: string,
+    readonly reason: string,
+  ) {
+    super(
+      `Extracted values were not accepted for request ${requestId}: ${reason}`,
+    )
+  }
+}
+
 export class ConcurrentModificationError extends ApplicationError {
   readonly code = 'CONCURRENT_MODIFICATION'
   readonly status = 409

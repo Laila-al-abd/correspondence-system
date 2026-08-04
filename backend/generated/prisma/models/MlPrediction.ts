@@ -38,6 +38,7 @@ export type MlPredictionMinAggregateOutputType = {
   id: string | null
   requestId: string | null
   modelType: string | null
+  fieldKey: string | null
   modelVersion: string | null
   confidence: runtime.Decimal | null
   createdAt: Date | null
@@ -48,6 +49,7 @@ export type MlPredictionMaxAggregateOutputType = {
   id: string | null
   requestId: string | null
   modelType: string | null
+  fieldKey: string | null
   modelVersion: string | null
   confidence: runtime.Decimal | null
   createdAt: Date | null
@@ -58,6 +60,7 @@ export type MlPredictionCountAggregateOutputType = {
   id: number
   requestId: number
   modelType: number
+  fieldKey: number
   modelVersion: number
   predictedValue: number
   confidence: number
@@ -79,6 +82,7 @@ export type MlPredictionMinAggregateInputType = {
   id?: true
   requestId?: true
   modelType?: true
+  fieldKey?: true
   modelVersion?: true
   confidence?: true
   createdAt?: true
@@ -89,6 +93,7 @@ export type MlPredictionMaxAggregateInputType = {
   id?: true
   requestId?: true
   modelType?: true
+  fieldKey?: true
   modelVersion?: true
   confidence?: true
   createdAt?: true
@@ -99,6 +104,7 @@ export type MlPredictionCountAggregateInputType = {
   id?: true
   requestId?: true
   modelType?: true
+  fieldKey?: true
   modelVersion?: true
   predictedValue?: true
   confidence?: true
@@ -197,6 +203,7 @@ export type MlPredictionGroupByOutputType = {
   id: string
   requestId: string
   modelType: string
+  fieldKey: string | null
   modelVersion: string
   predictedValue: runtime.JsonValue
   confidence: runtime.Decimal | null
@@ -231,6 +238,7 @@ export type MlPredictionWhereInput = {
   id?: Prisma.UuidFilter<"MlPrediction"> | string
   requestId?: Prisma.UuidFilter<"MlPrediction"> | string
   modelType?: Prisma.StringFilter<"MlPrediction"> | string
+  fieldKey?: Prisma.StringNullableFilter<"MlPrediction"> | string | null
   modelVersion?: Prisma.StringFilter<"MlPrediction"> | string
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -243,6 +251,7 @@ export type MlPredictionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   modelType?: Prisma.SortOrder
+  fieldKey?: Prisma.SortOrderInput | Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -258,6 +267,7 @@ export type MlPredictionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MlPredictionWhereInput | Prisma.MlPredictionWhereInput[]
   requestId?: Prisma.UuidFilter<"MlPrediction"> | string
   modelType?: Prisma.StringFilter<"MlPrediction"> | string
+  fieldKey?: Prisma.StringNullableFilter<"MlPrediction"> | string | null
   modelVersion?: Prisma.StringFilter<"MlPrediction"> | string
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -270,6 +280,7 @@ export type MlPredictionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   modelType?: Prisma.SortOrder
+  fieldKey?: Prisma.SortOrderInput | Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -289,6 +300,7 @@ export type MlPredictionScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"MlPrediction"> | string
   requestId?: Prisma.UuidWithAggregatesFilter<"MlPrediction"> | string
   modelType?: Prisma.StringWithAggregatesFilter<"MlPrediction"> | string
+  fieldKey?: Prisma.StringNullableWithAggregatesFilter<"MlPrediction"> | string | null
   modelVersion?: Prisma.StringWithAggregatesFilter<"MlPrediction"> | string
   predictedValue?: Prisma.JsonWithAggregatesFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableWithAggregatesFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -299,6 +311,7 @@ export type MlPredictionScalarWhereWithAggregatesInput = {
 export type MlPredictionCreateInput = {
   id: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -311,6 +324,7 @@ export type MlPredictionUncheckedCreateInput = {
   id: string
   requestId: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -321,6 +335,7 @@ export type MlPredictionUncheckedCreateInput = {
 export type MlPredictionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -333,6 +348,7 @@ export type MlPredictionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -344,6 +360,7 @@ export type MlPredictionCreateManyInput = {
   id: string
   requestId: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -354,6 +371,7 @@ export type MlPredictionCreateManyInput = {
 export type MlPredictionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -365,6 +383,7 @@ export type MlPredictionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -386,6 +405,7 @@ export type MlPredictionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   modelType?: Prisma.SortOrder
+  fieldKey?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   predictedValue?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -401,6 +421,7 @@ export type MlPredictionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   modelType?: Prisma.SortOrder
+  fieldKey?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -411,6 +432,7 @@ export type MlPredictionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   requestId?: Prisma.SortOrder
   modelType?: Prisma.SortOrder
+  fieldKey?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -466,6 +488,7 @@ export type MlPredictionUncheckedUpdateManyWithoutRequestNestedInput = {
 export type MlPredictionCreateWithoutRequestInput = {
   id: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -476,6 +499,7 @@ export type MlPredictionCreateWithoutRequestInput = {
 export type MlPredictionUncheckedCreateWithoutRequestInput = {
   id: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -516,6 +540,7 @@ export type MlPredictionScalarWhereInput = {
   id?: Prisma.UuidFilter<"MlPrediction"> | string
   requestId?: Prisma.UuidFilter<"MlPrediction"> | string
   modelType?: Prisma.StringFilter<"MlPrediction"> | string
+  fieldKey?: Prisma.StringNullableFilter<"MlPrediction"> | string | null
   modelVersion?: Prisma.StringFilter<"MlPrediction"> | string
   predictedValue?: Prisma.JsonFilter<"MlPrediction">
   confidence?: Prisma.DecimalNullableFilter<"MlPrediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -526,6 +551,7 @@ export type MlPredictionScalarWhereInput = {
 export type MlPredictionCreateManyRequestInput = {
   id: string
   modelType: string
+  fieldKey?: string | null
   modelVersion: string
   predictedValue: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -536,6 +562,7 @@ export type MlPredictionCreateManyRequestInput = {
 export type MlPredictionUpdateWithoutRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -546,6 +573,7 @@ export type MlPredictionUpdateWithoutRequestInput = {
 export type MlPredictionUncheckedUpdateWithoutRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -556,6 +584,7 @@ export type MlPredictionUncheckedUpdateWithoutRequestInput = {
 export type MlPredictionUncheckedUpdateManyWithoutRequestInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelType?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelVersion?: Prisma.StringFieldUpdateOperationsInput | string
   predictedValue?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   confidence?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -569,6 +598,7 @@ export type MlPredictionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   requestId?: boolean
   modelType?: boolean
+  fieldKey?: boolean
   modelVersion?: boolean
   predictedValue?: boolean
   confidence?: boolean
@@ -581,6 +611,7 @@ export type MlPredictionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   requestId?: boolean
   modelType?: boolean
+  fieldKey?: boolean
   modelVersion?: boolean
   predictedValue?: boolean
   confidence?: boolean
@@ -593,6 +624,7 @@ export type MlPredictionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   requestId?: boolean
   modelType?: boolean
+  fieldKey?: boolean
   modelVersion?: boolean
   predictedValue?: boolean
   confidence?: boolean
@@ -605,6 +637,7 @@ export type MlPredictionSelectScalar = {
   id?: boolean
   requestId?: boolean
   modelType?: boolean
+  fieldKey?: boolean
   modelVersion?: boolean
   predictedValue?: boolean
   confidence?: boolean
@@ -612,7 +645,7 @@ export type MlPredictionSelectScalar = {
   createdBy?: boolean
 }
 
-export type MlPredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "modelType" | "modelVersion" | "predictedValue" | "confidence" | "createdAt" | "createdBy", ExtArgs["result"]["mlPrediction"]>
+export type MlPredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "requestId" | "modelType" | "fieldKey" | "modelVersion" | "predictedValue" | "confidence" | "createdAt" | "createdBy", ExtArgs["result"]["mlPrediction"]>
 export type MlPredictionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
 }
@@ -632,6 +665,12 @@ export type $MlPredictionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     requestId: string
     modelType: string
+    /**
+     * Which template field this prediction is about. NULL for whole-request
+     * predictions (classification, SLA risk); set for extraction, which is
+     * measured one field at a time.
+     */
+    fieldKey: string | null
     modelVersion: string
     predictedValue: runtime.JsonValue
     confidence: runtime.Decimal | null
@@ -1064,6 +1103,7 @@ export interface MlPredictionFieldRefs {
   readonly id: Prisma.FieldRef<"MlPrediction", 'String'>
   readonly requestId: Prisma.FieldRef<"MlPrediction", 'String'>
   readonly modelType: Prisma.FieldRef<"MlPrediction", 'String'>
+  readonly fieldKey: Prisma.FieldRef<"MlPrediction", 'String'>
   readonly modelVersion: Prisma.FieldRef<"MlPrediction", 'String'>
   readonly predictedValue: Prisma.FieldRef<"MlPrediction", 'Json'>
   readonly confidence: Prisma.FieldRef<"MlPrediction", 'Decimal'>

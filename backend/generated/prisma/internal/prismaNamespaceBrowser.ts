@@ -327,9 +327,11 @@ export type RequestCategoryScalarFieldEnum = (typeof RequestCategoryScalarFieldE
 export const TemplateScalarFieldEnum = {
   updatedAt: 'updatedAt',
   id: 'id',
+  code: 'code',
   categoryId: 'categoryId',
   title: 'title',
   description: 'description',
+  classifierDocument: 'classifierDocument',
   sensitivityLevelId: 'sensitivityLevelId',
   isActive: 'isActive',
   createdAt: 'createdAt',
@@ -348,6 +350,7 @@ export const TemplateFieldScalarFieldEnum = {
   templateId: 'templateId',
   fieldKey: 'fieldKey',
   label: 'label',
+  extractionQuestion: 'extractionQuestion',
   dataType: 'dataType',
   isRequired: 'isRequired',
   ordinal: 'ordinal',
@@ -483,6 +486,8 @@ export const RequestScalarFieldEnum = {
   slaDueAt: 'slaDueAt',
   createdAt: 'createdAt',
   completedAt: 'completedAt',
+  confirmedAt: 'confirmedAt',
+  businessDurationMinutes: 'businessDurationMinutes',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy'
 } as const
@@ -613,6 +618,7 @@ export const MlPredictionScalarFieldEnum = {
   id: 'id',
   requestId: 'requestId',
   modelType: 'modelType',
+  fieldKey: 'fieldKey',
   modelVersion: 'modelVersion',
   predictedValue: 'predictedValue',
   confidence: 'confidence',

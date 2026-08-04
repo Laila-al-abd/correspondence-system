@@ -32,7 +32,7 @@ datasource db {
 model User {
   updatedAt           DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
   id                  String    @id @db.Uuid
-  userType            String    @map("user_type") @db.VarChar(30) // APPLICANT | FACULTY | STAFF | ADMIN ...
+  userType            String    @map("user_type") @db.VarChar(30) // APPLICANT | STUDENT | EMPLOYEE | ADMIN -- see UserType in src/domain/identity/enums.ts
   fullNameAr          String    @map("full_name_ar") @db.VarChar(200)
   fullNameEn          String?   @map("full_name_en") @db.VarChar(200)
   institutionalNumber String?   @unique @map("institutional_number") @db.VarChar(50)
@@ -322,9 +322,16 @@ model RequestCategory {
 model Template {
   updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
   id                 String    @id @db.Uuid
+  /// Stable machine name (ENROLL_CERT). Set by an administrator, unique, and
+  /// never reused: the AI service and every measurement refer to it.
+  code               String?   @unique @db.VarChar(50)
   categoryId         String    @map("category_id") @db.Uuid
   title              Json      @db.JsonB
   description        Json?     @db.JsonB
+  /// The exact Arabic text the classifier embeds. Kept apart from description
+  /// because that is display prose, while this is a model input: changing it
+  /// changes classification, so it is stored and seeded verbatim.
+  classifierDocument String?   @map("classifier_document") @db.Text
   sensitivityLevelId String    @map("sensitivity_level_id") @db.Uuid
   isActive           Boolean   @default(true) @map("is_active")
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -352,6 +359,10 @@ model TemplateField {
   templateId String   @map("template_id") @db.Uuid
   fieldKey   String   @map("field_key") @db.VarChar(100)
   label      Json     @db.JsonB
+  /// Arabic question put to the extractive QA model for this field. A model
+  /// input, not a label -- reword it and the measured accuracy no longer
+  /// describes the running system.
+  extractionQuestion String? @map("extraction_question") @db.Text
   dataType   String   @map("data_type") @db.VarChar(20) // TEXT | NUMBER | DATE | BOOLEAN | ENUM
   isRequired Boolean  @default(false) @map("is_required")
   ordinal    Int      @default(0)
@@ -531,6 +542,8 @@ model Request {
   slaDueAt                 DateTime? @map("sla_due_at") @db.Timestamptz(6)
   createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   completedAt              DateTime? @map("completed_at") @db.Timestamptz(6)
+  confirmedAt              DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  businessDurationMinutes  Int?      @map("business_duration_minutes")
 
   requester        User              @relation(fields: [requesterId], references: [id])
   template         Template?         @relation(fields: [templateId], references: [id])
@@ -549,7 +562,13 @@ model Request {
   updatedBy String? @map("updated_by") @db.Uuid
   @@index([requesterId])
   @@index([templateId])
-  @@index([currentStatus])
+  @@index([createdAt])
+  // The staff queue orders by four expressions at once. A composite index in
+  // exactly that order lets Postgres walk the rows already sorted; without it
+  // every open request is read and sorted in memory on every page load. The
+  // former single-column index on currentStatus is gone because this one starts
+  // with the same column and serves those lookups too.
+  @@index([currentStatus, priority, slaRisk, slaDueAt, id])
   @@map("requests")
 }
 
@@ -578,7 +597,9 @@ model RequestStepInstance {
   updatedBy String? @map("updated_by") @db.Uuid
   @@index([requestId])
   @@index([assignedToUserId])
-  @@index([status])
+  // The SLA sweep asks for open steps with a due date, so it filters on both
+  // columns together. Replaces the single-column index on status.
+  @@index([status, slaDueAt])
   @@map("request_step_instances")
 }
 
@@ -709,15 +730,23 @@ model Notification {
 
   createdBy String? @map("created_by") @db.Uuid
   updatedBy String? @map("updated_by") @db.Uuid
-  @@index([userId])
+  // "my unread notifications" is one query, so it gets one index. Replaces the
+  // single-column index on userId, whose lookups this one still serves.
+  @@index([userId, isRead])
   @@index([requestId])
+  // The retention sweep deletes by age.
+  @@index([createdAt])
   @@map("notifications")
 }
 
 model MlPrediction {
   id             String   @id @db.Uuid
   requestId      String   @map("request_id") @db.Uuid
-  modelType      String   @map("model_type") @db.VarChar(50) // NLP_CLASSIFIER | LSTM_REMAINING_TIME
+  modelType     String   @map("model_type") @db.VarChar(50) // NLP_CLASSIFIER | NLP_EXTRACTOR | SLA_RISK_BASELINE
+  /// Which template field this prediction is about. NULL for whole-request
+  /// predictions (classification, SLA risk); set for extraction, which is
+  /// measured one field at a time.
+  fieldKey      String?  @map("field_key") @db.VarChar(100)
   modelVersion   String   @map("model_version") @db.VarChar(50)
   predictedValue Json     @map("predicted_value") @db.JsonB
   confidence     Decimal? @db.Decimal(5, 4)
@@ -727,6 +756,7 @@ model MlPrediction {
 
   createdBy String? @map("created_by") @db.Uuid
   @@index([requestId])
+  @@index([modelType, fieldKey])
   @@map("ml_predictions")
 }
 

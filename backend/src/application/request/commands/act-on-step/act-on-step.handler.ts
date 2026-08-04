@@ -16,6 +16,7 @@ import {
 } from '../../../tokens'
 import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
+import { BusinessHoursService } from '../../../observability/services/business-hours.service'
 import { ActOnStepCommand, StepActionKind } from './act-on-step.command'
 
 export interface ActOnStepResult {
@@ -43,6 +44,7 @@ export class ActOnStepHandler
     @Inject(TRANSACTION_RUNNER)
     private readonly transactions: TransactionRunner,
     private readonly notifier: NotificationEmitter,
+    private readonly businessHours: BusinessHoursService,
   ) {}
 
   /**
@@ -140,6 +142,24 @@ export class ActOnStepHandler
       request.stepInstances.every((si) => si.isTerminal())
     ) {
       request.complete()
+      // Measure the finished request once, here, while the policy that defines
+      // "a working hour" is the one that was actually in force. A failure to
+      // measure must not undo somebody's approval, so this is best-effort: the
+      // request completes either way and the column simply stays null.
+      const startedAt = request.createdAt
+      const finishedAt = request.completedAt
+      if (startedAt && finishedAt) {
+        try {
+          const hours = await this.businessHours.workingHoursBetween(
+            startedAt,
+            finishedAt,
+          )
+          request.recordBusinessDuration(hours * 60)
+        } catch {
+          // Left unmeasured on purpose. An average over the rows that do carry
+          // a duration is still honest; a wrong number would not be.
+        }
+      }
     }
 
     await this.requests.save(request)

@@ -8,6 +8,8 @@ import type { DelegationView } from '../../application/identity/ports/delegation
 import { GrantDelegationDto } from './dto/grant-delegation.dto'
 import { ListDelegationsDto } from './dto/list-delegations.dto'
 import { RequirePermissions } from './permissions.decorator'
+import { OffsetPage } from '../../application/shared/pagination'
+import { toNumber } from '../shared/dto/page-query.dto'
 
 /**
  * Admin surface for delegations: list/inspect who has delegated authority to
@@ -23,13 +25,15 @@ export class DelegationsController {
   ) {}
 
   @Get()
-  list(@Query() dto: ListDelegationsDto): Promise<DelegationView[]> {
+  list(@Query() dto: ListDelegationsDto): Promise<OffsetPage<DelegationView>> {
     return this.queryBus.execute(
       new ListDelegationsQuery({
         delegatorId: dto.delegatorId,
         delegateId: dto.delegateId,
         activeOnly: dto.activeOnly === 'true',
         onDate: dto.onDate,
+        limit: toNumber(dto.limit),
+        offset: toNumber(dto.offset),
       }),
     )
   }

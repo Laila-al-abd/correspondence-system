@@ -1,4 +1,6 @@
 import 'dotenv/config'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import * as bcrypt from 'bcryptjs'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../generated/prisma/client'
@@ -63,6 +65,9 @@ const SEED_TABLE = {
   template: 10,
   templateField: 11,
   eligibilityRule: 12,
+  workflowPath: 13,
+  workflowStep: 14,
+  systemSetting: 15,
 } as const
 
 const sensitivityId = (n: number) => seedId(SEED_TABLE.sensitivityLevel, n)
@@ -77,6 +82,41 @@ const userId = (n: number) => seedId(SEED_TABLE.user, n)
 const templateId = (n: number) => seedId(SEED_TABLE.template, n)
 const templateFieldId = (n: number) => seedId(SEED_TABLE.templateField, n)
 const eligibilityRuleId = (n: number) => seedId(SEED_TABLE.eligibilityRule, n)
+const workflowPathId = (n: number) => seedId(SEED_TABLE.workflowPath, n)
+const workflowStepId = (n: number) => seedId(SEED_TABLE.workflowStep, n)
+
+/**
+ * The 12 templates the AI models were trained against, exported from the
+ * training repository. Two of the columns in it are model inputs rather than
+ * text for people -- `classifierDocument` is the exact string the classifier
+ * embeds, and each field's `extractionQuestion` is the exact question the
+ * extractor is asked. They are seeded verbatim: reword either one and the
+ * measured accuracy stops describing the running system.
+ */
+interface CatalogueField {
+  key: string
+  labelAr: string
+  labelEn: string | null
+  type: 'TEXT' | 'NUMBER' | 'DATE' | 'BOOLEAN' | 'ENUM'
+  required: boolean
+  options: { code: string; labelAr: string }[] | null
+  extractionQuestion: string | null
+}
+
+interface CatalogueTemplate {
+  code: string
+  nameAr: string
+  nameEn: string
+  descriptionAr: string
+  requesterType: 'STUDENT' | 'EMPLOYEE'
+  classifierDocument: string
+  fields: CatalogueField[]
+}
+
+const loadCatalogue = (): CatalogueTemplate[] => {
+  const path = join(__dirname, 'seed-data', 'template-catalogue.json')
+  return JSON.parse(readFileSync(path, 'utf8')) as CatalogueTemplate[]
+}
 
 async function main(): Promise<void> {
   // ==========================================================================
@@ -135,6 +175,32 @@ async function main(): Promise<void> {
       value: { atRiskHours: 8 },
       description:
         'Working hours of remaining time below which a step counts as at risk.',
+    },
+  })
+
+  // --- Working-hours policy -------------------------------------------------
+  // Seeded *disabled*, so the API can be exercised at any hour. The real
+  // schedule is stored alongside the flag rather than deleted, so switching the
+  // control back on is a one-word edit and the guard can still be demonstrated.
+  //
+  // Without this row the service falls back to its built-in default, which is
+  // enabled -- so the row has to exist to turn the guard off, and this is the
+  // only reason the setting is seeded at all.
+  await prisma.systemSetting.upsert({
+    where: { key: 'working_hours' },
+    update: {},
+    create: {
+      id: seedId(SEED_TABLE.systemSetting, 1),
+      key: 'working_hours',
+      value: {
+        enabled: false,
+        days: [0, 1, 2, 3, 4],
+        start: '08:00',
+        end: '15:30',
+        timezone: 'Asia/Damascus',
+      },
+      description:
+        'Weekly working-hours policy. days uses 0=Sunday; times are wall-clock in timezone. enabled=false lifts the working-hours restriction on staff actions.',
     },
   })
 
@@ -244,6 +310,11 @@ async function main(): Promise<void> {
     { id: permissionId(5), code: 'template.manage', name: t('إدارة القوالب', 'Manage templates') },
     { id: permissionId(6), code: 'reports.view', name: t('عرض التقارير', 'View reports') },
     { id: permissionId(7), code: 'request.classify', name: t('تصنيف الطلبات', 'Classify requests') },
+    // Guards /health/detailed and the maintenance routes. Those routes already
+    // declared this permission, but nothing created it -- and a permission no
+    // row exists for is one nobody can hold, so the guard was refusing every
+    // caller including the administrator, with no way to grant it.
+    { id: permissionId(8), code: 'system.monitor', name: t('مراقبة النظام', 'Monitor the system') },
   ]
   for (const p of permissions) {
     await prisma.permission.upsert({
@@ -428,7 +499,7 @@ async function main(): Promise<void> {
 
   // --- Sample attribute values for the admin (so ABAC returns eligible) -----
   const userAttrValues = [
-    { attributeId: attributeId(1), value: 'EMPLOYEE' },
+    { attributeId: attributeId(1), value: 'ADMIN' },
     { attributeId: attributeId(4), value: 3 },
   ]
   for (const ua of userAttrValues) {
@@ -440,6 +511,55 @@ async function main(): Promise<void> {
       create: { userId: user.id, attributeId: ua.attributeId, value: ua.value },
     })
   }
+
+  // --- The AI service's own account -----------------------------------------
+  // The classifier is a client like any other: it signs in, and it is limited
+  // to what it needs -- read requests, and say which template one matches. It
+  // deliberately holds neither request.act nor template.manage, so a mistake
+  // (or a stolen token) cannot approve a request or rewrite the catalogue.
+  const aiRole = await prisma.role.upsert({
+    where: { id: roleId(4) },
+    update: {},
+    create: {
+      id: roleId(4),
+      name: t('خدمة الذكاء الاصطناعي', 'AI Service'),
+      isSystem: true,
+    },
+  })
+  for (const id of [permissionId(2), permissionId(7)]) {
+    // request.read (2) + request.classify (7)
+    await prisma.rolePermission.upsert({
+      where: { roleId_permissionId: { roleId: aiRole.id, permissionId: id } },
+      update: {},
+      create: { roleId: aiRole.id, permissionId: id },
+    })
+  }
+
+  // Password matches AI_SERVICE_PASSWORD in ai-service/.env. Change both
+  // together before this leaves a development machine.
+  const aiPasswordHash = await bcrypt.hash('change-me', 10)
+  const aiUser = await prisma.user.upsert({
+    where: { email: 'ai-service@correspondence.local' },
+    update: { passwordHash: aiPasswordHash },
+    create: {
+      id: userId(4),
+      userType: 'EMPLOYEE',
+      fullNameAr: 'خدمة التصنيف الآلي',
+      fullNameEn: 'AI Classification Service',
+      institutionalNumber: 'STF-0004',
+      email: 'ai-service@correspondence.local',
+      passwordHash: aiPasswordHash,
+      authProvider: 'LOCAL',
+      preferredLang: 'ar',
+      status: 'ACTIVE',
+    },
+  })
+  await prisma.userRole.deleteMany({
+    where: { userId: aiUser.id, roleId: aiRole.id },
+  })
+  await prisma.userRole.create({
+    data: { userId: aiUser.id, roleId: aiRole.id },
+  })
 
   // --- One demo template (Academic, Internal) with fields + eligibility -----
   await prisma.template.upsert({
@@ -490,14 +610,14 @@ async function main(): Promise<void> {
     })
   }
 
-  // Eligible only if user_type == EMPLOYEE AND clearance_level >= 2.
+  // Eligible only if user_type is EMPLOYEE or ADMIN, AND clearance_level >= 2.
   const rules = [
     {
       id: eligibilityRuleId(1),
       attributeId: attributeId(1),
-      operator: 'EQ',
-      value: 'EMPLOYEE',
-      description: t('الموظفون فقط', 'Employees only'),
+      operator: 'IN',
+      value: ['EMPLOYEE', 'ADMIN'],
+      description: t('الموظفون والإداريون', 'Employees and administrators'),
     },
     {
       id: eligibilityRuleId(2),
@@ -510,7 +630,7 @@ async function main(): Promise<void> {
   for (const r of rules) {
     await prisma.templateEligibilityRule.upsert({
       where: { id: r.id },
-      update: {},
+      update: { operator: r.operator, value: r.value },
       create: {
         id: r.id,
         templateId: templateId(1),
@@ -522,10 +642,251 @@ async function main(): Promise<void> {
     })
   }
 
+  // --- The 12 trained templates ---------------------------------------------
+  // Seeded rather than typed in by hand, because these are not sample data:
+  // the classifier was measured against these exact Arabic documents and the
+  // extractor against these exact questions. Everything here is idempotent, so
+  // re-running the seed refreshes text without disturbing ids or live requests.
+  const catalogue = loadCatalogue()
+  let fieldRow = 2 // templateFieldId 1-2 belong to the demo template
+  let ruleRow = 2 // eligibilityRuleId 1-2 likewise
+  let stepRow = 0
+
+  for (const [index, tpl] of catalogue.entries()) {
+    const id = templateId(index + 2) // templateId(1) is the demo template
+    const isStudent = tpl.requesterType === 'STUDENT'
+    const title = { ar: tpl.nameAr, en: tpl.nameEn }
+    const description = { ar: tpl.descriptionAr }
+
+    await prisma.template.upsert({
+      where: { id },
+      update: {
+        code: tpl.code,
+        title,
+        description,
+        classifierDocument: tpl.classifierDocument,
+      },
+      create: {
+        id,
+        code: tpl.code,
+        // Student paperwork is Academic; staff paperwork is Administrative.
+        categoryId: isStudent ? categoryId(2) : categoryId(1),
+        sensitivityLevelId: sensitivityId(2), // Internal
+        title,
+        description,
+        classifierDocument: tpl.classifierDocument,
+        isActive: true,
+      },
+    })
+
+    // Fields. Every one is optional: the export shows no field present in more
+    // than 90% of the training requests, so requiring any of them would reject
+    // real requests. The confirm step is what guarantees completeness.
+    for (const [ordinal, field] of tpl.fields.entries()) {
+      fieldRow += 1
+      const label = field.labelEn
+        ? { ar: field.labelAr, en: field.labelEn }
+        : { ar: field.labelAr }
+      const stored = await prisma.templateField.upsert({
+        where: { templateId_fieldKey: { templateId: id, fieldKey: field.key } },
+        update: {
+          label,
+          dataType: field.type,
+          isRequired: field.required,
+          ordinal: ordinal + 1,
+          extractionQuestion: field.extractionQuestion,
+        },
+        create: {
+          id: templateFieldId(fieldRow),
+          templateId: id,
+          fieldKey: field.key,
+          label,
+          dataType: field.type,
+          isRequired: field.required,
+          ordinal: ordinal + 1,
+          extractionQuestion: field.extractionQuestion,
+        },
+      })
+
+      // ENUM options are stored by code (ANNUAL), which is what the extractor
+      // returns and what validation checks; the Arabic label is display only.
+      for (const [optionOrdinal, option] of (field.options ?? []).entries()) {
+        await prisma.templateFieldOption.upsert({
+          where: {
+            templateFieldId_value: {
+              templateFieldId: stored.id,
+              value: option.code,
+            },
+          },
+          update: { label: { ar: option.labelAr }, ordinal: optionOrdinal + 1 },
+          create: {
+            templateFieldId: stored.id,
+            value: option.code,
+            label: { ar: option.labelAr },
+            ordinal: optionOrdinal + 1,
+          },
+        })
+      }
+    }
+
+    // Who may request it, from the requester type the export already records.
+    // This is the rule that made the user_type backfill below necessary.
+    ruleRow += 1
+    await prisma.templateEligibilityRule.upsert({
+      where: { id: eligibilityRuleId(ruleRow) },
+      update: {
+        operator: 'IN',
+        value: isStudent ? ['STUDENT', 'ADMIN'] : ['EMPLOYEE', 'ADMIN'],
+      },
+      create: {
+        id: eligibilityRuleId(ruleRow),
+        templateId: id,
+        attributeId: attributeId(1), // user_type
+        operator: 'IN',
+        value: isStudent ? ['STUDENT', 'ADMIN'] : ['EMPLOYEE', 'ADMIN'],
+        description: isStudent
+          ? t('الطلاب والإداريون', 'Students and administrators')
+          : t('الموظفون والإداريون', 'Employees and administrators'),
+      },
+    })
+
+    // A workflow path per template, in one of two shapes. A path carries a
+    // template id, so two shared paths are not possible -- these are twelve
+    // paths cut from two patterns: review, then approval.
+    const pathId = workflowPathId(index + 1)
+    await prisma.workflowPath.upsert({
+      where: { id: pathId },
+      update: {},
+      create: {
+        id: pathId,
+        templateId: id,
+        name: isStudent
+          ? t('مسار طلبات الطلاب', 'Student track')
+          : t('مسار طلبات الموظفين', 'Employee track'),
+        isActive: true,
+      },
+    })
+
+    // Both steps are assigned by role. A production employee track would route
+    // its first step to REQUESTER_DEPARTMENT_HEAD instead, but that resolves to
+    // nobody until departments and their heads are synced, which would leave
+    // every seeded employee request sitting unassigned.
+    const steps = isStudent
+      ? [
+          {
+            name: t('تدقيق شؤون الطلاب', 'Student affairs review'),
+            roleId: roleId(2),
+            slaHours: 24,
+            actions: [actionTypeId(1), actionTypeId(2), actionTypeId(4)],
+          },
+          {
+            name: t('الاعتماد', 'Approval'),
+            roleId: roleId(1),
+            slaHours: 48,
+            actions: [actionTypeId(1), actionTypeId(2), actionTypeId(5)],
+          },
+        ]
+      : [
+          {
+            name: t('تدقيق الموارد البشرية', 'HR review'),
+            roleId: roleId(2),
+            slaHours: 24,
+            actions: [actionTypeId(1), actionTypeId(2), actionTypeId(4)],
+          },
+          {
+            name: t('اعتماد الإدارة', 'Management approval'),
+            roleId: roleId(1),
+            slaHours: 72,
+            actions: [actionTypeId(1), actionTypeId(2), actionTypeId(5)],
+          },
+        ]
+
+    let previousStepId: string | undefined
+    for (const step of steps) {
+      stepRow += 1
+      const stepId = workflowStepId(stepRow)
+      await prisma.workflowStep.upsert({
+        where: { id: stepId },
+        update: {},
+        create: {
+          id: stepId,
+          workflowPathId: pathId,
+          name: step.name,
+          assigneeType: 'SPECIFIC_ROLE',
+          assigneeRoleId: step.roleId,
+          slaHours: step.slaHours,
+          pausesSla: false,
+        },
+      })
+      for (const allowed of step.actions) {
+        await prisma.workflowStepAllowedAction.upsert({
+          where: {
+            workflowStepId_actionTypeId: {
+              workflowStepId: stepId,
+              actionTypeId: allowed,
+            },
+          },
+          update: {},
+          create: { workflowStepId: stepId, actionTypeId: allowed },
+        })
+      }
+      // Approval waits for review; without the edge both steps open at once.
+      if (previousStepId)
+        await prisma.workflowStepDependency.upsert({
+          where: {
+            workflowStepId_dependsOnStepId: {
+              workflowStepId: stepId,
+              dependsOnStepId: previousStepId,
+            },
+          },
+          update: {},
+          create: { workflowStepId: stepId, dependsOnStepId: previousStepId },
+        })
+      previousStepId = stepId
+    }
+  }
+
+  // --- Backfill: every account gets its user_type attribute ------------------
+  // Two things that look like one: users.user_type, which every account has,
+  // and the user_type row in user_attributes, which is what the eligibility
+  // engine actually reads. Only the admin ever had the second, so the rules
+  // above would have denied everyone else -- the engine denies by default when
+  // a rule names an attribute the user does not hold. New accounts now get it
+  // written with the account; this fills in the ones that already exist.
+  //
+  // `update: {}` on purpose: a value an administrator set by hand outranks the
+  // column. That is why the seeded admin keeps EMPLOYEE rather than ADMIN.
+  const everyone = await prisma.user.findMany({
+    select: { id: true, userType: true },
+  })
+  for (const person of everyone) {
+    await prisma.userAttribute.upsert({
+      where: {
+        userId_attributeId: {
+          userId: person.id,
+          attributeId: attributeId(1),
+        },
+      },
+      update: {},
+      create: {
+        userId: person.id,
+        attributeId: attributeId(1),
+        value: person.userType,
+      },
+    })
+  }
+
+  console.log(
+    `  Catalogue    : ${catalogue.length} templates, ${fieldRow - 2} fields, ` +
+      `${stepRow} workflow steps`,
+  )
+  console.log(`  user_type    : backfilled for ${everyone.length} accounts`)
+
   console.log('Seed complete.')
   console.log('  Admin login  : admin@correspondence.local / Admin@12345')
   console.log('  Reviewer 1   : reviewer1@correspondence.local / Review@12345')
   console.log('  Reviewer 2   : reviewer2@correspondence.local / Review@12345')
+  console.log('  AI service   : ai-service@correspondence.local / change-me')
   console.log('')
   console.log('  Seeded ids (stable across resets):')
   console.log(`    SYSTEM account : ${SYSTEM_USER_ID}`)
@@ -534,6 +895,8 @@ async function main(): Promise<void> {
   console.log(`    reviewer 2     : ${userId(3)}`)
   console.log(`    Reviewer role  : ${roleId(2)}`)
   console.log(`    demo template  : ${templateId(1)}`)
+  console.log(`    AI service user: ${userId(4)}`)
+  console.log(`    first catalogue template: ${templateId(2)}`)
   console.log(`    action APPROVE : ${actionTypeId(1)}`)
 }
 

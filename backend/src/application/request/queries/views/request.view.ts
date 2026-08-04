@@ -70,6 +70,26 @@ export interface RequestSummaryView {
   completedAt?: string
 }
 
+/**
+ * Where a duration estimate came from. The client is told which, because the two
+ * answer different questions and should not be worded the same way: OBSERVED is
+ * "requests like this usually take", DECLARED is "this is allowed to take".
+ */
+export type DurationEstimateBasis = 'OBSERVED' | 'DECLARED'
+
+export interface DurationEstimateView {
+  /** Working minutes. */
+  minutes: number
+  basis: DurationEstimateBasis
+  /**
+   * How many completed requests the figure rests on. Zero on a DECLARED
+   * estimate, and worth showing: an estimate drawn from six requests deserves
+   * less confidence than one drawn from six hundred, and only the caller knows
+   * how to say so.
+   */
+  sampleSize: number
+}
+
 export interface RequestDetailView extends RequestSummaryView {
   /**
    * The citizen's original free text, verbatim and complete -- never a summary
@@ -81,6 +101,26 @@ export interface RequestDetailView extends RequestSummaryView {
   rawText?: string
   /** The submitted form values, once a template has been applied. */
   filledData?: Record<string, unknown>
+  /**
+   * When the requester accepted the template and values proposed for them.
+   * Absent means the request is still waiting for that answer, which is what a
+   * client needs in order to show the confirmation step at all.
+   */
+  confirmedAt?: string
+  /**
+   * Working minutes from submission to completion, present only once the
+   * request is finished. Working rather than wall-clock, so a request that sat
+   * over a weekend is not reported as two days slow.
+   */
+  businessDurationMinutes?: number
+  /**
+   * How long a request of this template usually takes, in working minutes.
+   *
+   * Absent only when the template has neither history nor a declared budget --
+   * which means nobody has ever said how long this is supposed to take, and
+   * inventing a number would be worse than saying nothing.
+   */
+  durationEstimate?: DurationEstimateView
   stepInstances: StepInstanceView[]
   actions: RequestActionView[]
   documents: DocumentView[]
@@ -173,12 +213,16 @@ export function toRequestDetail(
   actions: RequestAction[],
   documents: Document[],
   payments: Payment[],
+  durationEstimate?: DurationEstimateView,
 ): RequestDetailView {
   const snapshot = request.snapshot()
   return {
     ...toRequestSummary(request),
     rawText: snapshot.rawText,
     filledData: snapshot.filledData,
+    confirmedAt: iso(snapshot.confirmedAt),
+    businessDurationMinutes: snapshot.businessDurationMinutes,
+    durationEstimate,
     stepInstances: snapshot.stepInstances.map(toStepInstanceView),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),

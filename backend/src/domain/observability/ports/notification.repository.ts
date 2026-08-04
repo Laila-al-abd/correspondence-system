@@ -4,6 +4,18 @@ import { Notification } from "../notification"
 
 export interface NotificationRepository extends Repository<Notification> {
   listForUser(userId: Identifier, onlyUnread?: boolean): Promise<Notification[]>
+  /**
+   * One page of a user's inbox, newest first, plus the unfiltered total.
+   *
+   * Separate from listForUser rather than replacing it: the background jobs
+   * that call listForUser want every row and would have to be taught to page,
+   * while the inbox screen wants twenty. Keeping both makes each caller say
+   * what it means.
+   */
+  pageForUser(
+    userId: Identifier,
+    options: { onlyUnread?: boolean; limit: number; offset: number },
+  ): Promise<{ rows: Notification[]; total: number }>
   countUnread(userId: Identifier): Promise<number>
   markAllRead(userId: Identifier): Promise<void>
   /** Removes notifications created strictly before `cutoff`; returns the row count. */

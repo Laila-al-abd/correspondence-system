@@ -5,10 +5,12 @@ import type { RequestRepository } from '../../../../domain/request/ports/request
 import type { RequestActionRepository } from '../../../../domain/request/ports/request-action.repository'
 import type { DocumentRepository } from '../../../../domain/request/ports/document.repository'
 import type { PaymentRepository } from '../../../../domain/request/ports/payment.repository'
+import type { RequestQueryPort } from '../../ports/request-query.port'
 import {
   DOCUMENT_REPOSITORY,
   PAYMENT_REPOSITORY,
   REQUEST_ACTION_REPOSITORY,
+  REQUEST_QUERY,
   REQUEST_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
@@ -31,6 +33,7 @@ export class GetRequestHandler
     private readonly actions: RequestActionRepository,
     @Inject(DOCUMENT_REPOSITORY) private readonly documents: DocumentRepository,
     @Inject(PAYMENT_REPOSITORY) private readonly payments: PaymentRepository,
+    @Inject(REQUEST_QUERY) private readonly requestQuery: RequestQueryPort,
     private readonly readAccess: RequestReadAccessPolicy,
   ) {}
 
@@ -46,11 +49,25 @@ export class GetRequestHandler
       request.requesterId.toString(),
     )
 
-    const [actions, documents, payments] = await Promise.all([
+    // The estimate answers "how long will this take", so it is fetched for the
+    // detail screen only -- a list of thirty requests would repeat the same two
+    // aggregates thirty times. An unclassified request has no template yet and
+    // therefore nothing to compare itself against.
+    const templateId = request.snapshot().templateId
+    const [actions, documents, payments, durationEstimate] = await Promise.all([
       this.actions.listByRequest(id),
       this.documents.listByRequest(id),
       this.payments.listByRequest(id),
+      templateId
+        ? this.requestQuery.estimateDuration(templateId)
+        : Promise.resolve(undefined),
     ])
-    return toRequestDetail(request, actions, documents, payments)
+    return toRequestDetail(
+      request,
+      actions,
+      documents,
+      payments,
+      durationEstimate,
+    )
   }
 }

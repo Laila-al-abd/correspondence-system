@@ -1,0 +1,685 @@
+[
+  {
+    "code": "ADMIN_LEAVE",
+    "nameAr": "طلب إجازة إدارية",
+    "nameEn": "Administrative leave request",
+    "descriptionAr": "طلب إجازة للموظف بأنواعها: سنوية، مرضية، بلا أجر، أو اضطرارية.",
+    "requesterType": "EMPLOYEE",
+    "classifierDocument": "طلب إجازة إدارية (Administrative leave request). طلب إجازة للموظف بأنواعها: سنوية، مرضية، بلا أجر، أو اضطرارية. الحقول: نوع الإجازة، تاريخ البدء، عدد الأيام، السبب. أمثلة: أرجو منحي إجازة سنوية لمدة 5 أيام اعتباراً من 2026-08-10. بدي إجازة مرضية يومين، معي تقرير طبي. الرجاء الموافقة على إجازة بلا أجر لظروف عائلية طارئة.",
+    "split": "unseen",
+    "fields": [
+      {
+        "key": "leave_type",
+        "labelAr": "نوع الإجازة",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.85,
+        "options": [
+          {
+            "code": "ANNUAL",
+            "labelAr": "إجازة سنوية"
+          },
+          {
+            "code": "SICK",
+            "labelAr": "إجازة مرضية"
+          },
+          {
+            "code": "UNPAID",
+            "labelAr": "إجازة بلا أجر"
+          },
+          {
+            "code": "EMERGENCY",
+            "labelAr": "إجازة اضطرارية"
+          }
+        ],
+        "extractionQuestion": "ما نوع الإجازة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "start_date",
+        "labelAr": "تاريخ البدء",
+        "labelEn": null,
+        "type": "DATE",
+        "dataTypeRaw": "DATE",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "متى تبدأ الإجازة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "days_count",
+        "labelAr": "عدد الأيام",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.75,
+        "options": [],
+        "extractionQuestion": "كم يوماً؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "reason",
+        "labelAr": "السبب",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.55,
+        "options": [],
+        "extractionQuestion": "ما سبب الإجازة؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "CHANGE_MAJOR",
+    "nameAr": "طلب نقل اختصاص",
+    "nameEn": "Change of major",
+    "descriptionAr": "طلب الانتقال من اختصاص أكاديمي إلى اختصاص آخر داخل المعهد.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "طلب نقل اختصاص (Change of major). طلب الانتقال من اختصاص أكاديمي إلى اختصاص آخر داخل المعهد. الحقول: الاختصاص الحالي، الاختصاص المطلوب، السبب. أمثلة: أرغب بنقل اختصاصي من هندسة الاتصالات إلى هندسة المعلوماتية لأن ميولي العلمية تتوافق أكثر مع الاختصاص الجديد. بدي غيّر فرعي لهندسة الميكاترونيك. الرجاء الموافقة على انتقالي من العلوم الأساسية إلى الهندسة الكهربائية.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "current_major",
+        "labelAr": "الاختصاص الحالي",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "ما اختصاصك الحالي؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "target_major",
+        "labelAr": "الاختصاص المطلوب",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.9,
+        "options": [],
+        "extractionQuestion": "إلى أي اختصاص تريد الانتقال؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "reason",
+        "labelAr": "السبب",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [],
+        "extractionQuestion": "ما سبب طلب النقل؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "CONFERENCE",
+    "nameAr": "طلب مشاركة في مؤتمر علمي",
+    "nameEn": "Conference participation request",
+    "descriptionAr": "طلب موافقة على المشاركة في مؤتمر أو مهمة علمية داخل القطر أو خارجه.",
+    "requesterType": "EMPLOYEE",
+    "classifierDocument": "طلب مشاركة في مؤتمر علمي (Conference participation request). طلب موافقة على المشاركة في مؤتمر أو مهمة علمية داخل القطر أو خارجه. الحقول: اسم المؤتمر، البلد، تاريخ البدء، طلب تمويل. أمثلة: أرجو الموافقة على مشاركتي في المؤتمر الدولي للذكاء الصنعي في ألمانيا بتاريخ 2026-10-05 مع طلب تمويل. بدي شارك بمؤتمر تقانات الاتصالات بتونس. الرجاء الموافقة على مهمة علمية لحضور ورشة عمل الأمن السيبراني في الأردن.",
+    "split": "unseen",
+    "fields": [
+      {
+        "key": "conference_name",
+        "labelAr": "اسم المؤتمر",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.9,
+        "options": [],
+        "extractionQuestion": "ما اسم المؤتمر؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "country",
+        "labelAr": "البلد",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.8,
+        "options": [],
+        "extractionQuestion": "في أي بلد يُعقد المؤتمر؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "start_date",
+        "labelAr": "تاريخ البدء",
+        "labelEn": null,
+        "type": "DATE",
+        "dataTypeRaw": "DATE",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [],
+        "extractionQuestion": "ما تاريخ بدء المؤتمر؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "funding_requested",
+        "labelAr": "طلب تمويل",
+        "labelEn": null,
+        "type": "BOOLEAN",
+        "dataTypeRaw": "BOOL",
+        "required": false,
+        "presentRate": 0.5,
+        "options": [],
+        "extractionQuestion": "هل تطلب تمويلاً؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "ENROLL_CERT",
+    "nameAr": "إفادة قيد جامعي",
+    "nameEn": "Enrollment certificate",
+    "descriptionAr": "إفادة رسمية تثبت أن مقدم الطلب طالب مسجل حالياً في المعهد، تُقدَّم إلى جهة خارجية.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "إفادة قيد جامعي (Enrollment certificate). إفادة رسمية تثبت أن مقدم الطلب طالب مسجل حالياً في المعهد، تُقدَّم إلى جهة خارجية. الحقول: الغرض، الجهة المقدَّم إليها، لغة الإفادة، عدد النسخ. أمثلة: أرجو منحي إفادة قيد جامعي تثبت أنني طالب مسجل هذا العام لتقديمها إلى السفارة الألمانية. بحاجة لورقة تثبت إني طالب هون لأقدمها للبنك، نسختين بالإنكليزي. الرجاء إصدار إفادة تسجيل باللغة الإنكليزية لغرض التقدم لمنحة دراسية.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "purpose",
+        "labelAr": "الغرض",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.8,
+        "options": [],
+        "extractionQuestion": "لأي غرض تحتاج الإفادة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "destination_entity",
+        "labelAr": "الجهة المقدَّم إليها",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.75,
+        "options": [],
+        "extractionQuestion": "ما الجهة التي ستُقدَّم إليها الإفادة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "language",
+        "labelAr": "لغة الإفادة",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [
+          {
+            "code": "AR",
+            "labelAr": "العربية"
+          },
+          {
+            "code": "EN",
+            "labelAr": "الإنكليزية"
+          },
+          {
+            "code": "FR",
+            "labelAr": "الفرنسية"
+          }
+        ],
+        "extractionQuestion": "بأي لغة تريد الإفادة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "copies",
+        "labelAr": "عدد النسخ",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.5,
+        "options": [],
+        "extractionQuestion": "كم نسخة تريد؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "GRADE_APPEAL",
+    "nameAr": "اعتراض على علامة",
+    "nameEn": "Grade appeal",
+    "descriptionAr": "طلب إعادة تصحيح أو مراجعة علامة مقرر بعد إعلان النتائج.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "اعتراض على علامة (Grade appeal). طلب إعادة تصحيح أو مراجعة علامة مقرر بعد إعلان النتائج. الحقول: اسم المقرر، رمز المقرر، نوع الامتحان، العلامة الممنوحة. أمثلة: أرجو إعادة تصحيح ورقتي في مقرر قواعد المعطيات CS304 في الامتحان النهائي، علامتي 48. بدي اعترض على علامتي بالذكاء الصنعي، بظن في خطأ بالجمع. الرجاء مراجعة نتيجتي في الامتحان الفصلي لمادة التحليل الرياضي.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "course_name",
+        "labelAr": "اسم المقرر",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.9,
+        "options": [],
+        "extractionQuestion": "ما اسم المقرر؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "course_code",
+        "labelAr": "رمز المقرر",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.45,
+        "options": [],
+        "extractionQuestion": "ما رمز المقرر؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "exam_type",
+        "labelAr": "نوع الامتحان",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [
+          {
+            "code": "MIDTERM",
+            "labelAr": "الامتحان الفصلي"
+          },
+          {
+            "code": "FINAL",
+            "labelAr": "الامتحان النهائي"
+          },
+          {
+            "code": "PRACTICAL",
+            "labelAr": "الامتحان العملي"
+          }
+        ],
+        "extractionQuestion": "أي امتحان تعترض على علامته؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "grade_received",
+        "labelAr": "العلامة الممنوحة",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.5,
+        "options": [],
+        "extractionQuestion": "ما العلامة التي حصلت ��ليها؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "ID_REPLACEMENT",
+    "nameAr": "بدل ضائع للبطاقة الجامعية",
+    "nameEn": "Replacement student ID card",
+    "descriptionAr": "طلب إصدار بطاقة جامعية بديلة عن بطاقة مفقودة أو تالفة.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "بدل ضائع للبطاقة الجامعية (Replacement student ID card). طلب إصدار بطاقة جامعية بديلة عن بطاقة مفقودة أو تالفة. الحقول: تاريخ الفقدان، ظروف الفقدان. أمثلة: أرجو إصدار بطاقة جامعية بدل ضائع، فقدتها بتاريخ 2026-07-20 في الباص. ضاعت مني الهوية الجامعية، بدي بدل ضائع. الرجاء منحي بطاقة بديلة، سُرقت محفظتي وفيها البطاقة.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "loss_date",
+        "labelAr": "تاريخ الفقدان",
+        "labelEn": null,
+        "type": "DATE",
+        "dataTypeRaw": "DATE",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [],
+        "extractionQuestion": "متى فقدت البطاقة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "loss_circumstances",
+        "labelAr": "ظروف الفقدان",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.75,
+        "options": [],
+        "extractionQuestion": "كيف فقدت البطاقة؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "MILITARY_DEFER",
+    "nameAr": "إفادة لسوق التجنيد (تأجيل)",
+    "nameEn": "Military service deferment statement",
+    "descriptionAr": "إفادة موجهة إلى شعبة التجنيد لتأجيل الخدمة الإلزامية بسبب الدراسة.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "إفادة لسوق التجنيد (تأجيل) (Military service deferment statement). إفادة موجهة إلى شعبة التجنيد لتأجيل الخدمة الإلزامية بسبب الدراسة. الحقول: شعبة التجنيد، سنة التأجيل. أمثلة: أرجو إصدار إفادة موجهة إلى شعبة تجنيد دمشق لتأجيل خدمتي عن عام 2026. بدي ورقة للتجنيد تثبت إني طالب لتأجيل السوق. الرجاء منحي إفادة تأجيل خدمة إلزامية لشعبة تجنيد حمص.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "recruitment_division",
+        "labelAr": "شعبة التجنيد",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.8,
+        "options": [],
+        "extractionQuestion": "إلى أي شعبة تجنيد توجَّه الإفادة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "deferment_year",
+        "labelAr": "سنة التأجيل",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [],
+        "extractionQuestion": "لأي سنة تريد التأجيل؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "NO_OBJECTION",
+    "nameAr": "شهادة عدم اعتراض",
+    "nameEn": "No-objection certificate",
+    "descriptionAr": "كتاب رسمي يفيد بعدم ممانعة الجهة من سفر الموظف أو تقدمه لجهة أخرى.",
+    "requesterType": "EMPLOYEE",
+    "classifierDocument": "شهادة عدم اعتراض (No-objection certificate). كتاب رسمي يفيد بعدم ممانعة الجهة من سفر الموظف أو تقدمه لجهة أخرى. الحقول: الجهة المقصودة، الغرض، تاريخ السفر. أمثلة: أرجو منحي شهادة عدم اعتراض لتقديمها إلى السفارة الفرنسية بغرض إجراءات السفر. بحاجة كتاب عدم ممانعة للسفر بتاريخ 2026-09-15. الرجاء إصدار عدم اعتراض على تقدمي لوظيفة في نقابة المهندسين.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "destination_entity",
+        "labelAr": "الجهة المقصودة",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.85,
+        "options": [],
+        "extractionQuestion": "ما الجهة التي سيُقدَّم إليها الكتاب؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "purpose",
+        "labelAr": "الغرض",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "ما الغرض من الكتاب؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "travel_date",
+        "labelAr": "تاريخ السفر",
+        "labelEn": null,
+        "type": "DATE",
+        "dataTypeRaw": "DATE",
+        "required": false,
+        "presentRate": 0.5,
+        "options": [],
+        "extractionQuestion": "ما تاريخ السفر؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "PROVISIONAL_GRAD",
+    "nameAr": "إفادة تخرج مؤقتة",
+    "nameEn": "Provisional graduation certificate",
+    "descriptionAr": "إفادة مؤقتة تُمنح لمن أنهى دراسته وأتمّ متطلبات التخرج، ريثما تصدر وثيقة التخرج النهائية. وهي ليست إفادة قيد، إذ إن صاحبها لم يعد طالباً مسجّلاً.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "إفادة تخرج مؤقتة (Provisional graduation certificate). إفادة مؤقتة تُمنح لمن أنهى دراسته وأتمّ متطلبات التخرج، ريثما تصدر وثيقة التخرج النهائية. وهي ليست إفادة قيد، إذ إن صاحبها لم يعد طالباً مسجّلاً. الحقول: سنة التخرج، اللغة، الجهة المقصودة. أمثلة: أرجو منحي إفادة تخرج مؤقتة تثبت أنني أنهيت دراستي وتخرجت عام 2025، ريثما تصدر وثيقة التخرج النهائية. بدي ورقة تثبت إني تخرجت وخلصت دراستي، لحتى تطلع الوثيقة الأصلية. الرجاء إصدار إفادة تخرج مؤقتة باللغة الإنكليزية بعد إتمامي متطلبات التخرج، لتقديمها إلى وزارة التعليم العالي.",
+    "split": "unseen",
+    "fields": [
+      {
+        "key": "graduation_year",
+        "labelAr": "سنة التخرج",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "ما سنة تخرجك؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "language",
+        "labelAr": "اللغة",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.55,
+        "options": [
+          {
+            "code": "AR",
+            "labelAr": "العربية"
+          },
+          {
+            "code": "EN",
+            "labelAr": "الإنكليزية"
+          },
+          {
+            "code": "FR",
+            "labelAr": "الفرنسية"
+          }
+        ],
+        "extractionQuestion": "بأي لغة تريد الإفادة؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "destination_entity",
+        "labelAr": "الجهة المقصودة",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "ما الجهة التي ستُقدَّم إليها؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "SALARY_CERT",
+    "nameAr": "كتاب تعريف بالراتب",
+    "nameEn": "Salary certificate",
+    "descriptionAr": "كتاب رسمي يبيّن راتب الموظف الشهري، يُقدَّم عادةً إلى مصرف أو جهة تمويل.",
+    "requesterType": "EMPLOYEE",
+    "classifierDocument": "كتاب تعريف بالراتب (Salary certificate). كتاب رسمي يبيّن راتب الموظف الشهري، يُقدَّم عادةً إلى مصرف أو جهة تمويل. الحقول: الجهة المقصودة، تضمين التعويضات. أمثلة: أرجو إصدار كتاب تعريف بالراتب موجه إلى المصرف التجاري السوري مع بيان التعويضات. بدي ورقة براتبي للبنك. الرجاء تزويدي بتعريف راتب لتقديمه إلى بنك بيمو السعودي الفرنسي.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "destination_entity",
+        "labelAr": "الجهة المقصودة",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.85,
+        "options": [],
+        "extractionQuestion": "إلى أي جهة سيُقدَّم الكتاب؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "include_allowances",
+        "labelAr": "تضمين التعويضات",
+        "labelEn": null,
+        "type": "BOOLEAN",
+        "dataTypeRaw": "BOOL",
+        "required": false,
+        "presentRate": 0.5,
+        "options": [],
+        "extractionQuestion": "هل تريد تضمين التعويضات؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "STUDY_WITHDRAWAL",
+    "nameAr": "طلب انقطاع مؤقت عن الدراسة",
+    "nameEn": "Temporary study withdrawal",
+    "descriptionAr": "طلب تجميد التسجيل والانقطاع عن الدراسة لفصل أو أكثر مع الاحتفاظ بالمقعد.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "طلب انقطاع مؤقت عن الدراسة (Temporary study withdrawal). طلب تجميد التسجيل والانقطاع عن الدراسة لفصل أو أكثر مع الاحتفاظ بالمقعد. الحقول: السبب، اعتباراً من فصل، عدد الفصول. أمثلة: أرجو الموافقة على انقطاعي عن الدراسة لمدة فصلين بسبب ظروف صحية. بدي جمّد تسجيلي من الفصل الثاني بسبب السفر خارج القطر. الرجاء منحي إجازة دراسية اعتباراً من الفصل الأول لظروف عائلية طارئة.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "reason",
+        "labelAr": "السبب",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.85,
+        "options": [],
+        "extractionQuestion": "ما سبب الانقطاع؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "from_semester",
+        "labelAr": "اعتباراً من فصل",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [
+          {
+            "code": "S1",
+            "labelAr": "الفصل الأول"
+          },
+          {
+            "code": "S2",
+            "labelAr": "الفصل الثاني"
+          },
+          {
+            "code": "SUMMER",
+            "labelAr": "الفصل الصيفي"
+          }
+        ],
+        "extractionQuestion": "من أي فصل يبدأ الانقطاع؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "duration_semesters",
+        "labelAr": "عدد الفصول",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.65,
+        "options": [],
+        "extractionQuestion": "كم فصلاً مدة الانقطاع؟",
+        "questionSource": "dataset"
+      }
+    ]
+  },
+  {
+    "code": "TRANSCRIPT",
+    "nameAr": "كشف علامات",
+    "nameEn": "Transcript of records",
+    "descriptionAr": "كشف رسمي بعلامات الطالب ومقرراته لفصل أو سنة دراسية محددة.",
+    "requesterType": "STUDENT",
+    "classifierDocument": "كشف علامات (Transcript of records). كشف رسمي بعلامات الطالب ومقرراته لفصل أو سنة دراسية محددة. الحقول: العام الدراسي، الفصل، اللغة، عدد النسخ. أمثلة: أرجو إصدار كشف علامات للعام الدراسي 2024-2025 باللغة الإنكليزية. بدي كشف درجات للفصل الأول، نسخة وحدة بتكفي. الرجاء تزويدي ببيان درجات مصدق لتقديمه إلى وزارة التعليم العالي.",
+    "split": "seen",
+    "fields": [
+      {
+        "key": "academic_year",
+        "labelAr": "العام الدراسي",
+        "labelEn": null,
+        "type": "TEXT",
+        "dataTypeRaw": "TEXT",
+        "required": false,
+        "presentRate": 0.7,
+        "options": [],
+        "extractionQuestion": "ما العام الدراسي المطلوب؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "semester",
+        "labelAr": "الفصل",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.6,
+        "options": [
+          {
+            "code": "S1",
+            "labelAr": "الفصل الأول"
+          },
+          {
+            "code": "S2",
+            "labelAr": "الفصل الثاني"
+          },
+          {
+            "code": "SUMMER",
+            "labelAr": "الفصل الصيفي"
+          }
+        ],
+        "extractionQuestion": "أي فصل دراسي؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "language",
+        "labelAr": "اللغة",
+        "labelEn": null,
+        "type": "ENUM",
+        "dataTypeRaw": "ENUM",
+        "required": false,
+        "presentRate": 0.55,
+        "options": [
+          {
+            "code": "AR",
+            "labelAr": "العربية"
+          },
+          {
+            "code": "EN",
+            "labelAr": "الإنكليزية"
+          },
+          {
+            "code": "FR",
+            "labelAr": "الفرنسية"
+          }
+        ],
+        "extractionQuestion": "بأي لغة تريد الكشف؟",
+        "questionSource": "dataset"
+      },
+      {
+        "key": "copies",
+        "labelAr": "عدد النسخ",
+        "labelEn": null,
+        "type": "NUMBER",
+        "dataTypeRaw": "NUM",
+        "required": false,
+        "presentRate": 0.45,
+        "options": [],
+        "extractionQuestion": "كم نسخة تريد؟",
+        "questionSource": "dataset"
+      }
+    ]
+  }
+]

@@ -31,6 +31,8 @@ import type {
   UnreadCountView,
 } from '../../application/observability/queries/views/notification.view'
 import { ListNotificationsDto } from './dto/list-notifications.dto'
+import { OffsetPage } from '../../application/shared/pagination'
+import { toNumber } from '../shared/dto/page-query.dto'
 import { PurgeNotificationsDto } from './dto/purge-notifications.dto'
 
 const DEFAULT_RETENTION_DAYS = 30
@@ -74,13 +76,24 @@ export class NotificationsController {
 
   // ----- reads (literal paths first so they win the route match) -----
 
+  /**
+   * Paged by offset rather than cursor. An inbox is read from the top and the
+   * unread count beside it is a number people expect to match, so a total is
+   * worth having; and unlike the request queue, a notification arriving while
+   * someone reads page two costs nothing if it is seen a moment later.
+   */
   @Get()
   list(
     @CurrentUserId() userId: string,
     @Query() dto: ListNotificationsDto,
-  ): Promise<NotificationView[]> {
+  ): Promise<OffsetPage<NotificationView>> {
     return this.queryBus.execute(
-      new ListMyNotificationsQuery(userId, dto.unreadOnly === 'true'),
+      new ListMyNotificationsQuery(
+        userId,
+        dto.unreadOnly === 'true',
+        toNumber(dto.limit),
+        toNumber(dto.offset),
+      ),
     )
   }
 

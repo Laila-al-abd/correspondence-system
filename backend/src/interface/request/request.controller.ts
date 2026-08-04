@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { CurrentUserId } from '../identity/current-user.decorator'
 import { SubmitRequestCommand } from '../../application/request/commands/submit-request/submit-request.command'
 import { ClassifyRequestByModelCommand } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.command'
 import { ClassifyRequestByHumanCommand } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.command'
+import { RecordExtractionCommand } from '../../application/request/commands/record-extraction/record-extraction.command'
+import { ConfirmRequestCommand } from '../../application/request/commands/confirm-request/confirm-request.command'
 import { StartRequestWorkflowCommand } from '../../application/request/commands/start-request-workflow/start-request-workflow.command'
 import { AssignStepCommand } from '../../application/request/commands/assign-step/assign-step.command'
 import { ActOnStepCommand } from '../../application/request/commands/act-on-step/act-on-step.command'
@@ -18,9 +28,14 @@ import {
   RequestDetailView,
   RequestSummaryView,
 } from '../../application/request/queries/views/request.view'
+import { KeysetPage } from '../../application/shared/pagination'
+import { PageQueryDto, toNumber } from '../shared/dto/page-query.dto'
+import { ListQueueDto } from './dto/list-queue.dto'
 import { SubmitRequestDto } from './dto/submit-request.dto'
 import { ClassifyByModelDto } from './dto/classify-by-model.dto'
 import { ClassifyByHumanDto } from './dto/classify-by-human.dto'
+import { RecordExtractionDto } from './dto/record-extraction.dto'
+import { ConfirmRequestDto } from './dto/confirm-request.dto'
 import { AssignStepDto } from './dto/assign-step.dto'
 import { ActOnStepDto } from './dto/act-on-step.dto'
 import { UploadDocumentDto } from './dto/upload-document.dto'
@@ -42,20 +57,52 @@ export class RequestController {
 
   // ----- reads (literal paths declared before ':id' so they win the match) --
 
+  /**
+   * All three list routes are paged with a cursor rather than a page number.
+   * They are the lists that grow without bound -- one per applicant, one per
+   * reviewer, one for the whole institute -- and they are also the lists where
+   * rows are inserted constantly. Under offset paging a request filed while a
+   * reviewer reads page two slides from the top of page three to the bottom of
+   * page two and is never seen. Here that cannot happen: the client asks for
+   * what follows the last row it actually received.
+   */
   @Get('mine')
-  listMine(@CurrentUserId() userId: string): Promise<RequestSummaryView[]> {
-    return this.queryBus.execute(new ListMyRequestsQuery(userId))
+  listMine(
+    @CurrentUserId() userId: string,
+    @Query() page: PageQueryDto,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.queryBus.execute(
+      new ListMyRequestsQuery(userId, toNumber(page.limit), page.cursor),
+    )
   }
 
   @Get('assigned')
-  listAssigned(@CurrentUserId() userId: string): Promise<RequestSummaryView[]> {
-    return this.queryBus.execute(new ListAssignedRequestsQuery(userId))
+  listAssigned(
+    @CurrentUserId() userId: string,
+    @Query() page: PageQueryDto,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.queryBus.execute(
+      new ListAssignedRequestsQuery(userId, toNumber(page.limit), page.cursor),
+    )
   }
 
   @Get('queue')
   @RequirePermissions('request.read')
-  listQueue(@Query('status') status: string): Promise<RequestSummaryView[]> {
-    return this.queryBus.execute(new ListRequestQueueQuery(status))
+  listQueue(
+    @Query() dto: ListQueueDto,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.queryBus.execute(
+      new ListRequestQueueQuery(
+        dto.status,
+        toNumber(dto.limit),
+        dto.cursor,
+        dto.classificationStatus,
+        // Absent stays absent: only an explicit "true" or "false" filters.
+        dto.hasFilledData === undefined
+          ? undefined
+          : dto.hasFilledData === 'true',
+      ),
+    )
   }
 
   @Get('by-reference/:referenceNo')
@@ -110,6 +157,50 @@ export class RequestController {
   classifyByHuman(@Param('id') id: string, @Body() dto: ClassifyByHumanDto) {
     return this.commandBus.execute(
       new ClassifyRequestByHumanCommand({ requestId: id, ...dto }),
+    )
+  }
+
+  /**
+   * Where the extractor writes what it found. PATCH rather than PUT because
+   * the body is a fragment of the form and not the form itself: the model
+   * answers the questions it can and abstains on the rest, so a request whose
+   * nine fields are filled over two runs must not lose the first run's work to
+   * the second. The merge happens inside the aggregate, under its version
+   * check, so two runs racing cannot overwrite each other either.
+   *
+   * Guarded by `request.classify` rather than `request.act`: choosing a
+   * template and filling its fields from the same text are the same duty, and
+   * neither of them is approving anything.
+   */
+  @Patch(':id/filled-data')
+  @RequirePermissions('request.classify')
+  recordExtraction(
+    @Param('id') id: string,
+    @Body() dto: RecordExtractionDto,
+  ) {
+    return this.commandBus.execute(
+      new RecordExtractionCommand({ requestId: id, ...dto }),
+    )
+  }
+
+  /**
+   * The requester accepts or rejects what the models proposed.
+   *
+   * Carries no `@RequirePermissions`, which makes it a personal route: it is
+   * the requester's own request, and the handler checks that the caller is that
+   * person. A staff permission here would be wrong twice over -- it would let
+   * staff confirm on a student's behalf, and it would put the route behind the
+   * working-hours guard, so anyone submitting in the evening could not finish
+   * their own submission until the next working morning.
+   */
+  @Post(':id/confirm')
+  confirm(
+    @CurrentUserId() userId: string,
+    @Param('id') id: string,
+    @Body() dto: ConfirmRequestDto,
+  ) {
+    return this.commandBus.execute(
+      new ConfirmRequestCommand({ requestId: id, actorId: userId, ...dto }),
     )
   }
 
