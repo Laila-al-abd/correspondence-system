@@ -1,4 +1,11 @@
 import { Module } from '@nestjs/common'
+import type { UserRepository } from '../../domain/identity/ports/user.repository'
+import type {
+  DepartmentRepository,
+  PersonnelDirectory,
+} from '../../domain/organization/ports/department.repository'
+import type { IdGenerator } from '../../domain/shared/id-generator'
+import type { TransactionRunner } from '../../domain/shared/transaction-runner'
 import { APP_GUARD } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { RegisterUserHandler } from '../../application/identity/commands/register-user/register-user.handler'
@@ -6,12 +13,19 @@ import { AuthenticateUserHandler } from '../../application/identity/commands/aut
 import { AssignRoleToUserHandler } from '../../application/identity/commands/assign-role-to-user/assign-role-to-user.handler'
 import { RevokeRoleFromUserHandler } from '../../application/identity/commands/revoke-role-from-user/revoke-role-from-user.handler'
 import { AdministrativeFloorPolicy } from '../../application/identity/policies/administrative-floor.policy'
+import { CreateUserHandler } from '../../application/identity/commands/create-user/create-user.handler'
+import { SyncUsersHandler } from '../../application/identity/commands/sync-users/sync-users.handler'
+import { SyncUsersFromDirectory } from '../../application/identity/sync-users-from-directory'
+import { UserTypeAttributeWriter } from '../../application/identity/services/user-type-attribute.writer'
 import { SetUserAttributeHandler } from '../../application/identity/commands/set-user-attribute/set-user-attribute.handler'
 import { ClearUserAttributeHandler } from '../../application/identity/commands/clear-user-attribute/clear-user-attribute.handler'
 import {
   ACCESS_TOKEN_SERVICE,
   ATTRIBUTE_DEFINITION_REPOSITORY,
   AUTH_PROVIDER_REGISTRY,
+  DEPARTMENT_REPOSITORY,
+  PERSONNEL_DIRECTORY,
+  TRANSACTION_RUNNER,
   DELEGATION_QUERY,
   DELEGATION_REPOSITORY,
   ID_GENERATOR,
@@ -22,6 +36,7 @@ import {
   USER_REPOSITORY,
 } from '../../application/tokens'
 import { PrismaUserRepository } from '../../infrastructure/identity/prisma-user.repository'
+import { DirectoryAuthProvider } from '../../infrastructure/identity/directory-auth.provider'
 import { PrismaUserQuery } from '../../infrastructure/identity/prisma-user-query'
 import { PrismaRoleRepository } from '../../infrastructure/identity/prisma-role.repository'
 import { PrismaAttributeDefinitionRepository } from '../../infrastructure/catalog/prisma-attribute-definition.repository'
@@ -60,11 +75,14 @@ import { ObservabilityModule } from '../observability/observability.module'
   controllers: [AuthController, UsersController, DelegationsController],
   providers: [
     RegisterUserHandler,
+    CreateUserHandler,
+    SyncUsersHandler,
     AuthenticateUserHandler,
     GetEffectivePermissionsHandler,
     AssignRoleToUserHandler,
     RevokeRoleFromUserHandler,
     AdministrativeFloorPolicy,
+    UserTypeAttributeWriter,
     SetUserAttributeHandler,
     ClearUserAttributeHandler,
     GrantDelegationHandler,
@@ -93,12 +111,42 @@ import { ObservabilityModule } from '../observability/observability.module'
     { provide: DELEGATION_QUERY, useClass: PrismaDelegationQuery },
     { provide: PASSWORD_HASHER, useClass: BcryptPasswordHasher },
     { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
+    {
+      provide: SyncUsersFromDirectory,
+      useFactory: (
+        directory: PersonnelDirectory,
+        users: UserRepository,
+        departments: DepartmentRepository,
+        ids: IdGenerator,
+        transaction: TransactionRunner,
+        userTypeAttribute: UserTypeAttributeWriter,
+      ) =>
+        new SyncUsersFromDirectory(
+          directory,
+          users,
+          departments,
+          ids,
+          transaction,
+          userTypeAttribute,
+        ),
+      inject: [
+        PERSONNEL_DIRECTORY,
+        USER_REPOSITORY,
+        DEPARTMENT_REPOSITORY,
+        ID_GENERATOR,
+        TRANSACTION_RUNNER,
+        UserTypeAttributeWriter,
+      ],
+    },
     LocalAuthProvider,
+    DirectoryAuthProvider,
     {
       provide: AUTH_PROVIDER_REGISTRY,
-      useFactory: (local: LocalAuthProvider) =>
-        new AuthProviderRegistryImpl([local]),
-      inject: [LocalAuthProvider],
+      useFactory: (
+        local: LocalAuthProvider,
+        directory: DirectoryAuthProvider,
+      ) => new AuthProviderRegistryImpl([local, directory]),
+      inject: [LocalAuthProvider, DirectoryAuthProvider],
     },
   ],
 })

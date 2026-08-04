@@ -15,7 +15,10 @@ import { AssignRoleToUserCommand } from '../../application/identity/commands/ass
 import { RevokeRoleFromUserCommand } from '../../application/identity/commands/revoke-role-from-user/revoke-role-from-user.command'
 import { SetUserAttributeCommand } from '../../application/identity/commands/set-user-attribute/set-user-attribute.command'
 import { ClearUserAttributeCommand } from '../../application/identity/commands/clear-user-attribute/clear-user-attribute.command'
+import { CreateUserCommand } from '../../application/identity/commands/create-user/create-user.command'
+import { SyncUsersCommand } from '../../application/identity/commands/sync-users/sync-users.command'
 import { AssignRoleDto } from './dto/assign-role.dto'
+import { CreateUserDto } from './dto/create-user.dto'
 import { SetUserAttributeDto } from './dto/set-user-attribute.dto'
 import { RequirePermissions } from './permissions.decorator'
 import { CurrentUserId } from './current-user.decorator'
@@ -60,6 +63,29 @@ export class UsersController {
     const found = await this.users.getDetail(userId)
     if (!found) throw new EntityNotFoundError('User', userId)
     return found
+  }
+
+  /**
+   * Provision a member of staff or a student. The only hand-operated way to
+   * create an account that carries an institutional number.
+   */
+  @Post()
+  create(@Body() dto: CreateUserDto, @CurrentUserId() actorId: string) {
+    return this.commandBus.execute(
+      new CreateUserCommand({ ...dto, createdBy: actorId }),
+    )
+  }
+
+  /**
+   * Import people from the external personnel directory -- the non-manual
+   * alternative to the endpoint above, and the counterpart of
+   * POST /organization/departments/sync. Run the department sync first: a
+   * person's unit is resolved against departments already imported from the
+   * same source.
+   */
+  @Post('sync')
+  syncFromDirectory(@Query('source') source?: string) {
+    return this.commandBus.execute(new SyncUsersCommand(source))
   }
 
   @Post(':userId/roles')

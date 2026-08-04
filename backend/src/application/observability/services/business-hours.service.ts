@@ -63,7 +63,7 @@ interface WorkingWindow {
  * progress in wall-clock hours is misleading: a step opened Thursday afternoon
  * looks two days slow purely because the weekend fell in the middle. Everything
  * that cares about elapsed time -- SLA due dates, the working-hours guard, and
- * the remaining-time features fed to the LSTM -- goes through this service, so
+ * the recorded duration of finished requests -- goes through this service, so
  * they can never disagree about whether Friday counted.
  *
  * Non-working time is defined by two things: the weekly schedule in the
@@ -180,9 +180,10 @@ export class BusinessHoursService {
   }
 
   /**
-   * Working hours between two instants. This is the measure to train the LSTM
-   * on: it removes nights, weekends, and holidays from the target, leaving only
-   * time in which the request could actually have been worked on.
+   * Working hours between two instants. This is the measure behind every
+   * duration the system reports: it removes nights, weekends, and holidays,
+   * leaving only time in which the request could actually have been worked on.
+   * A request that sat over a weekend is not reported as two days slow.
    */
   async workingHoursBetween(from: Date, to: Date): Promise<number> {
     if (to.getTime() <= from.getTime()) return 0

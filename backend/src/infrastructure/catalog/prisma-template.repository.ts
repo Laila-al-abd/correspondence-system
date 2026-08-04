@@ -25,6 +25,15 @@ export class PrismaTemplateRepository implements TemplateRepository {
     return row ? TemplateMapper.toDomain(row) : null
   }
 
+  /** Look a template up by the stable code the AI service refers to it by. */
+  async findByCode(code: string): Promise<Template | null> {
+    const row = await this.prisma.template.findFirst({
+      where: { code: code.trim().toUpperCase(), deletedAt: null },
+      include: templateInclude,
+    })
+    return row ? TemplateMapper.toDomain(row) : null
+  }
+
   async listActive(): Promise<Template[]> {
     const rows = await this.prisma.template.findMany({
       where: { isActive: true, deletedAt: null },
@@ -70,6 +79,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
             dataType: field.dataType,
             isRequired: field.isRequired,
             ordinal: field.ordinal,
+            extractionQuestion: field.extractionQuestion ?? null,
             options: {
               create: field.options.map((option) => ({
                 value: option.value,

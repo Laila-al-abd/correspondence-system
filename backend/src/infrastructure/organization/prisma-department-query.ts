@@ -10,6 +10,11 @@ import type {
   DepartmentView,
   ListDepartmentsFilter,
 } from '../../application/organization/ports/department-query.port'
+import {
+  OffsetPage,
+  clampLimit,
+  clampOffset,
+} from '../../application/shared/pagination'
 import { PrismaService } from '../persistence/prisma.service'
 
 type RowWithType = DepartmentRow & { unitType: OrgUnitTypeRow }
@@ -25,7 +30,9 @@ type RowWithType = DepartmentRow & { unitType: OrgUnitTypeRow }
 export class PrismaDepartmentQuery implements DepartmentQueryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(filter: ListDepartmentsFilter): Promise<DepartmentView[]> {
+  async list(filter: ListDepartmentsFilter): Promise<OffsetPage<DepartmentView>> {
+    const limit = clampLimit(filter.limit)
+    const offset = clampOffset(filter.offset)
     const where: Prisma.DepartmentWhereInput = { deletedAt: null }
     if (filter.activeOnly) where.isActive = true
     if (filter.parentId) where.parentId = filter.parentId
@@ -36,12 +43,17 @@ export class PrismaDepartmentQuery implements DepartmentQueryPort {
         { name: { path: ['en'], string_contains: term } },
       ]
     }
-    const rows = await this.prisma.department.findMany({
-      where,
-      include: { unitType: true },
-      orderBy: { id: 'asc' },
-    })
-    return rows.map((row) => toView(row))
+    const [total, rows] = await Promise.all([
+      this.prisma.department.count({ where }),
+      this.prisma.department.findMany({
+        where,
+        include: { unitType: true },
+        orderBy: { id: 'asc' },
+        skip: offset,
+        take: limit,
+      }),
+    ])
+    return { total, limit, offset, items: rows.map((row) => toView(row)) }
   }
 
   async getById(id: string): Promise<DepartmentView | null> {

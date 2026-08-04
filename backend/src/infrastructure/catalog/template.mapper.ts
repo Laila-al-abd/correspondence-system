@@ -41,6 +41,7 @@ export const TemplateMapper = {
           dataType: f.dataType as FieldDataType,
           isRequired: f.isRequired,
           ordinal: f.ordinal,
+          extractionQuestion: f.extractionQuestion ?? undefined,
           options: [...f.options]
             .sort((a, b) => a.ordinal - b.ordinal)
             .map((o) =>
@@ -58,6 +59,8 @@ export const TemplateMapper = {
     )
 
     return Template.rehydrate(Identifier.of(row.id), {
+      code: row.code ?? undefined,
+      classifierDocument: row.classifierDocument ?? undefined,
       categoryId: Identifier.of(row.categoryId),
       title: toLocalized(row.title),
       description: row.description ? toLocalized(row.description) : undefined,
@@ -73,6 +76,8 @@ export const TemplateMapper = {
     const s = template.snapshot()
     return {
       id: template.id.toString(),
+      code: s.code ?? null,
+      classifierDocument: s.classifierDocument ?? null,
       categoryId: s.categoryId,
       title: s.title as Prisma.InputJsonValue,
       description: s.description

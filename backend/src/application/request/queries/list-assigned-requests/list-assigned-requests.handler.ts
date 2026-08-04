@@ -1,24 +1,28 @@
 import { Inject } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
-import { Identifier } from '../../../../domain/shared/identifier'
-import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
-import { REQUEST_REPOSITORY } from '../../../tokens'
+import type { RequestQueryPort } from '../../ports/request-query.port'
+import { REQUEST_QUERY } from '../../../tokens'
+import { KeysetPage } from '../../../shared/pagination'
 import { ListAssignedRequestsQuery } from './list-assigned-requests.query'
-import { RequestSummaryView, toRequestSummary } from '../views/request.view'
+import { RequestSummaryView } from '../views/request.view'
 
-/** Every request that has at least one step assigned to the caller. */
+/** One page of the requests that have at least one step assigned to the caller. */
 @QueryHandler(ListAssignedRequestsQuery)
 export class ListAssignedRequestsHandler
-  implements IQueryHandler<ListAssignedRequestsQuery, RequestSummaryView[]>
+  implements
+    IQueryHandler<ListAssignedRequestsQuery, KeysetPage<RequestSummaryView>>
 {
   constructor(
-    @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    @Inject(REQUEST_QUERY) private readonly requests: RequestQueryPort,
   ) {}
 
-  async execute(
+  execute(
     query: ListAssignedRequestsQuery,
-  ): Promise<RequestSummaryView[]> {
-    const rows = await this.requests.listAssignedTo(Identifier.of(query.userId))
-    return rows.map(toRequestSummary)
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.requests.listAssignedTo({
+      userId: query.userId,
+      limit: query.limit,
+      cursor: query.cursor,
+    })
   }
 }

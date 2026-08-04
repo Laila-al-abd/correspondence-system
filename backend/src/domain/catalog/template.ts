@@ -12,11 +12,19 @@ export interface FilledDataViolation {
 }
 
 interface TemplateProps {
+  /** Stable machine name (ENROLL_CERT); optional until an admin assigns one. */
+  code?: string
   categoryId: Identifier
   title: LocalizedText
   description?: LocalizedText
   sensitivityLevelId: Identifier
   isActive: boolean
+  /**
+   * The exact Arabic text the classifier embeds. Deliberately separate from
+   * `description`: that is prose for people, this is an input to a model that
+   * was measured against these exact characters.
+   */
+  classifierDocument?: string
   fields: TemplateField[]
   eligibilityRules: TemplateEligibilityRule[]
 }
@@ -38,9 +46,13 @@ export class Template extends AggregateRoot {
       title: LocalizedText
       sensitivityLevelId: Identifier
       description?: LocalizedText
+      code?: string
+      classifierDocument?: string
     },
   ): Template {
     return new Template(id, {
+      code: p.code ? Template.normaliseCode(p.code) : undefined,
+      classifierDocument: p.classifierDocument,
       categoryId: p.categoryId,
       title: p.title,
       description: p.description,
@@ -76,6 +88,38 @@ export class Template extends AggregateRoot {
     if (this.props.eligibilityRules.length === before)
       throw new InvariantViolationError(`Eligibility rule "${ruleId.toString()}" not found in template.`)
   }
+
+  /**
+   * Codes are write-once. Renaming one would silently break every stored
+   * measurement and every AI-service mapping that refers to the old name, and
+   * nothing in the system would report the break.
+   */
+  assignCode(code: string): void {
+    const next = Template.normaliseCode(code)
+    if (this.props.code && this.props.code !== next)
+      throw new InvariantViolationError(
+        `Template code "${this.props.code}" cannot be changed once assigned.`,
+      )
+    this.props.code = next
+  }
+
+  /** Replaces the text the classifier embeds. Changing it changes classification. */
+  setClassifierDocument(document?: string): void {
+    const trimmed = document?.trim()
+    this.props.classifierDocument = trimmed ? trimmed : undefined
+  }
+
+  private static normaliseCode(code: string): string {
+    const next = code.trim().toUpperCase()
+    if (!/^[A-Z][A-Z0-9_]{1,49}$/.test(next))
+      throw new InvariantViolationError(
+        `Template code "${code}" must be 2-50 characters of A-Z, 0-9 and underscore, starting with a letter.`,
+      )
+    return next
+  }
+
+  get code(): string | undefined { return this.props.code }
+  get classifierDocument(): string | undefined { return this.props.classifierDocument }
 
   activate(): void { this.props.isActive = true }
   deactivate(): void { this.props.isActive = false }
@@ -116,6 +160,38 @@ export class Template extends AggregateRoot {
   }
 
   /**
+   * Validate only the keys present in a partial body.
+   *
+   * validateFilledData answers "is this form complete and correct?", which is
+   * the right question at submission and the wrong one during extraction: the
+   * form is still being filled, so every field nobody has answered yet would
+   * be reported as missing and a valid write would be rejected. This answers
+   * the narrower question -- "is what you sent me acceptable?" -- by checking
+   * membership and type for the supplied keys and ignoring the rest.
+   */
+  validatePartial(
+    partial: Record<string, unknown>,
+  ): FilledDataViolation[] {
+    const violations: FilledDataViolation[] = []
+    const byKey = new Map(this.props.fields.map((f) => [f.fieldKey, f]))
+    for (const [key, value] of Object.entries(partial)) {
+      const field = byKey.get(key)
+      if (!field) {
+        violations.push({
+          fieldKey: key,
+          reason: "This field is not part of this template.",
+        })
+        continue
+      }
+      // An empty value here means "no answer", not "answered with nothing".
+      if (value === null || value === undefined || value === "") continue
+      const reason = field.validate(value)
+      if (reason !== null) violations.push({ fieldKey: key, reason })
+    }
+    return violations
+  }
+
+  /**
    * Field keys only, for callers that do not need the reasons.
    * Prefer validateFilledData, which explains each failure.
    */
@@ -150,6 +226,8 @@ export class Template extends AggregateRoot {
   }
 
   snapshot(): {
+    code?: string
+    classifierDocument?: string
     categoryId: string
     title: { ar: string; en?: string }
     description?: { ar: string; en?: string }
@@ -159,6 +237,8 @@ export class Template extends AggregateRoot {
     eligibilityRules: ReturnType<TemplateEligibilityRule["snapshot"]>[]
   } {
     return {
+      code: this.props.code,
+      classifierDocument: this.props.classifierDocument,
       categoryId: this.props.categoryId.toString(),
       title: this.props.title.toJSON(),
       description: this.props.description?.toJSON(),

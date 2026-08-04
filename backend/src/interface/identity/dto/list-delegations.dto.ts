@@ -1,6 +1,7 @@
 import {
   IsBooleanString,
   IsDateString,
+  IsNumberString,
   IsOptional,
   IsString,
 } from 'class-validator'
@@ -22,4 +23,14 @@ export class ListDelegationsDto {
   @IsOptional()
   @IsDateString()
   onDate?: string
+
+  // Page size (1..200, default 50).
+  @IsOptional()
+  @IsNumberString()
+  limit?: string
+
+  // Zero-based offset.
+  @IsOptional()
+  @IsNumberString()
+  offset?: string
 }

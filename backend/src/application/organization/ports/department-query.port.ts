@@ -5,6 +5,7 @@
  * the API can list, search, and render the department hierarchy without loading
  * aggregates. Soft-deleted rows are always excluded.
  */
+import { OffsetPage } from '../../shared/pagination'
 
 export interface DepartmentUnitTypeView {
   id: string
@@ -35,10 +36,22 @@ export interface ListDepartmentsFilter {
   parentId?: string
   // When true, only active units are returned.
   activeOnly?: boolean
+  // Page size (clamped 1..200; default 50) and zero-based offset.
+  limit?: number
+  offset?: number
 }
 
 export interface DepartmentQueryPort {
-  list(filter: ListDepartmentsFilter): Promise<DepartmentView[]>
+  /**
+   * A page of the flat department list, browsed by page number. Offset paging
+   * suits this list: an org chart changes a few times a year, so the rows are
+   * effectively stable while an administrator reads them, and being able to
+   * jump to a page is worth more here than insert-safety.
+   *
+   * `tree` is deliberately not paged -- half a hierarchy is not a smaller
+   * hierarchy, it is a broken one, with children whose parents are missing.
+   */
+  list(filter: ListDepartmentsFilter): Promise<OffsetPage<DepartmentView>>
   getById(id: string): Promise<DepartmentView | null>
   tree(activeOnly: boolean): Promise<DepartmentTreeNode[]>
 }

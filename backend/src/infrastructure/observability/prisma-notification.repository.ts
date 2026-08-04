@@ -40,6 +40,29 @@ export class PrismaNotificationRepository implements NotificationRepository {
     return rows.map((row) => NotificationMapper.toDomain(row))
   }
 
+  async pageForUser(
+    userId: Identifier,
+    options: { onlyUnread?: boolean; limit: number; offset: number },
+  ): Promise<{ rows: Notification[]; total: number }> {
+    const where = {
+      userId: userId.toString(),
+      ...(options.onlyUnread ? { isRead: false } : {}),
+    }
+    const [total, rows] = await Promise.all([
+      this.db.notification.count({ where }),
+      this.db.notification.findMany({
+        where,
+        // createdAt is not unique -- a workflow step can fan out several
+        // notifications in the same millisecond -- so id breaks the tie and
+        // keeps the page boundary stable.
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        skip: options.offset,
+        take: options.limit,
+      }),
+    ])
+    return { rows: rows.map((row) => NotificationMapper.toDomain(row)), total }
+  }
+
   async countUnread(userId: Identifier): Promise<number> {
     return this.db.notification.count({
       where: { userId: userId.toString(), isRead: false },

@@ -1,5 +1,8 @@
 import { parse as parseYaml } from 'yaml'
-import type { ExternalOrgUnit } from '../../domain/organization/ports/department.repository'
+import type {
+  ExternalOrgUnit,
+  ExternalUser,
+} from '../../domain/organization/ports/department.repository'
 
 /**
  * Declarative description of how a specific personnel system's records map onto
@@ -20,6 +23,30 @@ export interface PersonnelDirectoryMapping {
   }
   /** Optional translation from the source's unit-type codes to our OrgUnitType codes. */
   unitTypeMap?: Record<string, string>
+  /** Optional people feed. Absent when the directory exposes units only. */
+  users?: PersonnelUserMapping
+}
+
+/**
+ * How the same personnel system describes people. Deliberately a separate block
+ * with its own endpoint and recordsPath: units and people are usually two
+ * different resources on the same service, and nothing says they share a shape.
+ */
+export interface PersonnelUserMapping {
+  /** Appended to PERSONNEL_DIRECTORY_URL. Omit to use the base URL unchanged. */
+  endpoint?: string
+  recordsPath?: string
+  fields: {
+    institutionalNumber: string
+    fullNameAr: string
+    fullNameEn?: string
+    email: string
+    phone?: string
+    userType: string
+    departmentExternalId?: string
+  }
+  /** Translation from the source's person categories to our UserType codes. */
+  userTypeMap?: Record<string, string>
 }
 
 /** Parses and validates the YAML field-mapping. Throws on a malformed file. */
@@ -42,6 +69,37 @@ export function parseMapping(yamlText: string): PersonnelDirectoryMapping {
       unitType: fields.unitType,
     },
     unitTypeMap: raw.unitTypeMap ?? {},
+    users: raw.users ? parseUserMapping(raw.users) : undefined,
+  }
+}
+
+/** Validates the optional `users:` block. Same contract: throw on malformed. */
+function parseUserMapping(raw: Partial<PersonnelUserMapping>): PersonnelUserMapping {
+  const fields = raw.fields
+  if (
+    !fields ||
+    !fields.institutionalNumber ||
+    !fields.fullNameAr ||
+    !fields.email ||
+    !fields.userType
+  )
+    throw new Error(
+      'Personnel directory users mapping must define fields.institutionalNumber, ' +
+        'fields.fullNameAr, fields.email and fields.userType.',
+    )
+  return {
+    endpoint: raw.endpoint,
+    recordsPath: raw.recordsPath,
+    fields: {
+      institutionalNumber: fields.institutionalNumber,
+      fullNameAr: fields.fullNameAr,
+      fullNameEn: fields.fullNameEn,
+      email: fields.email,
+      phone: fields.phone,
+      userType: fields.userType,
+      departmentExternalId: fields.departmentExternalId,
+    },
+    userTypeMap: raw.userTypeMap ?? {},
   }
 }
 
@@ -108,5 +166,47 @@ export function toExternalOrgUnit(
     parentExternalId,
     name: nameEn ? { ar: nameAr, en: nameEn } : { ar: nameAr },
     unitType,
+  }
+}
+
+
+/** Projects one raw record into an ExternalUser using the users mapping. */
+export function toExternalUser(
+  record: unknown,
+  mapping: PersonnelUserMapping,
+): ExternalUser {
+  const { fields, userTypeMap } = mapping
+
+  const institutionalNumber = readString(record, fields.institutionalNumber)
+  if (!institutionalNumber)
+    throw new Error(
+      'A personnel directory person record is missing its institutional number.',
+    )
+
+  const nameAr = readString(record, fields.fullNameAr)
+  if (!nameAr)
+    throw new Error(`Person '${institutionalNumber}' is missing an Arabic name.`)
+
+  const email = readString(record, fields.email)
+  if (!email)
+    throw new Error(`Person '${institutionalNumber}' is missing an email address.`)
+
+  const nameEn = fields.fullNameEn
+    ? readString(record, fields.fullNameEn)
+    : undefined
+
+  const rawUserType = readString(record, fields.userType)
+  if (!rawUserType)
+    throw new Error(`Person '${institutionalNumber}' is missing a user type.`)
+
+  return {
+    institutionalNumber,
+    name: nameEn ? { ar: nameAr, en: nameEn } : { ar: nameAr },
+    email,
+    phone: fields.phone ? readString(record, fields.phone) : undefined,
+    userType: userTypeMap?.[rawUserType] ?? rawUserType,
+    departmentExternalId: fields.departmentExternalId
+      ? (readString(record, fields.departmentExternalId) ?? null)
+      : null,
   }
 }

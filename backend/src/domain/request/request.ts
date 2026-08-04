@@ -29,6 +29,10 @@ interface RequestProps {
   sensitivityLevelId?: Identifier
   slaDueAt?: Date
   completedAt?: Date
+  confirmedAt?: Date
+  /** Set by the database on insert; the aggregate only ever reads it. */
+  createdAt?: Date
+  businessDurationMinutes?: number
   version: number
   stepInstances: RequestStepInstance[]
 }
@@ -49,6 +53,8 @@ export interface RequestSnapshot {
   sensitivityLevelId?: string
   slaDueAt?: Date
   completedAt?: Date
+  confirmedAt?: Date
+  businessDurationMinutes?: number
   version: number
   stepInstances: StepInstanceSnapshot[]
 }
@@ -134,6 +140,10 @@ classifyByModel(
 
   /** A human resolves or overrides the classification (HITL), optionally setting priority. */
 classifyByHuman(templateId: Identifier, priority?: Priority): void {
+  if (this.props.currentStatus !== RequestStatus.DRAFT)
+    throw new InvariantViolationError("Only draft requests can be classified.")
+  if (this.props.classificationStatus === ClassificationStatus.CLASSIFIED)
+    throw new InvariantViolationError("This request is already classified; a reviewer cannot reclassify it.")
   this.props.templateId = templateId
   this.props.classifiedBy = ClassifiedBy.HITL
   this.props.classificationStatus = ClassificationStatus.CLASSIFIED
@@ -146,12 +156,78 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
     this.props.filledData = data
   }
 
+  /**
+   * Merge extracted values into the form data, rather than replacing it.
+   *
+   * The extractor answers the questions it can and abstains on the rest, so a
+   * body only ever carries part of the form. A replacement would erase every
+   * field the caller stayed silent about. Merging in the caller instead --
+   * read, combine, write back -- has the same effect one race apart: two
+   * writers each read the same form, and the slower one puts back a version
+   * that never saw the other's fields. So the merge happens here, inside the
+   * aggregate whose version the optimistic lock checks.
+   *
+   * Only a CLASSIFIED request accepts extraction. A HITL row is waiting for a
+   * human to decide what it even is; a model writing fields into it would be
+   * overwriting the judgement it was escalated for.
+   */
+  applyExtractedFields(patch: Record<string, unknown>): void {
+    if (this.props.currentStatus !== RequestStatus.DRAFT)
+      throw new InvariantViolationError("Form data can only change while the request is a draft.")
+    if (this.props.classificationStatus !== ClassificationStatus.CLASSIFIED)
+      throw new InvariantViolationError("Only a classified request accepts extracted field values.")
+    this.props.filledData = { ...this.props.filledData, ...patch }
+  }
+
+  /** Drop every extracted value, so a reviewer starts from the raw text. */
+  clearFilledData(): void {
+    this.props.filledData = {}
+  }
+
+  // ----- the requester's confirmation -----
+
+  /**
+   * The requester accepts what was proposed: this template, these values.
+   *
+   * Two machine judgements stand between the sentence somebody typed and the
+   * form a department will act on -- which template it is, and what each field
+   * says. Both are usually right and neither is certain, and the person best
+   * placed to catch a wrong one is the person who wrote the sentence. So the
+   * confirmation is a stored fact rather than a screen the frontend shows: an
+   * unconfirmed request cannot start a workflow, no matter which client calls.
+   */
+  confirm(): void {
+    if (this.props.currentStatus !== RequestStatus.DRAFT)
+      throw new InvariantViolationError("Only a draft request can be confirmed.")
+    if (this.props.classificationStatus !== ClassificationStatus.CLASSIFIED)
+      throw new InvariantViolationError("There is nothing to confirm until the request has been classified.")
+    this.props.confirmedAt = new Date()
+  }
+
+  /**
+   * The requester rejects what was proposed, and the request goes to a human.
+   *
+   * This introduces no new classification concept: a rejection is simply
+   * another way into the review queue that low confidence already fills, and a
+   * reviewer handles both through the same route. The extracted values are
+   * dropped rather than left as a starting point -- if the template was wrong
+   * they belong to the wrong form, and a half-corrected form is harder to spot
+   * than an empty one.
+   */
+  dispute(): void {
+    if (this.props.currentStatus !== RequestStatus.DRAFT)
+      throw new InvariantViolationError("Only a draft request can be disputed.")
+    this.props.classificationStatus = ClassificationStatus.HITL
+    this.props.confirmedAt = undefined
+    this.clearFilledData()
+  }
+
   setSensitivity(levelId: Identifier): void { this.props.sensitivityLevelId = levelId }
   changePriority(priority: Priority): void { this.props.priority = priority }
 
   // ----- SLA urgency (separate axis from business priority) -----
 
-  /** Raised by the LSTM monitor when a request is predicted to breach its SLA. */
+  /** Raised by the SLA monitor when a request is close to breaching its SLA. */
   markAtRisk(): void { this.props.slaRisk = SlaRisk.AT_RISK }
   /** The request has passed its SLA due time. */
   markBreached(): void { this.props.slaRisk = SlaRisk.BREACHED }
@@ -169,6 +245,8 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
       throw new InvariantViolationError("Cannot start a workflow before the request is classified.")
     if (!this.props.templateId)
       throw new InvariantViolationError("Cannot start a workflow without a template.")
+    if (!this.props.confirmedAt)
+      throw new InvariantViolationError("Cannot start a workflow before the requester confirms the template and the extracted values.")
     if (stepInstances.length === 0)
       throw new InvariantViolationError("A workflow must have at least one step.")
     this.props.workflowPathId = workflowPathId
@@ -204,6 +282,21 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
     this.props.completedAt = new Date()
   }
 
+  /**
+   * Store how long the request took, in working minutes.
+   *
+   * Takes the number rather than computing it: the measurement needs the
+   * working-hours policy and the holiday calendar, both of which live in the
+   * database, and an aggregate that reaches for the database to answer a
+   * question about itself stops being testable in isolation. The caller that
+   * already owns that service passes the answer in.
+   */
+  recordBusinessDuration(minutes: number): void {
+    if (this.props.currentStatus !== RequestStatus.COMPLETED)
+      throw new InvariantViolationError("Only a completed request has a duration to record.")
+    this.props.businessDurationMinutes = Math.max(0, Math.round(minutes))
+  }
+
   reject(): void {
     this.transitionTo(RequestStatus.REJECTED)
     this.props.completedAt = new Date()
@@ -236,6 +329,17 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   get priority(): Priority { return this.props.priority }
   get slaRisk(): SlaRisk { return this.props.slaRisk }
   get slaDueAt(): Date | undefined { return this.props.slaDueAt }
+  /**
+   * When the requester accepted the template and field values proposed for
+   * them. Absent means nobody has looked yet, which is why `startWorkflow`
+   * refuses to run.
+   */
+  get confirmedAt(): Date | undefined { return this.props.confirmedAt }
+  get completedAt(): Date | undefined { return this.props.completedAt }
+  get createdAt(): Date | undefined { return this.props.createdAt }
+  get businessDurationMinutes(): number | undefined {
+    return this.props.businessDurationMinutes
+  }
   get stepInstances(): readonly RequestStepInstance[] { return this.props.stepInstances }
 
   snapshot(): RequestSnapshot {
@@ -255,6 +359,8 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
       sensitivityLevelId: this.props.sensitivityLevelId?.toString(),
       slaDueAt: this.props.slaDueAt,
       completedAt: this.props.completedAt,
+      confirmedAt: this.props.confirmedAt,
+      businessDurationMinutes: this.props.businessDurationMinutes,
       version: this.props.version,
       stepInstances: this.props.stepInstances.map((si) => si.snapshot()),
     }

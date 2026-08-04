@@ -4,6 +4,7 @@
  * resolve the delegator and delegate names for the admin delegation screens.
  * Soft-deleted rows are always excluded.
  */
+import { OffsetPage } from '../../shared/pagination'
 
 export interface LocalizedName {
   ar: string
@@ -25,6 +26,9 @@ export interface DelegationView {
 }
 
 export interface ListDelegationsFilter {
+  // Page size (clamped 1..200; default 50) and zero-based offset.
+  limit?: number
+  offset?: number
   delegatorId?: string
   delegateId?: string
   // When true, keep only currently-active (not revoked) delegations.
@@ -34,6 +38,6 @@ export interface ListDelegationsFilter {
 }
 
 export interface DelegationQueryPort {
-  list(filter: ListDelegationsFilter): Promise<DelegationView[]>
+  list(filter: ListDelegationsFilter): Promise<OffsetPage<DelegationView>>
   getById(id: string): Promise<DelegationView | null>
 }

@@ -40,6 +40,7 @@ export type TemplateFieldMinAggregateOutputType = {
   id: string | null
   templateId: string | null
   fieldKey: string | null
+  extractionQuestion: string | null
   dataType: string | null
   isRequired: boolean | null
   ordinal: number | null
@@ -53,6 +54,7 @@ export type TemplateFieldMaxAggregateOutputType = {
   id: string | null
   templateId: string | null
   fieldKey: string | null
+  extractionQuestion: string | null
   dataType: string | null
   isRequired: boolean | null
   ordinal: number | null
@@ -67,6 +69,7 @@ export type TemplateFieldCountAggregateOutputType = {
   templateId: number
   fieldKey: number
   label: number
+  extractionQuestion: number
   dataType: number
   isRequired: number
   ordinal: number
@@ -90,6 +93,7 @@ export type TemplateFieldMinAggregateInputType = {
   id?: true
   templateId?: true
   fieldKey?: true
+  extractionQuestion?: true
   dataType?: true
   isRequired?: true
   ordinal?: true
@@ -103,6 +107,7 @@ export type TemplateFieldMaxAggregateInputType = {
   id?: true
   templateId?: true
   fieldKey?: true
+  extractionQuestion?: true
   dataType?: true
   isRequired?: true
   ordinal?: true
@@ -117,6 +122,7 @@ export type TemplateFieldCountAggregateInputType = {
   templateId?: true
   fieldKey?: true
   label?: true
+  extractionQuestion?: true
   dataType?: true
   isRequired?: true
   ordinal?: true
@@ -218,6 +224,7 @@ export type TemplateFieldGroupByOutputType = {
   templateId: string
   fieldKey: string
   label: runtime.JsonValue
+  extractionQuestion: string | null
   dataType: string
   isRequired: boolean
   ordinal: number
@@ -255,6 +262,7 @@ export type TemplateFieldWhereInput = {
   templateId?: Prisma.UuidFilter<"TemplateField"> | string
   fieldKey?: Prisma.StringFilter<"TemplateField"> | string
   label?: Prisma.JsonFilter<"TemplateField">
+  extractionQuestion?: Prisma.StringNullableFilter<"TemplateField"> | string | null
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
@@ -271,6 +279,7 @@ export type TemplateFieldOrderByWithRelationInput = {
   templateId?: Prisma.SortOrder
   fieldKey?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  extractionQuestion?: Prisma.SortOrderInput | Prisma.SortOrder
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
@@ -291,6 +300,7 @@ export type TemplateFieldWhereUniqueInput = Prisma.AtLeast<{
   templateId?: Prisma.UuidFilter<"TemplateField"> | string
   fieldKey?: Prisma.StringFilter<"TemplateField"> | string
   label?: Prisma.JsonFilter<"TemplateField">
+  extractionQuestion?: Prisma.StringNullableFilter<"TemplateField"> | string | null
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
@@ -307,6 +317,7 @@ export type TemplateFieldOrderByWithAggregationInput = {
   templateId?: Prisma.SortOrder
   fieldKey?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  extractionQuestion?: Prisma.SortOrderInput | Prisma.SortOrder
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
@@ -329,6 +340,7 @@ export type TemplateFieldScalarWhereWithAggregatesInput = {
   templateId?: Prisma.UuidWithAggregatesFilter<"TemplateField"> | string
   fieldKey?: Prisma.StringWithAggregatesFilter<"TemplateField"> | string
   label?: Prisma.JsonWithAggregatesFilter<"TemplateField">
+  extractionQuestion?: Prisma.StringNullableWithAggregatesFilter<"TemplateField"> | string | null
   dataType?: Prisma.StringWithAggregatesFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolWithAggregatesFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntWithAggregatesFilter<"TemplateField"> | number
@@ -342,6 +354,7 @@ export type TemplateFieldCreateInput = {
   id: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -358,6 +371,7 @@ export type TemplateFieldUncheckedCreateInput = {
   templateId: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -372,6 +386,7 @@ export type TemplateFieldUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -388,6 +403,7 @@ export type TemplateFieldUncheckedUpdateInput = {
   templateId?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -403,6 +419,7 @@ export type TemplateFieldCreateManyInput = {
   templateId: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -416,6 +433,7 @@ export type TemplateFieldUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -430,6 +448,7 @@ export type TemplateFieldUncheckedUpdateManyInput = {
   templateId?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -459,6 +478,7 @@ export type TemplateFieldCountOrderByAggregateInput = {
   templateId?: Prisma.SortOrder
   fieldKey?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  extractionQuestion?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
@@ -476,6 +496,7 @@ export type TemplateFieldMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   fieldKey?: Prisma.SortOrder
+  extractionQuestion?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
@@ -489,6 +510,7 @@ export type TemplateFieldMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   templateId?: Prisma.SortOrder
   fieldKey?: Prisma.SortOrder
+  extractionQuestion?: Prisma.SortOrder
   dataType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   ordinal?: Prisma.SortOrder
@@ -567,6 +589,7 @@ export type TemplateFieldCreateWithoutTemplateInput = {
   id: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -581,6 +604,7 @@ export type TemplateFieldUncheckedCreateWithoutTemplateInput = {
   id: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -625,6 +649,7 @@ export type TemplateFieldScalarWhereInput = {
   templateId?: Prisma.UuidFilter<"TemplateField"> | string
   fieldKey?: Prisma.StringFilter<"TemplateField"> | string
   label?: Prisma.JsonFilter<"TemplateField">
+  extractionQuestion?: Prisma.StringNullableFilter<"TemplateField"> | string | null
   dataType?: Prisma.StringFilter<"TemplateField"> | string
   isRequired?: Prisma.BoolFilter<"TemplateField"> | boolean
   ordinal?: Prisma.IntFilter<"TemplateField"> | number
@@ -638,6 +663,7 @@ export type TemplateFieldCreateWithoutOptionsInput = {
   id: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -653,6 +679,7 @@ export type TemplateFieldUncheckedCreateWithoutOptionsInput = {
   templateId: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -682,6 +709,7 @@ export type TemplateFieldUpdateWithoutOptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -697,6 +725,7 @@ export type TemplateFieldUncheckedUpdateWithoutOptionsInput = {
   templateId?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -710,6 +739,7 @@ export type TemplateFieldCreateManyTemplateInput = {
   id: string
   fieldKey: string
   label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: string | null
   dataType: string
   isRequired?: boolean
   ordinal?: number
@@ -723,6 +753,7 @@ export type TemplateFieldUpdateWithoutTemplateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -737,6 +768,7 @@ export type TemplateFieldUncheckedUpdateWithoutTemplateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -751,6 +783,7 @@ export type TemplateFieldUncheckedUpdateManyWithoutTemplateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fieldKey?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  extractionQuestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dataType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -796,6 +829,7 @@ export type TemplateFieldSelect<ExtArgs extends runtime.Types.Extensions.Interna
   templateId?: boolean
   fieldKey?: boolean
   label?: boolean
+  extractionQuestion?: boolean
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
@@ -813,6 +847,7 @@ export type TemplateFieldSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   templateId?: boolean
   fieldKey?: boolean
   label?: boolean
+  extractionQuestion?: boolean
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
@@ -828,6 +863,7 @@ export type TemplateFieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   templateId?: boolean
   fieldKey?: boolean
   label?: boolean
+  extractionQuestion?: boolean
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
@@ -843,6 +879,7 @@ export type TemplateFieldSelectScalar = {
   templateId?: boolean
   fieldKey?: boolean
   label?: boolean
+  extractionQuestion?: boolean
   dataType?: boolean
   isRequired?: boolean
   ordinal?: boolean
@@ -850,7 +887,7 @@ export type TemplateFieldSelectScalar = {
   updatedBy?: boolean
 }
 
-export type TemplateFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "fieldKey" | "label" | "dataType" | "isRequired" | "ordinal" | "createdBy" | "updatedBy", ExtArgs["result"]["templateField"]>
+export type TemplateFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "templateId" | "fieldKey" | "label" | "extractionQuestion" | "dataType" | "isRequired" | "ordinal" | "createdBy" | "updatedBy", ExtArgs["result"]["templateField"]>
 export type TemplateFieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   template?: boolean | Prisma.TemplateDefaultArgs<ExtArgs>
   options?: boolean | Prisma.TemplateField$optionsArgs<ExtArgs>
@@ -876,6 +913,12 @@ export type $TemplateFieldPayload<ExtArgs extends runtime.Types.Extensions.Inter
     templateId: string
     fieldKey: string
     label: runtime.JsonValue
+    /**
+     * Arabic question put to the extractive QA model for this field. A model
+     * input, not a label -- reword it and the measured accuracy no longer
+     * describes the running system.
+     */
+    extractionQuestion: string | null
     dataType: string
     isRequired: boolean
     ordinal: number
@@ -1312,6 +1355,7 @@ export interface TemplateFieldFieldRefs {
   readonly templateId: Prisma.FieldRef<"TemplateField", 'String'>
   readonly fieldKey: Prisma.FieldRef<"TemplateField", 'String'>
   readonly label: Prisma.FieldRef<"TemplateField", 'Json'>
+  readonly extractionQuestion: Prisma.FieldRef<"TemplateField", 'String'>
   readonly dataType: Prisma.FieldRef<"TemplateField", 'String'>
   readonly isRequired: Prisma.FieldRef<"TemplateField", 'Boolean'>
   readonly ordinal: Prisma.FieldRef<"TemplateField", 'Int'>

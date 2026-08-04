@@ -4,6 +4,7 @@ import { readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type {
   ExternalOrgUnit,
+  ExternalUser,
   PersonnelDirectory,
 } from '../../domain/organization/ports/department.repository'
 import {
@@ -11,11 +12,28 @@ import {
   extractRecords,
   parseMapping,
   toExternalOrgUnit,
+  toExternalUser,
 } from './personnel-directory-mapping'
 import { UpstreamUnavailableError } from '../../application/errors'
 
 const DEFAULT_MAPPING_PATH = 'config/personnel-directory.mapping.yaml'
 const DEFAULT_TIMEOUT_MS = 10_000
+
+/**
+ * Sanity ceiling on a single directory response.
+ *
+ * This feed is not paged, and paging it is not ours to design: the upstream
+ * system would have to offer a convention, and it has not been specified yet.
+ * What we can do is refuse to be harmed by an answer that is absurd. A roster
+ * larger than this means a misconfigured endpoint, a test fixture pointed at
+ * production, or an upstream bug -- and holding all of it in memory to find
+ * out would take the whole application down with it.
+ *
+ * It fails loudly rather than truncating. A silently shortened roster would be
+ * imported as if it were complete, and the people missing from it would look,
+ * to every screen in this system, like people who do not work here.
+ */
+const MAX_DIRECTORY_RECORDS = 20_000
 
 /**
  * HTTP adapter for the university's external personnel system. It fetches the
@@ -41,9 +59,45 @@ export class HttpPersonnelDirectory implements PersonnelDirectory {
 
     const mapping = this.loadMapping()
     const payload = await this.get(url)
-    return extractRecords(payload, mapping).map((record) =>
-      toExternalOrgUnit(record, mapping),
+    const records = guardSize(extractRecords(payload, mapping), 'units')
+    return records.map((record) => toExternalOrgUnit(record, mapping))
+  }
+
+  /**
+   * The people feed. Returns null -- rather than an empty array -- when the
+   * mapping file has no `users:` block, so the caller can tell "this directory
+   * does not publish people" from "it published nobody today". Treating those
+   * the same would let a deleted config block look like an empty roster.
+   */
+  async fetchUsers(): Promise<ExternalUser[] | null> {
+    const baseUrl = this.config.get<string>('PERSONNEL_DIRECTORY_URL')
+    if (!baseUrl)
+      throw new UpstreamUnavailableError(
+        'Personnel directory is not configured (set PERSONNEL_DIRECTORY_URL).',
+      )
+
+    const users = this.loadMapping().users
+    if (!users) return null
+
+    const payload = await this.get(this.join(baseUrl, users.endpoint))
+    const records = guardSize(
+      extractRecords(payload, {
+        recordsPath: users.recordsPath,
+        fields: {
+          externalId: users.fields.institutionalNumber,
+          nameAr: users.fields.fullNameAr,
+          unitType: users.fields.userType,
+        },
+      }),
+      'people',
     )
+    return records.map((record) => toExternalUser(record, users))
+  }
+
+  /** Joins the configured base URL with the feed's relative endpoint. */
+  private join(baseUrl: string, endpoint?: string): string {
+    if (!endpoint) return baseUrl
+    return `${baseUrl.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`
   }
 
   /**
@@ -110,4 +164,17 @@ export class HttpPersonnelDirectory implements PersonnelDirectory {
       clearTimeout(timer)
     }
   }
+}
+
+
+/** Refuses an implausibly large directory response instead of truncating it. */
+function guardSize<T>(records: T[], what: string): T[] {
+  if (records.length > MAX_DIRECTORY_RECORDS) {
+    throw new UpstreamUnavailableError(
+      `The personnel directory returned ${records.length} ${what}, which is ` +
+        `beyond the ${MAX_DIRECTORY_RECORDS} this system will accept in one ` +
+        'response. Check that PERSONNEL_DIRECTORY_URL points at the right feed.',
+    )
+  }
+  return records
 }

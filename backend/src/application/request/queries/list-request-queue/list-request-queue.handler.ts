@@ -1,27 +1,40 @@
 import { Inject } from '@nestjs/common'
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs'
-import { Request } from '../../../../domain/request/request'
-import { RequestStatus } from '../../../../domain/request/enums'
-import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
-import { REQUEST_REPOSITORY } from '../../../tokens'
+import type { RequestQueryPort } from '../../ports/request-query.port'
+import { REQUEST_QUERY } from '../../../tokens'
+import { KeysetPage } from '../../../shared/pagination'
 import { ListRequestQueueQuery } from './list-request-queue.query'
-import { RequestSummaryView, toRequestSummary } from '../views/request.view'
+import { RequestSummaryView } from '../views/request.view'
 
 /**
- * A work queue of requests in a given status, ordered the way staff should pick
- * them up: business priority first, then SLA urgency, then the nearest due date
- * (Request.compareForQueue) -- the two-axis ordering the domain defines.
+ * One page of the work queue for a status, ordered the way staff should pick
+ * items up: business priority first, then SLA urgency, then the nearest
+ * deadline.
+ *
+ * The sort used to happen here, in memory, over every open request. It now
+ * happens in the database, generated from the same rank tables the domain
+ * comparator uses. That is what makes the queue pageable at all: you cannot
+ * serve page one of an ordering the database does not know, without first
+ * fetching every row to sort them yourself.
  */
 @QueryHandler(ListRequestQueueQuery)
 export class ListRequestQueueHandler
-  implements IQueryHandler<ListRequestQueueQuery, RequestSummaryView[]>
+  implements
+    IQueryHandler<ListRequestQueueQuery, KeysetPage<RequestSummaryView>>
 {
   constructor(
-    @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    @Inject(REQUEST_QUERY) private readonly requests: RequestQueryPort,
   ) {}
 
-  async execute(query: ListRequestQueueQuery): Promise<RequestSummaryView[]> {
-    const rows = await this.requests.listByStatus(query.status as RequestStatus)
-    return [...rows].sort(Request.compareForQueue).map(toRequestSummary)
+  execute(
+    query: ListRequestQueueQuery,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.requests.listQueue({
+      status: query.status,
+      limit: query.limit,
+      cursor: query.cursor,
+      classificationStatus: query.classificationStatus,
+      hasFilledData: query.hasFilledData,
+    })
   }
 }

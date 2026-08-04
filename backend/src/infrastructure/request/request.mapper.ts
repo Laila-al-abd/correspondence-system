@@ -73,6 +73,9 @@ export const RequestMapper = {
           : undefined,
       slaDueAt: row.slaDueAt ?? undefined,
       completedAt: row.completedAt ?? undefined,
+      confirmedAt: row.confirmedAt ?? undefined,
+      createdAt: row.createdAt,
+      businessDurationMinutes: row.businessDurationMinutes ?? undefined,
       version: row.version,
       stepInstances,
     })
@@ -98,6 +101,8 @@ export const RequestMapper = {
       sensitivityLevelId: s.sensitivityLevelId ? s.sensitivityLevelId : null,
       slaDueAt: s.slaDueAt ?? null,
       completedAt: s.completedAt ?? null,
+      confirmedAt: s.confirmedAt ?? null,
+      businessDurationMinutes: s.businessDurationMinutes ?? null,
       version: s.version,
     }
   },

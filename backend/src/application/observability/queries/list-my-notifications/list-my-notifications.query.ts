@@ -7,5 +7,7 @@ export class ListMyNotificationsQuery {
   constructor(
     readonly userId: string,
     readonly onlyUnread: boolean = false,
+    readonly limit?: number,
+    readonly offset?: number,
   ) {}
 }

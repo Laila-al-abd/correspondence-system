@@ -11,12 +11,14 @@ import {
   PAYMENT_REPOSITORY,
   REFERENCE_NUMBER_GENERATOR,
   REQUEST_ACTION_REPOSITORY,
+  REQUEST_QUERY,
   REQUEST_REPOSITORY,
   ROLE_REPOSITORY,
   SLA_SCAN,
   WORKFLOW_PATH_REPOSITORY,
 } from '../../application/tokens'
 import { PrismaRequestRepository } from '../../infrastructure/request/prisma-request.repository'
+import { PrismaRequestQuery } from '../../infrastructure/request/prisma-request-query'
 import { PrismaRequestActionRepository } from '../../infrastructure/request/prisma-request-action.repository'
 import { PrismaPaymentRepository } from '../../infrastructure/request/prisma-payment.repository'
 import { PrismaDocumentRepository } from '../../infrastructure/request/prisma-document.repository'
@@ -28,6 +30,8 @@ import { PrismaReferenceNumberGenerator } from '../../infrastructure/shared/pris
 import { SubmitRequestHandler } from '../../application/request/commands/submit-request/submit-request.handler'
 import { ClassifyRequestByModelHandler } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.handler'
 import { ClassifyRequestByHumanHandler } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.handler'
+import { RecordExtractionHandler } from '../../application/request/commands/record-extraction/record-extraction.handler'
+import { ConfirmRequestHandler } from '../../application/request/commands/confirm-request/confirm-request.handler'
 import { StartRequestWorkflowHandler } from '../../application/request/commands/start-request-workflow/start-request-workflow.handler'
 import { AssignStepHandler } from '../../application/request/commands/assign-step/assign-step.handler'
 import { ActOnStepHandler } from '../../application/request/commands/act-on-step/act-on-step.handler'
@@ -51,6 +55,8 @@ const handlers = [
   SubmitRequestHandler,
   ClassifyRequestByModelHandler,
   ClassifyRequestByHumanHandler,
+  RecordExtractionHandler,
+  ConfirmRequestHandler,
   StartRequestWorkflowHandler,
   AssignStepHandler,
   ActOnStepHandler,
@@ -84,6 +90,9 @@ const handlers = [
   providers: [
     ...handlers,
     { provide: REQUEST_REPOSITORY, useClass: PrismaRequestRepository },
+    // Read side, alongside the write side rather than instead of it: the
+    // commands still need whole aggregates, the list screens never did.
+    { provide: REQUEST_QUERY, useClass: PrismaRequestQuery },
     {
       provide: REQUEST_ACTION_REPOSITORY,
       useClass: PrismaRequestActionRepository,

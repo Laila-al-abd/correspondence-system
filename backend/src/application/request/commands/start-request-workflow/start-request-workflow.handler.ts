@@ -69,8 +69,8 @@ export class StartRequestWorkflowHandler
     // SLA clocks run in *working* hours, not wall-clock hours: a 48-hour step
     // started on Thursday afternoon is due two working days later, not on
     // Saturday when nobody is in. The same service backs the working-hours
-    // guard and the LSTM's elapsed-time features, so all three agree on whether
-    // a weekend counted.
+    // guard and the duration recorded when a request completes, so all three
+    // agree on whether a weekend counted.
     const startedAt = new Date()
     const stepInstances: RequestStepInstance[] = []
     for (const step of path.steps) {

@@ -64,6 +64,6 @@ import { OrganizationController } from './organization.controller'
       ],
     },
   ],
-  exports: [DEPARTMENT_REPOSITORY, ORG_UNIT_TYPE_REPOSITORY],
+  exports: [DEPARTMENT_REPOSITORY, ORG_UNIT_TYPE_REPOSITORY, PERSONNEL_DIRECTORY],
 })
 export class OrganizationModule {}
