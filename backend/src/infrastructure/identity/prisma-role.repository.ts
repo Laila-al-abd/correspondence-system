@@ -97,13 +97,15 @@ export class PrismaRoleRepository implements RoleRepository {
    */
   async countHoldersOf(
     permissionCode: string,
-    options?: { excludingUserId?: Identifier },
+    options?: { excludingUserId?: Identifier; excludingRoleId?: Identifier },
   ): Promise<number> {
     const excluded = options?.excludingUserId?.toString()
+    const excludedRole = options?.excludingRoleId?.toString()
     const rows = await this.prisma.userRole.findMany({
       where: {
         ...activeRoleAssignment(new Date()),
         ...(excluded ? { userId: { not: excluded } } : {}),
+        ...(excludedRole ? { roleId: { not: excludedRole } } : {}),
         role: {
           ...liveRole,
           permissions: { some: { permission: { code: permissionCode } } },
@@ -116,10 +118,43 @@ export class PrismaRoleRepository implements RoleRepository {
     return rows.length
   }
 
+  /**
+   * Which of the given codes name no permission at all.
+   *
+   * save() resolves permission codes to rows and writes join rows only for the
+   * ones it finds, so an unchecked typo produces a role that reads correctly in
+   * the admin screen and grants nothing. Checking here turns that into a 400.
+   */
+  async unknownPermissionCodes(codes: string[]): Promise<string[]> {
+    const wanted = [...new Set(codes)]
+    if (wanted.length === 0) return []
+    const found = await this.prisma.permission.findMany({
+      where: { code: { in: wanted } },
+      select: { code: true },
+    })
+    const known = new Set(found.map((p) => p.code))
+    return wanted.filter((code) => !known.has(code))
+  }
+
+  /**
+   * Assignments pointing at this role, expired ones included.
+   *
+   * Expired ones count on purpose. They are the record of who held the role and
+   * until when, and retiring a role that still has rows referencing it would
+   * leave that history pointing at something the admin screen no longer lists.
+   * Revoke first, retire second.
+   */
+  async countAssignments(roleId: Identifier): Promise<number> {
+    return this.prisma.userRole.count({
+      where: { roleId: roleId.toString() },
+    })
+  }
+
   async assignToUser(params: {
     userId: Identifier
     roleId: Identifier
     departmentId?: Identifier
+    reason?: string
     expiresAt?: Date
     assignedBy?: Identifier
   }): Promise<void> {
@@ -135,6 +170,7 @@ export class PrismaRoleRepository implements RoleRepository {
       await tx.userRole.create({
         data: {
           ...where,
+          reason: params.reason ?? null,
           expiresAt: params.expiresAt ?? null,
           assignedBy: params.assignedBy
             ? params.assignedBy.toString()

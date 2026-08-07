@@ -95,6 +95,21 @@ export class RequestStepInstance extends Entity {
     this.props.completedAt = new Date()
   }
 
+  /**
+   * Attaches this step's deadline at the moment its work can actually begin.
+   *
+   * A step waiting behind another one starts life with no deadline. Counting a
+   * desk's SLA from the moment the request was routed would report the wrong
+   * desk as slow, because the file sat on somebody else's desk for most of
+   * that time. Never moves a deadline that is already set: a step becomes
+   * ready once, and a second call would silently extend a live clock.
+   */
+  scheduleSla(dueAt: Date): void {
+    this.assertNotTerminal()
+    if (this.props.slaDueAt) return
+    this.props.slaDueAt = dueAt
+  }
+
   pauseSla(): void {
     this.props.slaPaused = true
     this.props.status = StepInstanceStatus.WAITING

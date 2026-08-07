@@ -82,4 +82,41 @@ export class AdministrativeFloorPolicy {
         'This is the last account that can manage users. Grant an administrative role to another active account before removing it from this one.',
       )
   }
+
+  /**
+   * The other direction: authority lost not by taking a role away from a
+   * person, but by taking the permission out of the role.
+   *
+   * This is the most dangerous of the paths and the least obviously so from an
+   * admin screen -- one edit to one role removes the permission from every
+   * holder at once, and the screen shows a checkbox rather than a list of
+   * people. So the question asked is whether anybody would still hold
+   * `user.manage` through some *other* live role once this one stops carrying
+   * it.
+   *
+   * Built-in roles are refused earlier, by the aggregate, so in practice this
+   * guards custom roles a super admin has composed. It is written for the case
+   * where they composed the only one that carries authority.
+   */
+  async assertRoleMayLosePermission(
+    roleId: Identifier,
+    permissionCode: string,
+  ): Promise<void> {
+    if (permissionCode !== AdministrativeFloorPolicy.ADMINISTRATIVE_PERMISSION)
+      return
+
+    const carriesAuthority = await this.roles.roleCarries(
+      roleId,
+      permissionCode,
+    )
+    if (!carriesAuthority) return
+
+    const elsewhere = await this.roles.countHoldersOf(permissionCode, {
+      excludingRoleId: roleId,
+    })
+    if (elsewhere === 0)
+      throw new InvariantViolationError(
+        'This is the only role that can manage users. Give another role that permission, and give that role to an active account, before taking it away here.',
+      )
+  }
 }

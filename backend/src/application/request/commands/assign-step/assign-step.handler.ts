@@ -5,6 +5,7 @@ import type { RequestRepository } from '../../../../domain/request/ports/request
 import { REQUEST_REPOSITORY } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
+import { EventRecorder } from '../../../observability/services/event-recorder'
 import { AssignStepCommand } from './assign-step.command'
 
 export interface AssignStepResult {
@@ -23,6 +24,7 @@ export class AssignStepHandler
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
     private readonly notifier: NotificationEmitter,
+    private readonly events: EventRecorder,
   ) {}
 
   async execute({ input }: AssignStepCommand): Promise<AssignStepResult> {
@@ -37,6 +39,13 @@ export class AssignStepHandler
 
     step.assignTo(Identifier.of(input.assigneeUserId))
     await this.requests.save(request)
+
+    // The actor is whoever reassigned it, taken from the token; who it went to
+    // is on the step instance this event points at.
+    await this.events.assigned({
+      requestId: request.id.toString(),
+      stepInstanceId: step.id.toString(),
+    })
 
     await this.notifier.stepAssigned({
       assigneeUserId: input.assigneeUserId,

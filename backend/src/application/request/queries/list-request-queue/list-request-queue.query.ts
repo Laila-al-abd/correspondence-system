@@ -5,5 +5,6 @@ export class ListRequestQueueQuery {
     public readonly cursor?: string,
     public readonly classificationStatus?: string,
     public readonly hasFilledData?: boolean,
+    public readonly extracted?: boolean,
   ) {}
 }

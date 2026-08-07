@@ -67,13 +67,10 @@ export const RequestMapper = {
       currentStatus: row.currentStatus as RequestStatus,
       priority: row.priority as Priority,
       slaRisk: row.slaRisk as SlaRisk,
-      sensitivityLevelId:
-        row.sensitivityLevelId != null
-          ? Identifier.of(row.sensitivityLevelId)
-          : undefined,
       slaDueAt: row.slaDueAt ?? undefined,
       completedAt: row.completedAt ?? undefined,
       confirmedAt: row.confirmedAt ?? undefined,
+      extractionAttemptedAt: row.extractionAttemptedAt ?? undefined,
       createdAt: row.createdAt,
       businessDurationMinutes: row.businessDurationMinutes ?? undefined,
       version: row.version,
@@ -98,10 +95,10 @@ export const RequestMapper = {
       currentStatus: s.currentStatus,
       priority: s.priority,
       slaRisk: s.slaRisk,
-      sensitivityLevelId: s.sensitivityLevelId ? s.sensitivityLevelId : null,
       slaDueAt: s.slaDueAt ?? null,
       completedAt: s.completedAt ?? null,
       confirmedAt: s.confirmedAt ?? null,
+      extractionAttemptedAt: s.extractionAttemptedAt ?? null,
       businessDurationMinutes: s.businessDurationMinutes ?? null,
       version: s.version,
     }

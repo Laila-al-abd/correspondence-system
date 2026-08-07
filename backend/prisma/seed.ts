@@ -252,6 +252,24 @@ async function main(): Promise<void> {
       name: t('تأكيد دفع', 'Confirm payment'),
       isTerminal: false,
     },
+    // How a re-prioritisation files itself. Not a step decision like the
+    // others, but it belongs in the same trail: it is the row that says who
+    // moved a request up the queue and why.
+    // A waiver is not a confirmation and must not be filed as one: CONFIRM_PAYMENT
+    // on a row where nothing was paid is exactly the kind of trail that makes an
+    // audit distrust everything around it.
+    {
+      id: actionTypeId(9),
+      code: 'WAIVE_PAYMENT',
+      name: t('إعفاء من الرسم', 'Waive fee'),
+      isTerminal: false,
+    },
+    {
+      id: actionTypeId(8),
+      code: 'CHANGE_PRIORITY',
+      name: t('تغيير الأولوية', 'Change priority'),
+      isTerminal: false,
+    },
   ]
   for (const a of actionTypes) {
     await prisma.actionType.upsert({
@@ -299,6 +317,10 @@ async function main(): Promise<void> {
     create: {
       id: permissionGroupId(1),
       name: t('إدارة الوصول', 'Access Management'),
+      description: t(
+        'الصلاحيات التي تحدد ما يمكن لكل دور فعله في النظام.',
+        'Permissions that decide what each role is allowed to do.',
+      ),
     },
   })
 
@@ -315,12 +337,84 @@ async function main(): Promise<void> {
     // row exists for is one nobody can hold, so the guard was refusing every
     // caller including the administrator, with no way to grant it.
     { id: permissionId(8), code: 'system.monitor', name: t('مراقبة النظام', 'Monitor the system') },
+    // Guards /roles: composing roles and deciding what each one grants. Kept
+    // separate from user.manage because only this one can escalate its own
+    // holder -- whoever can edit role_permissions can grant themselves
+    // everything. The Administrator role below receives it with the rest.
+    { id: permissionId(9), code: 'role.manage', name: t('إدارة الأدوار', 'Manage roles') },
+    // Settling a fee is money changing hands, so it is deliberately NOT part
+    // of request.act. A reviewer who works the queue can start and complete
+    // steps; confirming that a fee was paid, or waiving it outright, is a
+    // separate duty and needs this permission. Granted below to the
+    // Administrator role only -- add it to another role to delegate it.
+    { id: permissionId(10), code: 'payment.settle', name: t('تسوية الرسوم', 'Settle fees') },
   ]
+
+  /*
+   * permissions.description has existed as a nullable JSONB column since the
+   * first migration and nothing ever wrote it, so every row read NULL. The
+   * role-management screen reads this text straight from the role query, and an
+   * administrator deciding whether to grant 'request.act' deserves a sentence
+   * rather than a dotted code. Keyed by code so the text survives re-seeding.
+   */
+  const permissionDescriptions: Record<string, { ar: string; en: string }> = {
+    'user.manage': {
+      ar: 'إنشاء المستخدمين وتعديل بياناتهم وتعطيلهم، وإدارة الوحدات التنظيمية.',
+      en: 'Create, edit and deactivate users, and manage organizational units.',
+    },
+    'request.read': {
+      ar: 'عرض الطلبات وقوائم العمل وتفاصيل الطلب دون إمكانية التصرف بها.',
+      en: 'View requests, work queues and request details, without acting on them.',
+    },
+    'request.act': {
+      ar: 'بدء خطوات الطلب وإكمالها ورفضها وتخصيصها، وتغيير أولوية الطلب.',
+      en: 'Start, complete, reject and assign request steps, and change a request priority.',
+    },
+    'workflow.manage': {
+      ar: 'تعريف مسارات العمل وخطواتها والمسؤولين عنها ومهل الإنجاز.',
+      en: 'Define workflow paths, their steps, assignees and SLA targets.',
+    },
+    'template.manage': {
+      ar: 'إنشاء قوالب الطلبات وحقولها وشروط الأهلية وتعديلها.',
+      en: 'Create and edit request templates, their fields and eligibility rules.',
+    },
+    'reports.view': {
+      ar: 'عرض التقارير ولوحات المؤشرات وتصديرها.',
+      en: 'View and export reports and indicator dashboards.',
+    },
+    'request.classify': {
+      ar: 'تصنيف الطلبات المحوَّلة للمراجعة البشرية وتعبئة حقولها المستخرجة.',
+      en: 'Classify requests routed to human review and fill their extracted fields.',
+    },
+    'system.monitor': {
+      ar: 'الاطلاع على صحة النظام التفصيلية وتشغيل مهام الصيانة.',
+      en: 'Inspect detailed system health and run maintenance jobs.',
+    },
+    'role.manage': {
+      ar: 'إنشاء الأدوار وتحديد صلاحياتها ومنحها للمستخدمين. صلاحية حساسة: من يملكها يستطيع منح نفسه أي صلاحية أخرى.',
+      en: 'Create roles, decide what they grant, and assign them. Sensitive: whoever holds it can grant themselves anything else.',
+    },
+    'payment.settle': {
+      ar: 'تأكيد دفع رسوم الطلب أو الإعفاء منها مع تسجيل السبب.',
+      en: 'Confirm that a request fee was paid, or waive it with a recorded reason.',
+    },
+  }
+
   for (const p of permissions) {
+    const described = permissionDescriptions[p.code]
+    const description = described ? t(described.ar, described.en) : undefined
     await prisma.permission.upsert({
       where: { code: p.code },
-      update: {},
-      create: { id: p.id, groupId: group.id, code: p.code, name: p.name },
+      // Descriptions ARE refreshed on re-seed: they are documentation, and
+      // stale documentation about who may take money is worse than none.
+      update: description ? { description } : {},
+      create: {
+        id: p.id,
+        groupId: group.id,
+        code: p.code,
+        name: p.name,
+        ...(description ? { description } : {}),
+      },
     })
   }
 
@@ -647,6 +741,58 @@ async function main(): Promise<void> {
   // the classifier was measured against these exact Arabic documents and the
   // extractor against these exact questions. Everything here is idempotent, so
   // re-running the seed refreshes text without disturbing ids or live requests.
+  // Urgent by definition, whoever asks and however they word it: a military
+  // deferment misses a legal date, and somebody without an id card cannot sit an
+  // exam or draw a salary. Everything else starts NORMAL -- a medical case or an
+  // external deadline is a fact about one person, not about the request type, so
+  // it is raised per request by staff holding request.act, with a reason.
+  const URGENT_BY_DEFINITION = new Set(['MILITARY_DEFER', 'ID_REPLACEMENT'])
+
+  // Fees, in SYP, charged on the first step of the templates that carry one --
+  // the printed-document requests. These are demo figures: the institute sets
+  // the real ones, and an administrator changes them on the workflow step
+  // without touching the code. Every other step stays free, which is why this
+  // patch cannot change what a live request costs.
+  const FEE_BY_TEMPLATE: Record<string, number> = {
+    ID_REPLACEMENT: 5000,
+    TRANSCRIPT: 3000,
+    ENROLL_CERT: 2000,
+  }
+
+  // Which fields a requester must supply before they are allowed to confirm.
+  //
+  // Kept here rather than in template_schema.json on purpose: that file is the
+  // record of what the models were trained and measured on, and requiredness is
+  // not a fact about the training data. It is institute policy about what a desk
+  // cannot begin work without -- a transcript with no academic year named, or a
+  // deferment with no recruitment division, is a request somebody has to send
+  // back. Keeping the two apart means the export stays a faithful export and
+  // this list stays editable without touching what the classifier was scored on.
+  //
+  // The extractor is never held to this list. It abstains rather than invents,
+  // so a required field it could not find simply arrives empty and the requester
+  // fills it in at the confirmation step -- the one moment the person who
+  // actually knows the answer is in the loop. Only that step enforces this.
+  //
+  // One or two fields each, chosen as the ones a desk cannot proceed without.
+  // Anything a clerk can ask for later, or that only shapes the output, is left
+  // optional: `reason` is free text nobody blocks on, `copies` and `language`
+  // have sane defaults, and `course_code` is recoverable from the course name.
+  const REQUIRED_BY_TEMPLATE: Record<string, string[]> = {
+    ADMIN_LEAVE: ['leave_type', 'start_date', 'days_count'],
+    CHANGE_MAJOR: ['target_major'],
+    CONFERENCE: ['conference_name', 'start_date'],
+    ENROLL_CERT: ['purpose', 'destination_entity'],
+    GRADE_APPEAL: ['course_name', 'exam_type'],
+    ID_REPLACEMENT: ['loss_date'],
+    MILITARY_DEFER: ['recruitment_division', 'deferment_year'],
+    NO_OBJECTION: ['destination_entity', 'purpose', 'travel_date'],
+    PROVISIONAL_GRAD: ['graduation_year', 'destination_entity'],
+    SALARY_CERT: ['destination_entity'],
+    STUDY_WITHDRAWAL: ['from_semester', 'duration_semesters'],
+    TRANSCRIPT: ['academic_year', 'semester'],
+  }
+
   const catalogue = loadCatalogue()
   let fieldRow = 2 // templateFieldId 1-2 belong to the demo template
   let ruleRow = 2 // eligibilityRuleId 1-2 likewise
@@ -665,6 +811,9 @@ async function main(): Promise<void> {
         title,
         description,
         classifierDocument: tpl.classifierDocument,
+        defaultPriority: URGENT_BY_DEFINITION.has(tpl.code)
+          ? 'URGENT'
+          : 'NORMAL',
       },
       create: {
         id,
@@ -675,13 +824,20 @@ async function main(): Promise<void> {
         title,
         description,
         classifierDocument: tpl.classifierDocument,
+        defaultPriority: URGENT_BY_DEFINITION.has(tpl.code)
+          ? 'URGENT'
+          : 'NORMAL',
         isActive: true,
       },
     })
 
-    // Fields. Every one is optional: the export shows no field present in more
-    // than 90% of the training requests, so requiring any of them would reject
-    // real requests. The confirm step is what guarantees completeness.
+    // Fields. Requiredness comes from REQUIRED_BY_TEMPLATE above rather than
+    // from the export, which marks everything optional because no field appears
+    // in more than 90% of the training requests. That statistic is the right
+    // answer for extraction and the wrong one for submission: the model must be
+    // free to abstain on a field it cannot find, and the requester must not be
+    // free to submit without it.
+    const required = new Set(REQUIRED_BY_TEMPLATE[tpl.code] ?? [])
     for (const [ordinal, field] of tpl.fields.entries()) {
       fieldRow += 1
       const label = field.labelEn
@@ -692,7 +848,7 @@ async function main(): Promise<void> {
         update: {
           label,
           dataType: field.type,
-          isRequired: field.required,
+          isRequired: required.has(field.key),
           ordinal: ordinal + 1,
           extractionQuestion: field.extractionQuestion,
         },
@@ -702,7 +858,7 @@ async function main(): Promise<void> {
           fieldKey: field.key,
           label,
           dataType: field.type,
-          isRequired: field.required,
+          isRequired: required.has(field.key),
           ordinal: ordinal + 1,
           extractionQuestion: field.extractionQuestion,
         },
@@ -771,18 +927,24 @@ async function main(): Promise<void> {
     // its first step to REQUESTER_DEPARTMENT_HEAD instead, but that resolves to
     // nobody until departments and their heads are synced, which would leave
     // every seeded employee request sitting unassigned.
+    // The fee, if this template charges one, is attached to the first step: the
+    // requester pays before the paperwork is worked on, not after it is signed.
+    const fee: number | undefined = FEE_BY_TEMPLATE[tpl.code]
+
     const steps = isStudent
       ? [
           {
             name: t('تدقيق شؤون الطلاب', 'Student affairs review'),
             roleId: roleId(2),
             slaHours: 24,
+            feeAmount: fee,
             actions: [actionTypeId(1), actionTypeId(2), actionTypeId(4)],
           },
           {
             name: t('الاعتماد', 'Approval'),
             roleId: roleId(1),
             slaHours: 48,
+            feeAmount: undefined as number | undefined,
             actions: [actionTypeId(1), actionTypeId(2), actionTypeId(5)],
           },
         ]
@@ -791,12 +953,14 @@ async function main(): Promise<void> {
             name: t('تدقيق الموارد البشرية', 'HR review'),
             roleId: roleId(2),
             slaHours: 24,
+            feeAmount: fee,
             actions: [actionTypeId(1), actionTypeId(2), actionTypeId(4)],
           },
           {
             name: t('اعتماد الإدارة', 'Management approval'),
             roleId: roleId(1),
             slaHours: 72,
+            feeAmount: undefined as number | undefined,
             actions: [actionTypeId(1), actionTypeId(2), actionTypeId(5)],
           },
         ]
@@ -807,7 +971,13 @@ async function main(): Promise<void> {
       const stepId = workflowStepId(stepRow)
       await prisma.workflowStep.upsert({
         where: { id: stepId },
-        update: {},
+        update: {
+          // Re-seeding refreshes the fee on an existing database. Everything
+          // else about a step is left alone: an administrator may have edited
+          // the routing or the SLA, and the seed is not entitled to undo that.
+          feeAmount: step.feeAmount ?? null,
+          feeCurrency: step.feeAmount ? 'SYP' : null,
+        },
         create: {
           id: stepId,
           workflowPathId: pathId,
@@ -816,6 +986,8 @@ async function main(): Promise<void> {
           assigneeRoleId: step.roleId,
           slaHours: step.slaHours,
           pausesSla: false,
+          feeAmount: step.feeAmount ?? null,
+          feeCurrency: step.feeAmount ? 'SYP' : null,
         },
       })
       for (const allowed of step.actions) {

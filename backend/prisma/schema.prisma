@@ -297,7 +297,6 @@ model SensitivityLevel {
   deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   templates Template[]
-  requests  Request[]
 
   createdBy String? @map("created_by") @db.Uuid
   updatedBy String? @map("updated_by") @db.Uuid
@@ -333,6 +332,12 @@ model Template {
   /// changes classification, so it is stored and seeded verbatim.
   classifierDocument String?   @map("classifier_document") @db.Text
   sensitivityLevelId String    @map("sensitivity_level_id") @db.Uuid
+  /// The business priority every request of this kind starts with. Urgency is a
+  /// property of the paperwork, not of the wording: a deferment is urgent
+  /// however politely it is asked for, and "URGENT!!" typed into a transcript
+  /// request buys nothing. Staff holding request.act can still raise or lower a
+  /// single request, with a reason recorded as a request action.
+  defaultPriority    String    @default("NORMAL") @map("default_priority") @db.VarChar(30) // LOW | NORMAL | HIGH | URGENT
   isActive           Boolean   @default(true) @map("is_active")
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   deletedAt          DateTime? @map("deleted_at") @db.Timestamptz(6)
@@ -470,6 +475,12 @@ model WorkflowStep {
   defaultActionTypeId  String?  @map("default_action_type_id") @db.Uuid
   slaHours             Decimal? @map("sla_hours") @db.Decimal(6, 2)
   pausesSla            Boolean  @default(false) @map("pauses_sla")
+  /// What this step costs, and in what currency. Null means free. Declared here
+  /// rather than on the template because a fee is due at a point in the process,
+  /// and that point is what lets the step refuse to complete until the money is
+  /// settled. The payments row that results points back at the step instance.
+  feeAmount            Decimal? @map("fee_amount") @db.Decimal(12, 2)
+  feeCurrency          String?  @map("fee_currency") @db.VarChar(3)
   createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workflowPath       WorkflowPath @relation(fields: [workflowPathId], references: [id], onDelete: Cascade)
@@ -538,17 +549,22 @@ model Request {
   currentStatus            String    @default("DRAFT") @map("current_status") @db.VarChar(30) // DRAFT | IN_PROGRESS | ON_HOLD | COMPLETED | REJECTED | CANCELLED
   priority                 String    @default("NORMAL") @db.VarChar(30) // LOW | NORMAL | HIGH | URGENT
   slaRisk                  String    @default("ON_TRACK") @map("sla_risk") @db.VarChar(30) // ON_TRACK | AT_RISK | BREACHED
-  sensitivityLevelId       String?   @map("sensitivity_level_id") @db.Uuid
+  /// Sensitivity is declared on the template, not here. A per-request override
+  /// existed, was never set by any code path, and gave two answers to one
+  /// question; the template's value is the answer.
   slaDueAt                 DateTime? @map("sla_due_at") @db.Timestamptz(6)
   createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   completedAt              DateTime? @map("completed_at") @db.Timestamptz(6)
   confirmedAt              DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  /// When the extractor last had a turn at this request, successful or not. The
+  /// AI service's backlog is defined by this being null, because empty form
+  /// data cannot tell "not attempted" from "attempted and nothing found".
+  extractionAttemptedAt    DateTime? @map("extraction_attempted_at") @db.Timestamptz(6)
   businessDurationMinutes  Int?      @map("business_duration_minutes")
 
   requester        User              @relation(fields: [requesterId], references: [id])
   template         Template?         @relation(fields: [templateId], references: [id])
   workflowPath     WorkflowPath?     @relation(fields: [workflowPathId], references: [id])
-  sensitivityLevel SensitivityLevel? @relation(fields: [sensitivityLevelId], references: [id])
 
   stepInstances RequestStepInstance[]
   actions       RequestAction[]
@@ -636,14 +652,20 @@ model Payment {
   currency              String    @default("SYP") @db.VarChar(3)
   status                String    @default("REQUIRED") @db.VarChar(30) // REQUIRED | CONFIRMED | WAIVED
   requestedBy           String?   @map("requested_by") @db.Uuid
-  confirmedBy           String?   @map("confirmed_by") @db.Uuid
+  /// Who ended the fee, and when -- by taking the money or by dropping it. The
+  /// old confirmed_by / confirmed_at were written on a waiver as well, so they
+  /// claimed a payment was confirmed when nothing had been paid.
+  settledBy             String?   @map("settled_by") @db.Uuid
   requestedAt           DateTime? @map("requested_at") @db.Timestamptz(6)
-  confirmedAt           DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  settledAt             DateTime? @map("settled_at") @db.Timestamptz(6)
+  /// Why a fee was dropped. The domain refuses an empty one: an exemption with
+  /// no stated reason is the first thing an audit asks to see justified.
+  waiverReason          String?   @map("waiver_reason") @db.Text
 
   request             Request              @relation(fields: [requestId], references: [id], onDelete: Cascade)
   requestStepInstance RequestStepInstance? @relation(fields: [requestStepInstanceId], references: [id])
   requester           User?                @relation("PaymentRequestedBy", fields: [requestedBy], references: [id])
-  confirmer           User?                @relation("PaymentConfirmedBy", fields: [confirmedBy], references: [id])
+  settler             User?                @relation("PaymentConfirmedBy", fields: [settledBy], references: [id])
 
   createdBy String? @map("created_by") @db.Uuid
   updatedBy String? @map("updated_by") @db.Uuid

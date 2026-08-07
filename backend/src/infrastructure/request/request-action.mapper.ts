@@ -6,6 +6,7 @@ import { Identifier } from '../../domain/shared/identifier'
 export const RequestActionMapper = {
   toDomain(row: RequestActionRow): RequestAction {
     return RequestAction.rehydrate(Identifier.of(row.id), {
+      requestId: Identifier.of(row.requestId),
       requestStepInstanceId:
         row.requestStepInstanceId != null
           ? Identifier.of(row.requestStepInstanceId)
@@ -17,14 +18,11 @@ export const RequestActionMapper = {
     })
   },
 
-  toPersistence(
-    action: RequestAction,
-    requestId: Identifier,
-  ): Prisma.RequestActionUncheckedCreateInput {
+  toPersistence(action: RequestAction): Prisma.RequestActionUncheckedCreateInput {
     const s = action.snapshot()
     return {
       id: action.id.toString(),
-      requestId: requestId.toString(),
+      requestId: s.requestId,
       requestStepInstanceId: s.requestStepInstanceId
         ? s.requestStepInstanceId
         : null,

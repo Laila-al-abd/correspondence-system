@@ -35,6 +35,7 @@ export class ListRequestQueueHandler
       cursor: query.cursor,
       classificationStatus: query.classificationStatus,
       hasFilledData: query.hasFilledData,
+      extracted: query.extracted,
     })
   }
 }

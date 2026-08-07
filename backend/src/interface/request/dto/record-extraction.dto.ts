@@ -7,6 +7,7 @@ import {
   Length,
 } from 'class-validator'
 import { ExtractionFieldMeta } from '../../../application/request/commands/record-extraction/record-extraction.command'
+import { IsExtractionMetaRecord } from './extraction-meta.dto'
 
 /**
  * Body of PATCH /requests/:id/filled-data.
@@ -25,7 +26,7 @@ export class RecordExtractionDto {
   abstained?: string[]
 
   @IsOptional()
-  @IsObject()
+  @IsExtractionMetaRecord()
   extractionMeta?: Record<string, ExtractionFieldMeta>
 
   // Bounded by the model_version column, which is VARCHAR(50).

@@ -12,6 +12,11 @@ import { RegisterUserHandler } from '../../application/identity/commands/registe
 import { AuthenticateUserHandler } from '../../application/identity/commands/authenticate-user/authenticate-user.handler'
 import { AssignRoleToUserHandler } from '../../application/identity/commands/assign-role-to-user/assign-role-to-user.handler'
 import { RevokeRoleFromUserHandler } from '../../application/identity/commands/revoke-role-from-user/revoke-role-from-user.handler'
+import { CreateRoleHandler } from '../../application/identity/commands/create-role/create-role.handler'
+import { UpdateRoleHandler } from '../../application/identity/commands/update-role/update-role.handler'
+import { DeleteRoleHandler } from '../../application/identity/commands/delete-role/delete-role.handler'
+import { GrantPermissionToRoleHandler } from '../../application/identity/commands/grant-permission-to-role/grant-permission-to-role.handler'
+import { RevokePermissionFromRoleHandler } from '../../application/identity/commands/revoke-permission-from-role/revoke-permission-from-role.handler'
 import { AdministrativeFloorPolicy } from '../../application/identity/policies/administrative-floor.policy'
 import { CreateUserHandler } from '../../application/identity/commands/create-user/create-user.handler'
 import { SyncUsersHandler } from '../../application/identity/commands/sync-users/sync-users.handler'
@@ -30,6 +35,7 @@ import {
   DELEGATION_REPOSITORY,
   ID_GENERATOR,
   PASSWORD_HASHER,
+  ROLE_QUERY,
   ROLE_REPOSITORY,
   USER_ATTRIBUTE_REPOSITORY,
   USER_QUERY,
@@ -39,6 +45,7 @@ import { PrismaUserRepository } from '../../infrastructure/identity/prisma-user.
 import { DirectoryAuthProvider } from '../../infrastructure/identity/directory-auth.provider'
 import { PrismaUserQuery } from '../../infrastructure/identity/prisma-user-query'
 import { PrismaRoleRepository } from '../../infrastructure/identity/prisma-role.repository'
+import { PrismaRoleQuery } from '../../infrastructure/identity/prisma-role-query'
 import { PrismaAttributeDefinitionRepository } from '../../infrastructure/catalog/prisma-attribute-definition.repository'
 import { PrismaUserAttributeRepository } from '../../infrastructure/identity/prisma-user-attribute.repository'
 import { PrismaDelegationRepository } from '../../infrastructure/identity/prisma-delegation.repository'
@@ -49,6 +56,7 @@ import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.genera
 import { JwtAccessTokenService } from '../../infrastructure/identity/jwt-access-token.service'
 import { AuthController } from './auth.controller'
 import { UsersController } from './users.controller'
+import { RolesController } from './roles.controller'
 import { OrganizationModule } from '../organization/organization.module'
 import { JwtAuthGuard } from './jwt-auth.guard'
 import { PermissionsGuard } from './permissions.guard'
@@ -72,7 +80,12 @@ import { ObservabilityModule } from '../observability/observability.module'
  */
 @Module({
   imports: [CqrsModule, OrganizationModule, ObservabilityModule],
-  controllers: [AuthController, UsersController, DelegationsController],
+  controllers: [
+    AuthController,
+    UsersController,
+    RolesController,
+    DelegationsController,
+  ],
   providers: [
     RegisterUserHandler,
     CreateUserHandler,
@@ -81,6 +94,11 @@ import { ObservabilityModule } from '../observability/observability.module'
     GetEffectivePermissionsHandler,
     AssignRoleToUserHandler,
     RevokeRoleFromUserHandler,
+    CreateRoleHandler,
+    UpdateRoleHandler,
+    DeleteRoleHandler,
+    GrantPermissionToRoleHandler,
+    RevokePermissionFromRoleHandler,
     AdministrativeFloorPolicy,
     UserTypeAttributeWriter,
     SetUserAttributeHandler,
@@ -99,6 +117,7 @@ import { ObservabilityModule } from '../observability/observability.module'
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     { provide: USER_QUERY, useClass: PrismaUserQuery },
     { provide: ROLE_REPOSITORY, useClass: PrismaRoleRepository },
+    { provide: ROLE_QUERY, useClass: PrismaRoleQuery },
     {
       provide: ATTRIBUTE_DEFINITION_REPOSITORY,
       useClass: PrismaAttributeDefinitionRepository,

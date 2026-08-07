@@ -1,4 +1,4 @@
-import { IsISO8601, IsOptional, IsString } from 'class-validator'
+import { IsISO8601, IsOptional, IsString, Length } from 'class-validator'
 
 /** Body for POST /users/:userId/roles. */
 export class AssignRoleDto {
@@ -14,4 +14,10 @@ export class AssignRoleDto {
   @IsOptional()
   @IsISO8601()
   expiresAt?: string
+
+  // Optional note recorded on the assignment: why this person holds this role.
+  @IsOptional()
+  @IsString()
+  @Length(1, 500)
+  reason?: string
 }

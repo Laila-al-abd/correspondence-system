@@ -333,6 +333,7 @@ export const TemplateScalarFieldEnum = {
   description: 'description',
   classifierDocument: 'classifierDocument',
   sensitivityLevelId: 'sensitivityLevelId',
+  defaultPriority: 'defaultPriority',
   isActive: 'isActive',
   createdAt: 'createdAt',
   deletedAt: 'deletedAt',
@@ -436,6 +437,8 @@ export const WorkflowStepScalarFieldEnum = {
   defaultActionTypeId: 'defaultActionTypeId',
   slaHours: 'slaHours',
   pausesSla: 'pausesSla',
+  feeAmount: 'feeAmount',
+  feeCurrency: 'feeCurrency',
   createdAt: 'createdAt',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy'
@@ -482,11 +485,11 @@ export const RequestScalarFieldEnum = {
   currentStatus: 'currentStatus',
   priority: 'priority',
   slaRisk: 'slaRisk',
-  sensitivityLevelId: 'sensitivityLevelId',
   slaDueAt: 'slaDueAt',
   createdAt: 'createdAt',
   completedAt: 'completedAt',
   confirmedAt: 'confirmedAt',
+  extractionAttemptedAt: 'extractionAttemptedAt',
   businessDurationMinutes: 'businessDurationMinutes',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy'
@@ -538,9 +541,10 @@ export const PaymentScalarFieldEnum = {
   currency: 'currency',
   status: 'status',
   requestedBy: 'requestedBy',
-  confirmedBy: 'confirmedBy',
+  settledBy: 'settledBy',
   requestedAt: 'requestedAt',
-  confirmedAt: 'confirmedAt',
+  settledAt: 'settledAt',
+  waiverReason: 'waiverReason',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy'
 } as const

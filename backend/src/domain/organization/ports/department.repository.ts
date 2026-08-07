@@ -4,6 +4,9 @@ import { Department } from "../department"
 import { ExternalRef } from "../value-objects/external-ref"
 export interface DepartmentRepository extends Repository<Department> {
 findByExternalRef(ref: ExternalRef): Promise<Department | null>
+// Every unit this source owns, active or not: the sync needs the full set to
+// work out which units the directory has stopped sending.
+listBySource(source: string): Promise<Department[]>
 // Walks the tree upward until it hits a FACULTY-kind unit (for REQUESTER_FACULTY_DEAN).
 findAncestorOfKind(departmentId: Identifier, kind: string): 
 Promise<Department | null>

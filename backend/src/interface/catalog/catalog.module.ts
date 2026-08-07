@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 import { CreateLanguageHandler } from '../../application/catalog/commands/create-language/create-language.handler'
+import { CreateTemplateHandler } from '../../application/catalog/commands/create-template/create-template.handler'
+import { UpdateTemplateHandler } from '../../application/catalog/commands/update-template/update-template.handler'
+import { UpsertTemplateFieldHandler } from '../../application/catalog/commands/upsert-template-field/upsert-template-field.handler'
+import { RemoveTemplateFieldHandler } from '../../application/catalog/commands/remove-template-field/remove-template-field.handler'
+import { ReorderTemplateFieldsHandler } from '../../application/catalog/commands/reorder-template-fields/reorder-template-fields.handler'
+import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { ListLanguagesHandler } from '../../application/catalog/queries/list-languages/list-languages.handler'
 import { ListTemplateCatalogHandler } from '../../application/catalog/queries/list-template-catalog/list-template-catalog.handler'
 import { GetTemplateCatalogHandler } from '../../application/catalog/queries/get-template-catalog/get-template-catalog.handler'
@@ -13,6 +19,7 @@ import {
   PrismaActionTypeRepository,
 } from '../../infrastructure/catalog/prisma-catalog-lookup.repository'
 import {
+  ID_GENERATOR,
   LANGUAGE_REPOSITORY,
   TEMPLATE_REPOSITORY,
   TEMPLATE_CATALOG_QUERY,
@@ -32,12 +39,19 @@ import { TemplateController } from './template.controller'
   controllers: [LanguageController, TemplateController],
   providers: [
     CreateLanguageHandler,
+    CreateTemplateHandler,
+    UpdateTemplateHandler,
+    UpsertTemplateFieldHandler,
+    RemoveTemplateFieldHandler,
+    ReorderTemplateFieldsHandler,
     ListLanguagesHandler,
     ListTemplateCatalogHandler,
     GetTemplateCatalogHandler,
     { provide: LANGUAGE_REPOSITORY, useClass: PrismaLanguageRepository },
     { provide: TEMPLATE_REPOSITORY, useClass: PrismaTemplateRepository },
     { provide: TEMPLATE_CATALOG_QUERY, useClass: PrismaTemplateCatalogQuery },
+    // Authoring mints template and field ids; the read paths do not need this.
+    { provide: ID_GENERATOR, useClass: UuidV7IdGenerator },
     {
       provide: SENSITIVITY_LEVEL_REPOSITORY,
       useClass: PrismaSensitivityLevelRepository,
