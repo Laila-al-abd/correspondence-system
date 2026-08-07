@@ -115,6 +115,18 @@ export class FilledDataInvalidError extends ApplicationError {
   }
 }
 
+export class TemplateCodeAlreadyInUseError extends ApplicationError {
+  readonly code = 'TEMPLATE_CODE_ALREADY_IN_USE'
+  readonly status = 409
+  constructor(readonly templateCode: string) {
+    super(
+      `Template code ${templateCode} already belongs to another template. ` +
+        'Codes are how the AI service and every stored measurement refer to a ' +
+        'template, so they cannot be shared or reused.',
+    )
+  }
+}
+
 export class RequestNotExtractableError extends ApplicationError {
   readonly code = 'REQUEST_NOT_EXTRACTABLE'
   readonly status = 409

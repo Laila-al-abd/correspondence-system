@@ -30,17 +30,32 @@ export class TemplateField extends Entity {
 
   static create(id: Identifier, p: TemplateFieldProps): TemplateField {
     Guard.againstEmpty(p.fieldKey, "fieldKey")
-    const options = p.options ?? []
-    if (p.dataType === FieldDataType.ENUM) {
-      if (options.length === 0)
-        throw new InvariantViolationError(`ENUM field "${p.fieldKey}" must define at least one option.`)
-      const values = options.map((o) => o.value)
-      if (new Set(values).size !== values.length)
-        throw new InvariantViolationError(`Duplicate option value in field "${p.fieldKey}".`)
-    } else if (options.length > 0) {
-      throw new InvariantViolationError(`Only ENUM fields may define options (field "${p.fieldKey}").`)
+    return new TemplateField(id, {
+      ...p,
+      options: assertOptionSet(p.fieldKey, p.dataType, p.options),
+    })
+  }
+
+  /**
+   * Replaces this field's whole definition while keeping its identity.
+   *
+   * The key is deliberately not replaceable here. A field key is what stored
+   * filled_data, every ml_predictions row and every extraction question are
+   * written against, so renaming one in place would orphan all three silently.
+   * Authoring a differently-named field is a remove plus an add, which is
+   * visible.
+   */
+  redefine(p: Omit<TemplateFieldProps, "fieldKey">): void {
+    this.props = {
+      ...p,
+      fieldKey: this.props.fieldKey,
+      options: assertOptionSet(this.props.fieldKey, p.dataType, p.options),
     }
-    return new TemplateField(id, { ...p, options })
+  }
+
+  /** Position in the form. Set through Template.reorderFields, not directly. */
+  setOrdinal(ordinal: number): void {
+    this.props.ordinal = ordinal
   }
 
   static rehydrate(id: Identifier, props: TemplateFieldProps): TemplateField {
@@ -96,11 +111,6 @@ export class TemplateField extends Entity {
     }
   }
 
-  /** Boolean form of validate(), kept for callers that only need a yes or no. */
-  accepts(value: unknown): boolean {
-    return this.validate(value) === null
-  }
-
   snapshot(): {
     id: string
     fieldKey: string
@@ -128,6 +138,31 @@ export class TemplateField extends Entity {
   }
 }
 
+
+/**
+ * The option-set rules, in one place so create() and redefine() cannot drift.
+ *
+ * An ENUM field with no options rejects every value a requester could possibly
+ * send, and options on a non-ENUM field are ignored at validation time -- which
+ * reads like a working configuration and is not one.
+ */
+function assertOptionSet(
+  fieldKey: string,
+  dataType: FieldDataType,
+  options?: TemplateFieldOption[],
+): TemplateFieldOption[] {
+  const set = options ?? []
+  if (dataType === FieldDataType.ENUM) {
+    if (set.length === 0)
+      throw new InvariantViolationError(`ENUM field "${fieldKey}" must define at least one option.`)
+    const values = set.map((o) => o.value)
+    if (new Set(values).size !== values.length)
+      throw new InvariantViolationError(`Duplicate option value in field "${fieldKey}".`)
+  } else if (set.length > 0) {
+    throw new InvariantViolationError(`Only ENUM fields may define options (field "${fieldKey}").`)
+  }
+  return set
+}
 
 /**
  * A strict calendar-date check.

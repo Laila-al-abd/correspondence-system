@@ -4,6 +4,7 @@ import { TemplateField } from '../../domain/catalog/template-field'
 import { TemplateFieldOption } from '../../domain/catalog/template-field-option'
 import { TemplateEligibilityRule } from '../../domain/catalog/template-eligibility-rule'
 import { FieldDataType, RuleOperator } from '../../domain/catalog/enums'
+import { Priority } from '../../domain/request/enums'
 import { Identifier } from '../../domain/shared/identifier'
 import { LocalizedText } from '../../domain/shared/localized-text'
 
@@ -65,6 +66,7 @@ export const TemplateMapper = {
       title: toLocalized(row.title),
       description: row.description ? toLocalized(row.description) : undefined,
       sensitivityLevelId: Identifier.of(row.sensitivityLevelId),
+      defaultPriority: row.defaultPriority as Priority,
       isActive: row.isActive,
       fields,
       eligibilityRules,
@@ -84,6 +86,7 @@ export const TemplateMapper = {
         ? (s.description as Prisma.InputJsonValue)
         : Prisma.JsonNull,
       sensitivityLevelId: s.sensitivityLevelId,
+      defaultPriority: s.defaultPriority,
       isActive: s.isActive,
     }
   },

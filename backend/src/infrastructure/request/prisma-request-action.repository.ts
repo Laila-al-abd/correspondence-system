@@ -22,9 +22,9 @@ export class PrismaRequestActionRepository implements RequestActionRepository {
     return dbClient(this.prisma)
   }
 
-  async append(action: RequestAction, requestId: Identifier): Promise<void> {
+  async append(action: RequestAction): Promise<void> {
     await this.db.requestAction.create({
-      data: RequestActionMapper.toPersistence(action, requestId),
+      data: RequestActionMapper.toPersistence(action),
     })
   }
 

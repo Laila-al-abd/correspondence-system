@@ -48,6 +48,8 @@ export const WorkflowPathMapper = {
             : undefined,
         slaHours: s.slaHours != null ? s.slaHours.toNumber() : undefined,
         pausesSla: s.pausesSla,
+        feeAmount: s.feeAmount != null ? s.feeAmount.toNumber() : undefined,
+        feeCurrency: s.feeCurrency ?? undefined,
         allowedActionTypeIds: new Set(
           s.allowedActions.map((a) => a.actionTypeId.toString()),
         ),

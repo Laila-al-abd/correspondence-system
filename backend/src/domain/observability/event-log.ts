@@ -27,9 +27,14 @@ export class EventLog extends Entity {
     return new EventLog(id, props)
   }
 
+  /**
+   * `from` is optional because the first event in a request's life has no
+   * previous state: it is the submission, and the column is nullable to say so
+   * rather than carrying an invented placeholder.
+   */
   static statusChanged(
     id: Identifier,
-    p: { requestId: Identifier; from: string; to: string; actorId?: Identifier; ipAddress?: string },
+    p: { requestId: Identifier; from?: string; to: string; actorId?: Identifier; ipAddress?: string },
   ): EventLog {
     return new EventLog(id, {
       requestId: p.requestId,
@@ -65,39 +70,42 @@ export class EventLog extends Entity {
 
   static stepStarted(
     id: Identifier,
-    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier },
+    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier; ipAddress?: string },
   ): EventLog {
     return new EventLog(id, {
       requestId: p.requestId,
       requestStepInstanceId: p.requestStepInstanceId,
       actorId: p.actorId,
       eventType: EventType.STEP_STARTED,
+      ipAddress: p.ipAddress,
       occurredAt: new Date(),
     })
   }
 
   static stepCompleted(
     id: Identifier,
-    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier },
+    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier; ipAddress?: string },
   ): EventLog {
     return new EventLog(id, {
       requestId: p.requestId,
       requestStepInstanceId: p.requestStepInstanceId,
       actorId: p.actorId,
       eventType: EventType.STEP_COMPLETED,
+      ipAddress: p.ipAddress,
       occurredAt: new Date(),
     })
   }
 
   static assigned(
     id: Identifier,
-    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier },
+    p: { requestId: Identifier; requestStepInstanceId: Identifier; actorId?: Identifier; ipAddress?: string },
   ): EventLog {
     return new EventLog(id, {
       requestId: p.requestId,
       requestStepInstanceId: p.requestStepInstanceId,
       actorId: p.actorId,
       eventType: EventType.ASSIGNED,
+      ipAddress: p.ipAddress,
       occurredAt: new Date(),
     })
   }

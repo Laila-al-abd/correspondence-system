@@ -30,6 +30,8 @@ import { PrismaReferenceNumberGenerator } from '../../infrastructure/shared/pris
 import { SubmitRequestHandler } from '../../application/request/commands/submit-request/submit-request.handler'
 import { ClassifyRequestByModelHandler } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.handler'
 import { ClassifyRequestByHumanHandler } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.handler'
+import { ChangeRequestPriorityHandler } from '../../application/request/commands/change-request-priority/change-request-priority.handler'
+import { SettlePaymentHandler } from '../../application/request/commands/settle-payment/settle-payment.handler'
 import { RecordExtractionHandler } from '../../application/request/commands/record-extraction/record-extraction.handler'
 import { ConfirmRequestHandler } from '../../application/request/commands/confirm-request/confirm-request.handler'
 import { StartRequestWorkflowHandler } from '../../application/request/commands/start-request-workflow/start-request-workflow.handler'
@@ -55,11 +57,13 @@ const handlers = [
   SubmitRequestHandler,
   ClassifyRequestByModelHandler,
   ClassifyRequestByHumanHandler,
+  ChangeRequestPriorityHandler,
   RecordExtractionHandler,
   ConfirmRequestHandler,
   StartRequestWorkflowHandler,
   AssignStepHandler,
   ActOnStepHandler,
+  SettlePaymentHandler,
   UploadDocumentHandler,
   GetRequestHandler,
   GetRequestByReferenceHandler,

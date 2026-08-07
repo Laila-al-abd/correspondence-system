@@ -12,6 +12,8 @@ import {
   WORKFLOW_PATH_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
+import { EventRecorder } from '../../../observability/services/event-recorder'
+import { stageOfRequest } from '../../queries/views/request-stage'
 import { StartRequestWorkflowCommand } from './start-request-workflow.command'
 import { AssigneeResolver } from '../../services/assignee-resolver'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
@@ -27,8 +29,8 @@ export interface StartWorkflowResult {
 
 /**
  * Routes a classified request onto its template's active workflow path. Every
- * workflow step becomes a runtime step instance with its own SLA clock, and the
- * request moves to IN_PROGRESS. The aggregate rejects this if the request was
+ * workflow step becomes a runtime step instance, the ones that can begin now
+ * start their SLA clock, and the request moves to IN_PROGRESS. The aggregate rejects this if the request was
  * never classified.
  */
 @CommandHandler(StartRequestWorkflowCommand)
@@ -43,6 +45,7 @@ export class StartRequestWorkflowHandler
     private readonly assignees: AssigneeResolver,
     private readonly notifier: NotificationEmitter,
     private readonly businessHours: BusinessHoursService,
+    private readonly events: EventRecorder,
   ) {}
 
   async execute(
@@ -72,10 +75,19 @@ export class StartRequestWorkflowHandler
     // guard and the duration recorded when a request completes, so all three
     // agree on whether a weekend counted.
     const startedAt = new Date()
+    // Only the steps that can begin now get a clock. A step waiting behind a
+    // dependency is given its deadline when its predecessor finishes -- see
+    // RequestStepInstance.scheduleSla, called from ActOnStepHandler. Before
+    // this, a path seeded "24h then 48h" gave the second step a deadline 48
+    // hours after routing, so the first desk's whole allowance was spent out of
+    // the second desk's budget and step two could be reported late before its
+    // owner was allowed to touch it.
+    const entryStepIds = new Set(path.entrySteps().map((s) => s.id.toString()))
     const stepInstances: RequestStepInstance[] = []
     for (const step of path.steps) {
+      const startsNow = entryStepIds.has(step.id.toString())
       const slaDueAt =
-        step.slaHours !== undefined
+        startsNow && step.slaHours !== undefined
           ? await this.businessHours.addWorkingHours(startedAt, step.slaHours)
           : undefined
       stepInstances.push(
@@ -102,14 +114,37 @@ export class StartRequestWorkflowHandler
       }
     }
 
+    const stageBefore = stageOfRequest(request)
     request.startWorkflow(path.id, stepInstances)
     await this.requests.save(request)
+
+    await this.events.statusChanged({
+      requestId: request.id.toString(),
+      from: stageBefore,
+      to: stageOfRequest(request),
+    })
+    // Routing is a fact about the file even when nobody chose the owner: the
+    // resolver picked it, and this records who was holding the token when that
+    // happened. Every step that got an owner is logged, including the ones
+    // waiting behind a dependency -- they were routed now, not when they open.
+    for (const instance of stepInstances) {
+      if (!instance.assignedToUserId) continue
+      await this.events.assigned({
+        requestId: request.id.toString(),
+        stepInstanceId: instance.id.toString(),
+      })
+    }
 
     // Everyone who was auto-routed a step hears about it, and the requester is
     // told their request is now moving.
     for (const instance of stepInstances) {
       const assignee = instance.assignedToUserId
       if (!assignee) continue
+      // Only the owners of steps that can be worked now are told. Announcing a
+      // step whose owner would be refused permission to start it is how a
+      // notification list turns into noise nobody reads; the hand-off
+      // notification in ActOnStepHandler arrives when it is really their turn.
+      if (!entryStepIds.has(instance.workflowStepId.toString())) continue
       await this.notifier.stepAssigned({
         assigneeUserId: assignee.toString(),
         requestId: request.id.toString(),

@@ -3,6 +3,13 @@ import { AsyncLocalStorage } from 'node:async_hooks'
 /** Values carried implicitly for the lifetime of a single request. */
 export interface RequestContext {
   userId?: string
+  /**
+   * The caller's IP address, already validated as an address. The audit trail
+   * needs it and no command carries it: threading it through every controller,
+   * command and handler signature would touch the whole call stack to deliver
+   * one value that is a property of the connection rather than of the decision.
+   */
+  ipAddress?: string
 }
 
 const storage = new AsyncLocalStorage<RequestContext>()
@@ -30,5 +37,14 @@ export const RequestContextStore = {
   /** The current user id, or undefined for system work (seeds, jobs, startup). */
   userId(): string | undefined {
     return storage.getStore()?.userId
+  },
+
+  /**
+   * The caller's address, or undefined when there is no caller -- a scheduled
+   * sweep and a seed run have no IP, and recording a fake one would be worse
+   * than recording none.
+   */
+  ipAddress(): string | undefined {
+    return storage.getStore()?.ipAddress
   },
 }

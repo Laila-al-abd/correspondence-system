@@ -16,9 +16,10 @@ export const PaymentMapper = {
       money: Money.create(row.amount.toNumber(), row.currency),
       status: row.status as PaymentStatus,
       requestedBy: row.requestedBy != null ? Identifier.of(row.requestedBy) : undefined,
-      confirmedBy: row.confirmedBy != null ? Identifier.of(row.confirmedBy) : undefined,
+      settledBy: row.settledBy != null ? Identifier.of(row.settledBy) : undefined,
       requestedAt: row.requestedAt ?? undefined,
-      confirmedAt: row.confirmedAt ?? undefined,
+      settledAt: row.settledAt ?? undefined,
+      waiverReason: row.waiverReason ?? undefined,
     })
   },
 
@@ -34,9 +35,10 @@ export const PaymentMapper = {
       currency: s.currency,
       status: s.status,
       requestedBy: s.requestedBy ? s.requestedBy : null,
-      confirmedBy: s.confirmedBy ? s.confirmedBy : null,
+      settledBy: s.settledBy ? s.settledBy : null,
       requestedAt: s.requestedAt ?? null,
-      confirmedAt: s.confirmedAt ?? null,
+      settledAt: s.settledAt ?? null,
+      waiverReason: s.waiverReason ?? null,
     }
   },
 }

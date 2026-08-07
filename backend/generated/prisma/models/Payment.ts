@@ -44,9 +44,10 @@ export type PaymentMinAggregateOutputType = {
   currency: string | null
   status: string | null
   requestedBy: string | null
-  confirmedBy: string | null
+  settledBy: string | null
   requestedAt: Date | null
-  confirmedAt: Date | null
+  settledAt: Date | null
+  waiverReason: string | null
   createdBy: string | null
   updatedBy: string | null
 }
@@ -61,9 +62,10 @@ export type PaymentMaxAggregateOutputType = {
   currency: string | null
   status: string | null
   requestedBy: string | null
-  confirmedBy: string | null
+  settledBy: string | null
   requestedAt: Date | null
-  confirmedAt: Date | null
+  settledAt: Date | null
+  waiverReason: string | null
   createdBy: string | null
   updatedBy: string | null
 }
@@ -78,9 +80,10 @@ export type PaymentCountAggregateOutputType = {
   currency: number
   status: number
   requestedBy: number
-  confirmedBy: number
+  settledBy: number
   requestedAt: number
-  confirmedAt: number
+  settledAt: number
+  waiverReason: number
   createdBy: number
   updatedBy: number
   _all: number
@@ -105,9 +108,10 @@ export type PaymentMinAggregateInputType = {
   currency?: true
   status?: true
   requestedBy?: true
-  confirmedBy?: true
+  settledBy?: true
   requestedAt?: true
-  confirmedAt?: true
+  settledAt?: true
+  waiverReason?: true
   createdBy?: true
   updatedBy?: true
 }
@@ -122,9 +126,10 @@ export type PaymentMaxAggregateInputType = {
   currency?: true
   status?: true
   requestedBy?: true
-  confirmedBy?: true
+  settledBy?: true
   requestedAt?: true
-  confirmedAt?: true
+  settledAt?: true
+  waiverReason?: true
   createdBy?: true
   updatedBy?: true
 }
@@ -139,9 +144,10 @@ export type PaymentCountAggregateInputType = {
   currency?: true
   status?: true
   requestedBy?: true
-  confirmedBy?: true
+  settledBy?: true
   requestedAt?: true
-  confirmedAt?: true
+  settledAt?: true
+  waiverReason?: true
   createdBy?: true
   updatedBy?: true
   _all?: true
@@ -243,9 +249,10 @@ export type PaymentGroupByOutputType = {
   currency: string
   status: string
   requestedBy: string | null
-  confirmedBy: string | null
+  settledBy: string | null
   requestedAt: Date | null
-  confirmedAt: Date | null
+  settledAt: Date | null
+  waiverReason: string | null
   createdBy: string | null
   updatedBy: string | null
   _count: PaymentCountAggregateOutputType | null
@@ -283,15 +290,16 @@ export type PaymentWhereInput = {
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
   requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
-  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  settledBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  settledAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  waiverReason?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   requester?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  confirmer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  settler?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type PaymentOrderByWithRelationInput = {
@@ -304,15 +312,16 @@ export type PaymentOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requestedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  settledBy?: Prisma.SortOrderInput | Prisma.SortOrder
   requestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  settledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  waiverReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   request?: Prisma.RequestOrderByWithRelationInput
   requestStepInstance?: Prisma.RequestStepInstanceOrderByWithRelationInput
   requester?: Prisma.UserOrderByWithRelationInput
-  confirmer?: Prisma.UserOrderByWithRelationInput
+  settler?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -328,15 +337,16 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
   requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
-  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  settledBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  settledAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  waiverReason?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   request?: Prisma.XOR<Prisma.RequestScalarRelationFilter, Prisma.RequestWhereInput>
   requestStepInstance?: Prisma.XOR<Prisma.RequestStepInstanceNullableScalarRelationFilter, Prisma.RequestStepInstanceWhereInput> | null
   requester?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  confirmer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  settler?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type PaymentOrderByWithAggregationInput = {
@@ -349,9 +359,10 @@ export type PaymentOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requestedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  settledBy?: Prisma.SortOrderInput | Prisma.SortOrder
   requestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  confirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  settledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  waiverReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PaymentCountOrderByAggregateInput
@@ -374,9 +385,10 @@ export type PaymentScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   status?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   requestedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
-  confirmedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
+  settledBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
-  confirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+  settledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+  waiverReason?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   createdBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
 }
@@ -389,13 +401,14 @@ export type PaymentCreateInput = {
   currency?: string
   status?: string
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
-  confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
+  settler?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
 }
 
 export type PaymentUncheckedCreateInput = {
@@ -408,9 +421,10 @@ export type PaymentUncheckedCreateInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -423,13 +437,14 @@ export type PaymentUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
-  confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
+  settler?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
 }
 
 export type PaymentUncheckedUpdateInput = {
@@ -442,9 +457,10 @@ export type PaymentUncheckedUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -459,9 +475,10 @@ export type PaymentCreateManyInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -474,7 +491,8 @@ export type PaymentUpdateManyMutationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -489,9 +507,10 @@ export type PaymentUncheckedUpdateManyInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -516,9 +535,10 @@ export type PaymentCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requestedBy?: Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrder
+  settledBy?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
-  confirmedAt?: Prisma.SortOrder
+  settledAt?: Prisma.SortOrder
+  waiverReason?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -537,9 +557,10 @@ export type PaymentMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requestedBy?: Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrder
+  settledBy?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
-  confirmedAt?: Prisma.SortOrder
+  settledAt?: Prisma.SortOrder
+  waiverReason?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -554,9 +575,10 @@ export type PaymentMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   status?: Prisma.SortOrder
   requestedBy?: Prisma.SortOrder
-  confirmedBy?: Prisma.SortOrder
+  settledBy?: Prisma.SortOrder
   requestedAt?: Prisma.SortOrder
-  confirmedAt?: Prisma.SortOrder
+  settledAt?: Prisma.SortOrder
+  waiverReason?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
 }
@@ -572,10 +594,10 @@ export type PaymentCreateNestedManyWithoutRequesterInput = {
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
 }
 
-export type PaymentCreateNestedManyWithoutConfirmerInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput> | Prisma.PaymentCreateWithoutConfirmerInput[] | Prisma.PaymentUncheckedCreateWithoutConfirmerInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutConfirmerInput | Prisma.PaymentCreateOrConnectWithoutConfirmerInput[]
-  createMany?: Prisma.PaymentCreateManyConfirmerInputEnvelope
+export type PaymentCreateNestedManyWithoutSettlerInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput> | Prisma.PaymentCreateWithoutSettlerInput[] | Prisma.PaymentUncheckedCreateWithoutSettlerInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutSettlerInput | Prisma.PaymentCreateOrConnectWithoutSettlerInput[]
+  createMany?: Prisma.PaymentCreateManySettlerInputEnvelope
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
 }
 
@@ -586,10 +608,10 @@ export type PaymentUncheckedCreateNestedManyWithoutRequesterInput = {
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
 }
 
-export type PaymentUncheckedCreateNestedManyWithoutConfirmerInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput> | Prisma.PaymentCreateWithoutConfirmerInput[] | Prisma.PaymentUncheckedCreateWithoutConfirmerInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutConfirmerInput | Prisma.PaymentCreateOrConnectWithoutConfirmerInput[]
-  createMany?: Prisma.PaymentCreateManyConfirmerInputEnvelope
+export type PaymentUncheckedCreateNestedManyWithoutSettlerInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput> | Prisma.PaymentCreateWithoutSettlerInput[] | Prisma.PaymentUncheckedCreateWithoutSettlerInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutSettlerInput | Prisma.PaymentCreateOrConnectWithoutSettlerInput[]
+  createMany?: Prisma.PaymentCreateManySettlerInputEnvelope
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
 }
 
@@ -607,17 +629,17 @@ export type PaymentUpdateManyWithoutRequesterNestedInput = {
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
-export type PaymentUpdateManyWithoutConfirmerNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput> | Prisma.PaymentCreateWithoutConfirmerInput[] | Prisma.PaymentUncheckedCreateWithoutConfirmerInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutConfirmerInput | Prisma.PaymentCreateOrConnectWithoutConfirmerInput[]
-  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutConfirmerInput | Prisma.PaymentUpsertWithWhereUniqueWithoutConfirmerInput[]
-  createMany?: Prisma.PaymentCreateManyConfirmerInputEnvelope
+export type PaymentUpdateManyWithoutSettlerNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput> | Prisma.PaymentCreateWithoutSettlerInput[] | Prisma.PaymentUncheckedCreateWithoutSettlerInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutSettlerInput | Prisma.PaymentCreateOrConnectWithoutSettlerInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutSettlerInput | Prisma.PaymentUpsertWithWhereUniqueWithoutSettlerInput[]
+  createMany?: Prisma.PaymentCreateManySettlerInputEnvelope
   set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
-  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutConfirmerInput | Prisma.PaymentUpdateWithWhereUniqueWithoutConfirmerInput[]
-  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutConfirmerInput | Prisma.PaymentUpdateManyWithWhereWithoutConfirmerInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutSettlerInput | Prisma.PaymentUpdateWithWhereUniqueWithoutSettlerInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutSettlerInput | Prisma.PaymentUpdateManyWithWhereWithoutSettlerInput[]
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
@@ -635,17 +657,17 @@ export type PaymentUncheckedUpdateManyWithoutRequesterNestedInput = {
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
-export type PaymentUncheckedUpdateManyWithoutConfirmerNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput> | Prisma.PaymentCreateWithoutConfirmerInput[] | Prisma.PaymentUncheckedCreateWithoutConfirmerInput[]
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutConfirmerInput | Prisma.PaymentCreateOrConnectWithoutConfirmerInput[]
-  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutConfirmerInput | Prisma.PaymentUpsertWithWhereUniqueWithoutConfirmerInput[]
-  createMany?: Prisma.PaymentCreateManyConfirmerInputEnvelope
+export type PaymentUncheckedUpdateManyWithoutSettlerNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput> | Prisma.PaymentCreateWithoutSettlerInput[] | Prisma.PaymentUncheckedCreateWithoutSettlerInput[]
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutSettlerInput | Prisma.PaymentCreateOrConnectWithoutSettlerInput[]
+  upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutSettlerInput | Prisma.PaymentUpsertWithWhereUniqueWithoutSettlerInput[]
+  createMany?: Prisma.PaymentCreateManySettlerInputEnvelope
   set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
   connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[]
-  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutConfirmerInput | Prisma.PaymentUpdateWithWhereUniqueWithoutConfirmerInput[]
-  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutConfirmerInput | Prisma.PaymentUpdateManyWithWhereWithoutConfirmerInput[]
+  update?: Prisma.PaymentUpdateWithWhereUniqueWithoutSettlerInput | Prisma.PaymentUpdateWithWhereUniqueWithoutSettlerInput[]
+  updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutSettlerInput | Prisma.PaymentUpdateManyWithWhereWithoutSettlerInput[]
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
@@ -749,12 +771,13 @@ export type PaymentCreateWithoutRequesterInput = {
   currency?: string
   status?: string
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
-  confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
+  settler?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
 }
 
 export type PaymentUncheckedCreateWithoutRequesterInput = {
@@ -766,9 +789,10 @@ export type PaymentUncheckedCreateWithoutRequesterInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -783,7 +807,7 @@ export type PaymentCreateManyRequesterInputEnvelope = {
   skipDuplicates?: boolean
 }
 
-export type PaymentCreateWithoutConfirmerInput = {
+export type PaymentCreateWithoutSettlerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   id: string
@@ -791,7 +815,8 @@ export type PaymentCreateWithoutConfirmerInput = {
   currency?: string
   status?: string
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
@@ -799,7 +824,7 @@ export type PaymentCreateWithoutConfirmerInput = {
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
 }
 
-export type PaymentUncheckedCreateWithoutConfirmerInput = {
+export type PaymentUncheckedCreateWithoutSettlerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   id: string
@@ -810,18 +835,19 @@ export type PaymentUncheckedCreateWithoutConfirmerInput = {
   status?: string
   requestedBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
 
-export type PaymentCreateOrConnectWithoutConfirmerInput = {
+export type PaymentCreateOrConnectWithoutSettlerInput = {
   where: Prisma.PaymentWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput>
 }
 
-export type PaymentCreateManyConfirmerInputEnvelope = {
-  data: Prisma.PaymentCreateManyConfirmerInput | Prisma.PaymentCreateManyConfirmerInput[]
+export type PaymentCreateManySettlerInputEnvelope = {
+  data: Prisma.PaymentCreateManySettlerInput | Prisma.PaymentCreateManySettlerInput[]
   skipDuplicates?: boolean
 }
 
@@ -854,27 +880,28 @@ export type PaymentScalarWhereInput = {
   currency?: Prisma.StringFilter<"Payment"> | string
   status?: Prisma.StringFilter<"Payment"> | string
   requestedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
-  confirmedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
+  settledBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   requestedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
-  confirmedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  settledAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null
+  waiverReason?: Prisma.StringNullableFilter<"Payment"> | string | null
   createdBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Payment"> | string | null
 }
 
-export type PaymentUpsertWithWhereUniqueWithoutConfirmerInput = {
+export type PaymentUpsertWithWhereUniqueWithoutSettlerInput = {
   where: Prisma.PaymentWhereUniqueInput
-  update: Prisma.XOR<Prisma.PaymentUpdateWithoutConfirmerInput, Prisma.PaymentUncheckedUpdateWithoutConfirmerInput>
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutConfirmerInput, Prisma.PaymentUncheckedCreateWithoutConfirmerInput>
+  update: Prisma.XOR<Prisma.PaymentUpdateWithoutSettlerInput, Prisma.PaymentUncheckedUpdateWithoutSettlerInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutSettlerInput, Prisma.PaymentUncheckedCreateWithoutSettlerInput>
 }
 
-export type PaymentUpdateWithWhereUniqueWithoutConfirmerInput = {
+export type PaymentUpdateWithWhereUniqueWithoutSettlerInput = {
   where: Prisma.PaymentWhereUniqueInput
-  data: Prisma.XOR<Prisma.PaymentUpdateWithoutConfirmerInput, Prisma.PaymentUncheckedUpdateWithoutConfirmerInput>
+  data: Prisma.XOR<Prisma.PaymentUpdateWithoutSettlerInput, Prisma.PaymentUncheckedUpdateWithoutSettlerInput>
 }
 
-export type PaymentUpdateManyWithWhereWithoutConfirmerInput = {
+export type PaymentUpdateManyWithWhereWithoutSettlerInput = {
   where: Prisma.PaymentScalarWhereInput
-  data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutConfirmerInput>
+  data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutSettlerInput>
 }
 
 export type PaymentCreateWithoutRequestInput = {
@@ -885,12 +912,13 @@ export type PaymentCreateWithoutRequestInput = {
   currency?: string
   status?: string
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
   requestStepInstance?: Prisma.RequestStepInstanceCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
-  confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
+  settler?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
 }
 
 export type PaymentUncheckedCreateWithoutRequestInput = {
@@ -902,9 +930,10 @@ export type PaymentUncheckedCreateWithoutRequestInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -943,12 +972,13 @@ export type PaymentCreateWithoutRequestStepInstanceInput = {
   currency?: string
   status?: string
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
   request: Prisma.RequestCreateNestedOneWithoutPaymentsInput
   requester?: Prisma.UserCreateNestedOneWithoutPaymentsRequestedInput
-  confirmer?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
+  settler?: Prisma.UserCreateNestedOneWithoutPaymentsConfirmedInput
 }
 
 export type PaymentUncheckedCreateWithoutRequestStepInstanceInput = {
@@ -960,9 +990,10 @@ export type PaymentUncheckedCreateWithoutRequestStepInstanceInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -1002,14 +1033,15 @@ export type PaymentCreateManyRequesterInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: string
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
 
-export type PaymentCreateManyConfirmerInput = {
+export type PaymentCreateManySettlerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   id: string
@@ -1020,7 +1052,8 @@ export type PaymentCreateManyConfirmerInput = {
   status?: string
   requestedBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -1033,12 +1066,13 @@ export type PaymentUpdateWithoutRequesterInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
-  confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
+  settler?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutRequesterInput = {
@@ -1050,9 +1084,10 @@ export type PaymentUncheckedUpdateWithoutRequesterInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1066,14 +1101,15 @@ export type PaymentUncheckedUpdateManyWithoutRequesterInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type PaymentUpdateWithoutConfirmerInput = {
+export type PaymentUpdateWithoutSettlerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1081,7 +1117,8 @@ export type PaymentUpdateWithoutConfirmerInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
@@ -1089,7 +1126,7 @@ export type PaymentUpdateWithoutConfirmerInput = {
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
 }
 
-export type PaymentUncheckedUpdateWithoutConfirmerInput = {
+export type PaymentUncheckedUpdateWithoutSettlerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1100,12 +1137,13 @@ export type PaymentUncheckedUpdateWithoutConfirmerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type PaymentUncheckedUpdateManyWithoutConfirmerInput = {
+export type PaymentUncheckedUpdateManyWithoutSettlerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1116,7 +1154,8 @@ export type PaymentUncheckedUpdateManyWithoutConfirmerInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1130,9 +1169,10 @@ export type PaymentCreateManyRequestInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -1145,12 +1185,13 @@ export type PaymentUpdateWithoutRequestInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestStepInstance?: Prisma.RequestStepInstanceUpdateOneWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
-  confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
+  settler?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutRequestInput = {
@@ -1162,9 +1203,10 @@ export type PaymentUncheckedUpdateWithoutRequestInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1178,9 +1220,10 @@ export type PaymentUncheckedUpdateManyWithoutRequestInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1194,9 +1237,10 @@ export type PaymentCreateManyRequestStepInstanceInput = {
   currency?: string
   status?: string
   requestedBy?: string | null
-  confirmedBy?: string | null
+  settledBy?: string | null
   requestedAt?: Date | string | null
-  confirmedAt?: Date | string | null
+  settledAt?: Date | string | null
+  waiverReason?: string | null
   createdBy?: string | null
   updatedBy?: string | null
 }
@@ -1209,12 +1253,13 @@ export type PaymentUpdateWithoutRequestStepInstanceInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   request?: Prisma.RequestUpdateOneRequiredWithoutPaymentsNestedInput
   requester?: Prisma.UserUpdateOneWithoutPaymentsRequestedNestedInput
-  confirmer?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
+  settler?: Prisma.UserUpdateOneWithoutPaymentsConfirmedNestedInput
 }
 
 export type PaymentUncheckedUpdateWithoutRequestStepInstanceInput = {
@@ -1226,9 +1271,10 @@ export type PaymentUncheckedUpdateWithoutRequestStepInstanceInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1242,9 +1288,10 @@ export type PaymentUncheckedUpdateManyWithoutRequestStepInstanceInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   requestedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  settledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waiverReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1261,15 +1308,16 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   currency?: boolean
   status?: boolean
   requestedBy?: boolean
-  confirmedBy?: boolean
+  settledBy?: boolean
   requestedAt?: boolean
-  confirmedAt?: boolean
+  settledAt?: boolean
+  waiverReason?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1282,15 +1330,16 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   status?: boolean
   requestedBy?: boolean
-  confirmedBy?: boolean
+  settledBy?: boolean
   requestedAt?: boolean
-  confirmedAt?: boolean
+  settledAt?: boolean
+  waiverReason?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1303,15 +1352,16 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   status?: boolean
   requestedBy?: boolean
-  confirmedBy?: boolean
+  settledBy?: boolean
   requestedAt?: boolean
-  confirmedAt?: boolean
+  settledAt?: boolean
+  waiverReason?: boolean
   createdBy?: boolean
   updatedBy?: boolean
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectScalar = {
@@ -1324,31 +1374,32 @@ export type PaymentSelectScalar = {
   currency?: boolean
   status?: boolean
   requestedBy?: boolean
-  confirmedBy?: boolean
+  settledBy?: boolean
   requestedAt?: boolean
-  confirmedAt?: boolean
+  settledAt?: boolean
+  waiverReason?: boolean
   createdBy?: boolean
   updatedBy?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "requestId" | "requestStepInstanceId" | "amount" | "currency" | "status" | "requestedBy" | "confirmedBy" | "requestedAt" | "confirmedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "requestId" | "requestStepInstanceId" | "amount" | "currency" | "status" | "requestedBy" | "settledBy" | "requestedAt" | "settledAt" | "waiverReason" | "createdBy" | "updatedBy", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }
 export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }
 export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request?: boolean | Prisma.RequestDefaultArgs<ExtArgs>
   requestStepInstance?: boolean | Prisma.Payment$requestStepInstanceArgs<ExtArgs>
   requester?: boolean | Prisma.Payment$requesterArgs<ExtArgs>
-  confirmer?: boolean | Prisma.Payment$confirmerArgs<ExtArgs>
+  settler?: boolean | Prisma.Payment$settlerArgs<ExtArgs>
 }
 
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1357,7 +1408,7 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     request: Prisma.$RequestPayload<ExtArgs>
     requestStepInstance: Prisma.$RequestStepInstancePayload<ExtArgs> | null
     requester: Prisma.$UserPayload<ExtArgs> | null
-    confirmer: Prisma.$UserPayload<ExtArgs> | null
+    settler: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
@@ -1369,9 +1420,19 @@ export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     currency: string
     status: string
     requestedBy: string | null
-    confirmedBy: string | null
+    /**
+     * Who ended the fee, and when -- by taking the money or by dropping it. The
+     * old confirmed_by / confirmed_at were written on a waiver as well, so they
+     * claimed a payment was confirmed when nothing had been paid.
+     */
+    settledBy: string | null
     requestedAt: Date | null
-    confirmedAt: Date | null
+    settledAt: Date | null
+    /**
+     * Why a fee was dropped. The domain refuses an empty one: an exemption with
+     * no stated reason is the first thing an audit asks to see justified.
+     */
+    waiverReason: string | null
     createdBy: string | null
     updatedBy: string | null
   }, ExtArgs["result"]["payment"]>
@@ -1771,7 +1832,7 @@ export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.
   request<T extends Prisma.RequestDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RequestDefaultArgs<ExtArgs>>): Prisma.Prisma__RequestClient<runtime.Types.Result.GetResult<Prisma.$RequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   requestStepInstance<T extends Prisma.Payment$requestStepInstanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$requestStepInstanceArgs<ExtArgs>>): Prisma.Prisma__RequestStepInstanceClient<runtime.Types.Result.GetResult<Prisma.$RequestStepInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   requester<T extends Prisma.Payment$requesterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$requesterArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  confirmer<T extends Prisma.Payment$confirmerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$confirmerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  settler<T extends Prisma.Payment$settlerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$settlerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1810,9 +1871,10 @@ export interface PaymentFieldRefs {
   readonly currency: Prisma.FieldRef<"Payment", 'String'>
   readonly status: Prisma.FieldRef<"Payment", 'String'>
   readonly requestedBy: Prisma.FieldRef<"Payment", 'String'>
-  readonly confirmedBy: Prisma.FieldRef<"Payment", 'String'>
+  readonly settledBy: Prisma.FieldRef<"Payment", 'String'>
   readonly requestedAt: Prisma.FieldRef<"Payment", 'DateTime'>
-  readonly confirmedAt: Prisma.FieldRef<"Payment", 'DateTime'>
+  readonly settledAt: Prisma.FieldRef<"Payment", 'DateTime'>
+  readonly waiverReason: Prisma.FieldRef<"Payment", 'String'>
   readonly createdBy: Prisma.FieldRef<"Payment", 'String'>
   readonly updatedBy: Prisma.FieldRef<"Payment", 'String'>
 }
@@ -2254,9 +2316,9 @@ export type Payment$requesterArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Payment.confirmer
+ * Payment.settler
  */
-export type Payment$confirmerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Payment$settlerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

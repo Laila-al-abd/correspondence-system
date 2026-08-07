@@ -31,6 +31,13 @@ export interface ListRequestsAssignedInput {
   userId: string
   limit?: number
   cursor?: string
+  /**
+   * true = only the steps the caller can act on right now: the running ones,
+   * plus the pending ones whose dependencies are all finished. Omitted keeps
+   * the whole list, which is what a reviewer wants when they are asking "what
+   * is on my plate at all" rather than "what can I do next".
+   */
+  readyOnly?: boolean
 }
 
 export interface ListRequestQueueInput {
@@ -41,6 +48,16 @@ export interface ListRequestQueueInput {
   classificationStatus?: string
   /** true = only requests with form data; false = only those still empty. */
   hasFilledData?: boolean
+  /**
+   * true = only requests the extractor has already had a turn at; false = only
+   * those it has never attempted.
+   *
+   * This is the extraction backlog, and it is not the same question as
+   * `hasFilledData`. A request the extractor read and found nothing in has
+   * empty form data too, so a backlog defined by emptiness collected it again
+   * on every poll and could never make progress.
+   */
+  extracted?: boolean
 }
 
 /**
@@ -60,7 +77,10 @@ export interface RequestQueryPort {
     input: ListRequestsByRequesterInput,
   ): Promise<KeysetPage<RequestSummaryView>>
 
-  /** Requests with at least one step assigned to the caller, newest first. */
+  /**
+   * Requests with at least one step assigned to the caller, newest first,
+   * optionally narrowed to the ones that are actually workable now.
+   */
   listAssignedTo(
     input: ListRequestsAssignedInput,
   ): Promise<KeysetPage<RequestSummaryView>>

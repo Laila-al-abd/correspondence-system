@@ -104,6 +104,8 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
               : null,
             slaHours: step.slaHours ?? null,
             pausesSla: step.pausesSla,
+            feeAmount: step.feeAmount ?? null,
+            feeCurrency: step.feeCurrency ?? null,
           },
         })
       }

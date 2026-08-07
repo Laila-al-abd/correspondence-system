@@ -2,6 +2,15 @@ import { Entity } from "../shared/entity"
 import { Identifier } from "../shared/identifier"
 
 interface RequestActionProps {
+  /**
+   * The request this decision was taken on.
+   *
+   * Held by the entity rather than handed to the repository alongside it. The
+   * column was always there; what was missing was the entity knowing its own
+   * value -- so every caller had to remember to supply it, and a rehydrated
+   * action could not say which request it belonged to at all.
+   */
+  requestId: Identifier
   requestStepInstanceId?: Identifier
   actorId: Identifier
   actionTypeId: Identifier
@@ -10,6 +19,7 @@ interface RequestActionProps {
 }
 
 export interface RequestActionSnapshot {
+  requestId: string
   requestStepInstanceId?: string
   actorId: string
   actionTypeId: string
@@ -26,6 +36,7 @@ export class RequestAction extends Entity {
   static create(
     id: Identifier,
     p: {
+      requestId: Identifier
       actorId: Identifier
       actionTypeId: Identifier
       requestStepInstanceId?: Identifier
@@ -39,12 +50,14 @@ export class RequestAction extends Entity {
     return new RequestAction(id, props)
   }
 
+  get requestId(): Identifier { return this.props.requestId }
   get actorId(): Identifier { return this.props.actorId }
   get actionTypeId(): Identifier { return this.props.actionTypeId }
   get requestStepInstanceId(): Identifier | undefined { return this.props.requestStepInstanceId }
 
   snapshot(): RequestActionSnapshot {
     return {
+      requestId: this.props.requestId.toString(),
       requestStepInstanceId: this.props.requestStepInstanceId?.toString(),
       actorId: this.props.actorId.toString(),
       actionTypeId: this.props.actionTypeId.toString(),

@@ -18,6 +18,8 @@ export const NotificationType = {
   DELEGATION_REVOKED: 'DELEGATION_REVOKED',
   /** Auto-routing could not find an owner for one or more steps. */
   STEP_ASSIGNMENT_REQUIRED: 'STEP_ASSIGNMENT_REQUIRED',
+  /** The models are done with a request and its requester must confirm it. */
+  CONFIRMATION_REQUIRED: 'CONFIRMATION_REQUIRED',
 } as const
 
 export type NotificationTypeCode =

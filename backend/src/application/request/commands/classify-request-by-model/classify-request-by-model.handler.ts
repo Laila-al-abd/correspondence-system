@@ -1,9 +1,6 @@
 import { Inject } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-import {
-  ClassificationStatus,
-  Priority,
-} from '../../../../domain/request/enums'
+import { ClassificationStatus } from '../../../../domain/request/enums'
 import { Identifier } from '../../../../domain/shared/identifier'
 import { MlPrediction } from '../../../../domain/observability/ml-prediction'
 import { ModelType } from '../../../../domain/observability/enums'
@@ -22,6 +19,8 @@ import type { TemplateRepository } from '../../../../domain/catalog/ports/templa
 import { EntityNotFoundError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { TemplateSubmissionPolicy } from '../../services/template-submission-policy'
+import { EventRecorder } from '../../../observability/services/event-recorder'
+import { stageOfRequest } from '../../queries/views/request-stage'
 import { ClassifyRequestByModelCommand } from './classify-request-by-model.command'
 
 /**
@@ -37,9 +36,10 @@ export interface ClassificationResult {
 }
 
 /**
- * Applies an automatic (AraBERT) classification. The model may also suggest an
- * initial priority; the aggregate only trusts it above the confidence
- * threshold, otherwise the request drops to the human-in-the-loop queue.
+ * Applies an automatic classification. The model answers one question -- which
+ * template -- and below the confidence threshold the request drops to the
+ * human-in-the-loop queue instead. Priority is not the model's to give: it
+ * comes from the template that was chosen, where an administrator declared it.
  *
  * Every call also leaves a row in `ml_predictions`, whether the answer was
  * trusted or sent to review. That row is what makes the model measurable after
@@ -62,6 +62,7 @@ export class ClassifyRequestByModelHandler
     private readonly predictions: MlPredictionRepository,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
     @Inject(TRANSACTION_RUNNER) private readonly transaction: TransactionRunner,
+    private readonly events: EventRecorder,
   ) {}
 
   async execute({
@@ -79,13 +80,13 @@ export class ClassifyRequestByModelHandler
     // moment the template -- and therefore the rules -- are known.
     await this.submissionPolicy.assertMayBeClassifiedAs(request, template)
 
+    const stageBefore = stageOfRequest(request)
+
     request.classifyByModel(
       Identifier.of(input.templateId),
       input.confidence,
       input.threshold,
-      input.suggestedPriority
-        ? (input.suggestedPriority as Priority)
-        : undefined,
+      template.defaultPriority,
     )
 
     // The classification and its audit trail commit together. Separately, one
@@ -105,6 +106,15 @@ export class ClassifyRequestByModelHandler
           confidence: input.confidence,
         }),
       )
+      // No actor is passed. The caller here is the AI service account, and
+      // reading it from the token is what puts its user id in actor_id -- the
+      // whole point of giving the model an account instead of letting its work
+      // arrive unattributed.
+      await this.events.statusChanged({
+        requestId: request.id.toString(),
+        from: stageBefore,
+        to: stageOfRequest(request),
+      })
     })
 
     // Below the confidence threshold the aggregate parks the request in the

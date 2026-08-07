@@ -16,6 +16,8 @@ export interface SyncDepartmentsResult {
   source: string
   created: number
   updated: number
+  /** Units this source owns that it no longer sends, switched off by pass 3. */
+  deactivated: number
   total: number
 }
 
@@ -29,6 +31,14 @@ export interface SyncDepartmentsResult {
  *
  * Parent links are wired in a second pass, once every unit has an internal id,
  * so the directory may send children before their parents.
+ *
+ * A third pass handles the units the directory has stopped sending. They are
+ * DEACTIVATED, never deleted: requests, delegations and role assignments point
+ * at them, and history has to keep making sense after a faculty is dissolved.
+ * A deactivated unit that reappears in a later feed is revived by
+ * `applyExternalUpdate`, so this is reversible in both directions. Only units
+ * carrying an external reference from THIS source are considered -- manually
+ * created units are never touched by a sync, whatever the directory says.
  *
  * The whole thing is all-or-nothing, in two layers:
  *
@@ -99,7 +109,7 @@ export class SyncDepartmentsFromDirectory {
 
       const existing = await this.departments.findByExternalRef(ref)
       if (existing) {
-        existing.applyExternalUpdate(name, syncedAt)
+        existing.applyExternalUpdate(name, syncedAt, unitTypeId)
         await this.departments.save(existing)
         idByExternalId.set(unit.externalId, existing.id)
         updated += 1
@@ -128,6 +138,20 @@ export class SyncDepartmentsFromDirectory {
       await this.departments.save(child)
     }
 
-    return { source, created, updated, total: units.length }
+    // Pass 3: units this source owns but no longer sends. Deactivated, never
+    // deleted, and only when they carry an external reference -- a unit typed
+    // in by an administrator has no external id and is left alone.
+    const seen = new Set(units.map((u) => u.externalId))
+    let deactivated = 0
+    for (const department of await this.departments.listBySource(source)) {
+      const ref = department.externalRef
+      if (!ref || seen.has(ref.id)) continue
+      if (!department.isActive) continue
+      department.deactivate()
+      await this.departments.save(department)
+      deactivated += 1
+    }
+
+    return { source, created, updated, deactivated, total: units.length }
   }
 }

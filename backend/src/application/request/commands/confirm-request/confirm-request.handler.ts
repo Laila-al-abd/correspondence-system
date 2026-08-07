@@ -2,9 +2,16 @@ import { Inject } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { Identifier } from '../../../../domain/shared/identifier'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
+import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
-import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
-import { REQUEST_REPOSITORY } from '../../../tokens'
+import {
+  EntityNotFoundError,
+  FilledDataInvalidError,
+  ForbiddenActionError,
+} from '../../../errors'
+import { REQUEST_REPOSITORY, TEMPLATE_REPOSITORY } from '../../../tokens'
+import { EventRecorder } from '../../../observability/services/event-recorder'
+import { stageOfRequest } from '../../queries/views/request-stage'
 import {
   ConfirmOutcome,
   ConfirmRequestCommand,
@@ -39,7 +46,9 @@ export class ConfirmRequestHandler
 {
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
+    @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
     private readonly notifier: NotificationEmitter,
+    private readonly events: EventRecorder,
   ) {}
 
   async execute({ input }: ConfirmRequestCommand): Promise<ConfirmationResult> {
@@ -51,12 +60,49 @@ export class ConfirmRequestHandler
         'Only the person who submitted a request can confirm what was extracted from it.',
       )
 
+    const stageBefore = stageOfRequest(request)
+
     if (input.outcome === 'CONFIRM') {
+      if (input.filledData) request.applyRequesterValues(input.filledData)
+
+      const templateId = request.templateId
+      if (!templateId)
+        throw new ForbiddenActionError(
+          'There is nothing to confirm until the request has been classified.',
+        )
+      const template = await this.templates.findById(templateId)
+      if (!template)
+        throw new EntityNotFoundError('Template', templateId.toString())
+
+      // The completeness check the extractor is deliberately spared. A model
+      // that abstains on a required field is behaving correctly -- inventing a
+      // value would be worse -- but an incomplete form must not reach the first
+      // desk in the workflow, and this is the last moment the one person who
+      // knows the answer is still in the loop. Every violation is reported at
+      // once, because a requester sent back one field at a time gives up.
+      const violations = template.validateFilledData(request.filledData ?? {})
+      if (violations.length > 0) throw new FilledDataInvalidError(violations)
+
       request.confirm()
       await this.requests.save(request)
+      await this.events.statusChanged({
+        requestId: request.id.toString(),
+        from: stageBefore,
+        to: stageOfRequest(request),
+        actorId: input.actorId,
+      })
     } else {
       request.dispute()
       await this.requests.save(request)
+      // A dispute is logged the same way an approval is. It is the requester
+      // rejecting what the models proposed, and it is the row that explains why
+      // this request appears in the review queue a second time.
+      await this.events.statusChanged({
+        requestId: request.id.toString(),
+        from: stageBefore,
+        to: stageOfRequest(request),
+        actorId: input.actorId,
+      })
       // Told after the save, and only then: a reviewer who follows the
       // notification must find the request already waiting in their queue.
       await this.notifier.classificationNeedsReview({

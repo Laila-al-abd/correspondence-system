@@ -13,6 +13,7 @@ export const USER_REPOSITORY = Symbol('UserRepository')
 export const PASSWORD_HASHER = Symbol('PasswordHasher')
 export const AUTH_PROVIDER_REGISTRY = Symbol('AuthProviderRegistry')
 export const ROLE_REPOSITORY = Symbol('RoleRepository')
+export const ROLE_QUERY = Symbol('RoleQuery')
 export const DELEGATION_REPOSITORY = Symbol('DelegationRepository')
 export const DELEGATION_QUERY = Symbol('DelegationQuery')
 export const ACCESS_TOKEN_SERVICE = Symbol('AccessTokenService')
@@ -57,6 +58,8 @@ export const ML_PREDICTION_REPOSITORY = Symbol('MlPredictionRepository')
 export const ACADEMIC_CALENDAR_REPOSITORY = Symbol('AcademicCalendarRepository')
 export const SYSTEM_SETTING_REPOSITORY = Symbol('SystemSettingRepository')
 export const SLA_SCAN = Symbol('SlaScan')
+/** Who is calling and from where, for the audit trail. */
+export const CLIENT_CONTEXT = Symbol('ClientContext')
 
 // reporting
 export const REPORTS_QUERY = Symbol('ReportsQuery')

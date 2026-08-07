@@ -1,4 +1,5 @@
 import { AggregateRoot } from "../shared/entity"
+import { Guard } from "../shared/guard"
 import { Identifier } from "../shared/identifier"
 import { InvariantViolationError } from "../shared/domain-error"
 import { Money } from "./value-objects/money"
@@ -10,9 +11,18 @@ interface PaymentProps {
   money: Money
   status: PaymentStatus
   requestedBy?: Identifier
-  confirmedBy?: Identifier
+  /**
+   * Who ended this fee's life, and when -- by taking the money or by dropping
+   * it. Named for what the two endings have in common rather than for one of
+   * them: `confirmedBy` / `confirmedAt` were written on a waiver too, so the
+   * names claimed a payment was confirmed when nobody had paid anything, and
+   * only `status` told you which had actually happened.
+   */
+  settledBy?: Identifier
   requestedAt?: Date
-  confirmedAt?: Date
+  settledAt?: Date
+  /** Why the fee was dropped. Required whenever the status is WAIVED. */
+  waiverReason?: string
 }
 
 export interface PaymentSnapshot {
@@ -22,14 +32,20 @@ export interface PaymentSnapshot {
   currency: string
   status: PaymentStatus
   requestedBy?: string
-  confirmedBy?: string
+  settledBy?: string
   requestedAt?: Date
-  confirmedAt?: Date
+  settledAt?: Date
+  waiverReason?: string
 }
 
 /**
  * A fee tied to a request. Lifecycle: REQUIRED -> CONFIRMED (paid) or WAIVED.
- * Confirmation and waiver are one-way transitions recorded with who and when.
+ *
+ * Both endings are one-way and both record who and when. WAIVED is not a
+ * cancellation: the fee is dropped and the request carries on exactly as if it
+ * had been paid -- an exemption, a hardship case, an internal request, or a fee
+ * charged in error. Because that is a decision to forgo money the institute was
+ * owed, a waiver must also say why.
  */
 export class Payment extends AggregateRoot {
   private constructor(id: Identifier, private props: PaymentProps) {
@@ -64,22 +80,30 @@ export class Payment extends AggregateRoot {
       throw new InvariantViolationError(`Payment is already ${this.props.status}.`)
   }
 
+  /** The money arrived. */
   confirm(by: Identifier): void {
     this.assertPending()
     this.props.status = PaymentStatus.CONFIRMED
-    this.props.confirmedBy = by
-    this.props.confirmedAt = new Date()
+    this.props.settledBy = by
+    this.props.settledAt = new Date()
   }
 
-  waive(by: Identifier): void {
+  /**
+   * The fee is dropped and the request proceeds. The reason is not optional: a
+   * waiver is the one outcome nobody can reconstruct from the amount and the
+   * dates, and it is the first thing an audit asks to see justified.
+   */
+  waive(by: Identifier, reason: string): void {
     this.assertPending()
     this.props.status = PaymentStatus.WAIVED
-    this.props.confirmedBy = by
-    this.props.confirmedAt = new Date()
+    this.props.settledBy = by
+    this.props.settledAt = new Date()
+    this.props.waiverReason = Guard.againstEmpty(reason, "waiverReason")
   }
 
   get status(): PaymentStatus { return this.props.status }
   get money(): Money { return this.props.money }
+  get waiverReason(): string | undefined { return this.props.waiverReason }
   isSettled(): boolean { return this.props.status !== PaymentStatus.REQUIRED }
 
   snapshot(): PaymentSnapshot {
@@ -90,9 +114,10 @@ export class Payment extends AggregateRoot {
       currency: this.props.money.currency,
       status: this.props.status,
       requestedBy: this.props.requestedBy?.toString(),
-      confirmedBy: this.props.confirmedBy?.toString(),
+      settledBy: this.props.settledBy?.toString(),
       requestedAt: this.props.requestedAt,
-      confirmedAt: this.props.confirmedAt,
+      settledAt: this.props.settledAt,
+      waiverReason: this.props.waiverReason,
     }
   }
 }

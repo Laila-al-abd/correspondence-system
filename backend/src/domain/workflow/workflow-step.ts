@@ -13,6 +13,20 @@ interface WorkflowStepProps {
   defaultActionTypeId?: Identifier
   slaHours?: number
   pausesSla: boolean
+  /**
+   * What this step costs the requester, if anything. Absent means free, which
+   * is the case for all but a handful of steps.
+   *
+   * The fee lives on the step and not on the template because a fee is not a
+   * property of a kind of paperwork, it is an event inside the process: the
+   * cashier takes the money at one identifiable point, before one identifiable
+   * person can carry on. A template-level fee could say how much but never when,
+   * and "when" is the whole reason the system needs to know about it -- it is
+   * what lets the step refuse to complete until the money is settled. It also
+   * matches the payments table, which already points at a step instance.
+   */
+  feeAmount?: number
+  feeCurrency?: string
   allowedActionTypeIds: Set<string>
   dependsOnStepIds: Set<string>
 }
@@ -38,11 +52,17 @@ export class WorkflowStep extends Entity {
       defaultActionTypeId?: Identifier
       slaHours?: number
       pausesSla?: boolean
+      feeAmount?: number
+      feeCurrency?: string
     },
   ): WorkflowStep {
     WorkflowStep.assertAssigneeConsistent(p.assigneeType, p.assigneeRoleId, p.assigneeDepartmentId)
     if (p.slaHours !== undefined && p.slaHours <= 0)
       throw new InvariantViolationError("slaHours must be positive when set.")
+    // A zero fee is not a fee. Allowing it would create payment rows that are
+    // settled by paying nothing, and a step that blocks on them.
+    if (p.feeAmount !== undefined && !(p.feeAmount > 0))
+      throw new InvariantViolationError("feeAmount must be positive when set.")
     return new WorkflowStep(id, {
       name: p.name,
       description: p.description,
@@ -52,6 +72,8 @@ export class WorkflowStep extends Entity {
       defaultActionTypeId: p.defaultActionTypeId,
       slaHours: p.slaHours,
       pausesSla: p.pausesSla ?? false,
+      feeAmount: p.feeAmount,
+      feeCurrency: p.feeAmount !== undefined ? (p.feeCurrency ?? "SYP") : undefined,
       allowedActionTypeIds: new Set(),
       dependsOnStepIds: new Set(),
     })
@@ -91,6 +113,17 @@ export class WorkflowStep extends Entity {
   get slaHours(): number | undefined { return this.props.slaHours }
   get pausesSla(): boolean { return this.props.pausesSla }
 
+  /**
+   * The declared fee, as one value or nothing at all -- callers should never
+   * have to decide what an amount without a currency means.
+   */
+  get fee(): { amount: number; currency: string } | undefined {
+    if (this.props.feeAmount === undefined) return undefined
+    return { amount: this.props.feeAmount, currency: this.props.feeCurrency ?? "SYP" }
+  }
+
+  chargesFee(): boolean { return this.props.feeAmount !== undefined }
+
   snapshot(): {
     id: string
     name: { ar: string; en?: string }
@@ -101,6 +134,8 @@ export class WorkflowStep extends Entity {
     defaultActionTypeId?: string
     slaHours?: number
     pausesSla: boolean
+    feeAmount?: number
+    feeCurrency?: string
     allowedActionTypeIds: string[]
     dependsOnStepIds: string[]
   } {
@@ -114,6 +149,8 @@ export class WorkflowStep extends Entity {
       defaultActionTypeId: this.props.defaultActionTypeId?.toString(),
       slaHours: this.props.slaHours,
       pausesSla: this.props.pausesSla,
+      feeAmount: this.props.feeAmount,
+      feeCurrency: this.props.feeCurrency,
       allowedActionTypeIds: [...this.props.allowedActionTypeIds],
       dependsOnStepIds: [...this.props.dependsOnStepIds],
     }

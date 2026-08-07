@@ -23,6 +23,7 @@ export class ListAssignedRequestsHandler
       userId: query.userId,
       limit: query.limit,
       cursor: query.cursor,
+      readyOnly: query.readyOnly,
     })
   }
 }

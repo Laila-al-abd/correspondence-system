@@ -3,7 +3,6 @@ export interface ClassifyRequestByModelInput {
   templateId: string
   confidence: number
   threshold?: number
-  suggestedPriority?: string
   /**
    * Which build of the model produced this answer. Optional so existing callers
    * keep working, but every real caller should send it: without it the stored

@@ -88,6 +88,14 @@ export class UsersController {
     return this.commandBus.execute(new SyncUsersCommand(source))
   }
 
+  /**
+   * Grant a role, optionally scoped to a department and optionally expiring.
+   *
+   * Requires `role.manage` as well as the controller's `user.manage`: handing
+   * out a role hands out authority. Route metadata overrides the class rather
+   * than adding to it, so both codes are named here.
+   */
+  @RequirePermissions('user.manage', 'role.manage')
   @Post(':userId/roles')
   assignRole(
     @Param('userId') userId: string,
@@ -100,11 +108,14 @@ export class UsersController {
         roleId: dto.roleId,
         departmentId: dto.departmentId,
         expiresAt: dto.expiresAt,
+        reason: dto.reason,
         assignedBy: actorId,
       }),
     )
   }
 
+  // Taking authority away is the same privilege as handing it out.
+  @RequirePermissions('user.manage', 'role.manage')
   @Delete(':userId/roles/:roleId')
   @HttpCode(204)
   revokeRole(

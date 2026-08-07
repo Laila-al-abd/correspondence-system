@@ -56,6 +56,7 @@ export class AssignRoleToUserHandler
       userId,
       roleId,
       departmentId,
+      reason: input.reason,
       expiresAt: input.expiresAt ? new Date(input.expiresAt) : undefined,
       assignedBy: input.assignedBy
         ? Identifier.of(input.assignedBy)
