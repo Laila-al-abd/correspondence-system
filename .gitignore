@@ -1,11 +1,12 @@
 # ---- Node / dependencies ----
 node_modules/
-
+models/
 # ---- Env & secrets ----
 .env
 .env.*
 !.env.example
-
+codebase.md
+.doc-progress.json
 # ---- Builds ----
 docs/
 dist/
