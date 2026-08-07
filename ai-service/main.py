@@ -1,5 +1,7 @@
-from fastapi import FastAPI
-app = FastAPI(title="ICS AI Service")
-@app.get("/health")
-def health():
- return {"status": "ok"}
+"""Entry point so the documented command works unchanged:
+
+    uvicorn main:app --reload --port 8000
+"""
+from ics_ai.app import app
+
+__all__ = ["app"]
