@@ -16,6 +16,7 @@ import {
   DurationEstimateView,
   RequestSummaryView,
 } from '../../application/request/queries/views/request.view'
+import { deriveRequestStage } from '../../application/request/queries/views/request-stage'
 import {
   KeysetPage,
   clampLimit,
@@ -128,11 +129,86 @@ export class PrismaRequestQuery implements RequestQueryPort {
   async listAssignedTo(
     input: ListRequestsAssignedInput,
   ): Promise<KeysetPage<RequestSummaryView>> {
+    if (input.readyOnly)
+      return this.listReadyForUser(input.userId, input.limit, input.cursor)
     return this.listNewestFirst(
       { stepInstances: { some: { assignedToUserId: input.userId } } },
       input.limit,
       input.cursor,
     )
+  }
+
+  /**
+   * The same list, narrowed to the requests the caller can actually move.
+   *
+   * Readiness is a question about the dependency graph -- is every step this one
+   * waits for finished -- and a Prisma relation filter cannot express a join
+   * correlated back to the same request, so this one is raw SQL. It applies the
+   * rule Request.readySteps applies in the domain, and applies it the same way
+   * round: a pending step is ready when no dependency of its workflow step is
+   * missing a DONE or SKIPPED instance on this request. A dependency with no
+   * instance at all therefore blocks, which is the safe reading -- the domain
+   * says the same, and a graph that disagreed with itself between the list and
+   * the gate would show a reviewer work the API then refuses to let them start.
+   *
+   * A step already IN_PROGRESS is workable by definition. WAITING is excluded:
+   * a paused step is precisely one its owner is not meant to touch yet.
+   */
+  private async listReadyForUser(
+    userId: string,
+    rawLimit: number | undefined,
+    cursor: string | undefined,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    const limit = clampLimit(rawLimit)
+    const after = cursor ? decodeCursor<{ id: string }>(cursor) : null
+    const keyset = after
+      ? Prisma.sql`AND r.id < ${after.id}::uuid`
+      : Prisma.empty
+
+    const rows = await this.db.$queryRaw<AssignedRow[]>(Prisma.sql`
+      SELECT r.id, r.reference_no, r.requester_id, r.template_id,
+             r.workflow_path_id, r.classification_status,
+             r.classification_confidence, r.classified_by, r.current_status,
+             r.priority, r.sla_risk, r.sla_due_at, r.completed_at,
+             r.confirmed_at
+        FROM requests r
+       WHERE EXISTS (
+               SELECT 1
+                 FROM request_step_instances si
+                WHERE si.request_id = r.id
+                  AND si.assigned_to_user_id = ${userId}::uuid
+                  AND (
+                    si.status = 'IN_PROGRESS'
+                    OR (
+                      si.status = 'PENDING'
+                      AND NOT EXISTS (
+                        SELECT 1
+                          FROM workflow_step_dependencies d
+                         WHERE d.workflow_step_id = si.workflow_step_id
+                           AND NOT EXISTS (
+                             SELECT 1
+                               FROM request_step_instances dep
+                              WHERE dep.request_id = r.id
+                                AND dep.workflow_step_id = d.depends_on_step_id
+                                AND dep.status IN ('DONE', 'SKIPPED')
+                           )
+                      )
+                    )
+                  )
+             )
+             ${keyset}
+       ORDER BY r.id DESC
+       LIMIT ${limit + 1}
+    `)
+
+    const page = rows.slice(0, limit)
+    const last = page[page.length - 1]
+    return {
+      items: page.map(toSummaryFromRaw),
+      limit,
+      nextCursor:
+        rows.length > limit && last ? encodeCursor({ id: last.id }) : null,
+    }
   }
 
   /**
@@ -203,6 +279,15 @@ export class PrismaRequestQuery implements RequestQueryPort {
           ? Prisma.sql`AND filled_data IS NOT NULL AND filled_data::text <> '{}'`
           : Prisma.sql`AND (filled_data IS NULL OR filled_data::text = '{}')`
 
+    // The extraction backlog. Deliberately separate from `filled`: emptiness
+    // describes the form, this describes whether anybody has tried to fill it.
+    const extracted =
+      input.extracted === undefined
+        ? Prisma.empty
+        : input.extracted
+          ? Prisma.sql`AND extraction_attempted_at IS NOT NULL`
+          : Prisma.sql`AND extraction_attempted_at IS NULL`
+
     const keyset = after
       ? Prisma.sql`AND (
           ${priorityRank} < ${after.p}
@@ -217,8 +302,8 @@ export class PrismaRequestQuery implements RequestQueryPort {
     const rows = await this.db.$queryRaw<QueueRow[]>(Prisma.sql`
       SELECT id, reference_no, requester_id, template_id, workflow_path_id,
              classification_status, classification_confidence, classified_by,
-             current_status, priority, sla_risk, sensitivity_level_id,
-             sla_due_at, completed_at,
+             current_status, priority, sla_risk,
+             sla_due_at, completed_at, confirmed_at,
              ${priorityRank} AS priority_rank,
              ${riskRank} AS risk_rank,
              ${dueKey} AS due_key
@@ -226,6 +311,7 @@ export class PrismaRequestQuery implements RequestQueryPort {
        WHERE current_status = ${input.status}
              ${classification}
              ${filled}
+             ${extracted}
              ${keyset}
        ORDER BY priority_rank DESC, risk_rank DESC, due_key ASC, id ASC
        LIMIT ${limit + 1}
@@ -290,9 +376,11 @@ const SUMMARY_SELECT = {
   currentStatus: true,
   priority: true,
   slaRisk: true,
-  sensitivityLevelId: true,
   slaDueAt: true,
   completedAt: true,
+  // Read but never returned: the derived stage needs it to tell a request
+  // waiting for its requester apart from one ready to start.
+  confirmedAt: true,
 } satisfies Prisma.RequestSelect
 
 type SummaryRow = {
@@ -307,12 +395,13 @@ type SummaryRow = {
   currentStatus: string
   priority: string
   slaRisk: string
-  sensitivityLevelId: string | null
   slaDueAt: Date | null
   completedAt: Date | null
+  confirmedAt: Date | null
 }
 
-type QueueRow = {
+/** The summary columns as they come back from a raw SELECT on `requests`. */
+type AssignedRow = {
   id: string
   reference_no: string | null
   requester_id: string
@@ -324,9 +413,13 @@ type QueueRow = {
   current_status: string
   priority: string
   sla_risk: string
-  sensitivity_level_id: string | null
   sla_due_at: Date | null
   completed_at: Date | null
+  confirmed_at: Date | null
+}
+
+/** The same row, plus the ordering keys the queue computes in SQL. */
+type QueueRow = AssignedRow & {
   priority_rank: number
   risk_rank: number
   due_key: Date | null
@@ -346,15 +439,19 @@ function toSummary(row: SummaryRow): RequestSummaryView {
         : Number(row.classificationConfidence),
     classifiedBy: row.classifiedBy ?? undefined,
     currentStatus: row.currentStatus,
+    stage: deriveRequestStage({
+      currentStatus: row.currentStatus,
+      classificationStatus: row.classificationStatus,
+      confirmedAt: row.confirmedAt,
+    }),
     priority: row.priority,
     slaRisk: row.slaRisk,
-    sensitivityLevelId: row.sensitivityLevelId ?? undefined,
     slaDueAt: row.slaDueAt ? row.slaDueAt.toISOString() : undefined,
     completedAt: row.completedAt ? row.completedAt.toISOString() : undefined,
   }
 }
 
-function toSummaryFromRaw(row: QueueRow): RequestSummaryView {
+function toSummaryFromRaw(row: AssignedRow): RequestSummaryView {
   return toSummary({
     id: row.id,
     referenceNo: row.reference_no,
@@ -367,8 +464,8 @@ function toSummaryFromRaw(row: QueueRow): RequestSummaryView {
     currentStatus: row.current_status,
     priority: row.priority,
     slaRisk: row.sla_risk,
-    sensitivityLevelId: row.sensitivity_level_id,
     slaDueAt: row.sla_due_at,
     completedAt: row.completed_at,
+    confirmedAt: row.confirmed_at,
   })
 }

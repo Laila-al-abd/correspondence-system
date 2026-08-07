@@ -33,6 +33,16 @@ export class ListQueueDto {
   @IsIn(['true', 'false'])
   hasFilledData?: string
 
+  /**
+   * The extraction backlog: `false` selects the requests the extractor has
+   * never attempted. What the AI service should poll instead of
+   * `hasFilledData=false`, which also returns everything it already read and
+   * found nothing in.
+   */
+  @IsOptional()
+  @IsIn(['true', 'false'])
+  extracted?: string
+
   @IsOptional()
   @IsNumberString()
   limit?: string

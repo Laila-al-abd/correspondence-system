@@ -34,13 +34,32 @@ attachTo(parentId: Identifier): void {
 if (parentId.equals(this.id)) throw new InvariantViolationError("A department cannot be its own parent.")
 this.props.parentId = parentId
 }
-/** Idempotent refresh from the external source; keeps manual edits' identity stable. */
-applyExternalUpdate(name: LocalizedText, syncedAt: Date): void {
+/**
+ * Idempotent refresh from the external source; keeps manual edits' identity stable.
+ *
+ * Three things travel with a refresh:
+ *  - the name, which upstream may have corrected or translated;
+ *  - the unit type, because a section genuinely does get promoted to a faculty,
+ *    and a stale type is not cosmetic: REQUESTER_FACULTY_DEAN routing walks the
+ *    tree looking for a FACULTY-kind unit, so the wrong type sends a request to
+ *    the wrong desk, or to nobody;
+ *  - reactivation. A unit the directory is sending again is a unit that exists
+ *    again, and it must not stay switched off because an earlier sync did not
+ *    mention it.
+ *
+ * The internal id is never touched, so every request, delegation and role
+ * assignment pointing at this unit survives all of the above.
+ */
+applyExternalUpdate(name: LocalizedText, syncedAt: Date, unitTypeId?: Identifier): void {
 this.props.name = name
+if (unitTypeId) this.props.unitTypeId = unitTypeId
+this.props.isActive = true
 this.props.lastSyncedAt = syncedAt
 }
 get parentId(): Identifier | undefined { return this.props.
 parentId }
+get isActive(): boolean { return this.props.isActive }
+get unitTypeId(): Identifier { return this.props.unitTypeId }
 get externalRef(): ExternalRef | undefined { return this.props.externalRef }
 /** Flat, primitive view of the department for the persistence mapper. */
 snapshot(): {

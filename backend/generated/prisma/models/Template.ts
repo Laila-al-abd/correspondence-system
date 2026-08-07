@@ -31,6 +31,7 @@ export type TemplateMinAggregateOutputType = {
   categoryId: string | null
   classifierDocument: string | null
   sensitivityLevelId: string | null
+  defaultPriority: string | null
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
@@ -45,6 +46,7 @@ export type TemplateMaxAggregateOutputType = {
   categoryId: string | null
   classifierDocument: string | null
   sensitivityLevelId: string | null
+  defaultPriority: string | null
   isActive: boolean | null
   createdAt: Date | null
   deletedAt: Date | null
@@ -61,6 +63,7 @@ export type TemplateCountAggregateOutputType = {
   description: number
   classifierDocument: number
   sensitivityLevelId: number
+  defaultPriority: number
   isActive: number
   createdAt: number
   deletedAt: number
@@ -77,6 +80,7 @@ export type TemplateMinAggregateInputType = {
   categoryId?: true
   classifierDocument?: true
   sensitivityLevelId?: true
+  defaultPriority?: true
   isActive?: true
   createdAt?: true
   deletedAt?: true
@@ -91,6 +95,7 @@ export type TemplateMaxAggregateInputType = {
   categoryId?: true
   classifierDocument?: true
   sensitivityLevelId?: true
+  defaultPriority?: true
   isActive?: true
   createdAt?: true
   deletedAt?: true
@@ -107,6 +112,7 @@ export type TemplateCountAggregateInputType = {
   description?: true
   classifierDocument?: true
   sensitivityLevelId?: true
+  defaultPriority?: true
   isActive?: true
   createdAt?: true
   deletedAt?: true
@@ -196,6 +202,7 @@ export type TemplateGroupByOutputType = {
   description: runtime.JsonValue | null
   classifierDocument: string | null
   sensitivityLevelId: string
+  defaultPriority: string
   isActive: boolean
   createdAt: Date
   deletedAt: Date | null
@@ -233,6 +240,7 @@ export type TemplateWhereInput = {
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
   sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
@@ -255,6 +263,7 @@ export type TemplateOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   classifierDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -280,6 +289,7 @@ export type TemplateWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
   sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
@@ -302,6 +312,7 @@ export type TemplateOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   classifierDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,6 +335,7 @@ export type TemplateScalarWhereWithAggregatesInput = {
   description?: Prisma.JsonNullableWithAggregatesFilter<"Template">
   classifierDocument?: Prisma.StringNullableWithAggregatesFilter<"Template"> | string | null
   sensitivityLevelId?: Prisma.UuidWithAggregatesFilter<"Template"> | string
+  defaultPriority?: Prisma.StringWithAggregatesFilter<"Template"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Template"> | Date | string | null
@@ -338,6 +350,7 @@ export type TemplateCreateInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -360,6 +373,7 @@ export type TemplateUncheckedCreateInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -378,6 +392,7 @@ export type TemplateUpdateInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -400,6 +415,7 @@ export type TemplateUncheckedUpdateInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -420,6 +436,7 @@ export type TemplateCreateManyInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -434,6 +451,7 @@ export type TemplateUpdateManyMutationInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -450,6 +468,7 @@ export type TemplateUncheckedUpdateManyInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -476,6 +495,7 @@ export type TemplateCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   classifierDocument?: Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -490,6 +510,7 @@ export type TemplateMaxOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   classifierDocument?: Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -504,6 +525,7 @@ export type TemplateMinOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   classifierDocument?: Prisma.SortOrder
   sensitivityLevelId?: Prisma.SortOrder
+  defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -670,6 +692,7 @@ export type TemplateCreateWithoutSensitivityLevelInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -690,6 +713,7 @@ export type TemplateUncheckedCreateWithoutSensitivityLevelInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -739,6 +763,7 @@ export type TemplateScalarWhereInput = {
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
   sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
@@ -753,6 +778,7 @@ export type TemplateCreateWithoutCategoryInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -773,6 +799,7 @@ export type TemplateUncheckedCreateWithoutCategoryInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -817,6 +844,7 @@ export type TemplateCreateWithoutFieldsInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -838,6 +866,7 @@ export type TemplateUncheckedCreateWithoutFieldsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -871,6 +900,7 @@ export type TemplateUpdateWithoutFieldsInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -892,6 +922,7 @@ export type TemplateUncheckedUpdateWithoutFieldsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -909,6 +940,7 @@ export type TemplateCreateWithoutEligibilityRulesInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -930,6 +962,7 @@ export type TemplateUncheckedCreateWithoutEligibilityRulesInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -963,6 +996,7 @@ export type TemplateUpdateWithoutEligibilityRulesInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -984,6 +1018,7 @@ export type TemplateUncheckedUpdateWithoutEligibilityRulesInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1001,6 +1036,7 @@ export type TemplateCreateWithoutWorkflowPathsInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1022,6 +1058,7 @@ export type TemplateUncheckedCreateWithoutWorkflowPathsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1055,6 +1092,7 @@ export type TemplateUpdateWithoutWorkflowPathsInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1076,6 +1114,7 @@ export type TemplateUncheckedUpdateWithoutWorkflowPathsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1093,6 +1132,7 @@ export type TemplateCreateWithoutRequestsInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1114,6 +1154,7 @@ export type TemplateUncheckedCreateWithoutRequestsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1147,6 +1188,7 @@ export type TemplateUpdateWithoutRequestsInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1168,6 +1210,7 @@ export type TemplateUncheckedUpdateWithoutRequestsInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1186,6 +1229,7 @@ export type TemplateCreateManySensitivityLevelInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1200,6 +1244,7 @@ export type TemplateUpdateWithoutSensitivityLevelInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1220,6 +1265,7 @@ export type TemplateUncheckedUpdateWithoutSensitivityLevelInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1239,6 +1285,7 @@ export type TemplateUncheckedUpdateManyWithoutSensitivityLevelInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1254,6 +1301,7 @@ export type TemplateCreateManyCategoryInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
   sensitivityLevelId: string
+  defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
   deletedAt?: Date | string | null
@@ -1268,6 +1316,7 @@ export type TemplateUpdateWithoutCategoryInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1288,6 +1337,7 @@ export type TemplateUncheckedUpdateWithoutCategoryInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1307,6 +1357,7 @@ export type TemplateUncheckedUpdateManyWithoutCategoryInput = {
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1381,6 +1432,7 @@ export type TemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   description?: boolean
   classifierDocument?: boolean
   sensitivityLevelId?: boolean
+  defaultPriority?: boolean
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
@@ -1404,6 +1456,7 @@ export type TemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   classifierDocument?: boolean
   sensitivityLevelId?: boolean
+  defaultPriority?: boolean
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
@@ -1422,6 +1475,7 @@ export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   description?: boolean
   classifierDocument?: boolean
   sensitivityLevelId?: boolean
+  defaultPriority?: boolean
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
@@ -1440,6 +1494,7 @@ export type TemplateSelectScalar = {
   description?: boolean
   classifierDocument?: boolean
   sensitivityLevelId?: boolean
+  defaultPriority?: boolean
   isActive?: boolean
   createdAt?: boolean
   deletedAt?: boolean
@@ -1447,7 +1502,7 @@ export type TemplateSelectScalar = {
   updatedBy?: boolean
 }
 
-export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "code" | "categoryId" | "title" | "description" | "classifierDocument" | "sensitivityLevelId" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["template"]>
+export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "code" | "categoryId" | "title" | "description" | "classifierDocument" | "sensitivityLevelId" | "defaultPriority" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["template"]>
 export type TemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
   sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
@@ -1494,6 +1549,14 @@ export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
      */
     classifierDocument: string | null
     sensitivityLevelId: string
+    /**
+     * The business priority every request of this kind starts with. Urgency is a
+     * property of the paperwork, not of the wording: a deferment is urgent
+     * however politely it is asked for, and "URGENT!!" typed into a transcript
+     * request buys nothing. Staff holding request.act can still raise or lower a
+     * single request, with a reason recorded as a request action.
+     */
+    defaultPriority: string
     isActive: boolean
     createdAt: Date
     deletedAt: Date | null
@@ -1936,6 +1999,7 @@ export interface TemplateFieldRefs {
   readonly description: Prisma.FieldRef<"Template", 'Json'>
   readonly classifierDocument: Prisma.FieldRef<"Template", 'String'>
   readonly sensitivityLevelId: Prisma.FieldRef<"Template", 'String'>
+  readonly defaultPriority: Prisma.FieldRef<"Template", 'String'>
   readonly isActive: Prisma.FieldRef<"Template", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Template", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Template", 'DateTime'>

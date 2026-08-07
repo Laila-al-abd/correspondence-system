@@ -241,7 +241,6 @@ export type SensitivityLevelWhereInput = {
   createdBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   templates?: Prisma.TemplateListRelationFilter
-  requests?: Prisma.RequestListRelationFilter
 }
 
 export type SensitivityLevelOrderByWithRelationInput = {
@@ -255,7 +254,6 @@ export type SensitivityLevelOrderByWithRelationInput = {
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   templates?: Prisma.TemplateOrderByRelationAggregateInput
-  requests?: Prisma.RequestOrderByRelationAggregateInput
 }
 
 export type SensitivityLevelWhereUniqueInput = Prisma.AtLeast<{
@@ -272,7 +270,6 @@ export type SensitivityLevelWhereUniqueInput = Prisma.AtLeast<{
   createdBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"SensitivityLevel"> | string | null
   templates?: Prisma.TemplateListRelationFilter
-  requests?: Prisma.RequestListRelationFilter
 }, "id" | "rank">
 
 export type SensitivityLevelOrderByWithAggregationInput = {
@@ -318,7 +315,6 @@ export type SensitivityLevelCreateInput = {
   createdBy?: string | null
   updatedBy?: string | null
   templates?: Prisma.TemplateCreateNestedManyWithoutSensitivityLevelInput
-  requests?: Prisma.RequestCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelUncheckedCreateInput = {
@@ -332,7 +328,6 @@ export type SensitivityLevelUncheckedCreateInput = {
   createdBy?: string | null
   updatedBy?: string | null
   templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutSensitivityLevelInput
-  requests?: Prisma.RequestUncheckedCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelUpdateInput = {
@@ -346,7 +341,6 @@ export type SensitivityLevelUpdateInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUpdateManyWithoutSensitivityLevelNestedInput
-  requests?: Prisma.RequestUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelUncheckedUpdateInput = {
@@ -360,7 +354,6 @@ export type SensitivityLevelUncheckedUpdateInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutSensitivityLevelNestedInput
-  requests?: Prisma.RequestUncheckedUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelCreateManyInput = {
@@ -444,11 +437,6 @@ export type SensitivityLevelScalarRelationFilter = {
   isNot?: Prisma.SensitivityLevelWhereInput
 }
 
-export type SensitivityLevelNullableScalarRelationFilter = {
-  is?: Prisma.SensitivityLevelWhereInput | null
-  isNot?: Prisma.SensitivityLevelWhereInput | null
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -471,22 +459,6 @@ export type SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SensitivityLevelUpdateToOneWithWhereWithoutTemplatesInput, Prisma.SensitivityLevelUpdateWithoutTemplatesInput>, Prisma.SensitivityLevelUncheckedUpdateWithoutTemplatesInput>
 }
 
-export type SensitivityLevelCreateNestedOneWithoutRequestsInput = {
-  create?: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedCreateWithoutRequestsInput>
-  connectOrCreate?: Prisma.SensitivityLevelCreateOrConnectWithoutRequestsInput
-  connect?: Prisma.SensitivityLevelWhereUniqueInput
-}
-
-export type SensitivityLevelUpdateOneWithoutRequestsNestedInput = {
-  create?: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedCreateWithoutRequestsInput>
-  connectOrCreate?: Prisma.SensitivityLevelCreateOrConnectWithoutRequestsInput
-  upsert?: Prisma.SensitivityLevelUpsertWithoutRequestsInput
-  disconnect?: Prisma.SensitivityLevelWhereInput | boolean
-  delete?: Prisma.SensitivityLevelWhereInput | boolean
-  connect?: Prisma.SensitivityLevelWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SensitivityLevelUpdateToOneWithWhereWithoutRequestsInput, Prisma.SensitivityLevelUpdateWithoutRequestsInput>, Prisma.SensitivityLevelUncheckedUpdateWithoutRequestsInput>
-}
-
 export type SensitivityLevelCreateWithoutTemplatesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -497,7 +469,6 @@ export type SensitivityLevelCreateWithoutTemplatesInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  requests?: Prisma.RequestCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelUncheckedCreateWithoutTemplatesInput = {
@@ -510,7 +481,6 @@ export type SensitivityLevelUncheckedCreateWithoutTemplatesInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  requests?: Prisma.RequestUncheckedCreateNestedManyWithoutSensitivityLevelInput
 }
 
 export type SensitivityLevelCreateOrConnectWithoutTemplatesInput = {
@@ -539,7 +509,6 @@ export type SensitivityLevelUpdateWithoutTemplatesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.RequestUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 export type SensitivityLevelUncheckedUpdateWithoutTemplatesInput = {
@@ -552,75 +521,6 @@ export type SensitivityLevelUncheckedUpdateWithoutTemplatesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.RequestUncheckedUpdateManyWithoutSensitivityLevelNestedInput
-}
-
-export type SensitivityLevelCreateWithoutRequestsInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  id: string
-  name: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  rank: number
-  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  deletedAt?: Date | string | null
-  createdBy?: string | null
-  updatedBy?: string | null
-  templates?: Prisma.TemplateCreateNestedManyWithoutSensitivityLevelInput
-}
-
-export type SensitivityLevelUncheckedCreateWithoutRequestsInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  id: string
-  name: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  rank: number
-  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  deletedAt?: Date | string | null
-  createdBy?: string | null
-  updatedBy?: string | null
-  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutSensitivityLevelInput
-}
-
-export type SensitivityLevelCreateOrConnectWithoutRequestsInput = {
-  where: Prisma.SensitivityLevelWhereUniqueInput
-  create: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedCreateWithoutRequestsInput>
-}
-
-export type SensitivityLevelUpsertWithoutRequestsInput = {
-  update: Prisma.XOR<Prisma.SensitivityLevelUpdateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedUpdateWithoutRequestsInput>
-  create: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedCreateWithoutRequestsInput>
-  where?: Prisma.SensitivityLevelWhereInput
-}
-
-export type SensitivityLevelUpdateToOneWithWhereWithoutRequestsInput = {
-  where?: Prisma.SensitivityLevelWhereInput
-  data: Prisma.XOR<Prisma.SensitivityLevelUpdateWithoutRequestsInput, Prisma.SensitivityLevelUncheckedUpdateWithoutRequestsInput>
-}
-
-export type SensitivityLevelUpdateWithoutRequestsInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  rank?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  templates?: Prisma.TemplateUpdateManyWithoutSensitivityLevelNestedInput
-}
-
-export type SensitivityLevelUncheckedUpdateWithoutRequestsInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  rank?: Prisma.IntFieldUpdateOperationsInput | number
-  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  templates?: Prisma.TemplateUncheckedUpdateManyWithoutSensitivityLevelNestedInput
 }
 
 
@@ -630,12 +530,10 @@ export type SensitivityLevelUncheckedUpdateWithoutRequestsInput = {
 
 export type SensitivityLevelCountOutputType = {
   templates: number
-  requests: number
 }
 
 export type SensitivityLevelCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   templates?: boolean | SensitivityLevelCountOutputTypeCountTemplatesArgs
-  requests?: boolean | SensitivityLevelCountOutputTypeCountRequestsArgs
 }
 
 /**
@@ -655,13 +553,6 @@ export type SensitivityLevelCountOutputTypeCountTemplatesArgs<ExtArgs extends ru
   where?: Prisma.TemplateWhereInput
 }
 
-/**
- * SensitivityLevelCountOutputType without action
- */
-export type SensitivityLevelCountOutputTypeCountRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RequestWhereInput
-}
-
 
 export type SensitivityLevelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   createdAt?: boolean
@@ -674,7 +565,6 @@ export type SensitivityLevelSelect<ExtArgs extends runtime.Types.Extensions.Inte
   createdBy?: boolean
   updatedBy?: boolean
   templates?: boolean | Prisma.SensitivityLevel$templatesArgs<ExtArgs>
-  requests?: boolean | Prisma.SensitivityLevel$requestsArgs<ExtArgs>
   _count?: boolean | Prisma.SensitivityLevelCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sensitivityLevel"]>
 
@@ -717,7 +607,6 @@ export type SensitivityLevelSelectScalar = {
 export type SensitivityLevelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "name" | "rank" | "description" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["sensitivityLevel"]>
 export type SensitivityLevelInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   templates?: boolean | Prisma.SensitivityLevel$templatesArgs<ExtArgs>
-  requests?: boolean | Prisma.SensitivityLevel$requestsArgs<ExtArgs>
   _count?: boolean | Prisma.SensitivityLevelCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SensitivityLevelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -727,7 +616,6 @@ export type $SensitivityLevelPayload<ExtArgs extends runtime.Types.Extensions.In
   name: "SensitivityLevel"
   objects: {
     templates: Prisma.$TemplatePayload<ExtArgs>[]
-    requests: Prisma.$RequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
@@ -1134,7 +1022,6 @@ readonly fields: SensitivityLevelFieldRefs;
 export interface Prisma__SensitivityLevelClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   templates<T extends Prisma.SensitivityLevel$templatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SensitivityLevel$templatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  requests<T extends Prisma.SensitivityLevel$requestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SensitivityLevel$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1587,30 +1474,6 @@ export type SensitivityLevel$templatesArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.TemplateScalarFieldEnum | Prisma.TemplateScalarFieldEnum[]
-}
-
-/**
- * SensitivityLevel.requests
- */
-export type SensitivityLevel$requestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Request
-   */
-  select?: Prisma.RequestSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Request
-   */
-  omit?: Prisma.RequestOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RequestInclude<ExtArgs> | null
-  where?: Prisma.RequestWhereInput
-  orderBy?: Prisma.RequestOrderByWithRelationInput | Prisma.RequestOrderByWithRelationInput[]
-  cursor?: Prisma.RequestWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.RequestScalarFieldEnum | Prisma.RequestScalarFieldEnum[]
 }
 
 /**

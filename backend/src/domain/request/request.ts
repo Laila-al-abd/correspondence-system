@@ -26,10 +26,10 @@ interface RequestProps {
   currentStatus: RequestStatus
   priority: Priority
   slaRisk: SlaRisk
-  sensitivityLevelId?: Identifier
   slaDueAt?: Date
   completedAt?: Date
   confirmedAt?: Date
+  extractionAttemptedAt?: Date
   /** Set by the database on insert; the aggregate only ever reads it. */
   createdAt?: Date
   businessDurationMinutes?: number
@@ -50,10 +50,10 @@ export interface RequestSnapshot {
   currentStatus: RequestStatus
   priority: Priority
   slaRisk: SlaRisk
-  sensitivityLevelId?: string
   slaDueAt?: Date
   completedAt?: Date
   confirmedAt?: Date
+  extractionAttemptedAt?: Date
   businessDurationMinutes?: number
   version: number
   stepInstances: StepInstanceSnapshot[]
@@ -114,18 +114,29 @@ export class Request extends AggregateRoot {
   // ----- classification -----
 
   /**
- * Apply an automatic (NLP) classification. The model may also propose an
- * initial priority, which we only trust when confidence clears the threshold.
- * Below the threshold the request goes to human-in-the-loop review, and the
- * human sets both the type and the priority via classifyByHuman(...).
- * This is a one-time suggestion: priority is never changed automatically
- * afterwards (the SLA monitor only ever touches slaRisk).
+ * Apply an automatic (NLP) classification.
+ *
+ * The model chooses a template and nothing else. Business priority arrives
+ * with the template instead: `templateDefaultPriority` is what an
+ * administrator declared once for every request of that kind, so urgency is a
+ * property of the paperwork rather than a reading of how somebody worded it.
+ * That closes three holes at once -- a requester cannot talk their own request
+ * up the queue, the model is not asked to judge importance from wording it was
+ * never trained to judge, and the extractor has one less field to get wrong.
+ *
+ * Applied whether or not confidence cleared the threshold, because it is not
+ * the model's opinion: it belongs to the template, and if a reviewer later
+ * chooses a different template the priority follows that one instead.
+ *
+ * Priority is never changed automatically afterwards. The SLA monitor only
+ * ever touches slaRisk, and staff holding `request.act` can raise or lower it
+ * through changePriority(...) with a recorded reason.
  */
 classifyByModel(
   templateId: Identifier,
   confidence: number,
   threshold = 0.8,
-  suggestedPriority?: Priority,
+  templateDefaultPriority?: Priority,
 ): void {
   if (this.props.currentStatus !== RequestStatus.DRAFT)
     throw new InvariantViolationError("Only draft requests can be classified.")
@@ -135,11 +146,19 @@ classifyByModel(
   const trusted = confidence >= threshold
   this.props.classificationStatus =
     trusted ? ClassificationStatus.CLASSIFIED : ClassificationStatus.HITL
-  if (trusted && suggestedPriority) this.props.priority = suggestedPriority
+  if (templateDefaultPriority) this.props.priority = templateDefaultPriority
 }
 
-  /** A human resolves or overrides the classification (HITL), optionally setting priority. */
-classifyByHuman(templateId: Identifier, priority?: Priority): void {
+  /**
+ * A human resolves the classification (the HITL path).
+ *
+ * The reviewer chooses the template; priority follows from that template
+ * exactly as it does on the automatic path, so the two routes cannot disagree
+ * about what a request of this kind is worth. A reviewer who thinks this
+ * particular request deserves different treatment says so through
+ * changePriority(...), which records who decided and why.
+ */
+classifyByHuman(templateId: Identifier, templateDefaultPriority?: Priority): void {
   if (this.props.currentStatus !== RequestStatus.DRAFT)
     throw new InvariantViolationError("Only draft requests can be classified.")
   if (this.props.classificationStatus === ClassificationStatus.CLASSIFIED)
@@ -147,7 +166,7 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   this.props.templateId = templateId
   this.props.classifiedBy = ClassifiedBy.HITL
   this.props.classificationStatus = ClassificationStatus.CLASSIFIED
-  if (priority) this.props.priority = priority
+  if (templateDefaultPriority) this.props.priority = templateDefaultPriority
 }
 
   setFilledData(data: Record<string, unknown>): void {
@@ -170,6 +189,13 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
    * Only a CLASSIFIED request accepts extraction. A HITL row is waiting for a
    * human to decide what it even is; a model writing fields into it would be
    * overwriting the judgement it was escalated for.
+   *
+   * This is the extractor's door, and only the extractor's. A reviewer
+   * resolving a HITL request chooses the template and fills the form in the
+   * same visit, through setFilledData: text ambiguous enough to defeat the
+   * classifier is text the extractor is likely to fail on too, so sending it
+   * back to a machine after a human has already read it buys a wrong form, a
+   * dispute, and a second trip through this queue.
    */
   applyExtractedFields(patch: Record<string, unknown>): void {
     if (this.props.currentStatus !== RequestStatus.DRAFT)
@@ -182,6 +208,34 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
   /** Drop every extracted value, so a reviewer starts from the raw text. */
   clearFilledData(): void {
     this.props.filledData = {}
+  }
+
+  /**
+   * Record that the extractor has now had its turn at this request.
+   *
+   * Set whether or not anything was found. "Nobody has tried yet" and "a model
+   * read the text and honestly found nothing" leave identical form data, and
+   * the AI service used to distinguish them by asking for empty form data --
+   * which meant it collected the second kind again on every single poll. The
+   * stamp is what ends that, and it is deliberately not a status: the request
+   * is still waiting for its requester either way.
+   */
+  markExtractionAttempted(): void {
+    this.props.extractionAttemptedAt = new Date()
+  }
+
+  get extractionAttemptedAt(): Date | undefined { return this.props.extractionAttemptedAt }
+
+  /**
+   * The requester's own corrections, supplied at the moment they confirm.
+   *
+   * The same merge as an extraction run and under the same invariants, but
+   * deliberately a separate name. A value a person typed and a value a model
+   * guessed are not the same evidence, and a reader of this class should be
+   * able to see that both roads lead here.
+   */
+  applyRequesterValues(patch: Record<string, unknown>): void {
+    this.applyExtractedFields(patch)
   }
 
   // ----- the requester's confirmation -----
@@ -222,7 +276,15 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
     this.clearFilledData()
   }
 
-  setSensitivity(levelId: Identifier): void { this.props.sensitivityLevelId = levelId }
+  /**
+   * Raise or lower business priority after classification.
+   *
+   * Deliberately out of a requester's reach: the caller is a member of staff
+   * holding `request.act`, and it records the change as a request action
+   * carrying a reason. "A doctor's note" or "the registration deadline is
+   * Thursday" is a judgement only a person can make, and an unexplained jump
+   * up a shared queue is exactly what an auditor asks about.
+   */
   changePriority(priority: Priority): void { this.props.priority = priority }
 
   // ----- SLA urgency (separate axis from business priority) -----
@@ -238,7 +300,21 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
 
   /**
    * Attach a workflow path and its runtime step instances, then move to
-   * IN_PROGRESS. Requires the request to be classified first.
+   * IN_PROGRESS.
+   *
+   * Four things must already be true, and all four are checked here rather than
+   * trusted to the caller: the request is classified, it carries a template,
+   * its requester has confirmed that template and the extracted values, and the
+   * path has at least one step. The confirmation in particular is part of the
+   * invariant rather than a screen the frontend remembers to show -- being
+   * classified only means the system knows what the request is, not that the
+   * person who wrote it agrees.
+   *
+   * The steps are checked to belong to this request as well. They arrive built
+   * by the caller, and a caller that built them from another aggregate would
+   * otherwise have them written under this request's lock while their own
+   * request_id pointed elsewhere: two parents for one row, and an aggregate
+   * whose in-memory contents are not what the table says.
    */
   startWorkflow(workflowPathId: Identifier, stepInstances: RequestStepInstance[]): void {
     if (this.props.classificationStatus !== ClassificationStatus.CLASSIFIED)
@@ -249,6 +325,13 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
       throw new InvariantViolationError("Cannot start a workflow before the requester confirms the template and the extracted values.")
     if (stepInstances.length === 0)
       throw new InvariantViolationError("A workflow must have at least one step.")
+    const foreign = stepInstances.find(
+      (si) => si.snapshot().requestId !== this.id.toString(),
+    )
+    if (foreign)
+      throw new InvariantViolationError(
+        `Step instance "${foreign.id.toString()}" belongs to another request and cannot be attached here.`,
+      )
     this.props.workflowPathId = workflowPathId
     this.props.stepInstances = stepInstances
     this.transitionTo(RequestStatus.IN_PROGRESS)
@@ -356,10 +439,10 @@ classifyByHuman(templateId: Identifier, priority?: Priority): void {
       currentStatus: this.props.currentStatus,
       priority: this.props.priority,
       slaRisk: this.props.slaRisk,
-      sensitivityLevelId: this.props.sensitivityLevelId?.toString(),
       slaDueAt: this.props.slaDueAt,
       completedAt: this.props.completedAt,
       confirmedAt: this.props.confirmedAt,
+      extractionAttemptedAt: this.props.extractionAttemptedAt,
       businessDurationMinutes: this.props.businessDurationMinutes,
       version: this.props.version,
       stepInstances: this.props.stepInstances.map((si) => si.snapshot()),

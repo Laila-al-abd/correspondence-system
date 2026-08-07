@@ -214,6 +214,47 @@ export class NotificationEmitter {
     }
   }
 
+  /**
+   * A request is waiting for its requester to check what the models made of it.
+   *
+   * Sent when the extractor's run finishes -- not when the classifier picks a
+   * template -- because until then the form is still empty and there would be
+   * nothing to look at. Nothing else in the system tells the requester: the
+   * request sits in AWAITING_CONFIRMATION, which is a state they can only
+   * discover by opening the page and guessing that today is the day.
+   *
+   * De-duplicated on (user, request, type), so a second extraction run cannot
+   * ask the same person twice about the same form.
+   */
+  async confirmationRequired(input: {
+    requesterId: string
+    requestId: string
+    referenceNo?: string
+  }): Promise<void> {
+    try {
+      const alreadySent = await this.notifications.existsFor(
+        Identifier.of(input.requesterId),
+        Identifier.of(input.requestId),
+        NotificationType.CONFIRMATION_REQUIRED,
+      )
+      if (alreadySent) return
+    } catch (error) {
+      // Prefer a repeated prompt to a silent one: a duplicate is an annoyance,
+      // an unconfirmed request never starts at all.
+      this.logger.warn(
+        `Could not check for a duplicate confirmation prompt: ${describe(error)}`,
+      )
+    }
+
+    await this.push({
+      userId: input.requesterId,
+      type: NotificationType.CONFIRMATION_REQUIRED,
+      title: 'Your request is waiting for you to confirm it',
+      body: `Request ${label(input.referenceNo, input.requestId)} has been read and its form filled in as far as it could be. Check the details, complete anything still missing, and confirm so it can start.`,
+      requestId: input.requestId,
+    })
+  }
+
   /** Delegated authority was granted. Both sides are told. */
   async delegationGranted(input: {
     delegatorId: string

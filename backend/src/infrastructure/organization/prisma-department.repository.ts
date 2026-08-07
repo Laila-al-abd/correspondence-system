@@ -23,10 +23,21 @@ export class PrismaDepartmentRepository implements DepartmentRepository {
   }
 
   async findByExternalRef(ref: ExternalRef): Promise<Department | null> {
+    // Scoped to the source as well as the id: two directories may both number
+    // their units from 1, and matching on the id alone would let the second
+    // sync overwrite the first one's tree.
     const row = await this.prisma.department.findFirst({
-      where: { externalId: ref.id, deletedAt: null },
+      where: { externalId: ref.id, sourceSystem: ref.source, deletedAt: null },
     })
     return row ? DepartmentMapper.toDomain(row) : null
+  }
+
+  async listBySource(source: string): Promise<Department[]> {
+    const rows = await this.prisma.department.findMany({
+      where: { sourceSystem: source, deletedAt: null },
+      orderBy: { id: 'asc' },
+    })
+    return rows.map((row) => DepartmentMapper.toDomain(row))
   }
 
   /**

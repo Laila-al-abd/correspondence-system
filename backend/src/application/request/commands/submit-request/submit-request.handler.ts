@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { Request } from '../../../../domain/request/request'
-import { Priority } from '../../../../domain/request/enums'
 import { Identifier } from '../../../../domain/shared/identifier'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
@@ -13,6 +12,8 @@ import {
   REQUEST_REPOSITORY,
   TRANSACTION_RUNNER,
 } from '../../../tokens'
+import { EventRecorder } from '../../../observability/services/event-recorder'
+import { stageOfRequest } from '../../queries/views/request-stage'
 import { SubmitRequestCommand } from './submit-request.command'
 
 export interface SubmitRequestResult {
@@ -35,6 +36,7 @@ export class SubmitRequestHandler
     private readonly referenceNumbers: ReferenceNumberGenerator,
     @Inject(TRANSACTION_RUNNER)
     private readonly transactions: TransactionRunner,
+    private readonly events: EventRecorder,
   ) {}
 
   /**
@@ -56,10 +58,16 @@ export class SubmitRequestHandler
       requesterId: Identifier.of(input.requesterId),
       referenceNo,
       rawText: input.rawText,
-      priority: input.priority ? (input.priority as Priority) : undefined,
     })
     if (input.filledData) request.setFilledData(input.filledData)
     await this.requests.save(request)
+    // Where the trail starts. `from` is left null on purpose: there was no
+    // previous stage, because before this row there was no request.
+    await this.events.statusChanged({
+      requestId: request.id.toString(),
+      to: stageOfRequest(request),
+      actorId: input.requesterId,
+    })
     return { id: request.id.toString(), referenceNo }
   }
 }

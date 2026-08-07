@@ -3,5 +3,6 @@ export class ListAssignedRequestsQuery {
     public readonly userId: string,
     public readonly limit?: number,
     public readonly cursor?: string,
+    public readonly readyOnly?: boolean,
   ) {}
 }

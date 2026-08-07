@@ -10,7 +10,9 @@ import { PrismaSystemSettingRepository } from '../../infrastructure/observabilit
 import { NotificationRetentionService } from '../../infrastructure/observability/notification-retention.service'
 import { StreamTicketService } from '../../infrastructure/observability/stream-ticket.service'
 import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
+import { AlsClientContext } from '../../infrastructure/shared/als-client-context'
 import { NotificationEmitter } from '../../application/observability/services/notification-emitter'
+import { EventRecorder } from '../../application/observability/services/event-recorder'
 import { BusinessHoursService } from '../../application/observability/services/business-hours.service'
 import { ListMyNotificationsHandler } from '../../application/observability/queries/list-my-notifications/list-my-notifications.handler'
 import { CountUnreadNotificationsHandler } from '../../application/observability/queries/count-unread-notifications/count-unread-notifications.handler'
@@ -19,6 +21,7 @@ import { MarkAllNotificationsReadHandler } from '../../application/observability
 import { PurgeOldNotificationsHandler } from '../../application/observability/commands/purge-old-notifications/purge-old-notifications.handler'
 import {
   ACADEMIC_CALENDAR_REPOSITORY,
+  CLIENT_CONTEXT,
   EVENT_LOG_REPOSITORY,
   ID_GENERATOR,
   ML_PREDICTION_REPOSITORY,
@@ -55,10 +58,12 @@ const handlers = [
   providers: [
     ...handlers,
     NotificationEmitter,
+    EventRecorder,
     BusinessHoursService,
     NotificationRetentionService,
     StreamTicketService,
     { provide: EVENT_LOG_REPOSITORY, useClass: PrismaEventLogRepository },
+    { provide: CLIENT_CONTEXT, useClass: AlsClientContext },
     {
       provide: NOTIFICATION_REPOSITORY,
       useClass: PrismaNotificationRepository,
@@ -86,6 +91,7 @@ const handlers = [
     ACADEMIC_CALENDAR_REPOSITORY,
     SYSTEM_SETTING_REPOSITORY,
     NotificationEmitter,
+    EventRecorder,
     BusinessHoursService,
   ],
 })

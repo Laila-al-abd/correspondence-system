@@ -3,6 +3,8 @@ import { RequestAction } from '../../../../domain/request/request-action'
 import { Document } from '../../../../domain/request/document'
 import { Payment } from '../../../../domain/request/payment'
 import { StepInstanceSnapshot } from '../../../../domain/request/request-step-instance'
+import { Template } from '../../../../domain/catalog/template'
+import { RequestStage, deriveRequestStage } from './request-stage'
 
 /** Read models returned by the Request queries (flat, HTTP-friendly shapes). */
 
@@ -48,9 +50,10 @@ export interface PaymentView {
   currency: string
   status: string
   requestedBy?: string
-  confirmedBy?: string
+  settledBy?: string
   requestedAt?: string
-  confirmedAt?: string
+  settledAt?: string
+  waiverReason?: string
 }
 
 export interface RequestSummaryView {
@@ -63,9 +66,14 @@ export interface RequestSummaryView {
   classificationConfidence?: number
   classifiedBy?: string
   currentStatus: string
+  /**
+   * currentStatus says where the request is in its lifecycle; `stage` says what
+   * is happening to it in words a person recognises. Derived, never stored --
+   * see request-stage.ts.
+   */
+  stage: RequestStage
   priority: string
   slaRisk: string
-  sensitivityLevelId?: string
   slaDueAt?: string
   completedAt?: string
 }
@@ -88,6 +96,57 @@ export interface DurationEstimateView {
    * how to say so.
    */
   sampleSize: number
+}
+
+export interface TemplateFieldOptionFormView {
+  value: string
+  labelAr: string
+  labelEn?: string
+  ordinal: number
+}
+
+/**
+ * One input on the form, as the person filling it needs to see it.
+ *
+ * `key` is the name the answer is stored under, so it is what a client sends
+ * back in filledData -- labels are for reading and must never be used as keys.
+ */
+export interface TemplateFieldFormView {
+  key: string
+  labelAr: string
+  labelEn?: string
+  dataType: string
+  isRequired: boolean
+  /** Presentation order, 1-based and already sorted. */
+  ordinal: number
+  /** Populated for ENUM fields, empty for every other type. */
+  options: TemplateFieldOptionFormView[]
+}
+
+/**
+ * The form a request is being filled against.
+ *
+ * This exists because a request detail on its own is unrenderable: filledData is
+ * a bag of keys with no labels, no types and no statement of which answers are
+ * mandatory, so no client could draw the confirmation form or tell the requester
+ * why confirmation was refused.
+ *
+ * Deliberately omitted: `classifierDocument` and each field's
+ * `extractionQuestion`. Both are model inputs, fine-tuned on those exact
+ * strings; putting either in front of a requester would show them a prompt as
+ * though it were a caption. Authoring tools read those through the template
+ * catalogue, which is gated to `template.manage`.
+ */
+export interface TemplateFormView {
+  id: string
+  code?: string
+  titleAr: string
+  titleEn?: string
+  descriptionAr?: string
+  descriptionEn?: string
+  defaultPriority: string
+  isActive: boolean
+  fields: TemplateFieldFormView[]
 }
 
 export interface RequestDetailView extends RequestSummaryView {
@@ -121,6 +180,23 @@ export interface RequestDetailView extends RequestSummaryView {
    * inventing a number would be worse than saying nothing.
    */
   durationEstimate?: DurationEstimateView
+  /**
+   * The form definition this request is filled against. Absent until the request
+   * has been classified, because until then there is no form -- only the
+   * sentence the requester wrote.
+   */
+  template?: TemplateFormView
+  /**
+   * Required fields that are still empty, by key.
+   *
+   * Computed server-side because the confirmation gate is enforced server-side:
+   * a form that looks complete in the browser and is then refused on submit is
+   * the worst of both worlds. A non-empty list here is the normal case rather
+   * than an error -- the extractor abstains on any field it cannot answer
+   * confidently, and those are exactly the ones the requester is being asked to
+   * fill in. Empty whenever there is no template yet.
+   */
+  missingRequiredFields: string[]
   stepInstances: StepInstanceView[]
   actions: RequestActionView[]
   documents: DocumentView[]
@@ -155,9 +231,13 @@ export function toRequestSummary(request: Request): RequestSummaryView {
     classificationConfidence: s.classificationConfidence,
     classifiedBy: s.classifiedBy,
     currentStatus: s.currentStatus,
+    stage: deriveRequestStage({
+      currentStatus: s.currentStatus,
+      classificationStatus: s.classificationStatus,
+      confirmedAt: s.confirmedAt,
+    }),
     priority: s.priority,
     slaRisk: s.slaRisk,
-    sensitivityLevelId: s.sensitivityLevelId,
     slaDueAt: iso(s.slaDueAt),
     completedAt: iso(s.completedAt),
   }
@@ -202,10 +282,67 @@ export function toPaymentView(payment: Payment): PaymentView {
     currency: s.currency,
     status: s.status,
     requestedBy: s.requestedBy,
-    confirmedBy: s.confirmedBy,
+    settledBy: s.settledBy,
     requestedAt: iso(s.requestedAt),
-    confirmedAt: iso(s.confirmedAt),
+    settledAt: iso(s.settledAt),
+    waiverReason: s.waiverReason,
   }
+}
+
+/**
+ * The renderable form definition, from the template aggregate.
+ *
+ * Fields arrive from the mapper already sorted by ordinal, and options with
+ * them, so a client can render the list as given without re-sorting.
+ */
+export function toTemplateFormView(template: Template): TemplateFormView {
+  const s = template.snapshot()
+  return {
+    id: template.id.toString(),
+    code: s.code,
+    titleAr: s.title.ar,
+    titleEn: s.title.en,
+    descriptionAr: s.description?.ar,
+    descriptionEn: s.description?.en,
+    defaultPriority: s.defaultPriority,
+    isActive: s.isActive,
+    fields: s.fields.map((field) => ({
+      key: field.fieldKey,
+      labelAr: field.label.ar,
+      labelEn: field.label.en,
+      dataType: field.dataType,
+      isRequired: field.isRequired,
+      ordinal: field.ordinal,
+      options: field.options.map((option) => ({
+        value: option.value,
+        labelAr: option.label.ar,
+        labelEn: option.label.en,
+        ordinal: option.ordinal,
+      })),
+    })),
+  }
+}
+
+/**
+ * Which required answers are still missing.
+ *
+ * Emptiness is judged the same way the domain judges it -- null, undefined and
+ * the empty string all mean "unanswered" -- so this list and the confirmation
+ * gate can never disagree about whether the form is ready.
+ */
+function missingRequiredFields(
+  form: TemplateFormView | undefined,
+  filledData?: Record<string, unknown>,
+): string[] {
+  if (!form) return []
+  const values = filledData ?? {}
+  return form.fields
+    .filter((field) => field.isRequired)
+    .filter((field) => {
+      const value = values[field.key]
+      return value === null || value === undefined || value === ''
+    })
+    .map((field) => field.key)
 }
 
 export function toRequestDetail(
@@ -214,8 +351,10 @@ export function toRequestDetail(
   documents: Document[],
   payments: Payment[],
   durationEstimate?: DurationEstimateView,
+  template?: Template,
 ): RequestDetailView {
   const snapshot = request.snapshot()
+  const form = template ? toTemplateFormView(template) : undefined
   return {
     ...toRequestSummary(request),
     rawText: snapshot.rawText,
@@ -223,6 +362,8 @@ export function toRequestDetail(
     confirmedAt: iso(snapshot.confirmedAt),
     businessDurationMinutes: snapshot.businessDurationMinutes,
     durationEstimate,
+    template: form,
+    missingRequiredFields: missingRequiredFields(form, snapshot.filledData),
     stepInstances: snapshot.stepInstances.map(toStepInstanceView),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),

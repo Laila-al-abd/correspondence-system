@@ -1,4 +1,4 @@
-import { IsIn } from 'class-validator'
+import { IsIn, IsObject, IsOptional } from 'class-validator'
 import type { ConfirmOutcome } from '../../../application/request/commands/confirm-request/confirm-request.command'
 
 /**
@@ -8,4 +8,13 @@ import type { ConfirmOutcome } from '../../../application/request/commands/confi
 export class ConfirmRequestDto {
   @IsIn(['CONFIRM', 'DISPUTE'])
   outcome!: ConfirmOutcome
+
+  /**
+   * What the requester changed or filled in. The keys are checked against the
+   * template by the handler rather than here, because only the template knows
+   * them.
+   */
+  @IsOptional()
+  @IsObject()
+  filledData?: Record<string, unknown>
 }

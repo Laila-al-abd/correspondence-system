@@ -12,6 +12,11 @@ import { CurrentUserId } from '../identity/current-user.decorator'
 import { SubmitRequestCommand } from '../../application/request/commands/submit-request/submit-request.command'
 import { ClassifyRequestByModelCommand } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.command'
 import { ClassifyRequestByHumanCommand } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.command'
+import { ChangeRequestPriorityCommand } from '../../application/request/commands/change-request-priority/change-request-priority.command'
+import {
+  PaymentSettlement,
+  SettlePaymentCommand,
+} from '../../application/request/commands/settle-payment/settle-payment.command'
 import { RecordExtractionCommand } from '../../application/request/commands/record-extraction/record-extraction.command'
 import { ConfirmRequestCommand } from '../../application/request/commands/confirm-request/confirm-request.command'
 import { StartRequestWorkflowCommand } from '../../application/request/commands/start-request-workflow/start-request-workflow.command'
@@ -31,9 +36,12 @@ import {
 import { KeysetPage } from '../../application/shared/pagination'
 import { PageQueryDto, toNumber } from '../shared/dto/page-query.dto'
 import { ListQueueDto } from './dto/list-queue.dto'
+import { ListAssignedDto } from './dto/list-assigned.dto'
 import { SubmitRequestDto } from './dto/submit-request.dto'
 import { ClassifyByModelDto } from './dto/classify-by-model.dto'
 import { ClassifyByHumanDto } from './dto/classify-by-human.dto'
+import { ChangePriorityDto } from './dto/change-priority.dto'
+import { WaivePaymentDto } from './dto/waive-payment.dto'
 import { RecordExtractionDto } from './dto/record-extraction.dto'
 import { ConfirmRequestDto } from './dto/confirm-request.dto'
 import { AssignStepDto } from './dto/assign-step.dto'
@@ -79,10 +87,16 @@ export class RequestController {
   @Get('assigned')
   listAssigned(
     @CurrentUserId() userId: string,
-    @Query() page: PageQueryDto,
+    @Query() dto: ListAssignedDto,
   ): Promise<KeysetPage<RequestSummaryView>> {
     return this.queryBus.execute(
-      new ListAssignedRequestsQuery(userId, toNumber(page.limit), page.cursor),
+      new ListAssignedRequestsQuery(
+        userId,
+        toNumber(dto.limit),
+        dto.cursor,
+        // Absent stays absent: only an explicit "true" narrows the list.
+        dto.ready === undefined ? undefined : dto.ready === 'true',
+      ),
     )
   }
 
@@ -101,6 +115,7 @@ export class RequestController {
         dto.hasFilledData === undefined
           ? undefined
           : dto.hasFilledData === 'true',
+        dto.extracted === undefined ? undefined : dto.extracted === 'true',
       ),
     )
   }
@@ -161,6 +176,27 @@ export class RequestController {
   }
 
   /**
+   * Re-prioritise one request. The only way a priority moves after
+   * classification, and the only place a person's circumstances -- a medical
+   * case, an external deadline -- can outrank what the template declared.
+   *
+   * Behind `request.act`, so it is staff working the queue and never the
+   * requester: nobody may put their own paperwork ahead of everyone else's. The
+   * reason is required and is stored as a request action.
+   */
+  @Patch(':id/priority')
+  @RequirePermissions('request.act')
+  changePriority(
+    @CurrentUserId() actorId: string,
+    @Param('id') id: string,
+    @Body() dto: ChangePriorityDto,
+  ) {
+    return this.commandBus.execute(
+      new ChangeRequestPriorityCommand({ requestId: id, actorId, ...dto }),
+    )
+  }
+
+  /**
    * Where the extractor writes what it found. PATCH rather than PUT because
    * the body is a fragment of the form and not the form itself: the model
    * answers the questions it can and abstains on the rest, so a request whose
@@ -208,6 +244,56 @@ export class RequestController {
   @RequirePermissions('request.act')
   start(@Param('id') id: string) {
     return this.commandBus.execute(new StartRequestWorkflowCommand(id))
+  }
+
+  /**
+   * The money arrived. Behind `request.act` -- the same permission that moves a
+   * step -- because settling the fee is part of working the queue, and the
+   * requester must never be able to mark their own fee as paid.
+   *
+   * There is no body: what is being recorded is that this actor, at this time,
+   * saw the payment. The amount is not the caller's to state; it was fixed when
+   * the fee was raised.
+   */
+  @Post(':id/payments/:paymentId/confirm')
+  @RequirePermissions('payment.settle')
+  confirmPayment(
+    @CurrentUserId() actorId: string,
+    @Param('id') id: string,
+    @Param('paymentId') paymentId: string,
+  ) {
+    return this.commandBus.execute(
+      new SettlePaymentCommand({
+        requestId: id,
+        paymentId,
+        actorId,
+        settlement: PaymentSettlement.CONFIRM,
+      }),
+    )
+  }
+
+  /**
+   * The fee is dropped and the request carries on as if it had been paid. A
+   * reason is required and is stored both on the payment and as a request
+   * action, because this is the decision that costs the institute money.
+   */
+  @Post(':id/payments/:paymentId/waive')
+  @RequirePermissions('payment.settle')
+  waivePayment(
+    @CurrentUserId() actorId: string,
+    @Param('id') id: string,
+    @Param('paymentId') paymentId: string,
+    @Body() dto: WaivePaymentDto,
+  ) {
+    return this.commandBus.execute(
+      new SettlePaymentCommand({
+        requestId: id,
+        paymentId,
+        actorId,
+        settlement: PaymentSettlement.WAIVE,
+        reason: dto.reason,
+      }),
+    )
   }
 
   @Post(':id/steps/:stepId/assign')

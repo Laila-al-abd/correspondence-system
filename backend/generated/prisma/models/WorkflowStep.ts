@@ -28,10 +28,12 @@ export type AggregateWorkflowStep = {
 
 export type WorkflowStepAvgAggregateOutputType = {
   slaHours: runtime.Decimal | null
+  feeAmount: runtime.Decimal | null
 }
 
 export type WorkflowStepSumAggregateOutputType = {
   slaHours: runtime.Decimal | null
+  feeAmount: runtime.Decimal | null
 }
 
 export type WorkflowStepMinAggregateOutputType = {
@@ -44,6 +46,8 @@ export type WorkflowStepMinAggregateOutputType = {
   defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean | null
+  feeAmount: runtime.Decimal | null
+  feeCurrency: string | null
   createdAt: Date | null
   createdBy: string | null
   updatedBy: string | null
@@ -59,6 +63,8 @@ export type WorkflowStepMaxAggregateOutputType = {
   defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean | null
+  feeAmount: runtime.Decimal | null
+  feeCurrency: string | null
   createdAt: Date | null
   createdBy: string | null
   updatedBy: string | null
@@ -76,6 +82,8 @@ export type WorkflowStepCountAggregateOutputType = {
   defaultActionTypeId: number
   slaHours: number
   pausesSla: number
+  feeAmount: number
+  feeCurrency: number
   createdAt: number
   createdBy: number
   updatedBy: number
@@ -85,10 +93,12 @@ export type WorkflowStepCountAggregateOutputType = {
 
 export type WorkflowStepAvgAggregateInputType = {
   slaHours?: true
+  feeAmount?: true
 }
 
 export type WorkflowStepSumAggregateInputType = {
   slaHours?: true
+  feeAmount?: true
 }
 
 export type WorkflowStepMinAggregateInputType = {
@@ -101,6 +111,8 @@ export type WorkflowStepMinAggregateInputType = {
   defaultActionTypeId?: true
   slaHours?: true
   pausesSla?: true
+  feeAmount?: true
+  feeCurrency?: true
   createdAt?: true
   createdBy?: true
   updatedBy?: true
@@ -116,6 +128,8 @@ export type WorkflowStepMaxAggregateInputType = {
   defaultActionTypeId?: true
   slaHours?: true
   pausesSla?: true
+  feeAmount?: true
+  feeCurrency?: true
   createdAt?: true
   createdBy?: true
   updatedBy?: true
@@ -133,6 +147,8 @@ export type WorkflowStepCountAggregateInputType = {
   defaultActionTypeId?: true
   slaHours?: true
   pausesSla?: true
+  feeAmount?: true
+  feeCurrency?: true
   createdAt?: true
   createdBy?: true
   updatedBy?: true
@@ -237,6 +253,8 @@ export type WorkflowStepGroupByOutputType = {
   defaultActionTypeId: string | null
   slaHours: runtime.Decimal | null
   pausesSla: boolean
+  feeAmount: runtime.Decimal | null
+  feeCurrency: string | null
   createdAt: Date
   createdBy: string | null
   updatedBy: string | null
@@ -277,6 +295,8 @@ export type WorkflowStepWhereInput = {
   defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
+  feeAmount?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.StringNullableFilter<"WorkflowStep"> | string | null
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
   createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
@@ -302,6 +322,8 @@ export type WorkflowStepOrderByWithRelationInput = {
   defaultActionTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   slaHours?: Prisma.SortOrderInput | Prisma.SortOrder
   pausesSla?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeCurrency?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +352,8 @@ export type WorkflowStepWhereUniqueInput = Prisma.AtLeast<{
   defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
+  feeAmount?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.StringNullableFilter<"WorkflowStep"> | string | null
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
   createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
@@ -355,6 +379,8 @@ export type WorkflowStepOrderByWithAggregationInput = {
   defaultActionTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   slaHours?: Prisma.SortOrderInput | Prisma.SortOrder
   pausesSla?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  feeCurrency?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -380,6 +406,8 @@ export type WorkflowStepScalarWhereWithAggregatesInput = {
   defaultActionTypeId?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableWithAggregatesFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolWithAggregatesFilter<"WorkflowStep"> | boolean
+  feeAmount?: Prisma.DecimalNullableWithAggregatesFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.StringNullableWithAggregatesFilter<"WorkflowStep"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkflowStep"> | Date | string
   createdBy?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
   updatedBy?: Prisma.UuidNullableWithAggregatesFilter<"WorkflowStep"> | string | null
@@ -393,6 +421,8 @@ export type WorkflowStepCreateInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -418,6 +448,8 @@ export type WorkflowStepUncheckedCreateInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -435,6 +467,8 @@ export type WorkflowStepUpdateInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -460,6 +494,8 @@ export type WorkflowStepUncheckedUpdateInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -481,6 +517,8 @@ export type WorkflowStepCreateManyInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -494,6 +532,8 @@ export type WorkflowStepUpdateManyMutationInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -511,6 +551,8 @@ export type WorkflowStepUncheckedUpdateManyInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -538,6 +580,8 @@ export type WorkflowStepCountOrderByAggregateInput = {
   defaultActionTypeId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   pausesSla?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeCurrency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
@@ -545,6 +589,7 @@ export type WorkflowStepCountOrderByAggregateInput = {
 
 export type WorkflowStepAvgOrderByAggregateInput = {
   slaHours?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
 }
 
 export type WorkflowStepMaxOrderByAggregateInput = {
@@ -557,6 +602,8 @@ export type WorkflowStepMaxOrderByAggregateInput = {
   defaultActionTypeId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   pausesSla?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeCurrency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
@@ -572,6 +619,8 @@ export type WorkflowStepMinOrderByAggregateInput = {
   defaultActionTypeId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   pausesSla?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeCurrency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
@@ -579,6 +628,7 @@ export type WorkflowStepMinOrderByAggregateInput = {
 
 export type WorkflowStepSumOrderByAggregateInput = {
   slaHours?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
 }
 
 export type WorkflowStepScalarRelationFilter = {
@@ -826,6 +876,8 @@ export type WorkflowStepCreateWithoutAssigneeRoleInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -849,6 +901,8 @@ export type WorkflowStepUncheckedCreateWithoutAssigneeRoleInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -899,6 +953,8 @@ export type WorkflowStepScalarWhereInput = {
   defaultActionTypeId?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   slaHours?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFilter<"WorkflowStep"> | boolean
+  feeAmount?: Prisma.DecimalNullableFilter<"WorkflowStep"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.StringNullableFilter<"WorkflowStep"> | string | null
   createdAt?: Prisma.DateTimeFilter<"WorkflowStep"> | Date | string
   createdBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"WorkflowStep"> | string | null
@@ -912,6 +968,8 @@ export type WorkflowStepCreateWithoutAssigneeDepartmentInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -935,6 +993,8 @@ export type WorkflowStepUncheckedCreateWithoutAssigneeDepartmentInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -978,6 +1038,8 @@ export type WorkflowStepCreateWithoutDefaultActionTypeInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1001,6 +1063,8 @@ export type WorkflowStepUncheckedCreateWithoutDefaultActionTypeInput = {
   assigneeDepartmentId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1044,6 +1108,8 @@ export type WorkflowStepCreateWithoutWorkflowPathInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1067,6 +1133,8 @@ export type WorkflowStepUncheckedCreateWithoutWorkflowPathInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1110,6 +1178,8 @@ export type WorkflowStepCreateWithoutAllowedActionsInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1134,6 +1204,8 @@ export type WorkflowStepUncheckedCreateWithoutAllowedActionsInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1166,6 +1238,8 @@ export type WorkflowStepUpdateWithoutAllowedActionsInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1190,6 +1264,8 @@ export type WorkflowStepUncheckedUpdateWithoutAllowedActionsInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1206,6 +1282,8 @@ export type WorkflowStepCreateWithoutDependenciesInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1230,6 +1308,8 @@ export type WorkflowStepUncheckedCreateWithoutDependenciesInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1251,6 +1331,8 @@ export type WorkflowStepCreateWithoutDependentsInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1275,6 +1357,8 @@ export type WorkflowStepUncheckedCreateWithoutDependentsInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1307,6 +1391,8 @@ export type WorkflowStepUpdateWithoutDependenciesInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1331,6 +1417,8 @@ export type WorkflowStepUncheckedUpdateWithoutDependenciesInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1358,6 +1446,8 @@ export type WorkflowStepUpdateWithoutDependentsInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1382,6 +1472,8 @@ export type WorkflowStepUncheckedUpdateWithoutDependentsInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1398,6 +1490,8 @@ export type WorkflowStepCreateWithoutStepInstancesInput = {
   assigneeType: string
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1422,6 +1516,8 @@ export type WorkflowStepUncheckedCreateWithoutStepInstancesInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1454,6 +1550,8 @@ export type WorkflowStepUpdateWithoutStepInstancesInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1478,6 +1576,8 @@ export type WorkflowStepUncheckedUpdateWithoutStepInstancesInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1497,6 +1597,8 @@ export type WorkflowStepCreateManyAssigneeRoleInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1510,6 +1612,8 @@ export type WorkflowStepUpdateWithoutAssigneeRoleInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1533,6 +1637,8 @@ export type WorkflowStepUncheckedUpdateWithoutAssigneeRoleInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1553,6 +1659,8 @@ export type WorkflowStepUncheckedUpdateManyWithoutAssigneeRoleInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1569,6 +1677,8 @@ export type WorkflowStepCreateManyAssigneeDepartmentInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1582,6 +1692,8 @@ export type WorkflowStepUpdateWithoutAssigneeDepartmentInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1605,6 +1717,8 @@ export type WorkflowStepUncheckedUpdateWithoutAssigneeDepartmentInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1625,6 +1739,8 @@ export type WorkflowStepUncheckedUpdateManyWithoutAssigneeDepartmentInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1641,6 +1757,8 @@ export type WorkflowStepCreateManyDefaultActionTypeInput = {
   assigneeDepartmentId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1654,6 +1772,8 @@ export type WorkflowStepUpdateWithoutDefaultActionTypeInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1677,6 +1797,8 @@ export type WorkflowStepUncheckedUpdateWithoutDefaultActionTypeInput = {
   assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1697,6 +1819,8 @@ export type WorkflowStepUncheckedUpdateManyWithoutDefaultActionTypeInput = {
   assigneeDepartmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1713,6 +1837,8 @@ export type WorkflowStepCreateManyWorkflowPathInput = {
   defaultActionTypeId?: string | null
   slaHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: boolean
+  feeAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: string | null
   createdAt?: Date | string
   createdBy?: string | null
   updatedBy?: string | null
@@ -1726,6 +1852,8 @@ export type WorkflowStepUpdateWithoutWorkflowPathInput = {
   assigneeType?: Prisma.StringFieldUpdateOperationsInput | string
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1749,6 +1877,8 @@ export type WorkflowStepUncheckedUpdateWithoutWorkflowPathInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1769,6 +1899,8 @@ export type WorkflowStepUncheckedUpdateManyWithoutWorkflowPathInput = {
   defaultActionTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pausesSla?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  feeAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  feeCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1844,6 +1976,8 @@ export type WorkflowStepSelect<ExtArgs extends runtime.Types.Extensions.Internal
   defaultActionTypeId?: boolean
   slaHours?: boolean
   pausesSla?: boolean
+  feeAmount?: boolean
+  feeCurrency?: boolean
   createdAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
@@ -1870,6 +2004,8 @@ export type WorkflowStepSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   defaultActionTypeId?: boolean
   slaHours?: boolean
   pausesSla?: boolean
+  feeAmount?: boolean
+  feeCurrency?: boolean
   createdAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
@@ -1891,6 +2027,8 @@ export type WorkflowStepSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   defaultActionTypeId?: boolean
   slaHours?: boolean
   pausesSla?: boolean
+  feeAmount?: boolean
+  feeCurrency?: boolean
   createdAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
@@ -1912,12 +2050,14 @@ export type WorkflowStepSelectScalar = {
   defaultActionTypeId?: boolean
   slaHours?: boolean
   pausesSla?: boolean
+  feeAmount?: boolean
+  feeCurrency?: boolean
   createdAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
 }
 
-export type WorkflowStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "workflowPathId" | "name" | "description" | "assigneeType" | "assigneeRoleId" | "assigneeDepartmentId" | "defaultActionTypeId" | "slaHours" | "pausesSla" | "createdAt" | "createdBy" | "updatedBy", ExtArgs["result"]["workflowStep"]>
+export type WorkflowStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "workflowPathId" | "name" | "description" | "assigneeType" | "assigneeRoleId" | "assigneeDepartmentId" | "defaultActionTypeId" | "slaHours" | "pausesSla" | "feeAmount" | "feeCurrency" | "createdAt" | "createdBy" | "updatedBy", ExtArgs["result"]["workflowStep"]>
 export type WorkflowStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflowPath?: boolean | Prisma.WorkflowPathDefaultArgs<ExtArgs>
   assigneeRole?: boolean | Prisma.WorkflowStep$assigneeRoleArgs<ExtArgs>
@@ -1966,6 +2106,14 @@ export type $WorkflowStepPayload<ExtArgs extends runtime.Types.Extensions.Intern
     defaultActionTypeId: string | null
     slaHours: runtime.Decimal | null
     pausesSla: boolean
+    /**
+     * What this step costs, and in what currency. Null means free. Declared here
+     * rather than on the template because a fee is due at a point in the process,
+     * and that point is what lets the step refuse to complete until the money is
+     * settled. The payments row that results points back at the step instance.
+     */
+    feeAmount: runtime.Decimal | null
+    feeCurrency: string | null
     createdAt: Date
     createdBy: string | null
     updatedBy: string | null
@@ -2411,6 +2559,8 @@ export interface WorkflowStepFieldRefs {
   readonly defaultActionTypeId: Prisma.FieldRef<"WorkflowStep", 'String'>
   readonly slaHours: Prisma.FieldRef<"WorkflowStep", 'Decimal'>
   readonly pausesSla: Prisma.FieldRef<"WorkflowStep", 'Boolean'>
+  readonly feeAmount: Prisma.FieldRef<"WorkflowStep", 'Decimal'>
+  readonly feeCurrency: Prisma.FieldRef<"WorkflowStep", 'String'>
   readonly createdAt: Prisma.FieldRef<"WorkflowStep", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"WorkflowStep", 'String'>
   readonly updatedBy: Prisma.FieldRef<"WorkflowStep", 'String'>

@@ -483,7 +483,7 @@ export type UserCreateInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -520,7 +520,7 @@ export type UserUncheckedCreateInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -557,7 +557,7 @@ export type UserUpdateInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -594,7 +594,7 @@ export type UserUncheckedUpdateInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1094,7 +1094,7 @@ export type UserCreateWithoutAttributesInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1130,7 +1130,7 @@ export type UserUncheckedCreateWithoutAttributesInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1182,7 +1182,7 @@ export type UserUpdateWithoutAttributesInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1218,7 +1218,7 @@ export type UserUncheckedUpdateWithoutAttributesInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1254,7 +1254,7 @@ export type UserCreateWithoutRolesAssignedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1290,7 +1290,7 @@ export type UserUncheckedCreateWithoutRolesAssignedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1331,7 +1331,7 @@ export type UserCreateWithoutRolesGrantedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1367,7 +1367,7 @@ export type UserUncheckedCreateWithoutRolesGrantedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1419,7 +1419,7 @@ export type UserUpdateWithoutRolesAssignedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1455,7 +1455,7 @@ export type UserUncheckedUpdateWithoutRolesAssignedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1502,7 +1502,7 @@ export type UserUpdateWithoutRolesGrantedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1538,7 +1538,7 @@ export type UserUncheckedUpdateWithoutRolesGrantedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1574,7 +1574,7 @@ export type UserCreateWithoutDelegationsGivenInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1610,7 +1610,7 @@ export type UserUncheckedCreateWithoutDelegationsGivenInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1651,7 +1651,7 @@ export type UserCreateWithoutDelegationsReceivedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1687,7 +1687,7 @@ export type UserUncheckedCreateWithoutDelegationsReceivedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -1739,7 +1739,7 @@ export type UserUpdateWithoutDelegationsGivenInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1775,7 +1775,7 @@ export type UserUncheckedUpdateWithoutDelegationsGivenInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1822,7 +1822,7 @@ export type UserUpdateWithoutDelegationsReceivedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -1858,7 +1858,7 @@ export type UserUncheckedUpdateWithoutDelegationsReceivedInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1894,7 +1894,7 @@ export type UserCreateWithoutDepartmentInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -1930,7 +1930,7 @@ export type UserUncheckedCreateWithoutDepartmentInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2018,7 +2018,7 @@ export type UserCreateWithoutPreferredLanguageInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2054,7 +2054,7 @@ export type UserUncheckedCreateWithoutPreferredLanguageInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2116,7 +2116,7 @@ export type UserCreateWithoutRequestsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2152,7 +2152,7 @@ export type UserUncheckedCreateWithoutRequestsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2204,7 +2204,7 @@ export type UserUpdateWithoutRequestsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2240,7 +2240,7 @@ export type UserUncheckedUpdateWithoutRequestsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2276,7 +2276,7 @@ export type UserCreateWithoutAssignedStepInstancesInput = {
   requests?: Prisma.RequestCreateNestedManyWithoutRequesterInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2312,7 +2312,7 @@ export type UserUncheckedCreateWithoutAssignedStepInstancesInput = {
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutRequesterInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2364,7 +2364,7 @@ export type UserUpdateWithoutAssignedStepInstancesInput = {
   requests?: Prisma.RequestUpdateManyWithoutRequesterNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2400,7 +2400,7 @@ export type UserUncheckedUpdateWithoutAssignedStepInstancesInput = {
   requests?: Prisma.RequestUncheckedUpdateManyWithoutRequesterNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2436,7 +2436,7 @@ export type UserCreateWithoutRequestActionsInput = {
   requests?: Prisma.RequestCreateNestedManyWithoutRequesterInput
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2472,7 +2472,7 @@ export type UserUncheckedCreateWithoutRequestActionsInput = {
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutRequesterInput
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2524,7 +2524,7 @@ export type UserUpdateWithoutRequestActionsInput = {
   requests?: Prisma.RequestUpdateManyWithoutRequesterNestedInput
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2560,7 +2560,7 @@ export type UserUncheckedUpdateWithoutRequestActionsInput = {
   requests?: Prisma.RequestUncheckedUpdateManyWithoutRequesterNestedInput
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2596,7 +2596,7 @@ export type UserCreateWithoutPaymentsRequestedInput = {
   requests?: Prisma.RequestCreateNestedManyWithoutRequesterInput
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -2632,7 +2632,7 @@ export type UserUncheckedCreateWithoutPaymentsRequestedInput = {
   requests?: Prisma.RequestUncheckedCreateNestedManyWithoutRequesterInput
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -2761,7 +2761,7 @@ export type UserUpdateWithoutPaymentsRequestedInput = {
   requests?: Prisma.RequestUpdateManyWithoutRequesterNestedInput
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -2797,7 +2797,7 @@ export type UserUncheckedUpdateWithoutPaymentsRequestedInput = {
   requests?: Prisma.RequestUncheckedUpdateManyWithoutRequesterNestedInput
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -2917,7 +2917,7 @@ export type UserCreateWithoutDocumentsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   systemSettings?: Prisma.SystemSettingCreateNestedManyWithoutUpdaterInput
@@ -2953,7 +2953,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   systemSettings?: Prisma.SystemSettingUncheckedCreateNestedManyWithoutUpdaterInput
@@ -3005,7 +3005,7 @@ export type UserUpdateWithoutDocumentsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   systemSettings?: Prisma.SystemSettingUpdateManyWithoutUpdaterNestedInput
@@ -3041,7 +3041,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   systemSettings?: Prisma.SystemSettingUncheckedUpdateManyWithoutUpdaterNestedInput
@@ -3077,7 +3077,7 @@ export type UserCreateWithoutEventLogsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   systemSettings?: Prisma.SystemSettingCreateNestedManyWithoutUpdaterInput
@@ -3113,7 +3113,7 @@ export type UserUncheckedCreateWithoutEventLogsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   systemSettings?: Prisma.SystemSettingUncheckedCreateNestedManyWithoutUpdaterInput
@@ -3165,7 +3165,7 @@ export type UserUpdateWithoutEventLogsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   systemSettings?: Prisma.SystemSettingUpdateManyWithoutUpdaterNestedInput
@@ -3201,7 +3201,7 @@ export type UserUncheckedUpdateWithoutEventLogsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   systemSettings?: Prisma.SystemSettingUncheckedUpdateManyWithoutUpdaterNestedInput
@@ -3237,7 +3237,7 @@ export type UserCreateWithoutNotificationsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   systemSettings?: Prisma.SystemSettingCreateNestedManyWithoutUpdaterInput
@@ -3273,7 +3273,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   systemSettings?: Prisma.SystemSettingUncheckedCreateNestedManyWithoutUpdaterInput
@@ -3325,7 +3325,7 @@ export type UserUpdateWithoutNotificationsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   systemSettings?: Prisma.SystemSettingUpdateManyWithoutUpdaterNestedInput
@@ -3361,7 +3361,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   systemSettings?: Prisma.SystemSettingUncheckedUpdateManyWithoutUpdaterNestedInput
@@ -3397,7 +3397,7 @@ export type UserCreateWithoutSystemSettingsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
@@ -3433,7 +3433,7 @@ export type UserUncheckedCreateWithoutSystemSettingsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedCreateNestedManyWithoutAssignedToInput
   requestActions?: Prisma.RequestActionUncheckedCreateNestedManyWithoutActorInput
   paymentsRequested?: Prisma.PaymentUncheckedCreateNestedManyWithoutRequesterInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutConfirmerInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedCreateNestedManyWithoutSettlerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploaderInput
   eventLogs?: Prisma.EventLogUncheckedCreateNestedManyWithoutActorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -3485,7 +3485,7 @@ export type UserUpdateWithoutSystemSettingsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3521,7 +3521,7 @@ export type UserUncheckedUpdateWithoutSystemSettingsInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3578,7 +3578,7 @@ export type UserUpdateWithoutDepartmentInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3614,7 +3614,7 @@ export type UserUncheckedUpdateWithoutDepartmentInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -3694,7 +3694,7 @@ export type UserUpdateWithoutPreferredLanguageInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
@@ -3730,7 +3730,7 @@ export type UserUncheckedUpdateWithoutPreferredLanguageInput = {
   assignedStepInstances?: Prisma.RequestStepInstanceUncheckedUpdateManyWithoutAssignedToNestedInput
   requestActions?: Prisma.RequestActionUncheckedUpdateManyWithoutActorNestedInput
   paymentsRequested?: Prisma.PaymentUncheckedUpdateManyWithoutRequesterNestedInput
-  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutConfirmerNestedInput
+  paymentsConfirmed?: Prisma.PaymentUncheckedUpdateManyWithoutSettlerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutUploaderNestedInput
   eventLogs?: Prisma.EventLogUncheckedUpdateManyWithoutActorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput

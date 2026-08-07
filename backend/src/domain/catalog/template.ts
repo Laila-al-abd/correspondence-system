@@ -4,6 +4,10 @@ import { LocalizedText } from "../shared/localized-text"
 import { InvariantViolationError } from "../shared/domain-error"
 import { TemplateField } from "./template-field"
 import { TemplateEligibilityRule } from "./template-eligibility-rule"
+// Priority lives in the request context because that is where it is acted on,
+// but which priority a request *starts* with is a property of its type, so the
+// catalog names the same type rather than declaring a parallel one of its own.
+import { Priority } from "../request/enums"
 
 /** One thing wrong with a submitted form, and why it is wrong. */
 export interface FilledDataViolation {
@@ -18,6 +22,17 @@ interface TemplateProps {
   title: LocalizedText
   description?: LocalizedText
   sensitivityLevelId: Identifier
+  /**
+   * The business priority every request of this kind starts with.
+   *
+   * Declared once by an administrator, per template, because urgency belongs to
+   * the paperwork and not to the wording: a military deferment or a replacement
+   * id card is urgent whoever asks and however politely they put it, while
+   * "URGENT!!" typed into a transcript request means nothing. Nobody can talk
+   * their own request up the queue, and the extractor is never asked to guess a
+   * value the institute already knows.
+   */
+  defaultPriority: Priority
   isActive: boolean
   /**
    * The exact Arabic text the classifier embeds. Deliberately separate from
@@ -48,6 +63,7 @@ export class Template extends AggregateRoot {
       description?: LocalizedText
       code?: string
       classifierDocument?: string
+      defaultPriority?: Priority
     },
   ): Template {
     return new Template(id, {
@@ -57,6 +73,7 @@ export class Template extends AggregateRoot {
       title: p.title,
       description: p.description,
       sensitivityLevelId: p.sensitivityLevelId,
+      defaultPriority: p.defaultPriority ?? Priority.NORMAL,
       isActive: true,
       fields: [],
       eligibilityRules: [],
@@ -73,8 +90,77 @@ export class Template extends AggregateRoot {
     this.props.fields.push(field)
   }
 
+  /** The field declared under this key, if any. */
+  field(fieldKey: string): TemplateField | undefined {
+    return this.props.fields.find((f) => f.fieldKey === fieldKey)
+  }
+
+  /** The ordinal an appended field should take (form order is 1-based). */
+  nextOrdinal(): number {
+    return this.props.fields.reduce((max, f) => Math.max(max, f.ordinal), 0) + 1
+  }
+
+  /**
+   * Drops a field from the definition.
+   *
+   * Stored answers are deliberately left alone: a request already submitted
+   * reads back exactly as it was answered. The consequence is worth stating --
+   * the dropped key is no longer declared, so a request of this type that has
+   * not yet been confirmed will have that key reported as "not part of this
+   * template" when the requester tries to confirm it.
+   */
+  removeField(fieldKey: string): void {
+    const before = this.props.fields.length
+    this.props.fields = this.props.fields.filter((f) => f.fieldKey !== fieldKey)
+    if (this.props.fields.length === before)
+      throw new InvariantViolationError(`Field "${fieldKey}" not found in template.`)
+  }
+
+  /**
+   * Sets the order the fields are presented in.
+   *
+   * The list must name every declared field exactly once. A partial list is
+   * refused rather than interpreted, because no reading of it is obviously
+   * right: renumbering only the named fields leaves the unnamed ones sharing
+   * ordinals with them, and a form whose order then depends on row insertion
+   * order is a form that changes shape on the next re-save.
+   */
+  reorderFields(fieldKeys: string[]): void {
+    const named = new Set(fieldKeys)
+    if (named.size !== fieldKeys.length)
+      throw new InvariantViolationError("A field order cannot name the same field twice.")
+    const declared = this.props.fields.map((f) => f.fieldKey)
+    if (named.size !== declared.length || !declared.every((key) => named.has(key)))
+      throw new InvariantViolationError(
+        `A field order must name every field in this template exactly once: ${declared.join(", ")}.`,
+      )
+    fieldKeys.forEach((key, index) => {
+      this.props.fields.find((f) => f.fieldKey === key)?.setOrdinal(index + 1)
+    })
+    this.props.fields.sort((a, b) => a.ordinal - b.ordinal)
+  }
+
+  /**
+   * Rewrites the human-facing text. Deliberately separate from
+   * setClassifierDocument: fixing a description is a copy edit, while changing
+   * the document the classifier embeds changes which requests reach this
+   * template at all.
+   */
+  setText(title: LocalizedText, description?: LocalizedText): void {
+    this.props.title = title
+    this.props.description = description
+  }
+
+  setCategory(categoryId: Identifier): void {
+    this.props.categoryId = categoryId
+  }
+
+  setSensitivityLevel(sensitivityLevelId: Identifier): void {
+    this.props.sensitivityLevelId = sensitivityLevelId
+  }
+
   addEligibilityRule(rule: TemplateEligibilityRule): void {
-    if (this.props.eligibilityRules.some((r) => r.attributeId === rule.attributeId))
+    if (this.props.eligibilityRules.some((r) => r.attributeId.equals(rule.attributeId)))
       throw new InvariantViolationError(`Duplicate attribute key "${rule.attributeId}" in template.`)
     this.props.eligibilityRules.push(rule)
 
@@ -127,7 +213,35 @@ export class Template extends AggregateRoot {
   get isActive(): boolean { return this.props.isActive }
   get categoryId(): Identifier { return this.props.categoryId }
   get sensitivityLevelId(): Identifier { return this.props.sensitivityLevelId }
+  get defaultPriority(): Priority { return this.props.defaultPriority }
+
+  /**
+   * Change the priority future requests of this kind will start with. Existing
+   * requests keep the priority they were classified with: a queue that
+   * reshuffles itself retroactively is a queue nobody can explain.
+   */
+  setDefaultPriority(priority: Priority): void {
+    this.props.defaultPriority = priority
+  }
   get fields(): readonly TemplateField[] { return this.props.fields }
+
+  /**
+   * The keys this template does not declare.
+   *
+   * Separated from value validation because the two failures mean different
+   * things and deserve different handling. A key nobody declared says the
+   * caller is working from a stale copy of the catalogue, so nothing it sent
+   * can be attributed with confidence; a bad value on a declared key says only
+   * that whoever supplied it got that one field wrong.
+   */
+  unknownKeys(keys: Iterable<string>): string[] {
+    const declared = new Set(this.props.fields.map((f) => f.fieldKey))
+    const unknown: string[] = []
+    for (const key of keys) {
+      if (!declared.has(key) && !unknown.includes(key)) unknown.push(key)
+    }
+    return unknown
+  }
 
   /**
    * Checks a submission against this template's declared fields and returns
@@ -232,6 +346,7 @@ export class Template extends AggregateRoot {
     title: { ar: string; en?: string }
     description?: { ar: string; en?: string }
     sensitivityLevelId: string
+    defaultPriority: Priority
     isActive: boolean
     fields: ReturnType<TemplateField["snapshot"]>[]
     eligibilityRules: ReturnType<TemplateEligibilityRule["snapshot"]>[]
@@ -243,6 +358,7 @@ export class Template extends AggregateRoot {
       title: this.props.title.toJSON(),
       description: this.props.description?.toJSON(),
       sensitivityLevelId: this.props.sensitivityLevelId.toString(),
+      defaultPriority: this.props.defaultPriority,
       isActive: this.props.isActive,
       fields: this.props.fields.map((f) => f.snapshot()),
       eligibilityRules: this.props.eligibilityRules.map((r) => r.snapshot()),
