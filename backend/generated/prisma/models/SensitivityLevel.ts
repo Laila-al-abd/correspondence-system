@@ -432,9 +432,9 @@ export type SensitivityLevelSumOrderByAggregateInput = {
   rank?: Prisma.SortOrder
 }
 
-export type SensitivityLevelScalarRelationFilter = {
-  is?: Prisma.SensitivityLevelWhereInput
-  isNot?: Prisma.SensitivityLevelWhereInput
+export type SensitivityLevelNullableScalarRelationFilter = {
+  is?: Prisma.SensitivityLevelWhereInput | null
+  isNot?: Prisma.SensitivityLevelWhereInput | null
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -451,10 +451,12 @@ export type SensitivityLevelCreateNestedOneWithoutTemplatesInput = {
   connect?: Prisma.SensitivityLevelWhereUniqueInput
 }
 
-export type SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput = {
+export type SensitivityLevelUpdateOneWithoutTemplatesNestedInput = {
   create?: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutTemplatesInput, Prisma.SensitivityLevelUncheckedCreateWithoutTemplatesInput>
   connectOrCreate?: Prisma.SensitivityLevelCreateOrConnectWithoutTemplatesInput
   upsert?: Prisma.SensitivityLevelUpsertWithoutTemplatesInput
+  disconnect?: Prisma.SensitivityLevelWhereInput | boolean
+  delete?: Prisma.SensitivityLevelWhereInput | boolean
   connect?: Prisma.SensitivityLevelWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SensitivityLevelUpdateToOneWithWhereWithoutTemplatesInput, Prisma.SensitivityLevelUpdateWithoutTemplatesInput>, Prisma.SensitivityLevelUncheckedUpdateWithoutTemplatesInput>
 }

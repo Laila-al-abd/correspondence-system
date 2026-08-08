@@ -62,10 +62,10 @@ export const TemplateMapper = {
     return Template.rehydrate(Identifier.of(row.id), {
       code: row.code ?? undefined,
       classifierDocument: row.classifierDocument ?? undefined,
-      categoryId: Identifier.of(row.categoryId),
+      categoryId: row.categoryId ? Identifier.of(row.categoryId) : undefined,
       title: toLocalized(row.title),
       description: row.description ? toLocalized(row.description) : undefined,
-      sensitivityLevelId: Identifier.of(row.sensitivityLevelId),
+      sensitivityLevelId: row.sensitivityLevelId ? Identifier.of(row.sensitivityLevelId) : undefined,
       defaultPriority: row.defaultPriority as Priority,
       isActive: row.isActive,
       fields,
@@ -80,12 +80,12 @@ export const TemplateMapper = {
       id: template.id.toString(),
       code: s.code ?? null,
       classifierDocument: s.classifierDocument ?? null,
-      categoryId: s.categoryId,
+      categoryId: s.categoryId ?? null,
       title: s.title as Prisma.InputJsonValue,
       description: s.description
         ? (s.description as Prisma.InputJsonValue)
         : Prisma.JsonNull,
-      sensitivityLevelId: s.sensitivityLevelId,
+      sensitivityLevelId: s.sensitivityLevelId ?? null,
       defaultPriority: s.defaultPriority,
       isActive: s.isActive,
     }

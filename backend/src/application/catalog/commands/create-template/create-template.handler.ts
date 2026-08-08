@@ -57,13 +57,19 @@ export class CreateTemplateHandler
   ) {}
 
   async execute({ input }: CreateTemplateCommand): Promise<CreateTemplateResult> {
-    const categoryId = Identifier.of(input.categoryId)
-    if (!(await this.categories.findById(categoryId)))
-      throw new EntityNotFoundError('Request category', input.categoryId)
+    let categoryId: Identifier | undefined
+    if (input.categoryId !== undefined) {
+      categoryId = Identifier.of(input.categoryId)
+      if (!(await this.categories.findById(categoryId)))
+        throw new EntityNotFoundError('Request category', input.categoryId)
+    }
 
-    const sensitivityLevelId = Identifier.of(input.sensitivityLevelId)
-    if (!(await this.sensitivityLevels.findById(sensitivityLevelId)))
-      throw new EntityNotFoundError('Sensitivity level', input.sensitivityLevelId)
+    let sensitivityLevelId: Identifier | undefined
+    if (input.sensitivityLevelId !== undefined) {
+      sensitivityLevelId = Identifier.of(input.sensitivityLevelId)
+      if (!(await this.sensitivityLevels.findById(sensitivityLevelId)))
+        throw new EntityNotFoundError('Sensitivity level', input.sensitivityLevelId)
+    }
 
     if (input.code) {
       const code = input.code.trim().toUpperCase()

@@ -32,8 +32,8 @@ export interface TemplateCatalogView {
    * adds through the UI works zero-shot with no extra step.
    */
   classifierDocument?: string
-  categoryId: string
-  sensitivityLevelId: string
+  categoryId?: string
+  sensitivityLevelId?: string
   isActive: boolean
   /** Lets the AI service poll cheaply and rebuild only when something changed. */
   updatedAt: string

@@ -197,11 +197,11 @@ export type TemplateGroupByOutputType = {
   updatedAt: Date
   id: string
   code: string | null
-  categoryId: string
+  categoryId: string | null
   title: runtime.JsonValue
   description: runtime.JsonValue | null
   classifierDocument: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId: string | null
   defaultPriority: string
   isActive: boolean
   createdAt: Date
@@ -235,19 +235,19 @@ export type TemplateWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   id?: Prisma.UuidFilter<"Template"> | string
   code?: Prisma.StringNullableFilter<"Template"> | string | null
-  categoryId?: Prisma.UuidFilter<"Template"> | string
+  categoryId?: Prisma.UuidNullableFilter<"Template"> | string | null
   title?: Prisma.JsonFilter<"Template">
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
-  sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  sensitivityLevelId?: Prisma.UuidNullableFilter<"Template"> | string | null
   defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
   createdBy?: Prisma.UuidNullableFilter<"Template"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Template"> | string | null
-  category?: Prisma.XOR<Prisma.RequestCategoryScalarRelationFilter, Prisma.RequestCategoryWhereInput>
-  sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelScalarRelationFilter, Prisma.SensitivityLevelWhereInput>
+  category?: Prisma.XOR<Prisma.RequestCategoryNullableScalarRelationFilter, Prisma.RequestCategoryWhereInput> | null
+  sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelNullableScalarRelationFilter, Prisma.SensitivityLevelWhereInput> | null
   fields?: Prisma.TemplateFieldListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
   workflowPaths?: Prisma.WorkflowPathListRelationFilter
@@ -258,11 +258,11 @@ export type TemplateOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   classifierDocument?: Prisma.SortOrderInput | Prisma.SortOrder
-  sensitivityLevelId?: Prisma.SortOrder
+  sensitivityLevelId?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -284,19 +284,19 @@ export type TemplateWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TemplateWhereInput[]
   NOT?: Prisma.TemplateWhereInput | Prisma.TemplateWhereInput[]
   updatedAt?: Prisma.DateTimeFilter<"Template"> | Date | string
-  categoryId?: Prisma.UuidFilter<"Template"> | string
+  categoryId?: Prisma.UuidNullableFilter<"Template"> | string | null
   title?: Prisma.JsonFilter<"Template">
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
-  sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  sensitivityLevelId?: Prisma.UuidNullableFilter<"Template"> | string | null
   defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Template"> | Date | string | null
   createdBy?: Prisma.UuidNullableFilter<"Template"> | string | null
   updatedBy?: Prisma.UuidNullableFilter<"Template"> | string | null
-  category?: Prisma.XOR<Prisma.RequestCategoryScalarRelationFilter, Prisma.RequestCategoryWhereInput>
-  sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelScalarRelationFilter, Prisma.SensitivityLevelWhereInput>
+  category?: Prisma.XOR<Prisma.RequestCategoryNullableScalarRelationFilter, Prisma.RequestCategoryWhereInput> | null
+  sensitivityLevel?: Prisma.XOR<Prisma.SensitivityLevelNullableScalarRelationFilter, Prisma.SensitivityLevelWhereInput> | null
   fields?: Prisma.TemplateFieldListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
   workflowPaths?: Prisma.WorkflowPathListRelationFilter
@@ -307,11 +307,11 @@ export type TemplateOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   classifierDocument?: Prisma.SortOrderInput | Prisma.SortOrder
-  sensitivityLevelId?: Prisma.SortOrder
+  sensitivityLevelId?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultPriority?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -330,11 +330,11 @@ export type TemplateScalarWhereWithAggregatesInput = {
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Template"> | Date | string
   id?: Prisma.UuidWithAggregatesFilter<"Template"> | string
   code?: Prisma.StringNullableWithAggregatesFilter<"Template"> | string | null
-  categoryId?: Prisma.UuidWithAggregatesFilter<"Template"> | string
+  categoryId?: Prisma.UuidNullableWithAggregatesFilter<"Template"> | string | null
   title?: Prisma.JsonWithAggregatesFilter<"Template">
   description?: Prisma.JsonNullableWithAggregatesFilter<"Template">
   classifierDocument?: Prisma.StringNullableWithAggregatesFilter<"Template"> | string | null
-  sensitivityLevelId?: Prisma.UuidWithAggregatesFilter<"Template"> | string
+  sensitivityLevelId?: Prisma.UuidNullableWithAggregatesFilter<"Template"> | string | null
   defaultPriority?: Prisma.StringWithAggregatesFilter<"Template"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Template"> | Date | string
@@ -356,8 +356,8 @@ export type TemplateCreateInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
@@ -368,11 +368,11 @@ export type TemplateUncheckedCreateInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -398,8 +398,8 @@ export type TemplateUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
@@ -410,11 +410,11 @@ export type TemplateUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -431,11 +431,11 @@ export type TemplateCreateManyInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -463,11 +463,11 @@ export type TemplateUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -698,7 +698,7 @@ export type TemplateCreateWithoutSensitivityLevelInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
@@ -709,7 +709,7 @@ export type TemplateUncheckedCreateWithoutSensitivityLevelInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
@@ -758,11 +758,11 @@ export type TemplateScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Template"> | Date | string
   id?: Prisma.UuidFilter<"Template"> | string
   code?: Prisma.StringNullableFilter<"Template"> | string | null
-  categoryId?: Prisma.UuidFilter<"Template"> | string
+  categoryId?: Prisma.UuidNullableFilter<"Template"> | string | null
   title?: Prisma.JsonFilter<"Template">
   description?: Prisma.JsonNullableFilter<"Template">
   classifierDocument?: Prisma.StringNullableFilter<"Template"> | string | null
-  sensitivityLevelId?: Prisma.UuidFilter<"Template"> | string
+  sensitivityLevelId?: Prisma.UuidNullableFilter<"Template"> | string | null
   defaultPriority?: Prisma.StringFilter<"Template"> | string
   isActive?: Prisma.BoolFilter<"Template"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Template"> | Date | string
@@ -784,7 +784,7 @@ export type TemplateCreateWithoutCategoryInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
@@ -798,7 +798,7 @@ export type TemplateUncheckedCreateWithoutCategoryInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -850,8 +850,8 @@ export type TemplateCreateWithoutFieldsInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestCreateNestedManyWithoutTemplateInput
@@ -861,11 +861,11 @@ export type TemplateUncheckedCreateWithoutFieldsInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -906,8 +906,8 @@ export type TemplateUpdateWithoutFieldsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUpdateManyWithoutTemplateNestedInput
@@ -917,11 +917,11 @@ export type TemplateUncheckedUpdateWithoutFieldsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -946,8 +946,8 @@ export type TemplateCreateWithoutEligibilityRulesInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestCreateNestedManyWithoutTemplateInput
@@ -957,11 +957,11 @@ export type TemplateUncheckedCreateWithoutEligibilityRulesInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -1002,8 +1002,8 @@ export type TemplateUpdateWithoutEligibilityRulesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUpdateManyWithoutTemplateNestedInput
@@ -1013,11 +1013,11 @@ export type TemplateUncheckedUpdateWithoutEligibilityRulesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1042,8 +1042,8 @@ export type TemplateCreateWithoutWorkflowPathsInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   requests?: Prisma.RequestCreateNestedManyWithoutTemplateInput
@@ -1053,11 +1053,11 @@ export type TemplateUncheckedCreateWithoutWorkflowPathsInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -1098,8 +1098,8 @@ export type TemplateUpdateWithoutWorkflowPathsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   requests?: Prisma.RequestUpdateManyWithoutTemplateNestedInput
@@ -1109,11 +1109,11 @@ export type TemplateUncheckedUpdateWithoutWorkflowPathsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1138,8 +1138,8 @@ export type TemplateCreateWithoutRequestsInput = {
   deletedAt?: Date | string | null
   createdBy?: string | null
   updatedBy?: string | null
-  category: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
-  sensitivityLevel: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.RequestCategoryCreateNestedOneWithoutTemplatesInput
+  sensitivityLevel?: Prisma.SensitivityLevelCreateNestedOneWithoutTemplatesInput
   fields?: Prisma.TemplateFieldCreateNestedManyWithoutTemplateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutTemplateInput
   workflowPaths?: Prisma.WorkflowPathCreateNestedManyWithoutTemplateInput
@@ -1149,11 +1149,11 @@ export type TemplateUncheckedCreateWithoutRequestsInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -1194,8 +1194,8 @@ export type TemplateUpdateWithoutRequestsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
@@ -1205,11 +1205,11 @@ export type TemplateUncheckedUpdateWithoutRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1225,7 +1225,7 @@ export type TemplateCreateManySensitivityLevelInput = {
   updatedAt?: Date | string
   id: string
   code?: string | null
-  categoryId: string
+  categoryId?: string | null
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
@@ -1250,7 +1250,7 @@ export type TemplateUpdateWithoutSensitivityLevelInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  category?: Prisma.RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.RequestCategoryUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
@@ -1261,7 +1261,7 @@ export type TemplateUncheckedUpdateWithoutSensitivityLevelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1281,7 +1281,7 @@ export type TemplateUncheckedUpdateManyWithoutSensitivityLevelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1300,7 +1300,7 @@ export type TemplateCreateManyCategoryInput = {
   title: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: string | null
-  sensitivityLevelId: string
+  sensitivityLevelId?: string | null
   defaultPriority?: string
   isActive?: boolean
   createdAt?: Date | string
@@ -1322,7 +1322,7 @@ export type TemplateUpdateWithoutCategoryInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneRequiredWithoutTemplatesNestedInput
+  sensitivityLevel?: Prisma.SensitivityLevelUpdateOneWithoutTemplatesNestedInput
   fields?: Prisma.TemplateFieldUpdateManyWithoutTemplateNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutTemplateNestedInput
   workflowPaths?: Prisma.WorkflowPathUpdateManyWithoutTemplateNestedInput
@@ -1336,7 +1336,7 @@ export type TemplateUncheckedUpdateWithoutCategoryInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1356,7 +1356,7 @@ export type TemplateUncheckedUpdateManyWithoutCategoryInput = {
   title?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   classifierDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sensitivityLevelId?: Prisma.StringFieldUpdateOperationsInput | string
+  sensitivityLevelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultPriority?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1438,8 +1438,8 @@ export type TemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   deletedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
   fields?: boolean | Prisma.Template$fieldsArgs<ExtArgs>
   eligibilityRules?: boolean | Prisma.Template$eligibilityRulesArgs<ExtArgs>
   workflowPaths?: boolean | Prisma.Template$workflowPathsArgs<ExtArgs>
@@ -1462,8 +1462,8 @@ export type TemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   deletedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
 
 export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1481,8 +1481,8 @@ export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   deletedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
 
 export type TemplateSelectScalar = {
@@ -1504,8 +1504,8 @@ export type TemplateSelectScalar = {
 
 export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"updatedAt" | "id" | "code" | "categoryId" | "title" | "description" | "classifierDocument" | "sensitivityLevelId" | "defaultPriority" | "isActive" | "createdAt" | "deletedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["template"]>
 export type TemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
   fields?: boolean | Prisma.Template$fieldsArgs<ExtArgs>
   eligibilityRules?: boolean | Prisma.Template$eligibilityRulesArgs<ExtArgs>
   workflowPaths?: boolean | Prisma.Template$workflowPathsArgs<ExtArgs>
@@ -1513,19 +1513,19 @@ export type TemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   _count?: boolean | Prisma.TemplateCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TemplateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
 }
 export type TemplateIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.RequestCategoryDefaultArgs<ExtArgs>
-  sensitivityLevel?: boolean | Prisma.SensitivityLevelDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  sensitivityLevel?: boolean | Prisma.Template$sensitivityLevelArgs<ExtArgs>
 }
 
 export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Template"
   objects: {
-    category: Prisma.$RequestCategoryPayload<ExtArgs>
-    sensitivityLevel: Prisma.$SensitivityLevelPayload<ExtArgs>
+    category: Prisma.$RequestCategoryPayload<ExtArgs> | null
+    sensitivityLevel: Prisma.$SensitivityLevelPayload<ExtArgs> | null
     fields: Prisma.$TemplateFieldPayload<ExtArgs>[]
     eligibilityRules: Prisma.$TemplateEligibilityRulePayload<ExtArgs>[]
     workflowPaths: Prisma.$WorkflowPathPayload<ExtArgs>[]
@@ -1539,7 +1539,7 @@ export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
      * never reused: the AI service and every measurement refer to it.
      */
     code: string | null
-    categoryId: string
+    categoryId: string | null
     title: runtime.JsonValue
     description: runtime.JsonValue | null
     /**
@@ -1548,7 +1548,7 @@ export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
      * changes classification, so it is stored and seeded verbatim.
      */
     classifierDocument: string | null
-    sensitivityLevelId: string
+    sensitivityLevelId: string | null
     /**
      * The business priority every request of this kind starts with. Urgency is a
      * property of the paperwork, not of the wording: a deferment is urgent
@@ -1956,8 +1956,8 @@ readonly fields: TemplateFieldRefs;
  */
 export interface Prisma__TemplateClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  category<T extends Prisma.RequestCategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RequestCategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__RequestCategoryClient<runtime.Types.Result.GetResult<Prisma.$RequestCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  sensitivityLevel<T extends Prisma.SensitivityLevelDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SensitivityLevelDefaultArgs<ExtArgs>>): Prisma.Prisma__SensitivityLevelClient<runtime.Types.Result.GetResult<Prisma.$SensitivityLevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  category<T extends Prisma.Template$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$categoryArgs<ExtArgs>>): Prisma.Prisma__RequestCategoryClient<runtime.Types.Result.GetResult<Prisma.$RequestCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sensitivityLevel<T extends Prisma.Template$sensitivityLevelArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$sensitivityLevelArgs<ExtArgs>>): Prisma.Prisma__SensitivityLevelClient<runtime.Types.Result.GetResult<Prisma.$SensitivityLevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fields<T extends Prisma.Template$fieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemplateFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eligibilityRules<T extends Prisma.Template$eligibilityRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$eligibilityRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemplateEligibilityRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflowPaths<T extends Prisma.Template$workflowPathsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$workflowPathsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowPathPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2403,6 +2403,44 @@ export type TemplateDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Templates to delete.
    */
   limit?: number
+}
+
+/**
+ * Template.category
+ */
+export type Template$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RequestCategory
+   */
+  select?: Prisma.RequestCategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RequestCategory
+   */
+  omit?: Prisma.RequestCategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RequestCategoryInclude<ExtArgs> | null
+  where?: Prisma.RequestCategoryWhereInput
+}
+
+/**
+ * Template.sensitivityLevel
+ */
+export type Template$sensitivityLevelArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SensitivityLevel
+   */
+  select?: Prisma.SensitivityLevelSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SensitivityLevel
+   */
+  omit?: Prisma.SensitivityLevelOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SensitivityLevelInclude<ExtArgs> | null
+  where?: Prisma.SensitivityLevelWhereInput
 }
 
 /**

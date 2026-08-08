@@ -324,14 +324,14 @@ model Template {
   /// Stable machine name (ENROLL_CERT). Set by an administrator, unique, and
   /// never reused: the AI service and every measurement refer to it.
   code               String?   @unique @db.VarChar(50)
-  categoryId         String    @map("category_id") @db.Uuid
+  categoryId         String?   @map("category_id") @db.Uuid
   title              Json      @db.JsonB
   description        Json?     @db.JsonB
   /// The exact Arabic text the classifier embeds. Kept apart from description
   /// because that is display prose, while this is a model input: changing it
   /// changes classification, so it is stored and seeded verbatim.
   classifierDocument String?   @map("classifier_document") @db.Text
-  sensitivityLevelId String    @map("sensitivity_level_id") @db.Uuid
+  sensitivityLevelId String?   @map("sensitivity_level_id") @db.Uuid
   /// The business priority every request of this kind starts with. Urgency is a
   /// property of the paperwork, not of the wording: a deferment is urgent
   /// however politely it is asked for, and "URGENT!!" typed into a transcript
@@ -342,8 +342,8 @@ model Template {
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   deletedAt          DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  category         RequestCategory  @relation(fields: [categoryId], references: [id])
-  sensitivityLevel SensitivityLevel @relation(fields: [sensitivityLevelId], references: [id])
+  category         RequestCategory? @relation(fields: [categoryId], references: [id])
+  sensitivityLevel SensitivityLevel? @relation(fields: [sensitivityLevelId], references: [id])
 
   fields           TemplateField[]
   eligibilityRules TemplateEligibilityRule[]

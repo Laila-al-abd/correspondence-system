@@ -366,9 +366,9 @@ export type RequestCategoryMinOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
 }
 
-export type RequestCategoryScalarRelationFilter = {
-  is?: Prisma.RequestCategoryWhereInput
-  isNot?: Prisma.RequestCategoryWhereInput
+export type RequestCategoryNullableScalarRelationFilter = {
+  is?: Prisma.RequestCategoryWhereInput | null
+  isNot?: Prisma.RequestCategoryWhereInput | null
 }
 
 export type RequestCategoryCreateNestedOneWithoutTemplatesInput = {
@@ -377,10 +377,12 @@ export type RequestCategoryCreateNestedOneWithoutTemplatesInput = {
   connect?: Prisma.RequestCategoryWhereUniqueInput
 }
 
-export type RequestCategoryUpdateOneRequiredWithoutTemplatesNestedInput = {
+export type RequestCategoryUpdateOneWithoutTemplatesNestedInput = {
   create?: Prisma.XOR<Prisma.RequestCategoryCreateWithoutTemplatesInput, Prisma.RequestCategoryUncheckedCreateWithoutTemplatesInput>
   connectOrCreate?: Prisma.RequestCategoryCreateOrConnectWithoutTemplatesInput
   upsert?: Prisma.RequestCategoryUpsertWithoutTemplatesInput
+  disconnect?: Prisma.RequestCategoryWhereInput | boolean
+  delete?: Prisma.RequestCategoryWhereInput | boolean
   connect?: Prisma.RequestCategoryWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.RequestCategoryUpdateToOneWithWhereWithoutTemplatesInput, Prisma.RequestCategoryUpdateWithoutTemplatesInput>, Prisma.RequestCategoryUncheckedUpdateWithoutTemplatesInput>
 }

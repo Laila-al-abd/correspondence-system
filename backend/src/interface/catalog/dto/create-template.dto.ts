@@ -26,11 +26,13 @@ export class CreateTemplateDto {
   })
   code?: string
 
+  @IsOptional()
   @IsUUID()
-  categoryId!: string
+  categoryId?: string
 
+  @IsOptional()
   @IsUUID()
-  sensitivityLevelId!: string
+  sensitivityLevelId?: string
 
   @IsString()
   @Length(1, 255)

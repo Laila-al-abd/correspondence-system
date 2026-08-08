@@ -4,8 +4,8 @@ import type { TemplateFieldInput } from '../template-field.factory'
 export interface CreateTemplateInput {
   /** Stable machine name (ENROLL_CERT). Optional, but write-once once given. */
   code?: string
-  categoryId: string
-  sensitivityLevelId: string
+  categoryId?: string
+  sensitivityLevelId?: string
   titleAr: string
   titleEn?: string
   descriptionAr?: string

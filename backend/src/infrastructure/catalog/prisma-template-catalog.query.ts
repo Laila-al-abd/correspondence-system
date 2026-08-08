@@ -89,8 +89,8 @@ export class PrismaTemplateCatalogQuery implements TemplateCatalogQueryPort {
       // No authored document means the description is what gets embedded, so an
       // admin-added template classifies with no further work.
       classifierDocument: row.classifierDocument ?? description.ar,
-      categoryId: row.categoryId,
-      sensitivityLevelId: row.sensitivityLevelId,
+      categoryId: row.categoryId ?? undefined,
+      sensitivityLevelId: row.sensitivityLevelId ?? undefined,
       isActive: row.isActive,
       updatedAt: row.updatedAt.toISOString(),
       fields,

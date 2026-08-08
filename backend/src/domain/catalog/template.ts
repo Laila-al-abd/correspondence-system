@@ -18,10 +18,10 @@ export interface FilledDataViolation {
 interface TemplateProps {
   /** Stable machine name (ENROLL_CERT); optional until an admin assigns one. */
   code?: string
-  categoryId: Identifier
+  categoryId?: Identifier
   title: LocalizedText
   description?: LocalizedText
-  sensitivityLevelId: Identifier
+  sensitivityLevelId?: Identifier
   /**
    * The business priority every request of this kind starts with.
    *
@@ -57,9 +57,9 @@ export class Template extends AggregateRoot {
   static create(
     id: Identifier,
     p: {
-      categoryId: Identifier
+      categoryId?: Identifier
       title: LocalizedText
-      sensitivityLevelId: Identifier
+      sensitivityLevelId?: Identifier
       description?: LocalizedText
       code?: string
       classifierDocument?: string
@@ -211,8 +211,8 @@ export class Template extends AggregateRoot {
   deactivate(): void { this.props.isActive = false }
 
   get isActive(): boolean { return this.props.isActive }
-  get categoryId(): Identifier { return this.props.categoryId }
-  get sensitivityLevelId(): Identifier { return this.props.sensitivityLevelId }
+  get categoryId(): Identifier | undefined { return this.props.categoryId }
+  get sensitivityLevelId(): Identifier | undefined { return this.props.sensitivityLevelId }
   get defaultPriority(): Priority { return this.props.defaultPriority }
 
   /**
@@ -342,10 +342,10 @@ export class Template extends AggregateRoot {
   snapshot(): {
     code?: string
     classifierDocument?: string
-    categoryId: string
+    categoryId?: string
     title: { ar: string; en?: string }
     description?: { ar: string; en?: string }
-    sensitivityLevelId: string
+    sensitivityLevelId?: string
     defaultPriority: Priority
     isActive: boolean
     fields: ReturnType<TemplateField["snapshot"]>[]
@@ -354,10 +354,10 @@ export class Template extends AggregateRoot {
     return {
       code: this.props.code,
       classifierDocument: this.props.classifierDocument,
-      categoryId: this.props.categoryId.toString(),
+      categoryId: this.props.categoryId?.toString(),
       title: this.props.title.toJSON(),
       description: this.props.description?.toJSON(),
-      sensitivityLevelId: this.props.sensitivityLevelId.toString(),
+      sensitivityLevelId: this.props.sensitivityLevelId?.toString(),
       defaultPriority: this.props.defaultPriority,
       isActive: this.props.isActive,
       fields: this.props.fields.map((f) => f.snapshot()),
