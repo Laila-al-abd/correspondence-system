@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Prisma } from '../../../generated/prisma/client'
 import { TemplateCatalogQueryPort } from '../../application/catalog/queries/ports/template-catalog.query'
+import { Priority } from '../../domain/request/enums'
 import {
   TemplateCatalogView,
   TemplateFieldCatalogView,
@@ -91,7 +92,7 @@ export class PrismaTemplateCatalogQuery implements TemplateCatalogQueryPort {
       classifierDocument: row.classifierDocument ?? description.ar,
       categoryId: row.categoryId ?? undefined,
       sensitivityLevelId: row.sensitivityLevelId ?? undefined,
-      isActive: row.isActive,
+      defaultPriority: row.defaultPriority ? (row.defaultPriority as Priority) : undefined,      isActive: row.isActive,
       updatedAt: row.updatedAt.toISOString(),
       fields,
     }

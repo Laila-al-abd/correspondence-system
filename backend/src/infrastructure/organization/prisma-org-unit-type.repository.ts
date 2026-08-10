@@ -18,4 +18,12 @@ export class PrismaOrgUnitTypeRepository implements OrgUnitTypeRepository {
     })
     return row ? OrgUnitTypeMapper.toDomain(row) : null
   }
+
+  async list(): Promise<OrgUnitType[]> {
+    const rows = await this.prisma.orgUnitType.findMany({
+      where: { deletedAt: null },
+      orderBy: { code: 'asc' },
+    })
+    return rows.map((row) => OrgUnitTypeMapper.toDomain(row))
+  }
 }

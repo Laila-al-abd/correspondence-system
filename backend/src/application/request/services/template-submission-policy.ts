@@ -46,7 +46,7 @@ export class TemplateSubmissionPolicy {
     const filledData = request.filledData
     if (!filledData) return
 
-    const violations = template.validateFilledData(filledData)
+    const violations = template.validatePartial(filledData)
     if (violations.length > 0) throw new FilledDataInvalidError(violations)
   }
 }
