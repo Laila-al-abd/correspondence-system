@@ -1,12 +1,18 @@
 'use client';
 // src/components/forms/template-form.tsx
 //
-// NOTE: Category ID and Sensitivity Level ID are now optional end-to-end
-// and removed from user input entirely — they stay wired up in the backend
-// for when business logic attaches to them.
+// NOTE: Category ID and Sensitivity Level ID are optional end-to-end and
+// removed from user input entirely.
 //
-// NOTE: TemplateCatalogView has no defaultPriority field, so it can't be
-// prefilled on edit — starts blank even if one was set at creation.
+// NOTE: `code` can only be set at creation in this form — even though
+// UpdateTemplateDto technically still accepts `code` while a template has
+// none yet, this form doesn't expose that path in edit mode. Pre-existing
+// limitation, not touched here.
+//
+// NOTE: dirty-tracking is a simple "any field changed at least once" flag,
+// not deep-equality against the original values — typing into a field and
+// then reverting it to the original value still counts as dirty. Deliberate
+// simplification, not a bug.
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -24,6 +30,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 const selectClass =
   'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
@@ -50,12 +63,17 @@ export function TemplateForm({ existing }: Props) {
   const [titleEn, setTitleEn] = useState(existing?.nameEn ?? '');
   const [descriptionAr, setDescriptionAr] = useState(existing?.descriptionAr ?? '');
   const [descriptionEn, setDescriptionEn] = useState(existing?.descriptionEn ?? '');
-  const [defaultPriority, setDefaultPriority] = useState<Priority | ''>('');
+  const [defaultPriority, setDefaultPriority] = useState<Priority | ''>(existing?.defaultPriority ?? '');
   const [classifierDocument, setClassifierDocument] = useState(existing?.classifierDocument ?? '');
 
-  // Only meaningful in create mode — see note above.
+  // Only meaningful in create mode.
   const [fields, setFields] = useState<TemplateFieldDto[]>([]);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Edit-mode-only: tracks whether any top-level attribute has been touched,
+  // so the Update button stays disabled until there's something to save.
+  const [isDirty, setIsDirty] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
 
   function addField() { setFields((prev) => [...prev, emptyField()]); }
   function removeField(i: number) { setFields((prev) => prev.filter((_, idx) => idx !== i)); }
@@ -101,7 +119,6 @@ export function TemplateForm({ existing }: Props) {
           classifierDocument: classifierDocument || undefined,
         };
         await updateTemplate.mutateAsync(request);
-        router.push(`/dashboard/templates/${existing.id}`);
       } else {
         const request: CreateTemplateDto = {
           code: code.trim() || undefined,
@@ -113,15 +130,16 @@ export function TemplateForm({ existing }: Props) {
           classifierDocument: classifierDocument || undefined,
           fields: fields.length > 0 ? fields : undefined,
         };
-        const created = await createTemplate.mutateAsync(request);
-        router.push(`/dashboard/templates/${created.id}`);
+        await createTemplate.mutateAsync(request);
       }
+      setSuccessOpen(true);
     } catch {
       setSubmitError('Failed to save the template. Please check the values and try again.');
     }
   }
 
   const isPending = createTemplate.isPending || updateTemplate.isPending;
+  const updateDisabled = isPending || (!!existing && !isDirty);
 
   return (
     <Card className="max-w-2xl">
@@ -138,24 +156,29 @@ export function TemplateForm({ existing }: Props) {
 
         <div className="space-y-1">
           <Label htmlFor="titleAr">Title (Arabic)</Label>
-          <Input id="titleAr" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} />
+          <Input id="titleAr" value={titleAr} onChange={(e) => { setTitleAr(e.target.value); setIsDirty(true); }} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="titleEn">Title (English)</Label>
-          <Input id="titleEn" value={titleEn} onChange={(e) => setTitleEn(e.target.value)} />
+          <Input id="titleEn" value={titleEn} onChange={(e) => { setTitleEn(e.target.value); setIsDirty(true); }} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="descriptionAr">Description (Arabic)</Label>
-          <Input id="descriptionAr" value={descriptionAr} onChange={(e) => setDescriptionAr(e.target.value)} />
+          <Input id="descriptionAr" value={descriptionAr} onChange={(e) => { setDescriptionAr(e.target.value); setIsDirty(true); }} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="descriptionEn">Description (English)</Label>
-          <Input id="descriptionEn" value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} />
+          <Input id="descriptionEn" value={descriptionEn} onChange={(e) => { setDescriptionEn(e.target.value); setIsDirty(true); }} />
         </div>
 
         <div className="space-y-1">
           <Label htmlFor="defaultPriority">Default priority</Label>
-          <select id="defaultPriority" className={selectClass} value={defaultPriority} onChange={(e) => setDefaultPriority(e.target.value as Priority | '')}>
+          <select
+            id="defaultPriority"
+            className={selectClass}
+            value={defaultPriority}
+            onChange={(e) => { setDefaultPriority(e.target.value as Priority | ''); setIsDirty(true); }}
+          >
             <option value="">— none —</option>
             {Object.values(Priority).map((p) => (<option key={p} value={p}>{p}</option>))}
           </select>
@@ -163,13 +186,18 @@ export function TemplateForm({ existing }: Props) {
 
         <div className="space-y-1">
           <Label htmlFor="classifierDocument">Classifier document</Label>
-          <Input id="classifierDocument" placeholder="Exact Arabic text the classifier embeds" value={classifierDocument} onChange={(e) => setClassifierDocument(e.target.value)} />
+          <Input
+            id="classifierDocument"
+            placeholder="Exact Arabic text the classifier embeds"
+            value={classifierDocument}
+            onChange={(e) => { setClassifierDocument(e.target.value); setIsDirty(true); }}
+          />
         </div>
 
         {existing ? (
           <p className="text-sm text-muted-foreground">
-            Fields are managed separately — use the field editor on the template detail page to
-            add, redefine, reorder, or remove them.
+            Fields are managed separately — use "Manage Fields" below to add, redefine, reorder,
+            or remove them.
           </p>
         ) : (
           <div className="space-y-3">
@@ -217,15 +245,38 @@ export function TemplateForm({ existing }: Props) {
 
         {submitError && <p className="text-sm text-destructive">{submitError}</p>}
 
-        <div className="flex gap-2">
-          <Button onClick={handleSubmit} disabled={isPending}>
-            {isPending ? 'Saving…' : existing ? 'Update Template' : 'Create Template'}
-          </Button>
-          <Button type="button" variant="outline" onClick={() => router.push('/dashboard/templates')}>
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" variant="outline" onClick={() => router.push('/dashboard/templates')} disabled={isPending}>
             Cancel
+          </Button>
+          {existing && (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isPending}
+              onClick={() => router.push(`/dashboard/templates/${existing.id}/fields`)}
+            >
+              Manage Fields
+            </Button>
+          )}
+          <Button onClick={handleSubmit} disabled={updateDisabled}>
+            {isPending ? 'Saving…' : existing ? 'Update Template' : 'Create Template'}
           </Button>
         </div>
       </CardContent>
+
+      {/* Dismissible only via the button below — a successful save shouldn't
+          leave a now-stale form visible behind an accidentally-closed dialog. */}
+      <Dialog open={successOpen} onOpenChange={() => {}}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{existing ? 'Template updated successfully' : 'Template created successfully'}</DialogTitle>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => router.push('/dashboard/templates')}>OK</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

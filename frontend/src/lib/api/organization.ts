@@ -7,6 +7,7 @@ import {
   DepartmentTreeNode,
   CreateDepartmentResult,
   SyncDepartmentsResult,
+  OrgUnitTypeView,
 } from '@/types/organization';
 import { OffsetPage } from '@/types/shared';
 
@@ -84,6 +85,15 @@ export const organizationApi = {
     const { data } = await apiClient.get<DepartmentView>(
       `/organization/departments/${id}`
     );
+    return data;
+  },
+
+  /**
+   * Get all org unit types.
+   * GET /organization/departments/unit-types
+   */
+  getUnitTypes: async (): Promise<OrgUnitTypeView[]> => {
+    const { data } = await apiClient.get<OrgUnitTypeView[]>('/organization/departments/unit-types');
     return data;
   },
 };

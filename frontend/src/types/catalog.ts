@@ -164,7 +164,7 @@ export interface CreateTemplateDto {
   /** Default priority (optional) */
   defaultPriority?: Priority;
 
-  /** Exact Arabic text for classifier embedding (optional, 1-4000 chars) */
+  /** Exact Arabic text for classifier embedding (optional, 1-1000 chars) */
   classifierDocument?: string;
 
   /** Optional initial fields in form order */
@@ -201,7 +201,7 @@ export interface UpdateTemplateDto {
   /** Default priority (optional) */
   defaultPriority?: Priority;
 
-  /** Classifier document (optional, 0-4000 chars, null means clear) */
+  /** Classifier document (optional, 0-1000 chars, null means clear) */
   classifierDocument?: string | null;
 
   /** Whether template is active (optional) */
@@ -351,6 +351,15 @@ export interface ReorderTemplateFieldsInput {
 // ============================================================================
 
 /**
+ * Localized text view — reused across catalog views.
+ * Matches the shape returned by backend query views (e.g., ActionTypeView.name).
+ */
+export interface LocalizedTextView {
+  ar: string;
+  en?: string;
+}
+
+/**
  * Read model for a language returned by Catalog queries.
  * Source: backend/src/application/catalog/queries/list-languages/language.view.ts
  */
@@ -437,6 +446,9 @@ export interface TemplateCatalogView {
   /** Sensitivity level ID - optional */
   sensitivityLevelId?: string;
 
+  /** Default priority for requests created from this template (optional) */
+  defaultPriority?: Priority;
+
   /** Whether template is active */
   isActive: boolean;
 
@@ -445,6 +457,21 @@ export interface TemplateCatalogView {
 
   /** Form fields in order */
   fields: TemplateFieldCatalogView[];
+}
+
+/**
+ * Read model for an action type returned by Catalog queries.
+ * Source: backend/src/application/catalog/queries/list-action-types/action-type.view.ts
+ */
+export interface ActionTypeView {
+  /** Unique identifier */
+  id: string;
+  /** Stable machine code (APPROVE, REJECT, FORWARD, etc.) */
+  code: string;
+  /** Localized display name */
+  name: LocalizedTextView;
+  /** Whether this action ends a request's journey */
+  isTerminal: boolean;
 }
 
 // ============================================================================

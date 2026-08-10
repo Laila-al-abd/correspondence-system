@@ -99,6 +99,16 @@ export interface CreateDepartmentInput {
 // ============================================================================
 
 /**
+ * Org unit type view - returned by GET /organization/departments/unit-types
+ * Source: backend/src/application/organization/queries/list-org-unit-types/org-unit-type.view.ts
+ */
+export interface OrgUnitTypeView {
+  id: string;
+  code: string;
+  name: { ar: string; en?: string };
+}
+
+/**
  * Department unit type view.
  * Source: backend/src/application/organization/ports/department-query.port.ts (DepartmentUnitTypeView)
  */
