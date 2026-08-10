@@ -65,6 +65,7 @@ export function TemplateForm({ existing }: Props) {
   const [descriptionEn, setDescriptionEn] = useState(existing?.descriptionEn ?? '');
   const [defaultPriority, setDefaultPriority] = useState<Priority | ''>(existing?.defaultPriority ?? '');
   const [classifierDocument, setClassifierDocument] = useState(existing?.classifierDocument ?? '');
+  const codeEditable = !existing?.code;
 
   // Only meaningful in create mode.
   const [fields, setFields] = useState<TemplateFieldDto[]>([]);
@@ -110,7 +111,9 @@ export function TemplateForm({ existing }: Props) {
 
     try {
       if (existing) {
+        // 👉 UPDATE THIS REQUEST OBJECT:
         const request: UpdateTemplateDto = {
+          code: codeEditable && code.trim() ? code.trim() : undefined,
           titleAr: titleAr || undefined,
           titleEn: titleEn || undefined,
           descriptionAr: descriptionAr || undefined,
@@ -147,12 +150,34 @@ export function TemplateForm({ existing }: Props) {
         <CardTitle>{existing ? `Edit ${existing.nameAr}` : 'New Template'}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {!existing && (
-          <div className="space-y-1">
-            <Label htmlFor="code">Code (optional, write-once)</Label>
-            <Input id="code" placeholder="ENROLL_CERT" value={code} onChange={(e) => setCode(e.target.value)} />
-          </div>
-        )}
+        <div className="space-y-1">
+          <Label htmlFor="code">
+            Code {codeEditable ? '(optional, write-once)' : ''}
+          </Label>
+          <Input
+            id="code"
+            placeholder="ENROLL_CERT"
+            value={codeEditable ? code : existing?.code ?? ''}
+            onChange={(e) => {
+              if (codeEditable) {
+                setCode(e.target.value);
+                setIsDirty(true);
+              }
+            }}
+            disabled={!codeEditable}
+          />
+          {!codeEditable && (
+            <p className="text-xs text-muted-foreground">
+              Code is set and cannot be changed once assigned.
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor="titleAr">Title (Arabic)</Label>
+          <Input id="titleAr" value={titleAr} onChange={(e) => { setTitleAr(e.target.value); setIsDirty(true); }} />
+        </div>
+        {/* ... rest of your inputs */}
 
         <div className="space-y-1">
           <Label htmlFor="titleAr">Title (Arabic)</Label>
