@@ -25,7 +25,6 @@ export const authKeys = {
  * any existing read data.
  */
 export function useRegister() {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (dto: RegisterUserDto) => identityApi.register(dto),
     // No invalidation needed — registration is a fire-and-forget action

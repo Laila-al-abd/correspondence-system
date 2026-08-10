@@ -27,6 +27,18 @@ export function LanguageForm() {
       setSubmitError('Code, name, and native name are all required.');
       return;
     }
+    if (code.length < 2 || code.length > 10) {
+      setSubmitError('Code must be between 2 and 10 characters.');
+      return;
+    }
+    if (name.length > 100) {
+      setSubmitError('Name must be 100 characters or fewer.');
+      return;
+    }
+    if (nativeName.length > 100) {
+      setSubmitError('Native name must be 100 characters or fewer.');
+      return;
+    }
 
     const request: CreateLanguageDto = {
       code: code.trim(),
@@ -52,15 +64,15 @@ export function LanguageForm() {
       <CardContent className="space-y-4">
         <div className="space-y-1">
           <Label htmlFor="code">Code</Label>
-          <Input id="code" placeholder="ar" value={code} onChange={(e) => setCode(e.target.value)} />
+          <Input id="code" placeholder="ar" value={code} onChange={(e) => setCode(e.target.value)} maxLength={10} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Arabic" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input id="name" placeholder="Arabic" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="nativeName">Native name</Label>
-          <Input id="nativeName" placeholder="العربية" value={nativeName} onChange={(e) => setNativeName(e.target.value)} />
+          <Input id="nativeName" placeholder="العربية" value={nativeName} onChange={(e) => setNativeName(e.target.value)} maxLength={100} />
         </div>
         <div className="flex items-center gap-2">
           <input id="isEnabled" type="checkbox" checked={isEnabled} onChange={(e) => setIsEnabled(e.target.checked)} />
