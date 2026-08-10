@@ -64,7 +64,7 @@ export class CreateTemplateDto {
    */
   @IsOptional()
   @IsString()
-  @Length(1, 4000)
+  @Length(1, 1000)
   classifierDocument?: string
 
   @IsOptional()

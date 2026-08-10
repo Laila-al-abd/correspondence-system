@@ -7,7 +7,7 @@
  */
 export interface SubmitRequestInput {
   requesterId: string
-  rawText?: string
+  rawText: string
   filledData?: Record<string, unknown>
 }
 

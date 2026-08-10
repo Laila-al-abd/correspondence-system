@@ -58,7 +58,7 @@ export class UpdateTemplateDto {
 
   @IsOptional()
   @IsString()
-  @Length(0, 4000)
+  @Length(0, 1000)
   classifierDocument?: string
 
   /** false retires the template; true brings a retired one back. */

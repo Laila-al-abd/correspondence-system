@@ -18,4 +18,6 @@ export class OrgUnitType extends Entity {
   }
 
   get kind(): OrgUnitKind { return this.props.kind }
+  get code(): string { return this.props.kind }
+  get name(): LocalizedText { return this.props.name }
 }

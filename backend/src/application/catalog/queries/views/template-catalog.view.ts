@@ -6,6 +6,9 @@
  * needs `extractionQuestion` per field; both are model inputs, so they travel
  * with the catalogue rather than being duplicated in the AI service.
  */
+
+import { Priority } from '../../../../domain/request/enums'
+
 export interface TemplateFieldCatalogView {
   key: string
   labelAr: string
@@ -34,6 +37,8 @@ export interface TemplateCatalogView {
   classifierDocument?: string
   categoryId?: string
   sensitivityLevelId?: string
+  /** Default priority for requests created from this template (optional for backward compatibility). */
+  defaultPriority?: Priority
   isActive: boolean
   /** Lets the AI service poll cheaply and rebuild only when something changed. */
   updatedAt: string
