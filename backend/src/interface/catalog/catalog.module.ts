@@ -8,6 +8,7 @@ import { RemoveTemplateFieldHandler } from '../../application/catalog/commands/r
 import { ReorderTemplateFieldsHandler } from '../../application/catalog/commands/reorder-template-fields/reorder-template-fields.handler'
 import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
 import { ListLanguagesHandler } from '../../application/catalog/queries/list-languages/list-languages.handler'
+import { ListActionTypesHandler } from '../../application/catalog/queries/list-action-types/list-action-types.handler'
 import { ListTemplateCatalogHandler } from '../../application/catalog/queries/list-template-catalog/list-template-catalog.handler'
 import { GetTemplateCatalogHandler } from '../../application/catalog/queries/get-template-catalog/get-template-catalog.handler'
 import { PrismaLanguageRepository } from '../../infrastructure/catalog/prisma-language.repository'
@@ -29,6 +30,7 @@ import {
 } from '../../application/tokens'
 import { LanguageController } from './language.controller'
 import { TemplateController } from './template.controller'
+import { ActionTypeController } from './action-type.controller'
 
 /**
  * Catalog composition root: wires the LANGUAGE_REPOSITORY port to its Prisma
@@ -36,7 +38,7 @@ import { TemplateController } from './template.controller'
  */
 @Module({
   imports: [CqrsModule],
-  controllers: [LanguageController, TemplateController],
+  controllers: [LanguageController, TemplateController, ActionTypeController],
   providers: [
     CreateLanguageHandler,
     CreateTemplateHandler,
@@ -45,6 +47,7 @@ import { TemplateController } from './template.controller'
     RemoveTemplateFieldHandler,
     ReorderTemplateFieldsHandler,
     ListLanguagesHandler,
+    ListActionTypesHandler,
     ListTemplateCatalogHandler,
     GetTemplateCatalogHandler,
     { provide: LANGUAGE_REPOSITORY, useClass: PrismaLanguageRepository },

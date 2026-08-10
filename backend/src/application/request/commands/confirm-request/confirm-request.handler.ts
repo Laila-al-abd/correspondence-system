@@ -1,5 +1,5 @@
-import { Inject } from '@nestjs/common'
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
+import { Inject, Logger } from '@nestjs/common'
+import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs'
 import { Identifier } from '../../../../domain/shared/identifier'
 import type { RequestRepository } from '../../../../domain/request/ports/request.repository'
 import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
@@ -12,6 +12,7 @@ import {
 import { REQUEST_REPOSITORY, TEMPLATE_REPOSITORY } from '../../../tokens'
 import { EventRecorder } from '../../../observability/services/event-recorder'
 import { stageOfRequest } from '../../queries/views/request-stage'
+import { StartRequestWorkflowCommand } from '../start-request-workflow/start-request-workflow.command'
 import {
   ConfirmOutcome,
   ConfirmRequestCommand,
@@ -44,11 +45,14 @@ export interface ConfirmationResult {
 export class ConfirmRequestHandler
   implements ICommandHandler<ConfirmRequestCommand, ConfirmationResult>
 {
+  private readonly logger = new Logger(ConfirmRequestHandler.name)
+
   constructor(
     @Inject(REQUEST_REPOSITORY) private readonly requests: RequestRepository,
     @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
     private readonly notifier: NotificationEmitter,
     private readonly events: EventRecorder,
+    private readonly commandBus: CommandBus,
   ) {}
 
   async execute({ input }: ConfirmRequestCommand): Promise<ConfirmationResult> {
@@ -91,6 +95,25 @@ export class ConfirmRequestHandler
         to: stageOfRequest(request),
         actorId: input.actorId,
       })
+
+      // Routing is a separate unit of work from confirming, on purpose:
+      // sharing a transaction would pull StartRequestWorkflowHandler's
+      // notifications inside an open DB transaction, and a notification must
+      // never fire before a commit that might still roll back. If routing
+      // fails here (e.g. no active workflow path for this template), the
+      // confirmation itself still stands -- the request is left CONFIRMED but
+      // not yet IN_PROGRESS, and staff can retry via the existing
+      // POST /:id/start endpoint.
+      try {
+        await this.commandBus.execute(
+          new StartRequestWorkflowCommand(request.id.toString()),
+        )
+      } catch (error) {
+        this.logger.warn(
+          `Auto-start after confirmation failed for request ${request.id.toString()}: ` +
+            `${error instanceof Error ? error.message : String(error)}`,
+        )
+      }
     } else {
       request.dispute()
       await this.requests.save(request)

@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, ValidateIf } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, ValidateIf } from 'class-validator'
 import { StepActionKind } from '../../../application/request/commands/act-on-step/act-on-step.command'
 
 export class ActOnStepDto {
@@ -10,6 +10,7 @@ export class ActOnStepDto {
   @IsNotEmpty({ message: 'You must provide a reason (actionTypeId) when rejecting or skipping a step.' })
   actionTypeId?: string
 
+  @MaxLength(50000)
   @IsOptional()
   @IsString()
   comment?: string

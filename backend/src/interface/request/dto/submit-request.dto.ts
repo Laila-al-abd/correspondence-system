@@ -1,4 +1,4 @@
-import { IsObject, IsOptional, IsString } from 'class-validator'
+import { IsObject, IsOptional, IsString, IsNotEmpty, MaxLength } from 'class-validator'
 
 /**
  * What a requester may say when submitting: the text they wrote, and (for
@@ -7,9 +7,10 @@ import { IsObject, IsOptional, IsString } from 'class-validator'
  * their own request to the front of a shared queue by ticking a box.
  */
 export class SubmitRequestDto {
-  @IsOptional()
   @IsString()
-  rawText?: string
+  @IsNotEmpty()
+  @MaxLength(1000)
+  rawText!: string
 
   @IsOptional()
   @IsObject()

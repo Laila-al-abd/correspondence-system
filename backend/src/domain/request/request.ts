@@ -89,14 +89,20 @@ export class Request extends AggregateRoot {
     p: {
       requesterId: Identifier
       referenceNo?: string
-      rawText?: string
+      rawText: string
       priority?: Priority
     },
   ): Request {
+    if (!p.rawText?.trim()) {
+      throw new InvariantViolationError('rawText is required and cannot be empty.')
+    }
+    if (p.rawText.length > 1000) {
+      throw new InvariantViolationError('rawText must be 1000 characters or fewer.')
+    }
     return new Request(id, {
       requesterId: p.requesterId,
       referenceNo: p.referenceNo,
-      rawText: p.rawText,
+      rawText: p.rawText.trim(),
       filledData: {},
       classificationStatus: ClassificationStatus.PENDING,
       currentStatus: RequestStatus.DRAFT,

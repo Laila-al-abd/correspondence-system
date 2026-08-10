@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator'
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator'
 import { DocKind } from '../../../domain/request/enums'
 
 export class UploadDocumentDto {
@@ -15,6 +15,7 @@ export class UploadDocumentDto {
   @IsEnum(DocKind)
   docKind?: DocKind
 
+  @IsUUID()
   @IsOptional()
   @IsString()
   requestActionId?: string

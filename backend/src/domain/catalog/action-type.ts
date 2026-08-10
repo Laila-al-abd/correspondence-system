@@ -24,4 +24,5 @@ export class ActionType extends Entity {
 
   get code(): string { return this.props.code }
   get isTerminal(): boolean { return this.props.isTerminal }
+  get name(): LocalizedText { return this.props.name }
 }

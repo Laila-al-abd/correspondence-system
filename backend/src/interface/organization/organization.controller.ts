@@ -7,7 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common'
-import { CommandBus } from '@nestjs/cqrs'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { SyncDepartmentsCommand } from '../../application/organization/commands/sync-departments/sync-departments.command'
 import { SyncDepartmentsResult } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsDto } from './dto/sync-departments.dto'
@@ -15,6 +15,10 @@ import { CreateDepartmentCommand } from '../../application/organization/commands
 import { CreateDepartmentResult } from '../../application/organization/commands/create-department/create-department.handler'
 import { CreateDepartmentDto } from './dto/create-department.dto'
 import { ListDepartmentsDto } from './dto/list-departments.dto'
+import {
+  ListOrgUnitTypesQuery,
+} from '../../application/organization/queries/list-org-unit-types/list-org-unit-types.query'
+import { OrgUnitTypeView } from '../../application/organization/queries/list-org-unit-types/org-unit-type.view'
 import type {
   DepartmentQueryPort,
   DepartmentTreeNode,
@@ -31,6 +35,7 @@ import { RequirePermissions } from '../identity/permissions.decorator'
 export class OrganizationController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
     @Inject(DEPARTMENT_QUERY)
     private readonly departments: DepartmentQueryPort,
   ) {}
@@ -78,5 +83,10 @@ export class OrganizationController {
     const found = await this.departments.getById(id)
     if (!found) throw new EntityNotFoundError('Department', id)
     return found
+  }
+
+  @Get('unit-types')
+  listUnitTypes(): Promise<OrgUnitTypeView[]> {
+    return this.queryBus.execute(new ListOrgUnitTypesQuery())
   }
 }
