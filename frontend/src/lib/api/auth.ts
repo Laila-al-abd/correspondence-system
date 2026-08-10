@@ -38,9 +38,9 @@ export const identityApi = {
   },
 
   /**
-   * Effective permission codes for the currently authenticated user.
-   * GET /auth/me/permissions
-   */
+ * Effective permission codes for the currently authenticated user.
+ * GET /auth/me/permissions
+ */
   getMyPermissions: async (): Promise<EffectivePermissionsResponse> => {
     const { data } = await apiClient.get<EffectivePermissionsResponse>('/auth/me/permissions');
     return data;

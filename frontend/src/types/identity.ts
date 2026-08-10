@@ -618,10 +618,10 @@ export interface PermissionGroupsResponse {
  * Effective permissions response for a user.
  * Source: backend/src/application/identity/queries/get-effective-permissions/get-effective-permissions.query.ts
  */
-export interface EffectivePermissionsResponse {
-  userId: string;
-  permissions: string[];
-}
+// GET /auth/me/permissions returns the permission codes directly as an
+// array -- confirmed against the actual response body, no userId field,
+// no wrapping object. If a future backend change adds an envelope back,
+export type EffectivePermissionsResponse = string[];
 /**
  * Response for creating a role.
  * POST /roles
