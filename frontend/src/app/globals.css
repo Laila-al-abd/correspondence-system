@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+:root {
+  --ics-text: #050315;
+  --ics-background: #ffffff;
+  --ics-primary: #386641;
+  --ics-secondary: #a7c957;
+  --ics-accent: #6a994e;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

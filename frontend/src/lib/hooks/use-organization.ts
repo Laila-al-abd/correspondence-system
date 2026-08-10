@@ -9,6 +9,7 @@ import {
   DepartmentTreeNode,
   CreateDepartmentResult,
   SyncDepartmentsResult,
+  OrgUnitTypeView,
 } from '@/types/organization';
 import { OffsetPage } from '@/types/shared';
 
@@ -19,6 +20,7 @@ export const organizationKeys = {
   tree: (activeOnly?: boolean) =>
     ['organization', 'departments', 'tree', activeOnly ?? null] as const,
   detail: (id: string) => ['organization', 'departments', id] as const,
+  unitTypes: () => ['organization', 'departments', 'unit-types'] as const,
 };
 
 /**
@@ -88,5 +90,16 @@ export function useDepartment(id: string) {
     queryKey: organizationKeys.detail(id),
     queryFn: () => organizationApi.getById(id),
     enabled: !!id,
+  });
+}
+
+/**
+ * All org unit types for dropdowns.
+ * GET /organization/departments/unit-types
+ */
+export function useOrgUnitTypes() {
+  return useQuery({
+    queryKey: organizationKeys.unitTypes(),
+    queryFn: () => organizationApi.getUnitTypes(),
   });
 }
