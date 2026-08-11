@@ -296,4 +296,16 @@ export const requestsApi = {
     );
     return data;
   },
+      /**
+     * Classification reviewer inbox. No filter params — backend hardcodes
+     * status=DRAFT, classificationStatus IN (PENDING, HITL).
+     * GET /requests/queue/hitl
+     */
+    getHitlQueue: async (limit?: number, cursor?: string): Promise<KeysetPage<RequestSummaryView>> => {
+      const { data } = await apiClient.get<KeysetPage<RequestSummaryView>>('/requests/queue/hitl', {
+        params: { limit: limit ?? undefined, cursor: cursor ?? undefined },
+      });
+      return data;
+    },
 };
+

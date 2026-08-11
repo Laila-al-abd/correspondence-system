@@ -95,7 +95,7 @@ export const RequestMapper = {
       currentStatus: s.currentStatus,
       priority: s.priority,
       slaRisk: s.slaRisk,
-      slaDueAt: s.slaDueAt ?? null,
+      slaDueAt: null,
       completedAt: s.completedAt ?? null,
       confirmedAt: s.confirmedAt ?? null,
       extractionAttemptedAt: s.extractionAttemptedAt ?? null,

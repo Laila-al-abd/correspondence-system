@@ -34,6 +34,8 @@ export enum NotificationType {
   STEP_ASSIGNMENT_REQUIRED = 'STEP_ASSIGNMENT_REQUIRED',
   /** The models are done with a request and its requester must confirm it. */
   CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
+  /** A payment is requested for a step you're working on. */
+  PAYMENT_REQUESTED = 'PAYMENT_REQUESTED',
 }
 
 // ============================================================================

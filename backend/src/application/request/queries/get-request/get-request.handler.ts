@@ -6,6 +6,7 @@ import type { RequestActionRepository } from '../../../../domain/request/ports/r
 import type { DocumentRepository } from '../../../../domain/request/ports/document.repository'
 import type { PaymentRepository } from '../../../../domain/request/ports/payment.repository'
 import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
+import type { WorkflowPathRepository } from '../../../../domain/workflow/ports/workflow-path.repository'
 import type { RequestQueryPort } from '../../ports/request-query.port'
 import {
   DOCUMENT_REPOSITORY,
@@ -20,7 +21,6 @@ import { EntityNotFoundError } from '../../../errors'
 import { RequestReadAccessPolicy } from '../../policies/request-read-access.policy'
 import { GetRequestQuery } from './get-request.query'
 import { RequestDetailView, toRequestDetail } from '../views/request.view'
-import type { WorkflowPathRepository } from '../../../../domain/workflow/ports/workflow-path.repository'
 
 /**
  * Loads the full picture of one request: the aggregate with its step instances,
@@ -39,9 +39,9 @@ export class GetRequestHandler
     @Inject(PAYMENT_REPOSITORY) private readonly payments: PaymentRepository,
     @Inject(REQUEST_QUERY) private readonly requestQuery: RequestQueryPort,
     @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
-    private readonly readAccess: RequestReadAccessPolicy,
     @Inject(WORKFLOW_PATH_REPOSITORY)
     private readonly workflowPaths: WorkflowPathRepository,
+    private readonly readAccess: RequestReadAccessPolicy,
   ) {}
 
   async execute(query: GetRequestQuery): Promise<RequestDetailView> {
@@ -81,14 +81,33 @@ export class GetRequestHandler
           ? this.workflowPaths.findById(Identifier.of(workflowPathId))
           : Promise.resolve(null),
       ])
-    return toRequestDetail(
+
+    // Compute the correct slaDueAt from open, non-paused step instances
+    // Matching SlaMonitorService/PrismaSlaScan logic:
+    // - Open statuses: PENDING, IN_PROGRESS, WAITING
+    // - Not paused: slaPaused = false
+    // - Min slaDueAt across all such steps
+    const openStepInstances = request.snapshot().stepInstances.filter(
+      (si) =>
+        ['PENDING', 'IN_PROGRESS', 'WAITING'].includes(si.status) &&
+        !si.slaPaused &&
+        si.slaDueAt != null,
+    )
+    const computedSlaDueAt = openStepInstances.length > 0
+      ? new Date(Math.min(...openStepInstances.map((si) => si.slaDueAt!.getTime())))
+      : undefined
+
+    const detail = toRequestDetail(
       request,
       actions,
       documents,
       payments,
       durationEstimate,
       template ?? undefined,
-      workflowPath?.steps ? [...workflowPath.steps] : undefined
+      workflowPath?.steps ? [...workflowPath.steps] : undefined,
     )
+
+    // Override slaDueAt with computed value
+    return { ...detail, slaDueAt: computedSlaDueAt?.toISOString() }
   }
 }

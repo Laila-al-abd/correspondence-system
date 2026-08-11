@@ -1,32 +1,26 @@
 'use client';
 //frontend\src\app\dashboard\requests\queue\hitl\page.tsx
 // Queue filtered server-side to items awaiting human classification.
-// status: 'DRAFT' + classificationStatus: 'HITL' together select exactly the
+// status: 'DRAFT' + classificationStatus: 'PENDING' | 'HITL' together select exactly the
 // requests whose derived stage is IN_HUMAN_REVIEW (see request-stage.ts) —
-// filtered via the real backend query param, not client-side, since this
-// list is keyset-paginated and a client-side filter would silently hide
-// matching rows sitting past the current cursor.
+// server-side so client-side filtering doesn't hide rows past the current cursor.
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useRequestQueue } from '@/lib/hooks/use-requests';
-import { RequestStatus, RequestSummaryView, ClassificationStatus } from '@/types/request';
+import { useHitlQueue } from '@/lib/hooks/use-requests';
+import { RequestSummaryView } from '@/types/request';
 import { PermissionGate } from '@/components/permission-gate';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 
 function HitlQueueContent() {
   const router = useRouter();
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const [items, setItems] = useState<RequestSummaryView[]>([]);
 
-  const { data, isLoading } = useRequestQueue({
-    status: RequestStatus.DRAFT,
-    classificationStatus: ClassificationStatus.HITL,
-    limit: '50',
-    cursor,
-  });
+  const { data, isLoading, isError, error, refetch } = useHitlQueue(50, cursor);
 
   useEffect(() => {
     if (!data) return;
@@ -50,6 +44,14 @@ function HitlQueueContent() {
 
       {isLoading && items.length === 0 ? (
         <p className="text-muted-foreground">Loading…</p>
+      ) : isError ? (
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <p>Failed to load classification queue: {error?.message ?? 'Unknown error'}</p>
+          <Button variant="outline" size="sm" onClick={() => refetch()}>
+            <RefreshCw className="h-4 w-4 mr-1" /> Retry
+          </Button>
+        </div>
       ) : items.length === 0 ? (
         <p className="text-muted-foreground">Nothing waiting for review right now.</p>
       ) : (

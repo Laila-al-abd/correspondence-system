@@ -29,6 +29,7 @@ import { GetRequestByReferenceQuery } from '../../application/request/queries/ge
 import { ListMyRequestsQuery } from '../../application/request/queries/list-my-requests/list-my-requests.query'
 import { ListAssignedRequestsQuery } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.query'
 import { ListRequestQueueQuery } from '../../application/request/queries/list-request-queue/list-request-queue.query'
+import { ListHitlQueueQuery } from '../../application/request/queries/list-hitl-queue/list-hitl-queue.query'
 import {
   RequestDetailView,
   RequestSummaryView,
@@ -100,8 +101,24 @@ export class RequestController {
     )
   }
 
+  /**
+   * Classification reviewer inbox: DRAFT requests with classificationStatus
+   * PENDING or HITL. Behind request.classify only -- not request.read.
+   * A reviewer no longer needs the broader read permission to see their
+   * own inbox.
+   */
+  @Get('queue/hitl')
+  @RequirePermissions('request.classify')
+  listHitlQueue(
+    @Query() page: PageQueryDto,
+  ): Promise<KeysetPage<RequestSummaryView>> {
+    return this.queryBus.execute(
+      new ListHitlQueueQuery(toNumber(page.limit), page.cursor),
+    )
+  }
+
   @Get('queue')
-  @RequirePermissions('request.read', 'request.classify')
+  @RequirePermissions('request.read')
   listQueue(
     @Query() dto: ListQueueDto,
   ): Promise<KeysetPage<RequestSummaryView>> {
