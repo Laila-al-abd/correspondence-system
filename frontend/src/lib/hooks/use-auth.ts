@@ -1,6 +1,9 @@
 // src/lib/hooks/use-auth.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { identityApi } from '@/lib/api/auth';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+
 import {
   RegisterUserDto,
   LoginDto,
@@ -65,4 +68,26 @@ export function useMyPermissions() {
     queryKey: authKeys.myPermissions(),
     queryFn: () => identityApi.getMyPermissions(),
   });
+
+  
+}
+/**
+ * Logs the user out. There is no /auth/logout route on AuthController --
+ * auth is a stateless JWT with no server-side session to invalidate, so
+ * logging out is purely a client action: drop the auth_token cookie
+ * axios-client's interceptor reads, and clear every cached query result.
+ * The cache clear matters beyond just the cookie: without it, a second
+ * person logging in on the same browser could momentarily see the previous
+ * user's cached permissions, request lists, or notifications before fresh
+ * data replaces them.
+ */
+export function useLogout() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return function logout() {
+    Cookies.remove('auth_token');
+    queryClient.clear();
+    router.push('/login');
+  };
 }

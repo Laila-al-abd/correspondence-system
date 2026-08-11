@@ -15,7 +15,7 @@ function HitlClassifyContent() {
   if (isLoading) return <p className="p-6 text-muted-foreground">Loading…</p>;
   if (isError || !request) return <p className="p-6 text-destructive">Request not found.</p>;
 
-  if (request.stage !== 'IN_HUMAN_REVIEW') {
+  if (!['IN_HUMAN_REVIEW', 'AWAITING_CLASSIFICATION'].includes(request.stage)) {
     return (
       <div className="p-6 space-y-4">
         <p className="text-muted-foreground">

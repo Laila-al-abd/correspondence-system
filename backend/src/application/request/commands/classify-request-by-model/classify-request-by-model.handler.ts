@@ -125,6 +125,13 @@ export class ClassifyRequestByModelHandler
         referenceNo: request.referenceNo,
       })
     }
+    else{
+    await this.notifier.confirmationRequired({
+      requesterId: request.requesterId.toString(),
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+    })
+    }
 
     return {
       id: request.id.toString(),
