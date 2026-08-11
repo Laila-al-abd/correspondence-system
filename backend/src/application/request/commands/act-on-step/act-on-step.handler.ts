@@ -417,6 +417,15 @@ export class ActOnStepHandler
         }),
       )
     }
+
+      await this.notifier.paymentRequested({
+          userId: request.requesterId.toString(),
+          actorId: actorId,
+          requestId: request.id.toString(),
+          referenceNo: request.referenceNo,
+          amount: definition.fee.amount,
+          currency: definition.fee.currency,
+  })
   }
 
   /**

@@ -10,6 +10,7 @@
  */
 export type * from './models/User.js'
 export type * from './models/AttributeDefinition.js'
+export type * from './models/AttributeOption.js'
 export type * from './models/UserAttribute.js'
 export type * from './models/Role.js'
 export type * from './models/PermissionGroup.js'

@@ -20,6 +20,8 @@ export const NotificationType = {
   STEP_ASSIGNMENT_REQUIRED: 'STEP_ASSIGNMENT_REQUIRED',
   /** The models are done with a request and its requester must confirm it. */
   CONFIRMATION_REQUIRED: 'CONFIRMATION_REQUIRED',
+  /** A payment is requested. */
+  PAYMENT_REQUESTED: 'PAYMENT_REQUESTED',
 } as const
 
 export type NotificationTypeCode =
