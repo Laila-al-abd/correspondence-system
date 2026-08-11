@@ -1,33 +1,14 @@
 'use client';
-// src/components/forms/act-on-step-form.tsx
-//
-// Form for acting on a workflow step (start, complete, reject, skip).
-// POST /requests/:id/steps/:stepId/actions
-//
-// Notes:
-// - Requires 'request.act' permission.
-// - action is required enum: START, COMPLETE, REJECT, SKIP.
-// - actionTypeId is required when action is REJECT or SKIP (reason for rejection/skip).
-//   This is a code from the action type catalog, not a user ID.
-// - comment is optional free text.
-// - No update route → this records the action and advances the workflow.
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useActOnStep } from '@/lib/hooks/use-requests';
+import { useActionTypes } from '@/lib/hooks/use-action-type';
 import { ActOnStepDto, ActOnStepResponse, StepActionKind } from '@/types/request';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label'
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
-const selectClass =
-  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
-
-const textareaClass =
-  'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50';
 
 interface Props {
   /** The request ID. */
@@ -36,162 +17,195 @@ interface Props {
   stepId: string;
   /** Optional step info for display. */
   stepName?: string;
-  /** Current step status (for context). */
+  /** Current step status (e.g., PENDING, IN_PROGRESS). */
   currentStepStatus?: string;
-  /** Optional existing action to edit — not used (action is one-shot). */
-  existing?: never;
-  /** Optional callback after successful action. */
+  /** Allowed action type IDs for this step instance. */
+  allowedActionTypeIds?: string[];
+  /** Callback after successful action execution. */
   onSuccess?: (response: ActOnStepResponse) => void;
+  /** Callback to close the dialog modal. */
+  onClose?: () => void;
 }
-
-const ACTION_LABELS: Record<StepActionKind, string> = {
-  [StepActionKind.START]: 'Start — Begin working on this step',
-  [StepActionKind.COMPLETE]: 'Complete — Mark step as finished',
-  [StepActionKind.REJECT]: 'Reject — Send back with reason',
-  [StepActionKind.SKIP]: 'Skip — Bypass this step with reason',
-};
-
-const REQUIRES_ACTION_TYPE: StepActionKind[] = [StepActionKind.REJECT, StepActionKind.SKIP];
 
 export function ActOnStepForm({
   requestId,
   stepId,
   stepName,
-  currentStepStatus,
-  existing,
+  currentStepStatus = 'PENDING',
+  allowedActionTypeIds = [],
   onSuccess,
+  onClose,
 }: Props) {
   const router = useRouter();
   const actOnStep = useActOnStep();
+  const { data: catalogActionTypes, isLoading: isLoadingActionTypes } = useActionTypes();
 
-  const [action, setAction] = useState<StepActionKind | ''>('');
-  const [actionTypeId, setActionTypeId] = useState<string>('');
+  const isPendingStep = currentStepStatus === 'PENDING';
+
+  const [selectedActionTypeId, setSelectedActionTypeId] = useState<string>('');
   const [comment, setComment] = useState<string>('');
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const isPending = actOnStep.isPending;
-  const requiresActionType = action && REQUIRES_ACTION_TYPE.includes(action);
+
+  // Filter catalog action types to only those allowed on this step
+  const availableActionTypes = (catalogActionTypes || []).filter(
+    (at) => allowedActionTypeIds.length === 0 || allowedActionTypeIds.includes(at.id)
+  );
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitError(null);
 
-    if (!action) {
-      setSubmitError('Action is required.');
-      return;
+    let derivedAction: StepActionKind;
+    let finalActionTypeId: string | undefined = undefined;
+
+    // 1. If step is PENDING -> Execute START
+    if (isPendingStep) {
+      derivedAction = StepActionKind.START;
+    } else {
+      // 2. If step is IN_PROGRESS -> Require an action selection
+      if (!selectedActionTypeId) {
+        setSubmitError('Please select an action type to execute.');
+        return;
+      }
+
+      const selectedType = catalogActionTypes?.find((at) => at.id === selectedActionTypeId);
+      const code = (selectedType?.code || '').toUpperCase();
+      finalActionTypeId = selectedType?.id;
+
+      // Map catalog code to backend StepActionKind enum
+      if (code.includes('REJECT') || code.includes('DENY')) {
+        derivedAction = StepActionKind.REJECT;
+      } else if (code.includes('SKIP') || code.includes('BYPASS')) {
+        derivedAction = StepActionKind.SKIP;
+      } else {
+        derivedAction = StepActionKind.COMPLETE;
+      }
+
+      if (
+        (derivedAction === StepActionKind.REJECT || derivedAction === StepActionKind.SKIP) &&
+        !finalActionTypeId
+      ) {
+        setSubmitError('Action type code is required for REJECT or SKIP actions.');
+        return;
+      }
     }
-    if (requiresActionType && !actionTypeId.trim()) {
-      setSubmitError('Action type (reason code) is required for Reject and Skip actions.');
-      return;
-    }
-    if (actionTypeId.length > 100) {
-      setSubmitError('Action type ID must be 100 characters or fewer.');
-      return;
-    }
+
     if (comment.length > 1000) {
       setSubmitError('Comment must be 1000 characters or fewer.');
       return;
     }
 
-    const request: ActOnStepDto = {
-      action,
-      actionTypeId: requiresActionType ? actionTypeId.trim() : undefined,
+    const payload: ActOnStepDto = {
+      action: derivedAction,
+      actionTypeId: finalActionTypeId,
       comment: comment.trim() || undefined,
     };
 
     try {
-      const response = await actOnStep.mutateAsync({ id: requestId, stepId, request });
+      const response = await actOnStep.mutateAsync({ id: requestId, stepId, request: payload });
       onSuccess?.(response);
-      router.push(`/dashboard/requests/${requestId}`);
-    } catch {
-      setSubmitError('Failed to act on step. Please try again.');
+      onClose ? onClose() : router.push(`/dashboard/requests/${requestId}`);
+    } catch (err: any) {
+      // Extract exact error message from NestJS response
+      const apiMessage =
+        err?.response?.data?.message ||
+        err?.message ||
+        'Failed to execute step action. Please try again.';
+      setSubmitError(Array.isArray(apiMessage) ? apiMessage.join(', ') : apiMessage);
     }
   }
 
-  const statusLabel = currentStepStatus ? ` (current: ${currentStepStatus})` : '';
-
   return (
-    <Card className="w-full max-w-xl">
-      <CardHeader>
-        <CardTitle>Act on Step</CardTitle>
+    <Card className="w-full border-none shadow-none">
+      <CardHeader className="px-0 pt-0">
+        <CardTitle>{isPendingStep ? 'Start Working on Step' : 'Execute Step Action'}</CardTitle>
         <CardDescription>
-          Choose an action for this workflow step{statusLabel}.
-          {stepName && <span> Step: {stepName}</span>}
+          {stepName ? `Step: ${stepName}` : 'Manage workflow step execution.'}
+          {` (Current Status: ${currentStepStatus})`}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0 pb-0">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Action selector */}
-          <div className="space-y-1">
-            <Label>Action <span className="text-destructive">*</span></Label>
-            <div className="space-y-2">
-              {Object.entries(ACTION_LABELS).map(([value, label]) => (
-                <label
-                  key={value}
-                  className="flex items-center gap-3 cursor-pointer p-3 border rounded-md hover:bg-accent transition-colors"
-                >
-                  <input
-                    type="radio"
-                    name="action"
-                    value={value}
-                    checked={action === value}
-                    onChange={() => setAction(value as StepActionKind)}
-                    disabled={isPending}
-                    className="h-4 w-4 border-input text-primary focus:ring-primary"
-                  />
-                  <span className="text-sm">{label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Action type ID (conditional) */}
-          {requiresActionType && (
-            <div className="space-y-1">
-              <Label htmlFor="actionTypeId">
-                Action type / Reason code <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="actionTypeId"
-                type="text"
-                value={actionTypeId}
-                onChange={(e) => setActionTypeId(e.target.value)}
-                disabled={isPending}
-                placeholder="e.g., INSUFFICIENT_DOCS, OUT_OF_SCOPE, DUPLICATE"
-                maxLength={100}
-              />
-              <p className="text-xs text-muted-foreground">
-                Required for Reject/Skip. Select a code from the action type catalog.
+          {/* SCENARIO A: Step is PENDING -> Show Start Notice */}
+          {isPendingStep ? (
+            <div className="p-4 bg-muted/60 border rounded-md space-y-1">
+              <p className="text-sm font-medium text-(--ics-text)">
+                This step is currently <strong>PENDING</strong>.
               </p>
+              <p className="text-xs text-muted-foreground">
+                You must start working on this step before you can perform completion actions like Approve, Sign, or Reject.
+              </p>
+            </div>
+          ) : (
+            /* SCENARIO B: Step is IN_PROGRESS -> Show Allowed Action Types */
+            <div className="space-y-2">
+              <Label>
+                Select Action <span className="text-destructive">*</span>
+              </Label>
+              {isLoadingActionTypes ? (
+                <p className="text-xs text-muted-foreground animate-pulse">Loading available actions…</p>
+              ) : availableActionTypes.length === 0 ? (
+                <p className="text-xs text-muted-foreground">No specific action types defined for this step.</p>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-y-auto border rounded-md p-2">
+                  {availableActionTypes.map((at) => (
+                    <label
+                      key={at.id}
+                      className={`flex items-center justify-between p-2.5 border rounded-md cursor-pointer hover:bg-accent transition-colors ${
+                        selectedActionTypeId === at.id ? 'border-primary bg-primary/5' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="actionType"
+                          value={at.id}
+                          checked={selectedActionTypeId === at.id}
+                          onChange={() => setSelectedActionTypeId(at.id)}
+                          className="h-4 w-4 border-input text-primary focus:ring-primary"
+                        />
+                        <span className="text-sm font-medium">
+                          {at.name?.ar || at.name?.en || at.code}
+                        </span>
+                      </div>
+                      <span className="text-xs font-mono text-muted-foreground">{at.code}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
-          {/* Comment (optional) */}
+          {/* Comment Field (Optional) */}
           <div className="space-y-1">
             <Label htmlFor="comment">Comment (optional)</Label>
-            <textarea
+            <Textarea
               id="comment"
-              className={textareaClass}
-              placeholder="Additional context for this action..."
+              placeholder="Add optional notes or justification..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               disabled={isPending}
               maxLength={1000}
               rows={3}
             />
-            <p className="text-xs text-muted-foreground">
-              {comment.length}/1000 characters
-            </p>
+            <p className="text-xs text-muted-foreground text-right">{comment.length}/1000</p>
           </div>
 
-          {submitError && <p className="text-sm text-destructive">{submitError}</p>}
+          {submitError && <p className="text-sm text-destructive font-medium">{submitError}</p>}
 
-          <div className="flex gap-2 pt-2">
-            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
-              {isPending ? 'Processing…' : `Execute ${action || 'Action'}`}
-            </Button>
-            <Button type="button" variant="outline" onClick={() => router.push(`/dashboard/requests/${requestId}`)} disabled={isPending}>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => (onClose ? onClose() : router.push(`/dashboard/requests/${requestId}`))}
+              disabled={isPending}
+            >
               Cancel
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Processing…' : isPendingStep ? 'Start Step' : 'Execute Action'}
             </Button>
           </div>
         </form>

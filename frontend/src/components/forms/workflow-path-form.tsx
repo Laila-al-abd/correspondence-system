@@ -5,7 +5,10 @@
 // POST /workflow-paths
 //
 // Notes:
-// - templateId is required (dropdown from active templates) — Case (a): GET /templates exists.
+// - templateId: locked to the route's template when the `templateId` prop is
+//   passed (the normal case — this form is only reached from
+//   /dashboard/templates/[id]/workflow-paths/new). Falls back to an editable
+//   dropdown if the prop is omitted, so the form still works standalone.
 // - name is required (LocalizedTextDto: ar 1-255, en optional 1-255).
 // - description is optional (same structure).
 // - steps is a required non-empty array of WorkflowStepDto.
@@ -50,6 +53,13 @@ const selectClass =
   'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
 
 interface Props {
+  /**
+   * Template this path belongs to. Pass this when the form is reached from a
+   * specific template's page (the normal case) — the template selector is
+   * replaced with a read-only display instead of an editable dropdown, since
+   * the template is already fixed by the route.
+   */
+  templateId?: string;
   /** Optional existing workflow path to edit — not used (no update route). */
   existing?: never;
 }
@@ -83,7 +93,7 @@ function createEmptyStep(): WorkflowStepDto {
   };
 }
 
-export function WorkflowPathForm({ existing }: Props) {
+export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Props) {
   const router = useRouter();
   const defineWorkflowPath = useDefineWorkflowPath();
 
@@ -96,6 +106,7 @@ export function WorkflowPathForm({ existing }: Props) {
   const templates = templatesData ?? [];
   const roles = rolesData ?? [];
   const actionTypes = actionTypesData ?? [];
+  const fixedTemplate = fixedTemplateId ? templates.find((t) => t.id === fixedTemplateId) : undefined;
 
   // Flatten department tree for select
   const flatDepartments = useMemo(() => {
@@ -113,7 +124,7 @@ export function WorkflowPathForm({ existing }: Props) {
   }, [departmentTreeData]);
 
   // Form state
-  const [templateId, setTemplateId] = useState<string>('');
+  const [templateId, setTemplateId] = useState<string>(fixedTemplateId ?? '');
   const [nameAr, setNameAr] = useState<string>('');
   const [nameEn, setNameEn] = useState<string>('');
   const [descriptionAr, setDescriptionAr] = useState<string>('');
@@ -124,12 +135,10 @@ export function WorkflowPathForm({ existing }: Props) {
 
   const isPending = defineWorkflowPath.isPending;
 
-  // Helper to get step label for dependsOn dropdown
   function getStepLabel(step: WorkflowStepDto, index: number): string {
     return step.key ? `${index + 1}. ${step.key} — ${step.name.ar}` : `${index + 1}. (no key yet)`;
   }
 
-  // Update a single step
   function updateStep(index: number, updates: Partial<WorkflowStepDto>) {
     setSteps((prev) => {
       const next = [...prev];
@@ -138,21 +147,22 @@ export function WorkflowPathForm({ existing }: Props) {
     });
   }
 
-  // Add a new step
   function addStep() {
     setSteps((prev) => [...prev, createEmptyStep()]);
   }
 
-  // Remove a step
   function removeStep(index: number) {
     setSteps((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function goBackToPathsList() {
+    router.push(templateId ? `/dashboard/templates/${templateId}/workflow-paths` : '/dashboard/templates');
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitError(null);
 
-    // Assemble request object from form state
     const name: LocalizedTextDto = { ar: nameAr.trim(), en: nameEn.trim() || undefined };
     const description =
       descriptionAr.trim() || descriptionEn.trim()
@@ -182,7 +192,6 @@ export function WorkflowPathForm({ existing }: Props) {
       activate,
     };
 
-    // Validate with Zod schema
     const result = defineWorkflowPathSchema.safeParse(request);
     if (!result.success) {
       const firstIssue = result.error.issues[0];
@@ -192,7 +201,7 @@ export function WorkflowPathForm({ existing }: Props) {
 
     try {
       await defineWorkflowPath.mutateAsync(result.data);
-      router.push('/dashboard/workflow-paths');
+      router.push(`/dashboard/templates/${result.data.templateId}/workflow-paths`);
     } catch {
       setSubmitError('Failed to create workflow path. Please check the values and try again.');
     }
@@ -209,28 +218,38 @@ export function WorkflowPathForm({ existing }: Props) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Template selector — Case (a): real listing endpoint exists */}
+          {/* Template — locked to the route's template when provided, otherwise a picker */}
           <div className="space-y-1">
             <Label htmlFor="templateId">Template <span className="text-destructive">*</span></Label>
-            <select
-              id="templateId"
-              className={selectClass}
-              value={templateId}
-              onChange={(e) => setTemplateId(e.target.value)}
-              disabled={isPending}
-              required
-            >
-              <option value="">— select template —</option>
-              {templates
-                .filter((t) => t.isActive)
-                .map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.nameAr}{t.nameEn && ` (${t.nameEn})`} {t.code && ` [${t.code}]`}
-                  </option>
-                ))}
-            </select>
-            {templates.length === 0 && (
-              <p className="text-xs text-muted-foreground">No active templates available.</p>
+            {fixedTemplateId ? (
+              <div className="flex h-10 w-full items-center rounded-md border border-input bg-muted px-3 text-sm text-muted-foreground">
+                {fixedTemplate
+                  ? `${fixedTemplate.nameAr}${fixedTemplate.nameEn ? ` (${fixedTemplate.nameEn})` : ''}`
+                  : 'Loading template…'}
+              </div>
+            ) : (
+              <>
+                <select
+                  id="templateId"
+                  className={selectClass}
+                  value={templateId}
+                  onChange={(e) => setTemplateId(e.target.value)}
+                  disabled={isPending}
+                  required
+                >
+                  <option value="">— select template —</option>
+                  {templates
+                    .filter((t) => t.isActive)
+                    .map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.nameAr}{t.nameEn && ` (${t.nameEn})`} {t.code && ` [${t.code}]`}
+                      </option>
+                    ))}
+                </select>
+                {templates.length === 0 && (
+                  <p className="text-xs text-muted-foreground">No active templates available.</p>
+                )}
+              </>
             )}
           </div>
 
@@ -619,7 +638,7 @@ export function WorkflowPathForm({ existing }: Props) {
             <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? 'Creating…' : 'Create Workflow Path'}
             </Button>
-            <Button type="button" variant="outline" onClick={() => router.push('/dashboard/workflow-paths')} disabled={isPending}>
+            <Button type="button" variant="outline" onClick={goBackToPathsList} disabled={isPending}>
               Cancel
             </Button>
           </div>

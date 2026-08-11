@@ -50,7 +50,14 @@ function TemplatesPageContent() {
                   <Link href={`/dashboard/templates/${t.id}/fields`}>
                     <Button variant="outline" size="sm">Manage Fields</Button>
                   </Link>
+                  <Link href={`/dashboard/templates/${t.id}/eligibility`}>
+                    <Button variant="outline" size="sm">Manage Eligibility</Button>
+                  </Link>
+                  <Link href={`/dashboard/templates/${t.id}/workflow-paths`}>
+                      <Button variant="outline" size="sm">Workflow Paths</Button>
+                    </Link>
                 </TableCell>
+                    
               </TableRow>
             ))}
           </TableBody>

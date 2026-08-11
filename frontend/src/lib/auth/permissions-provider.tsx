@@ -6,7 +6,7 @@ import { useMyPermissions } from '@/lib/hooks/use-auth';
 interface PermissionsContextValue {
   permissions: string[];
   isLoading: boolean;
-  hasPermission: (code: string) => boolean;
+  hasPermission: (code: string | string[]) => boolean;
   hasAnyPermission: (codes: string[]) => boolean;
 }
 
@@ -19,7 +19,11 @@ export function PermissionsProvider({ children }: { children: ReactNode }) {
   const value: PermissionsContextValue = {
     permissions,
     isLoading,
-    hasPermission: (code) => permissions.includes(code),
+    // Checks if the user has a single permission OR every permission in an array
+    hasPermission: (code) =>
+      Array.isArray(code)
+        ? code.every((c) => permissions.includes(c))
+        : permissions.includes(code),
     hasAnyPermission: (codes) => codes.some((c) => permissions.includes(c)),
   };
 

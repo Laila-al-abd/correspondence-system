@@ -12,7 +12,14 @@
 //     IN       → array (e.g. ["STAFF", "FACULTY"])
 //     GTE/LTE  → number
 //     EQ/NEQ   → any scalar (string, number, boolean)
-//   We render a conditional input that adapts to the selected operator.
+// - Fix: when the selected attribute is ENUM and has real options (now that
+//   AttributeDefinitionView.options is populated), EQ/NEQ render a <select>
+//   and IN renders a checkbox group over those options, instead of forcing
+//   the admin to hand-type raw JSON matching values they can't see. Both
+//   write into the same `value` string state parseValueForOperator already
+//   expects, so submit logic is unchanged. GTE/LTE are unaffected -- a fixed
+//   option list has no natural ordering to compare against, so they keep the
+//   numeric textarea regardless of attribute type.
 
 import { useState, FormEvent } from 'react';
 import { useAddEligibilityRule, useAccessAttributes } from '@/lib/hooks/use-access';
@@ -46,6 +53,13 @@ export function EligibilityRuleForm({ templateId }: Props) {
   const selectedAttribute = attributes?.find((a) => a.code === attributeCode);
   const isPending = addRule.isPending;
 
+  // True only when we can actually build real dropdown/checkbox controls --
+  // an ENUM attribute with a real, non-empty option list. Anything else
+  // (non-ENUM, or a legacy ENUM attribute with no options seeded) falls
+  // through to the original free-text textarea.
+  const hasEnumOptions =
+    selectedAttribute?.dataType === 'ENUM' && selectedAttribute.options.length > 0;
+
   // ---- Helpers for value input rendering/parsing ----
 
   function parseValueForOperator(op: EligibilityOperator, raw: string): unknown {
@@ -77,6 +91,21 @@ export function EligibilityRuleForm({ templateId }: Props) {
   }
 
   // We don't support editing existing rules (no PATCH route), so no prefill.
+
+  function handleAttributeChange(nextCode: string) {
+    setAttributeCode(nextCode);
+    // Stale raw-text/JSON from a previous attribute (e.g. a hand-typed
+    // ["STAFF"] left over while switching to a numeric attribute) would
+    // otherwise silently carry over and fail an operator it was never
+    // meant for. Clearing on every attribute change keeps the value input
+    // honestly empty for whatever control renders next.
+    setValue('');
+  }
+
+  function handleOperatorChange(nextOp: EligibilityOperator) {
+    setOperator(nextOp);
+    setValue('');
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -129,6 +158,90 @@ export function EligibilityRuleForm({ templateId }: Props) {
     const isArrayOp = operator === EligibilityOperator.IN;
     const isNumericOp = operator === EligibilityOperator.GTE || operator === EligibilityOperator.LTE;
 
+    // Real dropdown/checkboxes for an ENUM attribute with known options.
+    if (hasEnumOptions && attr) {
+      const sortedOptions = [...attr.options].sort((a, b) => a.ordinal - b.ordinal);
+
+      if (isArrayOp) {
+        // IN: checkbox group. `value` is kept as a JSON-stringified array so
+        // parseValueForOperator's existing JSON.parse path handles it
+        // unchanged on submit.
+        let selected: string[] = [];
+        try {
+          const parsed = JSON.parse(value || '[]');
+          if (Array.isArray(parsed)) selected = parsed;
+        } catch {
+          selected = [];
+        }
+
+        function toggle(optValue: string, checked: boolean) {
+          const next = checked
+            ? [...selected, optValue]
+            : selected.filter((v) => v !== optValue);
+          setValue(JSON.stringify(next));
+        }
+
+        return (
+          <div className="space-y-1">
+            <Label>Value <span className="text-destructive">*</span></Label>
+            <div className="space-y-1.5 rounded-md border border-input p-3">
+              {sortedOptions.map((opt) => (
+                <label key={opt.value} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(opt.value)}
+                    onChange={(e) => toggle(opt.value, e.target.checked)}
+                    disabled={isPending}
+                    className="h-4 w-4 rounded border-input"
+                    style={{ accentColor: 'var(--ics-primary)' }}
+                  />
+                  <span>
+                    {opt.label.ar}
+                    {opt.label.en && ` (${opt.label.en})`}{' '}
+                    <span className="text-muted-foreground">— {opt.value}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              User is eligible if their &quot;{attr.code}&quot; matches any checked option.
+            </p>
+          </div>
+        );
+      }
+
+      if (!isNumericOp) {
+        // EQ / NEQ: a single-select dropdown. `value` stays a bare string
+        // (e.g. "BACHELOR") -- parseValueForOperator's EQ/NEQ branch already
+        // falls through to returning the raw string when JSON.parse fails
+        // on an unquoted identifier, so no change needed there.
+        return (
+          <div className="space-y-1">
+            <Label htmlFor="value">Value <span className="text-destructive">*</span></Label>
+            <select
+              id="value"
+              className={selectClass}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              disabled={isPending}
+              required
+            >
+              <option value="">— select —</option>
+              {sortedOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label.ar}
+                  {opt.label.en && ` (${opt.label.en})`} — {opt.value}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      }
+      // Falls through to the textarea below for GTE/LTE on an ENUM
+      // attribute -- an edge case with no natural ordering, left as free
+      // entry rather than guessing at a comparison the domain doesn't define.
+    }
+
     const placeholder =
       isArrayOp
         ? 'JSON array e.g. ["STAFF", "FACULTY"] or comma-separated: STAFF, FACULTY'
@@ -144,7 +257,9 @@ export function EligibilityRuleForm({ templateId }: Props) {
         : 'Enter a scalar value. For booleans use true/false. For numbers just type the number. Strings can be bare or quoted JSON.';
 
     const formatHint = attr
-      ? `Attribute “${attr.code}” expects ${attr.dataType.toLowerCase()} values.`
+      ? `Attribute “${attr.code}” expects ${attr.dataType.toLowerCase()} values.${
+          attr.dataType === 'ENUM' ? ' (No options are configured for this attribute yet, so enter the value as text.)' : ''
+        }`
       : 'Select an attribute first to see expected format.';
 
     return (
@@ -152,7 +267,7 @@ export function EligibilityRuleForm({ templateId }: Props) {
         <Label htmlFor="value">Value</Label>
         <textarea
           id="value"
-          className="flex min-h-[60px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-h-15 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -182,7 +297,7 @@ export function EligibilityRuleForm({ templateId }: Props) {
               id="attributeCode"
               className={selectClass}
               value={attributeCode}
-              onChange={(e) => setAttributeCode(e.target.value)}
+              onChange={(e) => handleAttributeChange(e.target.value)}
               disabled={isPending}
               required
             >
@@ -217,7 +332,7 @@ export function EligibilityRuleForm({ templateId }: Props) {
               id="operator"
               className={selectClass}
               value={operator}
-              onChange={(e) => setOperator(e.target.value as EligibilityOperator)}
+              onChange={(e) => handleOperatorChange(e.target.value as EligibilityOperator)}
               disabled={isPending}
               required
             >
