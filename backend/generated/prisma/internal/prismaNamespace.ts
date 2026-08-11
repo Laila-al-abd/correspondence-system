@@ -399,6 +399,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   AttributeDefinition: 'AttributeDefinition',
+  AttributeOption: 'AttributeOption',
   UserAttribute: 'UserAttribute',
   Role: 'Role',
   PermissionGroup: 'PermissionGroup',
@@ -446,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "attributeDefinition" | "userAttribute" | "role" | "permissionGroup" | "permission" | "rolePermission" | "userRole" | "delegation" | "orgUnitType" | "department" | "language" | "sensitivityLevel" | "requestCategory" | "template" | "templateField" | "templateFieldOption" | "templateEligibilityRule" | "actionType" | "workflowPath" | "workflowStep" | "workflowStepAllowedAction" | "workflowStepDependency" | "request" | "requestStepInstance" | "requestAction" | "payment" | "document" | "academicCalendar" | "eventLog" | "notification" | "mlPrediction" | "systemSetting" | "requestNumberSequence"
+    modelProps: "user" | "attributeDefinition" | "attributeOption" | "userAttribute" | "role" | "permissionGroup" | "permission" | "rolePermission" | "userRole" | "delegation" | "orgUnitType" | "department" | "language" | "sensitivityLevel" | "requestCategory" | "template" | "templateField" | "templateFieldOption" | "templateEligibilityRule" | "actionType" | "workflowPath" | "workflowStep" | "workflowStepAllowedAction" | "workflowStepDependency" | "request" | "requestStepInstance" | "requestAction" | "payment" | "document" | "academicCalendar" | "eventLog" | "notification" | "mlPrediction" | "systemSetting" | "requestNumberSequence"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -595,6 +596,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AttributeDefinitionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AttributeDefinitionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AttributeOption: {
+      payload: Prisma.$AttributeOptionPayload<ExtArgs>
+      fields: Prisma.AttributeOptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AttributeOptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AttributeOptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        findFirst: {
+          args: Prisma.AttributeOptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AttributeOptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        findMany: {
+          args: Prisma.AttributeOptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>[]
+        }
+        create: {
+          args: Prisma.AttributeOptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        createMany: {
+          args: Prisma.AttributeOptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AttributeOptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>[]
+        }
+        delete: {
+          args: Prisma.AttributeOptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        update: {
+          args: Prisma.AttributeOptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AttributeOptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AttributeOptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AttributeOptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AttributeOptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttributeOptionPayload>
+        }
+        aggregate: {
+          args: Prisma.AttributeOptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAttributeOption>
+        }
+        groupBy: {
+          args: Prisma.AttributeOptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AttributeOptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AttributeOptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AttributeOptionCountAggregateOutputType> | number
         }
       }
     }
@@ -3047,6 +3122,21 @@ export const AttributeDefinitionScalarFieldEnum = {
 export type AttributeDefinitionScalarFieldEnum = (typeof AttributeDefinitionScalarFieldEnum)[keyof typeof AttributeDefinitionScalarFieldEnum]
 
 
+export const AttributeOptionScalarFieldEnum = {
+  id: 'id',
+  attributeId: 'attributeId',
+  value: 'value',
+  label: 'label',
+  ordinal: 'ordinal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type AttributeOptionScalarFieldEnum = (typeof AttributeOptionScalarFieldEnum)[keyof typeof AttributeOptionScalarFieldEnum]
+
+
 export const UserAttributeScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -3656,13 +3746,6 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -3673,6 +3756,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -3870,6 +3960,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   attributeDefinition?: Prisma.AttributeDefinitionOmit
+  attributeOption?: Prisma.AttributeOptionOmit
   userAttribute?: Prisma.UserAttributeOmit
   role?: Prisma.RoleOmit
   permissionGroup?: Prisma.PermissionGroupOmit

@@ -68,6 +68,24 @@ export class NotificationEmitter {
       requestId: input.requestId,
     })
   }
+  // Inside your notification service/port
+    async paymentRequested(input: {
+      userId: string
+      actorId: string
+      requestId: string
+      referenceNo?: string
+      amount: number
+      currency: string
+    }): Promise<void> {
+      await this.push({
+          userId: input.userId,
+          actorId: input.actorId,
+          type: NotificationType.PAYMENT_REQUESTED,
+          title: 'A payment is requested',
+          body: `Request ${label(input.referenceNo, input.requestId)} has a payment requested, go to payment office.`,
+          requestId: input.requestId,
+        })
+    }
 
   /** A request changed status; the owner should know. */
   async requestStateChanged(input: {

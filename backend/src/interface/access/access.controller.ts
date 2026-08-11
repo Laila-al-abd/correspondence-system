@@ -14,7 +14,7 @@ import { EligibilityRuleView } from '../../application/access/queries/views/elig
 import { AddEligibilityRuleDto } from './dto/add-eligibility-rule.dto'
 
 @Controller('access')
-@RequirePermissions('template.manage')
+@RequirePermissions('template.manage', 'user.manage')
 export class AccessController {
   constructor(
     private readonly queryBus: QueryBus,

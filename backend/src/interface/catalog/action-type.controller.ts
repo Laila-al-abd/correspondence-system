@@ -5,7 +5,7 @@ import { ActionTypeView } from '../../application/catalog/queries/list-action-ty
 import { RequirePermissions } from '../identity/permissions.decorator'
 
 @Controller('action-types')
-@RequirePermissions('workflow.manage')
+@RequirePermissions('workflow.manage', 'request.act')
 export class ActionTypeController {
   constructor(private readonly queryBus: QueryBus) {}
 

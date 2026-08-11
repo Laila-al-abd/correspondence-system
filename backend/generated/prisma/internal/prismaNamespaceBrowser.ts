@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   AttributeDefinition: 'AttributeDefinition',
+  AttributeOption: 'AttributeOption',
   UserAttribute: 'UserAttribute',
   Role: 'Role',
   PermissionGroup: 'PermissionGroup',
@@ -143,6 +144,21 @@ export const AttributeDefinitionScalarFieldEnum = {
 } as const
 
 export type AttributeDefinitionScalarFieldEnum = (typeof AttributeDefinitionScalarFieldEnum)[keyof typeof AttributeDefinitionScalarFieldEnum]
+
+
+export const AttributeOptionScalarFieldEnum = {
+  id: 'id',
+  attributeId: 'attributeId',
+  value: 'value',
+  label: 'label',
+  ordinal: 'ordinal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type AttributeOptionScalarFieldEnum = (typeof AttributeOptionScalarFieldEnum)[keyof typeof AttributeOptionScalarFieldEnum]
 
 
 export const UserAttributeScalarFieldEnum = {
