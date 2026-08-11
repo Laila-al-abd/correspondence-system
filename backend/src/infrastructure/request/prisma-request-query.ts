@@ -27,6 +27,26 @@ import { PrismaService } from '../persistence/prisma.service'
 import { dbClient } from '../persistence/transaction-context'
 
 /**
+ * SQL fragment that computes the SLA due date for a request as the minimum
+ * sla_due_at across its open, non-paused step instances.
+ *
+ * Matches the logic in SlaMonitorService.sweep / PrismaSlaScan:
+ * - Open statuses: PENDING, IN_PROGRESS, WAITING
+ * - Not paused: sla_paused = false
+ * - Has deadline: sla_due_at IS NOT NULL
+ */
+const SLA_DUE_AT_SUBQUERY = Prisma.sql`
+  (
+    SELECT MIN(si.sla_due_at)
+    FROM request_step_instances si
+    WHERE si.request_id = r.id
+      AND si.status IN ('PENDING', 'IN_PROGRESS', 'WAITING')
+      AND si.sla_paused = false
+      AND si.sla_due_at IS NOT NULL
+  )
+`
+
+/**
  * Prisma-backed read model for request lists.
  *
  * Two things are deliberate here.
@@ -169,8 +189,9 @@ export class PrismaRequestQuery implements RequestQueryPort {
       SELECT r.id, r.reference_no, r.requester_id, r.template_id,
              r.workflow_path_id, r.classification_status,
              r.classification_confidence, r.classified_by, r.current_status,
-             r.priority, r.sla_risk, r.sla_due_at, r.completed_at,
-             r.confirmed_at
+             r.priority, r.sla_risk,
+             ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             r.completed_at, r.confirmed_at
         FROM requests r
        WHERE EXISTS (
                SELECT 1
@@ -216,6 +237,8 @@ export class PrismaRequestQuery implements RequestQueryPort {
    * key: ids are UUIDv7, whose leading bits are a timestamp, so descending id
    * is newest-first and the cursor is simply the last id seen. No extra column,
    * no extra index -- the primary key already provides the order.
+   *
+   * Uses raw SQL to include the computed sla_due_at from open step instances.
    */
   private async listNewestFirst(
     where: Prisma.RequestWhereInput,
@@ -224,21 +247,46 @@ export class PrismaRequestQuery implements RequestQueryPort {
   ): Promise<KeysetPage<RequestSummaryView>> {
     const limit = clampLimit(rawLimit)
     const after = cursor ? decodeCursor<{ id: string }>(cursor) : null
+    const keyset = after
+      ? Prisma.sql`AND r.id < ${after.id}::uuid`
+      : Prisma.empty
 
-    const rows = await this.db.request.findMany({
-      where: after ? { AND: [where, { id: { lt: after.id } }] } : where,
-      select: SUMMARY_SELECT,
-      orderBy: { id: 'desc' },
-      // One more than asked for: if it comes back, there is another page.
-      // Cheaper and more honest than a second COUNT query, which would have
-      // to be told the same filter and could disagree with it.
-      take: limit + 1,
-    })
+    // Build the WHERE clause from the Prisma where input
+    // For listByRequester: { requesterId: '...' }
+    // For listAssignedTo (non-ready): { stepInstances: { some: { assignedToUserId: '...' } } }
+    let whereSql = Prisma.empty
+    if (where.requesterId) {
+      whereSql = Prisma.sql`WHERE r.requester_id = ${where.requesterId}::uuid`
+    } else if (where.stepInstances?.some?.assignedToUserId) {
+      whereSql = Prisma.sql`
+        WHERE EXISTS (
+          SELECT 1 FROM request_step_instances si
+          WHERE si.request_id = r.id
+            AND si.assigned_to_user_id = ${where.stepInstances.some.assignedToUserId}::uuid
+        )
+      `
+    } else {
+      whereSql = Prisma.empty
+    }
+
+    const rows = await this.db.$queryRaw<AssignedRow[]>(Prisma.sql`
+      SELECT r.id, r.reference_no, r.requester_id, r.template_id,
+             r.workflow_path_id, r.classification_status,
+             r.classification_confidence, r.classified_by, r.current_status,
+             r.priority, r.sla_risk,
+             ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             r.completed_at, r.confirmed_at
+        FROM requests r
+        ${whereSql}
+        ${keyset}
+       ORDER BY r.id DESC
+       LIMIT ${limit + 1}
+    `)
 
     const page = rows.slice(0, limit)
     const last = page[page.length - 1]
     return {
-      items: page.map(toSummary),
+      items: page.map(toSummaryFromRaw),
       limit,
       nextCursor:
         rows.length > limit && last ? encodeCursor({ id: last.id }) : null,
@@ -258,7 +306,7 @@ export class PrismaRequestQuery implements RequestQueryPort {
     // slaDueAt. Postgres has a literal for that, so the rule survives the
     // translation instead of being re-invented as a NULLS LAST clause that a
     // later edit could quietly drop.
-    const dueKey = Prisma.sql`COALESCE(sla_due_at, 'infinity'::timestamptz)`
+    const dueKey = Prisma.sql`COALESCE(${SLA_DUE_AT_SUBQUERY}, 'infinity'::timestamptz)`
 
     // Two optional narrowings, both of them for the AI service rather than for
     // staff. After a restart it has no memory of what it had already done, and
@@ -267,7 +315,9 @@ export class PrismaRequestQuery implements RequestQueryPort {
     // that recovery reuses the ordering and the paging instead of inventing a
     // second endpoint with its own idea of both.
     const classification = input.classificationStatus
-      ? Prisma.sql`AND classification_status = ${input.classificationStatus}`
+      ? Array.isArray(input.classificationStatus)
+        ? Prisma.sql`AND classification_status IN (${Prisma.join(input.classificationStatus)})`
+        : Prisma.sql`AND classification_status = ${input.classificationStatus}`
       : Prisma.empty
     // An extracted-nothing request stores {}, not NULL, once anything has
     // touched it -- so emptiness has to be tested both ways or the recovery
@@ -303,11 +353,12 @@ export class PrismaRequestQuery implements RequestQueryPort {
       SELECT id, reference_no, requester_id, template_id, workflow_path_id,
              classification_status, classification_confidence, classified_by,
              current_status, priority, sla_risk,
-             sla_due_at, completed_at, confirmed_at,
+             ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             completed_at, confirmed_at,
              ${priorityRank} AS priority_rank,
              ${riskRank} AS risk_rank,
              ${dueKey} AS due_key
-        FROM requests
+        FROM requests r
        WHERE current_status = ${input.status}
              ${classification}
              ${filled}
@@ -376,8 +427,8 @@ const SUMMARY_SELECT = {
   currentStatus: true,
   priority: true,
   slaRisk: true,
-  slaDueAt: true,
   completedAt: true,
+  // slaDueAt removed: computed via SLA_DUE_AT_SUBQUERY in raw queries
   // Read but never returned: the derived stage needs it to tell a request
   // waiting for its requester apart from one ready to start.
   confirmedAt: true,

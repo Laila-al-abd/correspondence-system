@@ -43,6 +43,7 @@ import { GetRequestByReferenceHandler } from '../../application/request/queries/
 import { ListMyRequestsHandler } from '../../application/request/queries/list-my-requests/list-my-requests.handler'
 import { ListAssignedRequestsHandler } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.handler'
 import { ListRequestQueueHandler } from '../../application/request/queries/list-request-queue/list-request-queue.handler'
+import { ListHitlQueueHandler } from '../../application/request/queries/list-hitl-queue/list-hitl-queue.handler'
 import { GetDocumentDownloadUrlHandler } from '../../application/request/queries/get-document-download-url/get-document-download-url.handler'
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
@@ -70,6 +71,7 @@ const handlers = [
   ListMyRequestsHandler,
   ListAssignedRequestsHandler,
   ListRequestQueueHandler,
+  ListHitlQueueHandler,
   GetDocumentDownloadUrlHandler,
 ]
 

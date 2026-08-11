@@ -341,7 +341,7 @@ function RequestQueueContent() {
 
 export default function RequestQueuePage() {
   return (
-    <PermissionGate require={['request.read', 'request.classify']}>
+    <PermissionGate require={['request.read']}>
       <RequestQueueContent />
     </PermissionGate>
   );

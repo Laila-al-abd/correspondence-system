@@ -44,8 +44,8 @@ export interface ListRequestQueueInput {
   status: string
   limit?: number
   cursor?: string
-  /** PENDING | CLASSIFIED | HITL. Omitted means every classification state. */
-  classificationStatus?: string
+  /** PENDING | CLASSIFIED | HITL. Omitted means every classification state. Can be a single value or an array for an IN filter. */
+  classificationStatus?: string | string[]
   /** true = only requests with form data; false = only those still empty. */
   hasFilledData?: boolean
   /**

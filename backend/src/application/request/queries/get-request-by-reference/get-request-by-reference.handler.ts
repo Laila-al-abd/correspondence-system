@@ -53,7 +53,23 @@ export class GetRequestByReferenceHandler
     ])
     // No duration estimate on this route, as before: it is the lookup staff use
     // to find a request by the number someone quoted, not the detail screen.
-    return toRequestDetail(
+
+    // Compute the correct slaDueAt from open, non-paused step instances
+    // Matching SlaMonitorService/PrismaSlaScan logic:
+    // - Open statuses: PENDING, IN_PROGRESS, WAITING
+    // - Not paused: slaPaused = false
+    // - Min slaDueAt across all such steps
+    const openStepInstances = request.snapshot().stepInstances.filter(
+      (si) =>
+        ['PENDING', 'IN_PROGRESS', 'WAITING'].includes(si.status) &&
+        !si.slaPaused &&
+        si.slaDueAt != null,
+    )
+    const computedSlaDueAt = openStepInstances.length > 0
+      ? new Date(Math.min(...openStepInstances.map((si) => si.slaDueAt!.getTime())))
+      : undefined
+
+    const detail = toRequestDetail(
       request,
       actions,
       documents,
@@ -61,5 +77,8 @@ export class GetRequestByReferenceHandler
       undefined,
       template ?? undefined,
     )
+
+    // Override slaDueAt with computed value
+    return { ...detail, slaDueAt: computedSlaDueAt?.toISOString() }
   }
 }

@@ -57,6 +57,9 @@ export const requestKeys = {
   /** Document download URL. */
   documentDownloadUrl: (requestId: string, documentId: string) =>
     ['requests', requestId, 'documents', documentId, 'download-url'] as const,
+  hitlQueueAll: ['requests', 'hitl-queue'] as const,
+  hitlQueue: (limit?: number, cursor?: string) =>
+    ['requests', 'hitl-queue', { limit, cursor }] as const,
 };
 
 /**
@@ -67,6 +70,12 @@ export function useMyRequests(limit?: number, cursor?: string) {
   return useQuery({
     queryKey: requestKeys.mine(limit, cursor),
     queryFn: () => requestsApi.getMine(limit, cursor),
+  });
+}
+export function useHitlQueue(limit?: number, cursor?: string) {
+  return useQuery({
+    queryKey: requestKeys.hitlQueue(limit, cursor),
+    queryFn: () => requestsApi.getHitlQueue(limit, cursor),
   });
 }
 
@@ -178,6 +187,7 @@ export function useClassifyByModel() {
       queryClient.invalidateQueries({ queryKey: requestKeys.mine() });
       queryClient.invalidateQueries({ queryKey: requestKeys.assigned() });
       queryClient.invalidateQueries({ queryKey: ['requests', 'queue'] });
+      queryClient.invalidateQueries({ queryKey: requestKeys.hitlQueueAll });
     },
   });
 }
@@ -203,6 +213,7 @@ export function useClassifyByHuman() {
       queryClient.invalidateQueries({ queryKey: requestKeys.mine() });
       queryClient.invalidateQueries({ queryKey: requestKeys.assigned() });
       queryClient.invalidateQueries({ queryKey: ['requests', 'queue'] });
+      queryClient.invalidateQueries({ queryKey: requestKeys.hitlQueueAll });
     },
   });
 }
@@ -276,6 +287,7 @@ export function useConfirmRequest() {
       queryClient.invalidateQueries({ queryKey: requestKeys.mine() });
       queryClient.invalidateQueries({ queryKey: requestKeys.assigned() });
       queryClient.invalidateQueries({ queryKey: ['requests', 'queue'] });
+      queryClient.invalidateQueries({ queryKey: requestKeys.hitlQueueAll });
     },
   });
 }
