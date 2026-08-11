@@ -76,7 +76,7 @@ export function ClassifyByHumanForm({ requestId }: Props) {
 
     try {
       await classifyByHuman.mutateAsync({ id: requestId, request });
-      router.push(`/dashboard/requests/${requestId}`);
+      router.push(`/dashboard/requests/queue/hitl`);
     } catch {
       setSubmitError('Failed to classify request. Please check the values and try again.');
     }
@@ -157,7 +157,7 @@ export function ClassifyByHumanForm({ requestId }: Props) {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push(`/dashboard/requests/${requestId}`)}
+              onClick={() => router.push(`/dashboard/requests/queue/hitl`)}
               disabled={isPending}
             >
               Cancel

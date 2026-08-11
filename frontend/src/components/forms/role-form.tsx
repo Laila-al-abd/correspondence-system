@@ -36,7 +36,15 @@ interface Props {
 export function RoleForm({ existing }: Props) {
   const router = useRouter();
   const createRole = useCreateRole();
-  const updateRole = existing ? useUpdateRole(existing.id) : null;
+  // Fix: useUpdateRole is now called unconditionally on every render -- only
+  // its argument varies. The original `existing ? useUpdateRole(...) : null`
+  // called the hook conditionally, which violates the Rules of Hooks (it
+  // happened not to break anything here only because `existing`'s
+  // truthiness never flips within one mounted instance -- still fragile).
+  // In create mode there's no real roleId yet, so an empty string is passed;
+  // this mutation is never invoked unless isUpdate is true, so the empty
+  // string is never actually used to build a request.
+  const updateRole = useUpdateRole(existing?.id ?? '');
   const { data: permissionGroupsData } = usePermissionGroups();
 
   const permissionGroups = permissionGroupsData ?? [];
@@ -52,7 +60,7 @@ export function RoleForm({ existing }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const isUpdate = !!existing;
-  const isPending = isUpdate ? updateRole?.isPending ?? false : createRole.isPending;
+  const isPending = isUpdate ? updateRole.isPending : createRole.isPending;
   const roleId = existing?.id;
 
   // Flatten all permission codes from groups for the multi-select (create mode)
@@ -90,7 +98,7 @@ export function RoleForm({ existing }: Props) {
         : undefined;
 
     try {
-      if (isUpdate && roleId && updateRole) {
+      if (isUpdate && roleId) {
         const request: UpdateRoleDto = { name, description };
         await updateRole.mutateAsync(request);
       } else {
