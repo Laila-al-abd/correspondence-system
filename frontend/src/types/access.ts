@@ -80,6 +80,7 @@ export interface AttributeDefinitionView {
 
   /** Optional description (Arabic required, English optional) */
   description?: { ar: string; en?: string };
+  options: { value: string; label: { ar: string; en?: string }; ordinal: number }[];
 }
 
 /**
