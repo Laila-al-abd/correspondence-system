@@ -101,7 +101,7 @@ export class RequestController {
   }
 
   @Get('queue')
-  @RequirePermissions('request.read')
+  @RequirePermissions('request.read', 'request.classify')
   listQueue(
     @Query() dto: ListQueueDto,
   ): Promise<KeysetPage<RequestSummaryView>> {

@@ -5,6 +5,7 @@ import { Payment } from '../../../../domain/request/payment'
 import { StepInstanceSnapshot } from '../../../../domain/request/request-step-instance'
 import { Template } from '../../../../domain/catalog/template'
 import { RequestStage, deriveRequestStage } from './request-stage'
+import { WorkflowStep } from '../../../../domain/workflow/workflow-step'
 
 /** Read models returned by the Request queries (flat, HTTP-friendly shapes). */
 
@@ -12,11 +13,14 @@ export interface StepInstanceView {
   id: string
   workflowStepId: string
   assignedToUserId?: string
+  stepName?: string 
   status: string
   slaDueAt?: string
   slaPaused: boolean
   startedAt?: string
   completedAt?: string
+  allowedActionTypeIds: string[]
+  chargesFee: boolean
 }
 
 export interface RequestActionView {
@@ -206,16 +210,20 @@ export interface RequestDetailView extends RequestSummaryView {
 const iso = (date?: Date): string | undefined =>
   date ? date.toISOString() : undefined
 
-export function toStepInstanceView(s: StepInstanceSnapshot): StepInstanceView {
+export function toStepInstanceView(s: StepInstanceSnapshot, stepDefinition?: WorkflowStep): StepInstanceView {
+  const stepSnap = stepDefinition?.snapshot()
   return {
     id: s.id,
     workflowStepId: s.workflowStepId,
+    stepName: stepSnap ? (stepSnap.name.ar || stepSnap.name.en) : undefined,
     assignedToUserId: s.assignedToUserId,
     status: s.status,
     slaDueAt: iso(s.slaDueAt),
     slaPaused: s.slaPaused,
     startedAt: iso(s.startedAt),
     completedAt: iso(s.completedAt),
+    allowedActionTypeIds: stepDefinition ? stepDefinition.snapshot().allowedActionTypeIds : [],
+    chargesFee: stepDefinition ? stepDefinition.chargesFee() : false,
   }
 }
 
@@ -352,6 +360,7 @@ export function toRequestDetail(
   payments: Payment[],
   durationEstimate?: DurationEstimateView,
   template?: Template,
+  workflowSteps?: WorkflowStep[]
 ): RequestDetailView {
   const snapshot = request.snapshot()
   const form = template ? toTemplateFormView(template) : undefined
@@ -364,7 +373,10 @@ export function toRequestDetail(
     durationEstimate,
     template: form,
     missingRequiredFields: missingRequiredFields(form, snapshot.filledData),
-    stepInstances: snapshot.stepInstances.map(toStepInstanceView),
+    stepInstances: snapshot.stepInstances.map((s) => {
+      const def = workflowSteps?.find(ws => ws.id.toString() === s.workflowStepId)
+      return toStepInstanceView(s, def)
+    }),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),
     payments: payments.map(toPaymentView),

@@ -437,14 +437,6 @@ export type SensitivityLevelNullableScalarRelationFilter = {
   isNot?: Prisma.SensitivityLevelWhereInput | null
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type SensitivityLevelCreateNestedOneWithoutTemplatesInput = {
   create?: Prisma.XOR<Prisma.SensitivityLevelCreateWithoutTemplatesInput, Prisma.SensitivityLevelUncheckedCreateWithoutTemplatesInput>
   connectOrCreate?: Prisma.SensitivityLevelCreateOrConnectWithoutTemplatesInput

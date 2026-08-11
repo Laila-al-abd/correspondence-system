@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type AttributeDefinition = Prisma.AttributeDefinitionModel
 /**
+ * Model AttributeOption
+ * 
+ */
+export type AttributeOption = Prisma.AttributeOptionModel
+/**
  * Model UserAttribute
  * 
  */

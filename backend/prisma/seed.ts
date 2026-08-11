@@ -310,6 +310,32 @@ async function main(): Promise<void> {
     })
   }
 
+    // seed.ts — mirrors the templateFieldOption.upsert loop at ~869-885.
+  // Placed right after the `attributes` upsert loop, before whatever comes next.
+  const degreeLevelOptions = [
+    { value: 'BACHELOR', label: t('بكالوريوس', "Bachelor's"), ordinal: 1 },
+    { value: 'MASTER', label: t('ماجستير', "Master's"), ordinal: 2 },
+    { value: 'PHD', label: t('دكتوراه', 'PhD'), ordinal: 3 },
+  ]
+  for (const opt of degreeLevelOptions) {
+    await prisma.attributeOption.upsert({
+      where: {
+        attributeId_value: { attributeId: attributeId(2), value: opt.value },
+      },
+      update: { label: opt.label, ordinal: opt.ordinal },
+      create: {
+        // id generation: inferred to match whatever templateFieldOption's
+        // loop uses (likely a similar optionId()-style helper, or uuid()
+        // directly) -- confirm against the real loop before running.
+        id: crypto.randomUUID(),
+        attributeId: attributeId(2),
+        value: opt.value,
+        label: opt.label,
+        ordinal: opt.ordinal,
+      },
+    })
+  }
+
   // --- RBAC: permission group, permissions, role ----------------------------
   const group = await prisma.permissionGroup.upsert({
     where: { id: permissionGroupId(1) },

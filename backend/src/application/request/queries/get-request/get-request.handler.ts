@@ -14,11 +14,13 @@ import {
   REQUEST_QUERY,
   REQUEST_REPOSITORY,
   TEMPLATE_REPOSITORY,
+  WORKFLOW_PATH_REPOSITORY,
 } from '../../../tokens'
 import { EntityNotFoundError } from '../../../errors'
 import { RequestReadAccessPolicy } from '../../policies/request-read-access.policy'
 import { GetRequestQuery } from './get-request.query'
 import { RequestDetailView, toRequestDetail } from '../views/request.view'
+import type { WorkflowPathRepository } from '../../../../domain/workflow/ports/workflow-path.repository'
 
 /**
  * Loads the full picture of one request: the aggregate with its step instances,
@@ -38,6 +40,8 @@ export class GetRequestHandler
     @Inject(REQUEST_QUERY) private readonly requestQuery: RequestQueryPort,
     @Inject(TEMPLATE_REPOSITORY) private readonly templates: TemplateRepository,
     private readonly readAccess: RequestReadAccessPolicy,
+    @Inject(WORKFLOW_PATH_REPOSITORY)
+    private readonly workflowPaths: WorkflowPathRepository,
   ) {}
 
   async execute(query: GetRequestQuery): Promise<RequestDetailView> {
@@ -61,7 +65,8 @@ export class GetRequestHandler
     // and no client can draw the confirmation form or say which answers are
     // still needed.
     const templateId = request.snapshot().templateId
-    const [actions, documents, payments, durationEstimate, template] =
+    const workflowPathId = request.snapshot().workflowPathId
+    const [actions, documents, payments, durationEstimate, template, workflowPath] =
       await Promise.all([
         this.actions.listByRequest(id),
         this.documents.listByRequest(id),
@@ -72,6 +77,9 @@ export class GetRequestHandler
         templateId
           ? this.templates.findById(Identifier.of(templateId))
           : Promise.resolve(null),
+        workflowPathId
+          ? this.workflowPaths.findById(Identifier.of(workflowPathId))
+          : Promise.resolve(null),
       ])
     return toRequestDetail(
       request,
@@ -80,6 +88,7 @@ export class GetRequestHandler
       payments,
       durationEstimate,
       template ?? undefined,
+      workflowPath?.steps ? [...workflowPath.steps] : undefined
     )
   }
 }

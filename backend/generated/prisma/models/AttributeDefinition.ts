@@ -216,6 +216,7 @@ export type AttributeDefinitionWhereInput = {
   updatedBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
   userAttributes?: Prisma.UserAttributeListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
+  options?: Prisma.AttributeOptionListRelationFilter
 }
 
 export type AttributeDefinitionOrderByWithRelationInput = {
@@ -231,6 +232,7 @@ export type AttributeDefinitionOrderByWithRelationInput = {
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   userAttributes?: Prisma.UserAttributeOrderByRelationAggregateInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleOrderByRelationAggregateInput
+  options?: Prisma.AttributeOptionOrderByRelationAggregateInput
 }
 
 export type AttributeDefinitionWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +251,7 @@ export type AttributeDefinitionWhereUniqueInput = Prisma.AtLeast<{
   updatedBy?: Prisma.UuidNullableFilter<"AttributeDefinition"> | string | null
   userAttributes?: Prisma.UserAttributeListRelationFilter
   eligibilityRules?: Prisma.TemplateEligibilityRuleListRelationFilter
+  options?: Prisma.AttributeOptionListRelationFilter
 }, "id" | "code">
 
 export type AttributeDefinitionOrderByWithAggregationInput = {
@@ -296,6 +299,7 @@ export type AttributeDefinitionCreateInput = {
   updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeCreateNestedManyWithoutAttributeInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUncheckedCreateInput = {
@@ -311,6 +315,7 @@ export type AttributeDefinitionUncheckedCreateInput = {
   updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeUncheckedCreateNestedManyWithoutAttributeInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUpdateInput = {
@@ -326,6 +331,7 @@ export type AttributeDefinitionUpdateInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUpdateManyWithoutAttributeNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionUncheckedUpdateInput = {
@@ -341,6 +347,7 @@ export type AttributeDefinitionUncheckedUpdateInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionCreateManyInput = {
@@ -422,6 +429,20 @@ export type AttributeDefinitionScalarRelationFilter = {
   isNot?: Prisma.AttributeDefinitionWhereInput
 }
 
+export type AttributeDefinitionCreateNestedOneWithoutOptionsInput = {
+  create?: Prisma.XOR<Prisma.AttributeDefinitionCreateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedCreateWithoutOptionsInput>
+  connectOrCreate?: Prisma.AttributeDefinitionCreateOrConnectWithoutOptionsInput
+  connect?: Prisma.AttributeDefinitionWhereUniqueInput
+}
+
+export type AttributeDefinitionUpdateOneRequiredWithoutOptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttributeDefinitionCreateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedCreateWithoutOptionsInput>
+  connectOrCreate?: Prisma.AttributeDefinitionCreateOrConnectWithoutOptionsInput
+  upsert?: Prisma.AttributeDefinitionUpsertWithoutOptionsInput
+  connect?: Prisma.AttributeDefinitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeDefinitionUpdateToOneWithWhereWithoutOptionsInput, Prisma.AttributeDefinitionUpdateWithoutOptionsInput>, Prisma.AttributeDefinitionUncheckedUpdateWithoutOptionsInput>
+}
+
 export type AttributeDefinitionCreateNestedOneWithoutUserAttributesInput = {
   create?: Prisma.XOR<Prisma.AttributeDefinitionCreateWithoutUserAttributesInput, Prisma.AttributeDefinitionUncheckedCreateWithoutUserAttributesInput>
   connectOrCreate?: Prisma.AttributeDefinitionCreateOrConnectWithoutUserAttributesInput
@@ -450,6 +471,82 @@ export type AttributeDefinitionUpdateOneRequiredWithoutEligibilityRulesNestedInp
   update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeDefinitionUpdateToOneWithWhereWithoutEligibilityRulesInput, Prisma.AttributeDefinitionUpdateWithoutEligibilityRulesInput>, Prisma.AttributeDefinitionUncheckedUpdateWithoutEligibilityRulesInput>
 }
 
+export type AttributeDefinitionCreateWithoutOptionsInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  id: string
+  code: string
+  label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  dataType: string
+  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  deletedAt?: Date | string | null
+  createdBy?: string | null
+  updatedBy?: string | null
+  userAttributes?: Prisma.UserAttributeCreateNestedManyWithoutAttributeInput
+  eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput
+}
+
+export type AttributeDefinitionUncheckedCreateWithoutOptionsInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  id: string
+  code: string
+  label: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  dataType: string
+  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  deletedAt?: Date | string | null
+  createdBy?: string | null
+  updatedBy?: string | null
+  userAttributes?: Prisma.UserAttributeUncheckedCreateNestedManyWithoutAttributeInput
+  eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutAttributeInput
+}
+
+export type AttributeDefinitionCreateOrConnectWithoutOptionsInput = {
+  where: Prisma.AttributeDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttributeDefinitionCreateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedCreateWithoutOptionsInput>
+}
+
+export type AttributeDefinitionUpsertWithoutOptionsInput = {
+  update: Prisma.XOR<Prisma.AttributeDefinitionUpdateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedUpdateWithoutOptionsInput>
+  create: Prisma.XOR<Prisma.AttributeDefinitionCreateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedCreateWithoutOptionsInput>
+  where?: Prisma.AttributeDefinitionWhereInput
+}
+
+export type AttributeDefinitionUpdateToOneWithWhereWithoutOptionsInput = {
+  where?: Prisma.AttributeDefinitionWhereInput
+  data: Prisma.XOR<Prisma.AttributeDefinitionUpdateWithoutOptionsInput, Prisma.AttributeDefinitionUncheckedUpdateWithoutOptionsInput>
+}
+
+export type AttributeDefinitionUpdateWithoutOptionsInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  dataType?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAttributes?: Prisma.UserAttributeUpdateManyWithoutAttributeNestedInput
+  eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutAttributeNestedInput
+}
+
+export type AttributeDefinitionUncheckedUpdateWithoutOptionsInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  dataType?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAttributes?: Prisma.UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput
+  eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeNestedInput
+}
+
 export type AttributeDefinitionCreateWithoutUserAttributesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -462,6 +559,7 @@ export type AttributeDefinitionCreateWithoutUserAttributesInput = {
   createdBy?: string | null
   updatedBy?: string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUncheckedCreateWithoutUserAttributesInput = {
@@ -476,6 +574,7 @@ export type AttributeDefinitionUncheckedCreateWithoutUserAttributesInput = {
   createdBy?: string | null
   updatedBy?: string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionCreateOrConnectWithoutUserAttributesInput = {
@@ -506,6 +605,7 @@ export type AttributeDefinitionUpdateWithoutUserAttributesInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionUncheckedUpdateWithoutUserAttributesInput = {
@@ -520,6 +620,7 @@ export type AttributeDefinitionUncheckedUpdateWithoutUserAttributesInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eligibilityRules?: Prisma.TemplateEligibilityRuleUncheckedUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionCreateWithoutEligibilityRulesInput = {
@@ -534,6 +635,7 @@ export type AttributeDefinitionCreateWithoutEligibilityRulesInput = {
   createdBy?: string | null
   updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionUncheckedCreateWithoutEligibilityRulesInput = {
@@ -548,6 +650,7 @@ export type AttributeDefinitionUncheckedCreateWithoutEligibilityRulesInput = {
   createdBy?: string | null
   updatedBy?: string | null
   userAttributes?: Prisma.UserAttributeUncheckedCreateNestedManyWithoutAttributeInput
+  options?: Prisma.AttributeOptionUncheckedCreateNestedManyWithoutAttributeInput
 }
 
 export type AttributeDefinitionCreateOrConnectWithoutEligibilityRulesInput = {
@@ -578,6 +681,7 @@ export type AttributeDefinitionUpdateWithoutEligibilityRulesInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUpdateManyWithoutAttributeNestedInput
 }
 
 export type AttributeDefinitionUncheckedUpdateWithoutEligibilityRulesInput = {
@@ -592,6 +696,7 @@ export type AttributeDefinitionUncheckedUpdateWithoutEligibilityRulesInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAttributes?: Prisma.UserAttributeUncheckedUpdateManyWithoutAttributeNestedInput
+  options?: Prisma.AttributeOptionUncheckedUpdateManyWithoutAttributeNestedInput
 }
 
 
@@ -602,11 +707,13 @@ export type AttributeDefinitionUncheckedUpdateWithoutEligibilityRulesInput = {
 export type AttributeDefinitionCountOutputType = {
   userAttributes: number
   eligibilityRules: number
+  options: number
 }
 
 export type AttributeDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAttributes?: boolean | AttributeDefinitionCountOutputTypeCountUserAttributesArgs
   eligibilityRules?: boolean | AttributeDefinitionCountOutputTypeCountEligibilityRulesArgs
+  options?: boolean | AttributeDefinitionCountOutputTypeCountOptionsArgs
 }
 
 /**
@@ -633,6 +740,13 @@ export type AttributeDefinitionCountOutputTypeCountEligibilityRulesArgs<ExtArgs 
   where?: Prisma.TemplateEligibilityRuleWhereInput
 }
 
+/**
+ * AttributeDefinitionCountOutputType without action
+ */
+export type AttributeDefinitionCountOutputTypeCountOptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttributeOptionWhereInput
+}
+
 
 export type AttributeDefinitionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   createdAt?: boolean
@@ -647,6 +761,7 @@ export type AttributeDefinitionSelect<ExtArgs extends runtime.Types.Extensions.I
   updatedBy?: boolean
   userAttributes?: boolean | Prisma.AttributeDefinition$userAttributesArgs<ExtArgs>
   eligibilityRules?: boolean | Prisma.AttributeDefinition$eligibilityRulesArgs<ExtArgs>
+  options?: boolean | Prisma.AttributeDefinition$optionsArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeDefinition"]>
 
@@ -693,6 +808,7 @@ export type AttributeDefinitionOmit<ExtArgs extends runtime.Types.Extensions.Int
 export type AttributeDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAttributes?: boolean | Prisma.AttributeDefinition$userAttributesArgs<ExtArgs>
   eligibilityRules?: boolean | Prisma.AttributeDefinition$eligibilityRulesArgs<ExtArgs>
+  options?: boolean | Prisma.AttributeDefinition$optionsArgs<ExtArgs>
   _count?: boolean | Prisma.AttributeDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttributeDefinitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -703,6 +819,7 @@ export type $AttributeDefinitionPayload<ExtArgs extends runtime.Types.Extensions
   objects: {
     userAttributes: Prisma.$UserAttributePayload<ExtArgs>[]
     eligibilityRules: Prisma.$TemplateEligibilityRulePayload<ExtArgs>[]
+    options: Prisma.$AttributeOptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
@@ -1111,6 +1228,7 @@ export interface Prisma__AttributeDefinitionClient<T, Null = never, ExtArgs exte
   readonly [Symbol.toStringTag]: "PrismaPromise"
   userAttributes<T extends Prisma.AttributeDefinition$userAttributesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeDefinition$userAttributesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAttributePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eligibilityRules<T extends Prisma.AttributeDefinition$eligibilityRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeDefinition$eligibilityRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemplateEligibilityRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  options<T extends Prisma.AttributeDefinition$optionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeDefinition$optionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttributeOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1588,6 +1706,30 @@ export type AttributeDefinition$eligibilityRulesArgs<ExtArgs extends runtime.Typ
   take?: number
   skip?: number
   distinct?: Prisma.TemplateEligibilityRuleScalarFieldEnum | Prisma.TemplateEligibilityRuleScalarFieldEnum[]
+}
+
+/**
+ * AttributeDefinition.options
+ */
+export type AttributeDefinition$optionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttributeOption
+   */
+  select?: Prisma.AttributeOptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AttributeOption
+   */
+  omit?: Prisma.AttributeOptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttributeOptionInclude<ExtArgs> | null
+  where?: Prisma.AttributeOptionWhereInput
+  orderBy?: Prisma.AttributeOptionOrderByWithRelationInput | Prisma.AttributeOptionOrderByWithRelationInput[]
+  cursor?: Prisma.AttributeOptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttributeOptionScalarFieldEnum | Prisma.AttributeOptionScalarFieldEnum[]
 }
 
 /**

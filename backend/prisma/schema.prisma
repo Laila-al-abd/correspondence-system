@@ -86,10 +86,29 @@ model AttributeDefinition {
 
   userAttributes   UserAttribute[]
   eligibilityRules TemplateEligibilityRule[]
+  options          AttributeOption[]
 
   createdBy String? @map("created_by") @db.Uuid
   updatedBy String? @map("updated_by") @db.Uuid
   @@map("attribute_definitions")
+}
+
+model AttributeOption {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  attributeId String   @map("attribute_id") @db.Uuid
+  value       String   @db.VarChar(100)
+  label       Json     @db.JsonB
+  ordinal     Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  attribute AttributeDefinition @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  createdBy String? @map("created_by") @db.Uuid
+  updatedBy String? @map("updated_by") @db.Uuid
+  @@unique([attributeId, value])
+  @@index([attributeId])
+  @@map("attribute_options")
 }
 
 model UserAttribute {

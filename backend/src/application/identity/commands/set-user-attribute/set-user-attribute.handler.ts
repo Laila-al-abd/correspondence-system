@@ -1,23 +1,24 @@
-import { Inject } from '@nestjs/common'
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-import type { UserRepository } from '../../../../domain/identity/ports/user.repository'
-import type { UserAttributeRepository } from '../../../../domain/identity/ports/user-attribute.repository'
-import type { AttributeDefinitionRepository } from '../../../../domain/catalog/ports/attribute-definition.repository'
-import { AttributeDataType } from '../../../../domain/catalog/enums'
-import { Identifier } from '../../../../domain/shared/identifier'
-import { InvariantViolationError } from '../../../../domain/shared/domain-error'
+import { Inject } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import type { UserRepository } from '../../../../domain/identity/ports/user.repository';
+import type { UserAttributeRepository } from '../../../../domain/identity/ports/user-attribute.repository';
+import type { AttributeDefinitionRepository } from '../../../../domain/catalog/ports/attribute-definition.repository';
+import type { AttributeDefinition } from '../../../../domain/catalog/attribute-definition';
+import { AttributeDataType } from '../../../../domain/catalog/enums';
+import { Identifier } from '../../../../domain/shared/identifier';
+import { InvariantViolationError } from '../../../../domain/shared/domain-error';
 import {
   ATTRIBUTE_DEFINITION_REPOSITORY,
   USER_ATTRIBUTE_REPOSITORY,
   USER_REPOSITORY,
-} from '../../../tokens'
-import { EntityNotFoundError } from '../../../errors'
-import { SetUserAttributeCommand } from './set-user-attribute.command'
+} from '../../../tokens';
+import { EntityNotFoundError } from '../../../errors';
+import { SetUserAttributeCommand } from './set-user-attribute.command';
 
 export interface SetUserAttributeResult {
-  userId: string
-  attributeCode: string
-  value: unknown
+  userId: string;
+  attributeCode: string;
+  value: unknown;
 }
 
 /**
@@ -26,9 +27,10 @@ export interface SetUserAttributeResult {
  * data type. These values feed the template eligibility engine.
  */
 @CommandHandler(SetUserAttributeCommand)
-export class SetUserAttributeHandler
-  implements ICommandHandler<SetUserAttributeCommand, SetUserAttributeResult>
-{
+export class SetUserAttributeHandler implements ICommandHandler<
+  SetUserAttributeCommand,
+  SetUserAttributeResult
+> {
   constructor(
     @Inject(USER_REPOSITORY) private readonly users: UserRepository,
     @Inject(ATTRIBUTE_DEFINITION_REPOSITORY)
@@ -40,54 +42,63 @@ export class SetUserAttributeHandler
   async execute({
     input,
   }: SetUserAttributeCommand): Promise<SetUserAttributeResult> {
-    const userId = Identifier.of(input.userId)
+    const userId = Identifier.of(input.userId);
     if (!(await this.users.findById(userId)))
-      throw new EntityNotFoundError('User', input.userId)
+      throw new EntityNotFoundError('User', input.userId);
 
-    const attribute = await this.attributes.findByCode(input.attributeCode)
+    const attribute = await this.attributes.findByCode(input.attributeCode);
     if (!attribute)
-      throw new EntityNotFoundError('Attribute', input.attributeCode)
+      throw new EntityNotFoundError('Attribute', input.attributeCode);
 
-    this.assertValueMatchesType(attribute.dataType, input.value)
+    this.assertValueMatchesType(attribute, input.value);
 
     await this.userAttributes.setValue({
       userId,
       attributeId: attribute.id,
       value: input.value,
-    })
+    });
 
     return {
       userId: input.userId,
       attributeCode: input.attributeCode,
       value: input.value,
-    }
+    };
   }
 
   private assertValueMatchesType(
-    dataType: AttributeDataType,
+    attribute: AttributeDefinition,
     value: unknown,
   ): void {
+    const dataType = attribute.dataType;
     const fail = (expected: string): never => {
       throw new InvariantViolationError(
         `Attribute value must be a ${expected} for data type ${dataType}.`,
-      )
-    }
+      );
+    };
     switch (dataType) {
       case AttributeDataType.NUMBER:
-        if (typeof value !== 'number' || Number.isNaN(value)) fail('number')
-        break
+        if (typeof value !== 'number' || Number.isNaN(value)) fail('number');
+        break;
       case AttributeDataType.BOOLEAN:
-        if (typeof value !== 'boolean') fail('boolean')
-        break
+        if (typeof value !== 'boolean') fail('boolean');
+        break;
       case AttributeDataType.DATE:
         if (typeof value !== 'string' || Number.isNaN(Date.parse(value)))
-          fail('date string')
-        break
+          fail('date string');
+        break;
+      case AttributeDataType.ENUM: {
+        // Membership is decided by the definition, not by a loose string
+        // check: the definition knows its allowed options, and reporting the
+        // accepted values beats "Expected a string." when a reviewer types
+        // "Masters" into an attribute whose options say "BACHELOR|MASTER".
+        const reason = attribute.validate(value);
+        if (reason !== null) throw new InvariantViolationError(reason);
+        break;
+      }
       case AttributeDataType.TEXT:
-      case AttributeDataType.ENUM:
       default:
-        if (typeof value !== 'string') fail('string')
-        break
+        if (typeof value !== 'string') fail('string');
+        break;
     }
   }
 }
