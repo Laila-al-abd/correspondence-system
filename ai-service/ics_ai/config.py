@@ -49,7 +49,12 @@ class Config:
     max_calls_per_minute: int = 45   # global throttle is 100/min; stay well under
     poll_seconds: int = 30
     template_sync_seconds: int = 600   # how often --loop repulls the catalogue
-    send_priority: bool = True
+    # After every candidate is refused, hand the request to the human review
+    # queue instead of leaving it PENDING for the next poll to re-fail. A kill
+    # switch rather than a preference: set false and the worker goes back to
+    # returning quietly, which is the behaviour to fall back to if flagging
+    # ever turns out to be too eager.
+    flag_for_review: bool = True
     dry_run: bool = False
 
     @classmethod

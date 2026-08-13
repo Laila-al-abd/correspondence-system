@@ -25,7 +25,6 @@ ai-service/
   ics_ai/
     config.py                 every tunable, one file
     classifier.py             the model
-    priority.py               suggestedPriority (a rule, not a model)
     backend.py                HTTP client: auth, paging, throttle, backoff
     worker.py                 the pull loop
     app.py                    FastAPI routes

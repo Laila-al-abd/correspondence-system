@@ -58,7 +58,6 @@ def process_one(clf: TemplateClassifier, client: BackendClient,
             confidence=cand.probability,
             threshold=cfg.threshold,
             model_version=cfg.model_version,
-            suggested_priority=result.suggested_priority if cfg.send_priority else None,
         )
         if outcome.ok:
             stats[f"sent_rank{rank}"] += 1
@@ -78,8 +77,29 @@ def process_one(clf: TemplateClassifier, client: BackendClient,
             return None
         return None
 
+    # Every candidate refused. Previously this returned quietly, which left the
+    # request PENDING: indistinguishable from one nobody had processed, nobody
+    # alerted, and re-read and re-failed on every poll from here to eternity.
+    # Hand it to the people who can actually decide.
     stats["exhausted_all_candidates"] += 1
-    return None
+    if not cfg.flag_for_review:
+        return None
+
+    flagged = client.flag_for_review(request_id)
+    if not flagged.ok:
+        # Not fatal. The request stays PENDING and will be retried next pass,
+        # which is exactly the old behaviour -- no worse than before.
+        stats[f"flag_failed:{flagged.kind}"] += 1
+        return None
+
+    stats["flagged_for_review"] += 1
+    return {
+        "requestId": request_id,
+        "rank": None,
+        "templateCode": None,
+        "confidence": None,
+        "classificationStatus": flagged.classification_status,
+    }
 
 def sync_templates(clf: TemplateClassifier, client: BackendClient, verbose: bool = True) -> bool:
     """Pull the active template catalogue and re-embed. Failure is not
