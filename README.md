@@ -323,27 +323,9 @@ cd frontend && npm run lint
 cd backend  && npm run lint
 ```
 
-The full test plan — fixtures, routing and delegation scenarios, directory-sync
-procedure and security checks — is maintained separately in the project report.
-
 ---
 
-## 8. Known issues and gotchas
+## 8. issues
 
 - **`ai-service/requirements.txt` is UTF-16 encoded.** `pip install -r` copes, but many
   editors and CI tools do not. Convert it to UTF-8 when convenient.
-- **Delete stale bytecode.** `ai-service/ics_ai/__pycache__/*.pyc` files are untracked
-  and can shadow removed modules. Remove the folder if imports behave oddly.
-- **Frontend port collision.** See §2.3 — always start the UI on 3001.
-- **Synced users cannot sign in yet.** Users imported from the personnel directory get
-  `authProvider = 'LDAP'` and no local password. Until an LDAP provider is registered
-  in `AuthProviderRegistry`, they exist but cannot authenticate. Applicants upgraded by
-  the sync keep their original local password and are unaffected.
-- **Run the department sync before the user sync**, with the same `source` label. A
-  person's department is resolved by `(externalId, source)`; mismatch the label and
-  every lookup misses silently while the run still reports success.
-- **Document upload carries no permission decorator.** `POST /requests/:id/documents`
-  is open to any authenticated user. Intentional for now; tighten before production.
-- **`Request.cancel()` has no caller.** The `CANCELLED` status exists in the domain and
-  the schema but no command, route or UI reaches it. Requests end as `COMPLETED` or
-  `REJECTED`.
