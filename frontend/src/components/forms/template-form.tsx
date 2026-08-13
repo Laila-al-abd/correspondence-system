@@ -239,7 +239,12 @@ export function TemplateForm({ existing }: Props) {
                 </div>
                 <Input placeholder="Arabic label" value={field.labelAr} onChange={(e) => updateField(fi, { labelAr: e.target.value })} />
                 <Input placeholder="English label (optional)" value={field.labelEn ?? ''} onChange={(e) => updateField(fi, { labelEn: e.target.value })} />
-                <select className={selectClass} value={field.dataType} onChange={(e) => updateField(fi, { dataType: e.target.value as FieldDataType })}>
+                <select className={selectClass} value={field.dataType} onChange={(e) => {
+                  // Options only mean something for ENUM. Leaving them behind
+                  // sent stale choices along with a TEXT field.
+                  const nextType = e.target.value as FieldDataType;
+                  updateField(fi, nextType === FieldDataType.ENUM ? { dataType: nextType } : { dataType: nextType, options: [] });
+                }}>
                   {Object.values(FieldDataType).map((dt) => (<option key={dt} value={dt}>{dt}</option>))}
                 </select>
                 <div className="flex items-center gap-2">

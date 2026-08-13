@@ -14,6 +14,10 @@ import { DeactivateWorkflowPathHandler } from '../../application/workflow/comman
 import { GetWorkflowPathHandler } from '../../application/workflow/queries/get-workflow-path/get-workflow-path.handler'
 import { ListWorkflowPathsByTemplateHandler } from '../../application/workflow/queries/list-workflow-paths/list-workflow-paths.handler'
 import { WorkflowController } from './workflow.controller'
+// Authoring validates the action types a step offers, so it needs the catalogue
+// port. CatalogModule exports ACTION_TYPE_REPOSITORY and does not import this
+// module, so there is no cycle.
+import { CatalogModule } from '../catalog/catalog.module'
 
 const handlers = [
   DefineWorkflowPathHandler,
@@ -30,7 +34,7 @@ const handlers = [
  * port is exported so the Request context can route requests onto active paths.
  */
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, CatalogModule],
   controllers: [WorkflowController],
   providers: [
     ...handlers,

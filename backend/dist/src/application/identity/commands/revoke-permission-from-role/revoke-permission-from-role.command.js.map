@@ -1,0 +1,1 @@
+{"version":3,"file":"revoke-permission-from-role.command.js","sourceRoot":"","sources":["../../../../../../src/application/identity/commands/revoke-permission-from-role/revoke-permission-from-role.command.ts"],"names":[],"mappings":";;;AAKA,MAAa,+BAA+B;IACd;IAA5B,YAA4B,KAAoC;QAApC,UAAK,GAAL,KAAK,CAA+B;IAAG,CAAC;CACrE;AAFD,0EAEC"}

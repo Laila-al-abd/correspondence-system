@@ -80,6 +80,17 @@ export interface RequestSummaryView {
   slaRisk: string
   slaDueAt?: string
   completedAt?: string
+  /**
+   * Fees raised on this request and not yet settled.
+   *
+   * Carried on the summary rather than left to the detail view because the
+   * requester's list is where they look to ask "why has nothing happened?", and
+   * until now the answer -- that the request is waiting on their own payment --
+   * was only visible if they opened the request and scrolled. A count, not a
+   * boolean: two outstanding fees is a different conversation from one, and the
+   * caller can still treat it as a flag by testing for zero.
+   */
+  outstandingPaymentCount: number
 }
 
 /**
@@ -227,7 +238,17 @@ export function toStepInstanceView(s: StepInstanceSnapshot, stepDefinition?: Wor
   }
 }
 
-export function toRequestSummary(request: Request): RequestSummaryView {
+/**
+ * @param outstandingPaymentCount unsettled fees, which the aggregate cannot
+ *   know: payments are their own aggregate, loaded separately. Callers that
+ *   have them (the detail query) pass the count; the rest correctly report 0,
+ *   and the list queries do not come through here at all -- they build the
+ *   summary in SQL, where the count is a subquery.
+ */
+export function toRequestSummary(
+  request: Request,
+  outstandingPaymentCount = 0
+): RequestSummaryView {
   const s = request.snapshot()
   return {
     id: request.id.toString(),
@@ -248,6 +269,7 @@ export function toRequestSummary(request: Request): RequestSummaryView {
     slaRisk: s.slaRisk,
     slaDueAt: iso(s.slaDueAt),
     completedAt: iso(s.completedAt),
+    outstandingPaymentCount,
   }
 }
 
@@ -364,8 +386,12 @@ export function toRequestDetail(
 ): RequestDetailView {
   const snapshot = request.snapshot()
   const form = template ? toTemplateFormView(template) : undefined
+  const paymentViews = payments.map(toPaymentView)
   return {
-    ...toRequestSummary(request),
+    ...toRequestSummary(
+      request,
+      paymentViews.filter((p) => p.status === 'REQUIRED').length
+    ),
     rawText: snapshot.rawText,
     filledData: snapshot.filledData,
     confirmedAt: iso(snapshot.confirmedAt),
@@ -379,6 +405,6 @@ export function toRequestDetail(
     }),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),
-    payments: payments.map(toPaymentView),
+    payments: paymentViews,
   }
 }

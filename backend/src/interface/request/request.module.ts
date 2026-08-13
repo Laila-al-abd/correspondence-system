@@ -30,6 +30,7 @@ import { PrismaReferenceNumberGenerator } from '../../infrastructure/shared/pris
 import { SubmitRequestHandler } from '../../application/request/commands/submit-request/submit-request.handler'
 import { ClassifyRequestByModelHandler } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.handler'
 import { ClassifyRequestByHumanHandler } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.handler'
+import { FlagForHumanClassificationHandler } from '../../application/request/commands/flag-for-human-classification/flag-for-human-classification.handler'
 import { ChangeRequestPriorityHandler } from '../../application/request/commands/change-request-priority/change-request-priority.handler'
 import { SettlePaymentHandler } from '../../application/request/commands/settle-payment/settle-payment.handler'
 import { RecordExtractionHandler } from '../../application/request/commands/record-extraction/record-extraction.handler'
@@ -44,6 +45,7 @@ import { ListMyRequestsHandler } from '../../application/request/queries/list-my
 import { ListAssignedRequestsHandler } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.handler'
 import { ListRequestQueueHandler } from '../../application/request/queries/list-request-queue/list-request-queue.handler'
 import { ListHitlQueueHandler } from '../../application/request/queries/list-hitl-queue/list-hitl-queue.handler'
+import { ListStepCandidatesHandler } from '../../application/request/queries/list-step-candidates/list-step-candidates.handler'
 import { GetDocumentDownloadUrlHandler } from '../../application/request/queries/get-document-download-url/get-document-download-url.handler'
 import { RequestController } from './request.controller'
 import { AssigneeResolver } from '../../application/request/services/assignee-resolver'
@@ -58,6 +60,7 @@ const handlers = [
   SubmitRequestHandler,
   ClassifyRequestByModelHandler,
   ClassifyRequestByHumanHandler,
+  FlagForHumanClassificationHandler,
   ChangeRequestPriorityHandler,
   RecordExtractionHandler,
   ConfirmRequestHandler,
@@ -72,6 +75,7 @@ const handlers = [
   ListAssignedRequestsHandler,
   ListRequestQueueHandler,
   ListHitlQueueHandler,
+  ListStepCandidatesHandler,
   GetDocumentDownloadUrlHandler,
 ]
 

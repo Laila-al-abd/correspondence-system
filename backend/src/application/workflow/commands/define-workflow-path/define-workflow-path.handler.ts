@@ -4,11 +4,13 @@ import { WorkflowPath } from '../../../../domain/workflow/workflow-path'
 import { WorkflowStep } from '../../../../domain/workflow/workflow-step'
 import type { WorkflowPathRepository } from '../../../../domain/workflow/ports/workflow-path.repository'
 import type { TemplateRepository } from '../../../../domain/catalog/ports/template.repository'
+import type { ActionTypeRepository } from '../../../../domain/catalog/ports/catalog-lookup.repository'
 import type { IdGenerator } from '../../../../domain/shared/id-generator'
 import { Identifier } from '../../../../domain/shared/identifier'
 import { LocalizedText } from '../../../../domain/shared/localized-text'
 import { InvariantViolationError } from '../../../../domain/shared/domain-error'
 import {
+  ACTION_TYPE_REPOSITORY,
   ID_GENERATOR,
   TEMPLATE_REPOSITORY,
   WORKFLOW_PATH_REPOSITORY,
@@ -41,6 +43,8 @@ export class DefineWorkflowPathHandler
     private readonly workflowPaths: WorkflowPathRepository,
     @Inject(TEMPLATE_REPOSITORY)
     private readonly templates: TemplateRepository,
+    @Inject(ACTION_TYPE_REPOSITORY)
+    private readonly actionTypes: ActionTypeRepository,
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
   ) {}
 
@@ -57,6 +61,7 @@ export class DefineWorkflowPathHandler
       throw new EntityNotFoundError('Template', input.templateId)
 
     this.assertUniqueKeys(input.steps.map((step) => step.key))
+    await this.assertTerminalActions(input.steps)
 
     const path = WorkflowPath.create(this.ids.next(), {
       templateId,
@@ -89,6 +94,8 @@ export class DefineWorkflowPathHandler
           : undefined,
         slaHours: stepInput.slaHours,
         pausesSla: stepInput.pausesSla,
+        feeAmount: stepInput.feeAmount,
+        feeCurrency: stepInput.feeCurrency,
       })
       for (const actionTypeId of stepInput.allowedActionTypeIds ?? [])
         step.allowAction(Identifier.of(actionTypeId))
@@ -109,18 +116,50 @@ export class DefineWorkflowPathHandler
       }
     }
 
+    // Always stored stood down first. Inserting it active while the incumbent
+    // is still active violates one_active_workflow_path_per_template, and
+    // retiring the incumbent first would leave the template with no active path
+    // if this save then failed. So: insert inactive, then swap atomically.
+    path.deactivate()
+    await this.workflowPaths.save(path)
+
     if (input.activate) {
       path.activate()
-      await this.deactivateCurrentActive(templateId, path.id)
-    } else {
-      path.deactivate()
+      await this.workflowPaths.activateExclusively(templateId, path.id)
     }
-
-    await this.workflowPaths.save(path)
     return {
       id: path.id.toString(),
       stepCount: path.steps.length,
       isActive: path.isActive,
+    }
+  }
+
+  /**
+   * Every action a step offers must be one that ends the step.
+   *
+   * The catalogue also holds non-terminal codes (FORWARD, REQUEST_PAYMENT).
+   * Those describe work that continues, and the runtime has no notion of
+   * continuing -- act-on-step treats an unrecognised code as a completion. So
+   * they are refused while the workflow is being authored, where the mistake is
+   * cheap to see, instead of being discovered by whoever works the step. An id
+   * that does not exist at all is refused here too; previously it was written
+   * straight through to a foreign key.
+   */
+  private async assertTerminalActions(
+    steps: DefineWorkflowPathCommand['input']['steps'],
+  ): Promise<void> {
+    const ids = new Set<string>()
+    for (const step of steps) {
+      if (step.defaultActionTypeId) ids.add(step.defaultActionTypeId)
+      for (const id of step.allowedActionTypeIds ?? []) ids.add(id)
+    }
+    for (const id of ids) {
+      const actionType = await this.actionTypes.findById(Identifier.of(id))
+      if (!actionType) throw new EntityNotFoundError('Action type', id)
+      if (!actionType.isTerminal)
+        throw new InvariantViolationError(
+          `Action type '${actionType.code}' does not end a step, so it cannot be allowed on one.`,
+        )
     }
   }
 
@@ -133,14 +172,4 @@ export class DefineWorkflowPathHandler
     }
   }
 
-  private async deactivateCurrentActive(
-    templateId: Identifier,
-    newPathId: Identifier,
-  ): Promise<void> {
-    const current = await this.workflowPaths.findActiveByTemplate(templateId)
-    if (current && !current.id.equals(newPathId)) {
-      current.deactivate()
-      await this.workflowPaths.save(current)
-    }
-  }
 }

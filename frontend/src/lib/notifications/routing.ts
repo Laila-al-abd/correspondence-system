@@ -32,8 +32,11 @@ export function resolveNotificationTarget(notification: NotificationView): strin
       return id ? `/dashboard/requests/queue/hitl/${id}` : '/dashboard/requests/queue/hitl';
 
     case NotificationType.STEP_ASSIGNMENT_REQUIRED:
-      // Real page: dashboard/requests/queue/page.tsx
-      return '/dashboard/requests/queue';
+      // The generic queue was a dead end: it lists requests but offers no way
+      // to assign anything, so the admin was told a step needs an owner and
+      // then shown a screen that cannot give it one. The request detail page
+      // is where the per-step Assign control lives.
+      return id ? `/dashboard/requests/${id}` : '/dashboard/requests/queue';
 
     case NotificationType.CONFIRMATION_REQUIRED:
       // Real page: dashboard/requests/[id]/edit/page.tsx -- this IS the

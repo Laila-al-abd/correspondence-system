@@ -46,9 +46,16 @@ export default function RequestsPage() {
   }
 
   function handleRowClick(req: RequestSummaryView) {
+    // A request awaiting confirmation opens where it can still be changed.
+    // Everything else opens read-only -- which is where the attachments are, so
+    // this is also the only route by which a requester reaches the certificate
+    // a clerk produced for them. While only the confirmation stage was
+    // clickable, a finished request was a dead row.
     if (req.stage === 'AWAITING_CONFIRMATION') {
       router.push(`/dashboard/requests/${req.id}/edit`);
+      return;
     }
+    router.push(`/dashboard/requests/${req.id}`);
   }
 
   return (
@@ -70,6 +77,7 @@ export default function RequestsPage() {
                 <TableHead>Reference #</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead>Priority</TableHead>
+                <TableHead>Payment</TableHead>
                 <TableHead>SLA Risk</TableHead>
                 <TableHead>SLA Due</TableHead>
                 <TableHead>Completed</TableHead>
@@ -77,7 +85,7 @@ export default function RequestsPage() {
             </TableHeader>
             <TableBody>
               {items.map((req) => {
-                const clickable = req.stage === 'AWAITING_CONFIRMATION';
+                const clickable = true;
                 return (
                   <TableRow
                     key={req.id}
@@ -87,6 +95,17 @@ export default function RequestsPage() {
                     <TableCell>{req.referenceNo ?? '—'}</TableCell>
                     <TableCell><Badge variant={stageBadgeVariant(req.stage)}>{req.stage}</Badge></TableCell>
                     <TableCell>{req.priority}</TableCell>
+                    <TableCell>
+                      {req.outstandingPaymentCount ? (
+                        <Badge variant="destructive">
+                          {req.outstandingPaymentCount > 1
+                            ? `${req.outstandingPaymentCount} fees due`
+                            : 'Payment due'}
+                        </Badge>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </TableCell>
                     <TableCell>{req.slaRisk}</TableCell>
                     <TableCell>{req.slaDueAt ? new Date(req.slaDueAt).toLocaleString() : '—'}</TableCell>
                     <TableCell>{req.completedAt ? new Date(req.completedAt).toLocaleString() : '—'}</TableCell>

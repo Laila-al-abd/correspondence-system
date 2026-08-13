@@ -12,9 +12,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 
 // Forms & Action components
 import { ActOnStepForm } from '@/components/forms/act-on-step-form';
+import { AssignStepForm } from '@/components/forms/assign-step-form';
 import { ChangePriorityForm } from '@/components/forms/change-priority-form';
 import { ConfirmPaymentButton } from '@/components/forms/confirm-payment-button';
 import { WaivePaymentForm } from '@/components/forms/waive-payment-form';
+import { UploadDocumentForm } from '@/components/forms/upload-document-form';
+import { DocumentDownloadButton } from '@/components/forms/document-download-button';
 import { Priority } from '@/types/request';
 
 /** Component that resolves raw UUIDs into friendly Employee / User names */
@@ -70,7 +73,9 @@ export default function RequestDetailPage() {
   // Modal State Controllers
   const [priorityOpen, setPriorityOpen] = useState(false);
   const [activeStepId, setActiveStepId] = useState<string | null>(null);
+  const [assignStepId, setAssignStepId] = useState<string | null>(null);
   const [waivePaymentId, setWaivePaymentId] = useState<string | null>(null);
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   if (!requestId) return null;
   if (isLoading) return <div className="p-6 text-muted-foreground animate-pulse">Loading request details…</div>;
@@ -78,6 +83,12 @@ export default function RequestDetailPage() {
 
   const canAct = hasPermission ? hasPermission('request.act') : false;
   const canSettlePayment = hasPermission ? hasPermission('payment.settle') : false;
+  // Re-routing somebody else's work is an administrator's call. Every reviewer
+  // holds request.act, so gating the assign controls on it showed them to the
+  // very people who should not be moving work between colleagues.
+  const canAssign = hasPermission ? hasPermission('workflow.manage') : false;
+  // Nothing about a finished request is still negotiable, priority least of all.
+  const isClosed = ['COMPLETED', 'REJECTED', 'CANCELLED'].includes(request.currentStatus);
 
   const steps = request.stepInstances || [];
   const documents = request.documents || [];
@@ -100,7 +111,7 @@ export default function RequestDetailPage() {
             </Button>
           )}
 
-          {canAct && (
+          {canAct && !isClosed && (
             <>
               <Button variant="outline" onClick={() => setPriorityOpen(true)}>
                 Change Priority
@@ -113,6 +124,8 @@ export default function RequestDetailPage() {
                   <ChangePriorityForm
                     requestId={requestId}
                     currentPriority={request.priority as Priority}
+                    onSuccess={() => setPriorityOpen(false)}
+                    onCancel={() => setPriorityOpen(false)}
                   />
                 </DialogContent>
               </Dialog>
@@ -206,10 +219,38 @@ export default function RequestDetailPage() {
                   </div>
 
                   {showActButton && (
-                    <div className="pt-2">
+                    <div className="pt-2 flex flex-wrap items-center gap-2">
                       <Button size="sm" onClick={() => setActiveStepId(step.id)}>
                         Act on Step
                       </Button>
+
+                      {/* An unassigned step is the one an admin gets notified
+                          about and, until now, could do nothing with. Admins
+                          only: see canAssign. */}
+                      {canAssign && (
+                        <>
+                          <Button
+                            size="sm"
+                            variant={step.assignedToUserId ? 'outline' : 'default'}
+                            onClick={() => setAssignStepId(step.id)}
+                          >
+                            {step.assignedToUserId ? 'Reassign' : 'Assign to…'}
+                          </Button>
+                          <Dialog
+                            open={assignStepId === step.id}
+                            onOpenChange={(open) => setAssignStepId(open ? step.id : null)}
+                          >
+                            <DialogContent className="max-w-xl">
+                              <AssignStepForm
+                                requestId={requestId}
+                                stepId={step.id}
+                                stepName={step.stepName}
+                                onSuccess={() => setAssignStepId(null)}
+                              />
+                            </DialogContent>
+                          </Dialog>
+                        </>
+                      )}
                       <Dialog
                         open={activeStepId === step.id}
                         onOpenChange={(open) => setActiveStepId(open ? step.id : null)}
@@ -243,13 +284,25 @@ export default function RequestDetailPage() {
             <CardDescription>Fees raised for steps in this workflow.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {payments.map((payment: any) => (
+            {payments.map((payment) => (
               <div key={payment.id} className="flex items-center justify-between p-3 border rounded-md">
-                <div>
+                <div className="space-y-0.5">
                   <p className="text-sm font-medium">Amount: {payment.amount} {payment.currency}</p>
                   <p className="text-xs text-muted-foreground">
                     Status: <span className="font-semibold">{payment.status}</span>
+                    {payment.requestedAt && ` \u00b7 raised ${new Date(payment.requestedAt).toLocaleString()}`}
+                    {payment.settledAt && ` \u00b7 settled ${new Date(payment.settledAt).toLocaleString()}`}
                   </p>
+                  {payment.requestStepInstanceId && (
+                    <p className="text-xs text-muted-foreground">
+                      Step:{' '}
+                      {steps.find((s) => s.id === payment.requestStepInstanceId)?.stepName
+                        ?? payment.requestStepInstanceId}
+                    </p>
+                  )}
+                  {payment.waiverReason && (
+                    <p className="text-xs text-muted-foreground">Waived: {payment.waiverReason}</p>
+                  )}
                 </div>
                 {canSettlePayment && payment.status !== 'CONFIRMED' && payment.status !== 'WAIVED' && (
                   <div className="flex items-center gap-2">
@@ -281,8 +334,34 @@ export default function RequestDetailPage() {
       {/* Attachments */}
       <Card>
         <CardHeader>
-          <CardTitle>Documents</CardTitle>
-          <CardDescription>Uploaded attachments.</CardDescription>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <CardTitle>Documents</CardTitle>
+              <CardDescription>
+                Attachments from the requester, and anything produced while working
+                the request.
+              </CardDescription>
+            </div>
+            {/* The output of a step has to be able to reach the requester. A
+                certificate that only exists on the clerk's desktop has not
+                really been issued. Uploading it here puts it on the request,
+                where the requester can download it. */}
+            {canAct && (
+              <>
+                <Button size="sm" variant="outline" onClick={() => setUploadOpen(true)}>
+                  Upload document
+                </Button>
+                <Dialog open={uploadOpen} onOpenChange={setUploadOpen}>
+                  <DialogContent className="max-w-xl">
+                    <UploadDocumentForm
+                      requestId={requestId}
+                      onSuccess={() => setUploadOpen(false)}
+                    />
+                  </DialogContent>
+                </Dialog>
+              </>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
           {documents.length === 0 ? (

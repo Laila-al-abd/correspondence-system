@@ -25,7 +25,7 @@ export interface WorkingHoursPolicy {
   timezone: string
 }
 
-const DEFAULT_POLICY: WorkingHoursPolicy = {
+export const DEFAULT_POLICY: WorkingHoursPolicy = {
   enabled: true,
   days: [0, 1, 2, 3, 4],
   start: '08:00',

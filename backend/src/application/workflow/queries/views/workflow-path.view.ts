@@ -12,6 +12,9 @@ export interface WorkflowStepView {
   defaultActionTypeId?: string
   slaHours?: number
   pausesSla: boolean
+  /** What this step charges the requester, if anything. */
+  feeAmount?: number
+  feeCurrency?: string
   allowedActionTypeIds: string[]
   dependsOnStepIds: string[]
 }

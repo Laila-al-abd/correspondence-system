@@ -19,6 +19,8 @@ import { CountUnreadNotificationsHandler } from '../../application/observability
 import { MarkNotificationReadHandler } from '../../application/observability/commands/mark-notification-read/mark-notification-read.handler'
 import { MarkAllNotificationsReadHandler } from '../../application/observability/commands/mark-all-notifications-read/mark-all-notifications-read.handler'
 import { PurgeOldNotificationsHandler } from '../../application/observability/commands/purge-old-notifications/purge-old-notifications.handler'
+import { GetSettingHandler } from '../../application/observability/queries/get-setting/get-setting.handler'
+import { UpdateSettingHandler } from '../../application/observability/commands/update-setting/update-setting.handler'
 import {
   ACADEMIC_CALENDAR_REPOSITORY,
   CLIENT_CONTEXT,
@@ -31,6 +33,7 @@ import {
   SYSTEM_SETTING_REPOSITORY,
 } from '../../application/tokens'
 import { NotificationsController } from './notifications.controller'
+import { SettingsController } from './settings.controller'
 
 const handlers = [
   ListMyNotificationsHandler,
@@ -38,6 +41,8 @@ const handlers = [
   MarkNotificationReadHandler,
   MarkAllNotificationsReadHandler,
   PurgeOldNotificationsHandler,
+  GetSettingHandler,
+  UpdateSettingHandler,
 ]
 
 /**
@@ -54,7 +59,7 @@ const handlers = [
  */
 @Module({
   imports: [CqrsModule],
-  controllers: [NotificationsController],
+  controllers: [NotificationsController, SettingsController],
   providers: [
     ...handlers,
     NotificationEmitter,
