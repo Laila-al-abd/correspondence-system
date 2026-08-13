@@ -9,6 +9,7 @@ import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.genera
 import { SyncDepartmentsFromDirectory } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsHandler } from '../../application/organization/commands/sync-departments/sync-departments.handler'
 import { CreateDepartmentHandler } from '../../application/organization/commands/create-department/create-department.handler'
+import { ListOrgUnitTypesHandler } from '../../application/organization/queries/list-org-unit-types/list-org-unit-types.handler'
 import {
   DEPARTMENT_QUERY,
   DEPARTMENT_REPOSITORY,
@@ -31,6 +32,11 @@ import { OrganizationController } from './organization.controller'
   providers: [
     SyncDepartmentsHandler,
     CreateDepartmentHandler,
+    // Query handlers must be listed here too. The @QueryHandler decorator only
+    // tags the class; CqrsModule registers it with the QueryBus when Nest
+    // instantiates it as a provider. Without this line the bus throws
+    // "No handler found for the query" at request time, not at boot.
+    ListOrgUnitTypesHandler,
     { provide: DEPARTMENT_REPOSITORY, useClass: PrismaDepartmentRepository },
     { provide: DEPARTMENT_QUERY, useClass: PrismaDepartmentQuery },
     {

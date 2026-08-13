@@ -92,6 +92,19 @@ export class WorkflowStep extends Entity {
       throw new InvariantViolationError("A SPECIFIC_ROLE step requires an assignee role.")
     if (type === AssigneeType.SPECIFIC_UNIT && !departmentId)
       throw new InvariantViolationError("A SPECIFIC_UNIT step requires an assignee department.")
+    // A head or dean is not a column in the schema, it is "the holder of this
+    // role, scoped to that unit". With no role there is nothing for the router
+    // to search for, so resolveUpwards returns no candidates and the step is
+    // created looking perfectly valid but can never be assigned to anybody.
+    // Fail at authoring time, where there is someone to read the message.
+    if (
+      (type === AssigneeType.REQUESTER_DEPARTMENT_HEAD ||
+        type === AssigneeType.REQUESTER_FACULTY_DEAN) &&
+      !roleId
+    )
+      throw new InvariantViolationError(
+        "A requester-department-head or requester-faculty-dean step requires an assignee role: the head of a unit is modelled as the holder of a role scoped to that unit.",
+      )
   }
 
   allowAction(actionTypeId: Identifier): void {

@@ -12,6 +12,7 @@ import { CurrentUserId } from '../identity/current-user.decorator'
 import { SubmitRequestCommand } from '../../application/request/commands/submit-request/submit-request.command'
 import { ClassifyRequestByModelCommand } from '../../application/request/commands/classify-request-by-model/classify-request-by-model.command'
 import { ClassifyRequestByHumanCommand } from '../../application/request/commands/classify-request-by-human/classify-request-by-human.command'
+import { FlagForHumanClassificationCommand } from '../../application/request/commands/flag-for-human-classification/flag-for-human-classification.command'
 import { ChangeRequestPriorityCommand } from '../../application/request/commands/change-request-priority/change-request-priority.command'
 import {
   PaymentSettlement,
@@ -30,6 +31,8 @@ import { ListMyRequestsQuery } from '../../application/request/queries/list-my-r
 import { ListAssignedRequestsQuery } from '../../application/request/queries/list-assigned-requests/list-assigned-requests.query'
 import { ListRequestQueueQuery } from '../../application/request/queries/list-request-queue/list-request-queue.query'
 import { ListHitlQueueQuery } from '../../application/request/queries/list-hitl-queue/list-hitl-queue.query'
+import { ListStepCandidatesQuery } from '../../application/request/queries/list-step-candidates/list-step-candidates.query'
+import type { StepCandidatesView } from '../../application/request/queries/list-step-candidates/list-step-candidates.handler'
 import {
   RequestDetailView,
   RequestSummaryView,
@@ -193,6 +196,21 @@ export class RequestController {
   }
 
   /**
+   * "The machine has finished with this one; a person needs to look at it."
+   *
+   * Called by the AI service when every candidate it proposed was refused, and
+   * available to a reviewer who reaches the same conclusion by hand. Takes no
+   * body: the point of this route is that no template fits, so there is
+   * nothing to send. Idempotent -- calling it on a request already in the
+   * queue returns its state and alerts nobody a second time.
+   */
+  @Post(':id/classify/needs-review')
+  @RequirePermissions('request.classify')
+  flagForHumanClassification(@Param('id') id: string) {
+    return this.commandBus.execute(new FlagForHumanClassificationCommand(id))
+  }
+
+  /**
    * Re-prioritise one request. The only way a priority moves after
    * classification, and the only place a person's circumstances -- a medical
    * case, an external deadline -- can outrank what the template declared.
@@ -313,8 +331,21 @@ export class RequestController {
     )
   }
 
+  /**
+   * Who this step may be handed to. Same rules the assign command enforces, so
+   * every option the dropdown shows is one the POST below will accept.
+   */
+  @Get(':id/steps/:stepId/candidates')
+  @RequirePermissions('workflow.manage')
+  listStepCandidates(
+    @Param('id') id: string,
+    @Param('stepId') stepId: string,
+  ): Promise<StepCandidatesView> {
+    return this.queryBus.execute(new ListStepCandidatesQuery(id, stepId))
+  }
+
   @Post(':id/steps/:stepId/assign')
-  @RequirePermissions('request.act')
+  @RequirePermissions('workflow.manage')
   assignStep(
     @Param('id') id: string,
     @Param('stepId') stepId: string,

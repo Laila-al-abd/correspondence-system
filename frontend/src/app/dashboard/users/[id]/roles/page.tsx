@@ -104,10 +104,10 @@ function ManageRolesContent() {
     }
   }
 
-  async function handleRevoke(assignedRoleId: string) {
+  async function handleRevoke(assignedRoleId: string, departmentId?: string) {
     setRevokeError(null);
     try {
-      await revokeRole.mutateAsync(assignedRoleId);
+      await revokeRole.mutateAsync({ roleId: assignedRoleId, departmentId });
     } catch {
       setRevokeError('Failed to revoke role. Please try again.');
     }
@@ -151,7 +151,7 @@ function ManageRolesContent() {
                         <Button
                           variant="destructive"
                           size="sm"
-                          onClick={() => handleRevoke(r.roleId)}
+                          onClick={() => handleRevoke(r.roleId, r.departmentId ?? undefined)}
                           disabled={revokeRole.isPending}
                         >
                           Revoke

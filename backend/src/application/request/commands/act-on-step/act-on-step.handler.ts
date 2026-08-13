@@ -19,6 +19,7 @@ import type { IdGenerator } from '../../../../domain/shared/id-generator'
 import type { TransactionRunner } from '../../../../domain/shared/transaction-runner'
 import {
   ACTION_TYPE_REPOSITORY,
+  ASSIGNEE_DIRECTORY,
   ID_GENERATOR,
   PAYMENT_REPOSITORY,
   REQUEST_ACTION_REPOSITORY,
@@ -30,6 +31,8 @@ import { EntityNotFoundError, ForbiddenActionError } from '../../../errors'
 import { NotificationEmitter } from '../../../observability/services/notification-emitter'
 import { BusinessHoursService } from '../../../observability/services/business-hours.service'
 import { EventRecorder } from '../../../observability/services/event-recorder'
+import { AssigneeResolver } from '../../services/assignee-resolver'
+import type { AssigneeDirectoryPort } from '../../ports/assignee-directory.port'
 import { stageOfRequest } from '../../queries/views/request-stage'
 import { ActOnStepCommand, StepActionKind } from './act-on-step.command'
 
@@ -45,7 +48,39 @@ export interface ActOnStepResult {
 /** A step that became startable because the step just acted on finished. */
 interface Handoff {
   assigneeUserId: string
+  stepInstanceId: string
+  /** Ownership was changed at release time rather than inherited from routing. */
+  reassigned: boolean
 }
+
+/** What releaseSuccessors found, for the messages sent after the commit. */
+interface ReleaseOutcome {
+  handoffs: Handoff[]
+  /**
+   * Steps that opened without a usable owner. Counted rather than listed
+   * because the admin alert is de-duplicated per request, not per step.
+   */
+  stalled: number
+}
+
+/**
+ * Escape hatch for release-time re-resolution.
+ *
+ * Set WORKFLOW_REASSIGN_ON_RELEASE=false to fall back to the old behaviour
+ * (trust whoever routing picked when the request started). The re-resolution
+ * below touches every hand-off in the system, so it should be possible to turn
+ * off in production without a deploy, and the fallback must be the behaviour
+ * that has been running all along.
+ */
+// Statuses after which nothing further may be done to a request.
+const TERMINAL_REQUEST_STATUSES: RequestStatus[] = [
+  RequestStatus.COMPLETED,
+  RequestStatus.REJECTED,
+  RequestStatus.CANCELLED,
+]
+
+const REASSIGN_ON_RELEASE =
+  process.env.WORKFLOW_REASSIGN_ON_RELEASE !== 'false'
 
 /**
  * The runtime heart: an actor moves one step through its state machine and the
@@ -77,6 +112,9 @@ export class ActOnStepHandler
     @Inject(ID_GENERATOR) private readonly ids: IdGenerator,
     @Inject(TRANSACTION_RUNNER)
     private readonly transactions: TransactionRunner,
+    @Inject(ASSIGNEE_DIRECTORY)
+    private readonly directory: AssigneeDirectoryPort,
+    private readonly assignees: AssigneeResolver,
     private readonly notifier: NotificationEmitter,
     private readonly businessHours: BusinessHoursService,
     private readonly events: EventRecorder,
@@ -94,7 +132,7 @@ export class ActOnStepHandler
    */
   async execute(command: ActOnStepCommand): Promise<ActOnStepResult> {
     const { input } = command
-    const { request, step, statusBefore, handoffs } =
+    const { request, step, statusBefore, handoffs, stalled } =
       await this.transactions.run(() => this.applyAction(command))
 
     // Tell the owner what happened. Notifying is best-effort inside the
@@ -129,11 +167,48 @@ export class ActOnStepHandler
       })
     }
 
+    // A step that opened with no usable owner. The admins who can fix it are
+    // told now, with the reason spelled out, because this is a different problem
+    // from the one reported at start time: the step was routable then and is not
+    // routable now, so "check the assignee rule" would send them looking in the
+    // wrong place.
+    if (stalled > 0) {
+      await this.notifier.stepAssignmentRequired({
+        requestId: request.id.toString(),
+        referenceNo: request.referenceNo,
+        unassignedStepCount: stalled,
+        reason:
+          'the step reached its turn without a usable owner -- whoever it was ' +
+          'routed to is no longer active, and no replacement currently matches ' +
+          'the assignee rule',
+      })
+    }
+
     return {
       stepInstanceId: step.id.toString(),
       stepStatus: step.status,
       requestStatus: request.status,
     }
+  }
+
+  /**
+   * Only an action that ends a step may be applied to one.
+   *
+   * ActionType.isTerminal has been in the catalogue all along and nothing
+   * consulted it. Enforced in the handler rather than only in the dropdown:
+   * a rule that lives in a <select> stops existing the moment somebody calls
+   * the API directly. The internal REQUEST_PAYMENT action raised by requestFee
+   * does not come through here, so raising a fee is unaffected.
+   */
+  private async assertTerminalActionType(actionTypeId: string): Promise<void> {
+    const actionType = await this.actionTypes.findById(
+      Identifier.of(actionTypeId),
+    )
+    if (!actionType) throw new EntityNotFoundError('Action type', actionTypeId)
+    if (!actionType.isTerminal)
+      throw new InvariantViolationError(
+        `Action type '${actionType.code}' does not end a step, so it cannot be applied to one.`,
+      )
   }
 
   private async applyAction(command: ActOnStepCommand) {
@@ -151,6 +226,26 @@ export class ActOnStepHandler
       throw new ForbiddenActionError(
         'You can only act on steps assigned to you.',
       )
+
+    // A finished request is finished. Checked here rather than left to the
+    // aggregate because the step transitions do not consult the root: a step
+    // that was still PENDING when the request was rejected would otherwise be
+    // startable and completable afterwards, quietly adding work to a file that
+    // has already been decided.
+    if (TERMINAL_REQUEST_STATUSES.includes(request.status))
+      throw new ForbiddenActionError(
+        `This request is already ${request.status.toLowerCase()} and cannot be acted on.`,
+      )
+
+    // The catalogue also holds non-terminal codes (FORWARD, REQUEST_PAYMENT,
+    // ...). Those describe work that continues, and nothing here knows how to
+    // continue it -- the step form maps any code it does not recognise as a
+    // rejection or a skip onto COMPLETE, so a non-terminal code applied to a
+    // step would quietly finish work that was meant to carry on. Until those
+    // kinds are modelled properly, only terminal action types may be recorded
+    // against a step.
+    if (input.actionTypeId)
+      await this.assertTerminalActionType(input.actionTypeId)
 
     const statusBefore = request.status
     const stageBefore = stageOfRequest(request)
@@ -194,6 +289,22 @@ export class ActOnStepHandler
         break
       case StepActionKind.REJECT:
         step.reject()
+        // Rejection ends the request, and saying so is the whole point of the
+        // action. Marking only the step left the root IN_PROGRESS with a
+        // terminal step in the middle of it: the completion check below needs
+        // every step to be terminal, the remaining ones were still PENDING, and
+        // the rejected one could not be redone -- so the request could neither
+        // finish nor continue, and the requester was never told.
+        //
+        // The steps that never got their turn are recorded as SKIPPED rather
+        // than left PENDING. They were not performed and never will be; a
+        // pending step on a rejected request is a queue entry that lies to
+        // whoever reads it.
+        for (const other of request.stepInstances) {
+          if (other.id.toString() === step.id.toString()) continue
+          if (!other.isTerminal()) other.skip()
+        }
+        request.reject()
         break
       case StepActionKind.SKIP:
         step.skip()
@@ -207,12 +318,12 @@ export class ActOnStepHandler
     // A finished step may have been the only thing standing between somebody
     // else and their work. Computed inside the transaction because it writes the
     // successors' deadlines; the notifications it returns are sent after commit.
-    const releases =
+    const releases: ReleaseOutcome =
       path &&
       (input.action === StepActionKind.COMPLETE ||
         input.action === StepActionKind.SKIP)
-        ? await this.releaseSuccessors(request, step, path)
-        : []
+        ? await this.releaseSuccessors(request, step, path, input.actorId)
+        : { handoffs: [], stalled: 0 }
 
     if (input.actionTypeId) {
       const action = RequestAction.create(this.ids.next(), {
@@ -271,7 +382,13 @@ export class ActOnStepHandler
         actorId: input.actorId,
       })
 
-    return { request, step, statusBefore, handoffs: releases }
+    return {
+      request,
+      step,
+      statusBefore,
+      handoffs: releases.handoffs,
+      stalled: releases.stalled,
+    }
   }
 
   /**
@@ -340,11 +457,13 @@ export class ActOnStepHandler
     request: Request,
     step: RequestStepInstance,
     path: WorkflowPath,
-  ): Promise<Handoff[]> {
+    actorId: string,
+  ): Promise<ReleaseOutcome> {
     const map = this.dependencyMap(path)
     const finished = step.workflowStepId.toString()
     const now = new Date()
     const handoffs: Handoff[] = []
+    let stalled = 0
 
     for (const ready of request.readySteps(map)) {
       const waitedOnThisStep = (
@@ -358,10 +477,103 @@ export class ActOnStepHandler
           await this.businessHours.addWorkingHours(now, definition.slaHours),
         )
 
-      const owner = ready.assignedToUserId
-      if (owner) handoffs.push({ assigneeUserId: owner.toString() })
+      const before = ready.assignedToUserId?.toString()
+      if (definition) await this.refreshOwnership(request, ready, definition)
+      const after = ready.assignedToUserId?.toString()
+
+      if (!after) {
+        // Opened with nobody to work it. Previously silent, which is how a
+        // request stops moving while still looking healthy on the board.
+        stalled++
+        continue
+      }
+
+      if (after !== before)
+        await this.events.assigned({
+          requestId: request.id.toString(),
+          stepInstanceId: ready.id.toString(),
+          actorId,
+        })
+
+      handoffs.push({
+        assigneeUserId: after,
+        stepInstanceId: ready.id.toString(),
+        reassigned: after !== before,
+      })
     }
-    return handoffs
+    return { handoffs, stalled }
+  }
+
+  /**
+   * Re-checks who should own a step at the moment it actually opens -- item (c).
+   *
+   * A request routes every step up front, so a step five hand-offs deep is
+   * assigned to whoever was least busy days or weeks before anyone could work
+   * it. By the time it opens, that person may have left, been deactivated, or
+   * handed their authority to a stand-in. The step then sits assigned to
+   * somebody who cannot act, and the only signal is that nothing happens.
+   *
+   * Deliberately conservative. Ownership is changed in exactly three cases:
+   *
+   *   1. Nobody owns the step. Routing could not fill it at start time; the
+   *      directory may well answer differently now, so ask again.
+   *   2. The owner is no longer assignable (inactive, soft-deleted, gone).
+   *   3. The owner's authority is currently delegated -- they are still a valid
+   *      employee, so no re-resolution, just a redirect to the stand-in.
+   *
+   * Everything else is left exactly as it was. That is the important half of
+   * this method: a healthy owner is never churned, and in particular an
+   * assignment an admin made by hand is never silently overwritten by the
+   * router. Re-resolving on every release would have been simpler to write and
+   * would have quietly undone deliberate human decisions.
+   *
+   * Best-effort throughout. Every directory read here is a network call on the
+   * path of somebody clicking "complete", and a routing refinement must never
+   * be the reason an approval fails to commit. On any error the step keeps the
+   * owner it already had, which is the pre-existing behaviour.
+   */
+  private async refreshOwnership(
+    request: Request,
+    ready: RequestStepInstance,
+    definition: WorkflowStep,
+  ): Promise<void> {
+    if (!REASSIGN_ON_RELEASE) return
+
+    const current = ready.assignedToUserId?.toString()
+
+    try {
+      if (current) {
+        const usable = await this.directory.isAssignable(current)
+
+        if (usable) {
+          // Case 3. The owner is fine; only their authority has moved.
+          const delegate = await this.assignees.currentDelegateFor(
+            current,
+            request.requesterId,
+          )
+          if (delegate !== current) ready.assignTo(Identifier.of(delegate))
+          return
+        }
+      }
+
+      // Case 1 and case 2 both land here: there is no owner, or the owner can no
+      // longer be given work.
+      const fresh = await this.assignees.resolveOwnerForStep(
+        definition,
+        request.requesterId,
+      )
+
+      // No replacement found. Keep an unusable owner rather than clearing it:
+      // the name is a record of what routing decided and a starting point for
+      // whoever fixes it, and the caller alerts an admin either way. Clearing it
+      // would destroy information and change nothing about the outcome.
+      if (!fresh) return
+      if (fresh.toString() === current) return
+
+      ready.assignTo(fresh)
+    } catch {
+      // Left as it was, on purpose. See the note above about commit safety.
+    }
   }
 
   /** The payment raised for this step, if one has been raised. */
@@ -418,14 +630,14 @@ export class ActOnStepHandler
       )
     }
 
-      await this.notifier.paymentRequested({
-          userId: request.requesterId.toString(),
-          actorId: actorId,
-          requestId: request.id.toString(),
-          referenceNo: request.referenceNo,
-          amount: definition.fee.amount,
-          currency: definition.fee.currency,
-  })
+    await this.notifier.paymentRequested({
+      userId: request.requesterId.toString(),
+      actorId,
+      requestId: request.id.toString(),
+      referenceNo: request.referenceNo,
+      amount: fee.amount,
+      currency: fee.currency,
+    })
   }
 
   /**

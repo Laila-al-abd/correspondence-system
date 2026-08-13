@@ -50,6 +50,10 @@ export interface WorkflowStepDto {
   defaultActionTypeId?: string;
   slaHours?: number;
   pausesSla?: boolean;
+  /** What this step charges the requester. Omit for a free step. */
+  feeAmount?: number;
+  /** ISO 4217 code. The backend defaults to SYP when an amount has no currency. */
+  feeCurrency?: string;
   allowedActionTypeIds?: string[];
   dependsOn?: string[];
 }
@@ -85,6 +89,8 @@ export interface WorkflowStepView {
   defaultActionTypeId?: string;
   slaHours?: number;
   pausesSla: boolean;
+  feeAmount?: number;
+  feeCurrency?: string;
   allowedActionTypeIds: string[];
   dependsOnStepIds: string[];
 }

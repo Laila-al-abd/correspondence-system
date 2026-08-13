@@ -57,6 +57,9 @@ export const requestKeys = {
   /** Document download URL. */
   documentDownloadUrl: (requestId: string, documentId: string) =>
     ['requests', requestId, 'documents', documentId, 'download-url'] as const,
+  /** Assignable users for one step instance. */
+  stepCandidates: (requestId: string, stepId: string) =>
+    ['requests', requestId, 'steps', stepId, 'candidates'] as const,
   hitlQueueAll: ['requests', 'hitl-queue'] as const,
   hitlQueue: (limit?: number, cursor?: string) =>
     ['requests', 'hitl-queue', { limit, cursor }] as const,
@@ -134,12 +137,17 @@ export function useRequestByReference(referenceNo: string) {
  */
 export function useDocumentDownloadUrl(
   requestId: string,
-  documentId: string
+  documentId: string,
+  options?: { enabled?: boolean }
 ) {
   return useQuery({
     queryKey: requestKeys.documentDownloadUrl(requestId, documentId),
     queryFn: () => requestsApi.getDocumentDownloadUrl(requestId, documentId),
-    enabled: !!requestId && !!documentId,
+    // Callers that mint the link on click pass enabled: false and call
+    // refetch(). The link lives for one minute and starts ticking when it is
+    // issued, so fetching one on render burns most of its life before the user
+    // has decided to open anything.
+    enabled: (options?.enabled ?? true) && !!requestId && !!documentId,
     staleTime: 30_000, // 30 seconds — presigned URLs are short-lived
   });
 }
@@ -375,11 +383,36 @@ export function useAssignStep() {
       request,
     }: { id: string; stepId: string; request: AssignStepDto }) =>
       requestsApi.assignStep(id, stepId, request),
-    onSuccess: (_data, { id }) => {
+    onSuccess: (_data, { id, stepId }) => {
       queryClient.invalidateQueries({ queryKey: requestKeys.detail(id) });
       queryClient.invalidateQueries({ queryKey: requestKeys.assigned() });
       queryClient.invalidateQueries({ queryKey: requestKeys.mine() });
+      // Workload counts shift the moment a step is handed out, so the candidate
+      // list is stale as soon as this succeeds.
+      queryClient.invalidateQueries({
+        queryKey: requestKeys.stepCandidates(id, stepId),
+      });
     },
+  });
+}
+
+/**
+ * Who a step may be assigned to.
+ * GET /requests/:id/steps/:stepId/candidates
+ *
+ * Only fetched when the dropdown is actually open — this is a per-step query
+ * and eagerly loading it for every step on a request would be several round
+ * trips for a menu nobody opened.
+ */
+export function useStepCandidates(
+  requestId: string,
+  stepId: string,
+  enabled = true
+) {
+  return useQuery({
+    queryKey: requestKeys.stepCandidates(requestId, stepId),
+    queryFn: () => requestsApi.getStepCandidates(requestId, stepId),
+    enabled: enabled && !!requestId && !!stepId,
   });
 }
 

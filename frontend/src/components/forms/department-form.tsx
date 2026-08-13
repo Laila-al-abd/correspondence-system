@@ -39,18 +39,26 @@ export function DepartmentForm({ existing }: Props) {
   const { data: unitTypes, isLoading: unitTypesLoading } = useOrgUnitTypes();
 
   // Fetch full hierarchy for parent dropdown (Case a: real listing endpoint exists)
-  const { data: treeData } = useDepartmentTree(true); // activeOnly=true
+  const { data: treeData, isLoading: treeLoading } = useDepartmentTree(true); // activeOnly=true
 
-  // Flatten tree for simple select (could also use nested optgroups)
-  const [flatDepartments, setFlatDepartments] = useState<
-    { id: string; name: { ar: string; en?: string }; parentId: string | null }[]
-  >([]);
+  // Flatten tree for simple select (could also use nested optgroups).
+  // The element type must carry `prefix`: flatten() below produces it and
+  // getDepartmentLabel() renders it as the hierarchy indentation. Leaving it
+  // off the state type meant the value existed at runtime but was invisible to
+  // the type checker, so nothing would have caught it being dropped.
+  type FlatDepartment = {
+    id: string;
+    name: { ar: string; en?: string };
+    parentId: string | null;
+    prefix: string;
+  };
+  const [flatDepartments, setFlatDepartments] = useState<FlatDepartment[]>([]);
 
   useEffect(() => {
     function flatten(
       nodes: { id: string; name: { ar: string; en?: string }; parentId: string | null; children: any[] }[],
       parentPath = ''
-    ): { id: string; name: { ar: string; en?: string }; parentId: string | null; prefix: string }[] {
+    ): FlatDepartment[] {
       return nodes.flatMap((node) => [
         // FIXED: The current node just uses the parentPath as its prefix!
         { id: node.id, name: node.name, parentId: node.parentId, prefix: parentPath }, 
@@ -74,9 +82,9 @@ export function DepartmentForm({ existing }: Props) {
 
   const isPending = createDepartment.isPending;
 
-  function getDepartmentLabel(dept: { id: string; name: { ar: string; en?: string }; parentId: string | null ; prefix?: string}): string {
+  function getDepartmentLabel(dept: FlatDepartment): string {
     const en = dept.name.en ?? '';
-    const prefix = dept.prefix ?? '';
+    const prefix = dept.prefix;
     return `${prefix}${dept.name.ar}${en ? ` (${en})` : ''}`;
     
   }
@@ -229,7 +237,7 @@ export function DepartmentForm({ existing }: Props) {
               className={selectClass}
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
-              disabled={isPending}
+              disabled={isPending || treeLoading}
             >
               <option value="">— no parent (root unit) —</option>
               {flatDepartments.map((dept) => (
@@ -238,7 +246,10 @@ export function DepartmentForm({ existing }: Props) {
                 </option>
               ))}
             </select>
-            {flatDepartments.length === 0 && (
+            {treeLoading && (
+              <p className="text-xs text-muted-foreground">Loading departments…</p>
+            )}
+            {!treeLoading && flatDepartments.length === 0 && (
               <p className="text-xs text-muted-foreground">
                 No departments available yet. Sync from directory or create root units first.
               </p>

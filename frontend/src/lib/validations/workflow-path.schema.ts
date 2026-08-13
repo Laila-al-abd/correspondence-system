@@ -28,14 +28,38 @@ const workflowStepSchema = z.object({
   defaultActionTypeId: z.string().uuid('Invalid action type ID').optional().or(z.literal('')),
   slaHours: z.number().int().min(1, 'SLA hours must be at least 1').optional(),
   pausesSla: z.boolean().optional(),
+  feeAmount: z
+    .number()
+    .positive('Fee must be greater than zero')
+    .multipleOf(0.01, 'Fee cannot have more than two decimal places')
+    .optional(),
+  feeCurrency: z
+    .string()
+    .length(3, 'Use a 3-letter ISO currency code, e.g. SYP')
+    .optional(),
   allowedActionTypeIds: z.array(z.string().uuid('Invalid action type ID')).optional(),
   dependsOn: z.array(z.string().min(1)).optional(),
 }).refine(
-  (step) => step.assigneeType !== AssigneeType.SPECIFIC_ROLE || !!step.assigneeRoleId,
-  { message: 'Role is required when assignee type is "Specific Role"', path: ['assigneeRoleId'] }
+  // Head and dean steps are resolved by looking for a role scoped to a unit, so
+  // they are unroutable without one. The backend now rejects them too.
+  (step) =>
+    (step.assigneeType !== AssigneeType.SPECIFIC_ROLE &&
+      step.assigneeType !== AssigneeType.REQUESTER_DEPARTMENT_HEAD &&
+      step.assigneeType !== AssigneeType.REQUESTER_FACULTY_DEAN) ||
+    !!step.assigneeRoleId,
+  {
+    message:
+      'Role is required for "Specific Role", "Requester department head" and "Requester faculty dean" steps',
+    path: ['assigneeRoleId'],
+  }
 ).refine(
   (step) => step.assigneeType !== AssigneeType.SPECIFIC_UNIT || !!step.assigneeDepartmentId,
   { message: 'Department is required when assignee type is "Specific Unit"', path: ['assigneeDepartmentId'] }
+).refine(
+  // A currency on its own charges nothing and would be silently dropped by the
+  // domain, so it is almost certainly a half-filled fee.
+  (step) => !step.feeCurrency || step.feeAmount !== undefined,
+  { message: 'Enter a fee amount, or clear the currency', path: ['feeAmount'] }
 );
 
 /**

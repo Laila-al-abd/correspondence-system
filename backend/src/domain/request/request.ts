@@ -175,6 +175,34 @@ classifyByHuman(templateId: Identifier, templateDefaultPriority?: Priority): voi
   if (templateDefaultPriority) this.props.priority = templateDefaultPriority
 }
 
+  /**
+   * The classifier read the request, proposed its candidates, and could not
+   * place any of them -- typically because the requester is not eligible for
+   * a single one, or their form data contradicts all of them.
+   *
+   * This is not a failure of the request; it is the end of what a machine can
+   * say about it. Marking it HITL does three things that leaving it PENDING
+   * did not. It tells a reviewer that the model has already been through this
+   * one, so a queue entry no longer means "nobody has looked yet". It fires
+   * the same alert a low-confidence reading fires, so somebody is told rather
+   * than left to notice. And because the worker only picks up PENDING rows, it
+   * stops the service re-reading and re-failing the same request every thirty
+   * seconds for as long as it exists.
+   *
+   * No template is set, deliberately: the whole point is that none of them
+   * fitted, and recording a guess here would be worse than recording nothing.
+   * Choosing one remains a person's job, through classifyByHuman.
+   */
+  flagForHumanClassification(): void {
+    if (this.props.currentStatus !== RequestStatus.DRAFT)
+      throw new InvariantViolationError("Only a draft request can be sent for human classification.")
+    if (this.props.classificationStatus === ClassificationStatus.CLASSIFIED)
+      throw new InvariantViolationError("This request is already classified; it does not need a reviewer.")
+    // Idempotent on purpose: a retry after a dropped response must not be an
+    // error, and a request already in the queue is already where it belongs.
+    this.props.classificationStatus = ClassificationStatus.HITL
+  }
+
   setFilledData(data: Record<string, unknown>): void {
     if (this.props.currentStatus !== RequestStatus.DRAFT)
       throw new InvariantViolationError("Form data can only change while the request is a draft.")
@@ -407,6 +435,8 @@ classifyByHuman(templateId: Identifier, templateDefaultPriority?: Priority): voi
   get status(): RequestStatus { return this.props.currentStatus }
   get classificationStatus(): ClassificationStatus { return this.props.classificationStatus }
   get templateId(): Identifier | undefined { return this.props.templateId }
+  /** The path this request was routed onto, once its workflow has started. */
+  get workflowPathId(): Identifier | undefined { return this.props.workflowPathId }
   get requesterId(): Identifier { return this.props.requesterId }
   get filledData(): Record<string, unknown> | undefined { return this.props.filledData }
   /**

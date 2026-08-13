@@ -45,7 +45,7 @@ export function RoleForm({ existing }: Props) {
   // this mutation is never invoked unless isUpdate is true, so the empty
   // string is never actually used to build a request.
   const updateRole = useUpdateRole(existing?.id ?? '');
-  const { data: permissionGroupsData } = usePermissionGroups();
+  const { data: permissionGroupsData, isLoading: permissionsLoading } = usePermissionGroups();
 
   const permissionGroups = permissionGroupsData ?? [];
 
@@ -171,7 +171,7 @@ export function RoleForm({ existing }: Props) {
           </div>
 
           {/* Initial permissions (create only) */}
-          {!isUpdate && permissionGroups.length > 0 && (
+          {!isUpdate && (
             <>
               <Separator />
               <div className="space-y-1">
@@ -185,7 +185,7 @@ export function RoleForm({ existing }: Props) {
                     const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
                     setPermissionCodes(selected);
                   }}
-                  disabled={isPending}
+                  disabled={isPending || permissionsLoading}
                 >
                   {permissionGroups.map((group) => (
                     <optgroup key={group.id} label={`${group.name.ar}${group.name.en ? ` (${group.name.en})` : ''}`}>
@@ -197,6 +197,12 @@ export function RoleForm({ existing }: Props) {
                     </optgroup>
                   ))}
                 </select>
+                {permissionsLoading && (
+                  <p className="text-xs text-muted-foreground">Loading permissions…</p>
+                )}
+                {!permissionsLoading && permissionGroups.length === 0 && (
+                  <p className="text-xs text-muted-foreground">No permissions available.</p>
+                )}
                 <p className="text-xs text-muted-foreground">
                   Hold Ctrl/Cmd to select multiple. Permissions can also be added later.
                 </p>

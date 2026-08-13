@@ -3,6 +3,7 @@ import { Prisma } from '../../../generated/prisma/client'
 import { WorkflowPath } from '../../domain/workflow/workflow-path'
 import { WorkflowPathRepository } from '../../domain/workflow/ports/workflow-path.repository'
 import { Identifier } from '../../domain/shared/identifier'
+import { InvariantViolationError } from '../../domain/shared/domain-error'
 import { PrismaService } from '../persistence/prisma.service'
 import { WorkflowPathMapper, workflowPathInclude } from './workflow-path.mapper'
 
@@ -68,6 +69,23 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
       })
       const existingIds = existing.map((s) => s.id)
       if (existingIds.length) {
+        // A step some request is already standing on cannot be deleted. The FK
+        // from request_step_instances has no cascade and must not get one --
+        // cascading would erase the step history and SLA record of every
+        // in-flight request. Fail with a sentence an admin can act on rather
+        // than letting Prisma surface a raw constraint violation as a 500.
+        const inUse = await tx.requestStepInstance.findFirst({
+          where: { workflowStepId: { in: existingIds } },
+          select: { id: true },
+        })
+        if (inUse)
+          throw new InvariantViolationError(
+            'This workflow path is already in use by one or more requests and ' +
+              'can no longer be edited. Define a new path for the template and ' +
+              'activate it instead -- the old path stays in place for the ' +
+              'requests that started on it.',
+          )
+
         await tx.workflowStepDependency.deleteMany({
           where: {
             OR: [
@@ -132,6 +150,43 @@ export class PrismaWorkflowPathRepository implements WorkflowPathRepository {
           })
         }
       }
+    })
+  }
+
+  /**
+   * Deliberately not routed through `save()`. Flipping `isActive` is metadata;
+   * `save()` would destroy and recreate the step graph as a side effect and
+   * take every running request's step instances down with it.
+   */
+  async setActive(id: Identifier, isActive: boolean): Promise<void> {
+    await this.prisma.workflowPath.update({
+      where: { id: id.toString() },
+      data: { isActive },
+    })
+  }
+
+  /**
+   * The swap, in one transaction. Order matters even inside it: PostgreSQL
+   * checks a unique index per statement, so the incumbent has to be stood down
+   * before the replacement is promoted.
+   */
+  async activateExclusively(
+    templateId: Identifier,
+    pathId: Identifier,
+  ): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      await tx.workflowPath.updateMany({
+        where: {
+          templateId: templateId.toString(),
+          isActive: true,
+          id: { not: pathId.toString() },
+        },
+        data: { isActive: false },
+      })
+      await tx.workflowPath.update({
+        where: { id: pathId.toString() },
+        data: { isActive: true },
+      })
     })
   }
 }

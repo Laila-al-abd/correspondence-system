@@ -47,6 +47,23 @@ const SLA_DUE_AT_SUBQUERY = Prisma.sql`
 `
 
 /**
+ * Fees raised and not settled, per request.
+ *
+ * REQUIRED is the only unsettled state -- CONFIRMED means paid and WAIVED means
+ * forgiven, and both are finished as far as the requester is concerned. Written
+ * as a correlated subquery so the summary lists keep costing one query: joining
+ * payments would multiply rows and force a GROUP BY over every selected column.
+ */
+const OUTSTANDING_PAYMENTS_SUBQUERY = Prisma.sql`
+  (
+    SELECT COUNT(*)::int
+    FROM payments p
+    WHERE p.request_id = r.id
+      AND p.status = 'REQUIRED'
+  )
+`
+
+/**
  * Prisma-backed read model for request lists.
  *
  * Two things are deliberate here.
@@ -191,6 +208,7 @@ export class PrismaRequestQuery implements RequestQueryPort {
              r.classification_confidence, r.classified_by, r.current_status,
              r.priority, r.sla_risk,
              ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             ${OUTSTANDING_PAYMENTS_SUBQUERY} AS outstanding_payments,
              r.completed_at, r.confirmed_at
         FROM requests r
        WHERE EXISTS (
@@ -275,6 +293,7 @@ export class PrismaRequestQuery implements RequestQueryPort {
              r.classification_confidence, r.classified_by, r.current_status,
              r.priority, r.sla_risk,
              ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             ${OUTSTANDING_PAYMENTS_SUBQUERY} AS outstanding_payments,
              r.completed_at, r.confirmed_at
         FROM requests r
         ${whereSql}
@@ -354,6 +373,7 @@ export class PrismaRequestQuery implements RequestQueryPort {
              classification_status, classification_confidence, classified_by,
              current_status, priority, sla_risk,
              ${SLA_DUE_AT_SUBQUERY} AS sla_due_at,
+             ${OUTSTANDING_PAYMENTS_SUBQUERY} AS outstanding_payments,
              completed_at, confirmed_at,
              ${priorityRank} AS priority_rank,
              ${riskRank} AS risk_rank,
@@ -449,6 +469,7 @@ type SummaryRow = {
   slaDueAt: Date | null
   completedAt: Date | null
   confirmedAt: Date | null
+  outstandingPaymentCount?: number
 }
 
 /** The summary columns as they come back from a raw SELECT on `requests`. */
@@ -467,6 +488,7 @@ type AssignedRow = {
   sla_due_at: Date | null
   completed_at: Date | null
   confirmed_at: Date | null
+  outstanding_payments: number | null
 }
 
 /** The same row, plus the ordering keys the queue computes in SQL. */
@@ -499,6 +521,7 @@ function toSummary(row: SummaryRow): RequestSummaryView {
     slaRisk: row.slaRisk,
     slaDueAt: row.slaDueAt ? row.slaDueAt.toISOString() : undefined,
     completedAt: row.completedAt ? row.completedAt.toISOString() : undefined,
+    outstandingPaymentCount: row.outstandingPaymentCount ?? 0,
   }
 }
 
@@ -518,5 +541,6 @@ function toSummaryFromRaw(row: AssignedRow): RequestSummaryView {
     slaDueAt: row.sla_due_at,
     completedAt: row.completed_at,
     confirmedAt: row.confirmed_at,
+    outstandingPaymentCount: Number(row.outstanding_payments ?? 0),
   })
 }

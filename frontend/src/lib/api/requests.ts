@@ -27,6 +27,7 @@ import {
   DocumentDownloadUrlView,
   ConfirmPaymentResponse,
   StartWorkflowResponse,
+  StepCandidatesView,
 } from '@/types/request';
 import { KeysetPage } from '@/types/shared';
 /**
@@ -246,6 +247,20 @@ export const requestsApi = {
     const { data } = await apiClient.post<WaivePaymentResponse>(
       `/requests/${id}/payments/${paymentId}/waive`,
       request
+    );
+    return data;
+  },
+
+  /**
+   * Who this step may be assigned to.
+   * GET /requests/:id/steps/:stepId/candidates
+   */
+  getStepCandidates: async (
+    id: string,
+    stepId: string
+  ): Promise<StepCandidatesView> => {
+    const { data } = await apiClient.get<StepCandidatesView>(
+      `/requests/${id}/steps/${stepId}/candidates`
     );
     return data;
   },

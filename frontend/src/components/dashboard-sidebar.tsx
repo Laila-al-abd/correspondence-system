@@ -1,17 +1,36 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, FileText, LogOut } from 'lucide-react';
+import { Home, FileText, Building2, LogOut } from 'lucide-react';
 import { useLogout } from '@/lib/hooks/use-auth';
+import { usePermissions } from '@/lib/auth/permissions-provider';
 
-const NAV_ITEMS = [
+// `permission`, when present, hides the entry from anyone who lacks it. Without
+// that filter an ordinary employee would see a link that only ever renders
+// "You don't have access to this page."
+const NAV_ITEMS: {
+  href: string;
+  label: string;
+  icon: typeof Home;
+  permission?: string;
+}[] = [
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/dashboard/requests', label: 'My Requests', icon: FileText },
+  {
+    href: '/dashboard/organization/departments',
+    label: 'Departments',
+    icon: Building2,
+    permission: 'user.manage',
+  },
 ];
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const logout = useLogout();
+  const { hasPermission } = usePermissions();
+  const items = NAV_ITEMS.filter(
+    (item) => !item.permission || hasPermission(item.permission),
+  );
 
   return (
     <aside
@@ -28,8 +47,13 @@ export function DashboardSidebar() {
       </div>
 
       <nav className="flex-1 space-y-1 px-2">
-        {NAV_ITEMS.map((item) => {
-          const active = pathname === item.href;
+        {items.map((item) => {
+          // Prefix match so child routes (…/departments/new) keep the parent
+          // entry lit; '/dashboard' is exact or it would match everything.
+          const active =
+            item.href === '/dashboard'
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
           const Icon = item.icon;
           return (
             <Link

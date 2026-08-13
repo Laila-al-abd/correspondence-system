@@ -12,6 +12,7 @@ import {
   Users,
   Repeat,
   BarChart3,
+  Building,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 

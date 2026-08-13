@@ -1,0 +1,18 @@
+export declare enum CalendarPeriodType {
+    EXAM = "EXAM",
+    REGISTRATION = "REGISTRATION",
+    HOLIDAY = "HOLIDAY",
+    REGULAR = "REGULAR"
+}
+export declare enum EventType {
+    STATUS_CHANGE = "STATUS_CHANGE",
+    STEP_STARTED = "STEP_STARTED",
+    STEP_COMPLETED = "STEP_COMPLETED",
+    ACTION_TAKEN = "ACTION_TAKEN",
+    ASSIGNED = "ASSIGNED"
+}
+export declare enum ModelType {
+    NLP_CLASSIFIER = "NLP_CLASSIFIER",
+    NLP_EXTRACTOR = "NLP_EXTRACTOR",
+    SLA_RISK_BASELINE = "SLA_RISK_BASELINE"
+}

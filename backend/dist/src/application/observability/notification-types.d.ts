@@ -1,0 +1,12 @@
+export declare const NotificationType: {
+    readonly STEP_ASSIGNED: "STEP_ASSIGNED";
+    readonly REQUEST_STATE_CHANGED: "REQUEST_STATE_CHANGED";
+    readonly ACTION_TAKEN: "ACTION_TAKEN";
+    readonly CLASSIFICATION_NEEDS_REVIEW: "CLASSIFICATION_NEEDS_REVIEW";
+    readonly DELEGATION_GRANTED: "DELEGATION_GRANTED";
+    readonly DELEGATION_REVOKED: "DELEGATION_REVOKED";
+    readonly STEP_ASSIGNMENT_REQUIRED: "STEP_ASSIGNMENT_REQUIRED";
+    readonly CONFIRMATION_REQUIRED: "CONFIRMATION_REQUIRED";
+    readonly PAYMENT_REQUESTED: "PAYMENT_REQUESTED";
+};
+export type NotificationTypeCode = (typeof NotificationType)[keyof typeof NotificationType];

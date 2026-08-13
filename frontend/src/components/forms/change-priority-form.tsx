@@ -34,6 +34,14 @@ interface Props {
   currentPriority: Priority;
   /** Optional existing change to edit — not used (no update route). */
   existing?: never;
+  /**
+   * Called after a successful change. Supplied when the form is hosted in a
+   * dialog, which needs to close itself; without it the form falls back to
+   * navigating, which is right for a standalone page and useless in a modal.
+   */
+  onSuccess?: () => void;
+  /** Called when the user cancels. Same reasoning as onSuccess. */
+  onCancel?: () => void;
 }
 
 const PRIORITY_LABELS: Record<Priority, { ar: string; en: string; color: string }> = {
@@ -50,7 +58,7 @@ const PRIORITY_OPTIONS: { value: Priority; label: string }[] = [
   { value: Priority.URGENT, label: 'URGENT (عاجل)' },
 ];
 
-export function ChangePriorityForm({ requestId, currentPriority, existing }: Props) {
+export function ChangePriorityForm({ requestId, currentPriority, existing, onSuccess, onCancel }: Props) {
   const router = useRouter();
   const changePriority = useChangePriority();
 
@@ -88,7 +96,8 @@ export function ChangePriorityForm({ requestId, currentPriority, existing }: Pro
 
     try {
       await changePriority.mutateAsync({ id: requestId, request });
-      router.push(`/dashboard/requests/${requestId}`);
+      if (onSuccess) onSuccess();
+      else router.push(`/dashboard/requests/${requestId}`);
     } catch {
       setSubmitError('Failed to change priority. Please try again.');
     }
@@ -181,7 +190,14 @@ export function ChangePriorityForm({ requestId, currentPriority, existing }: Pro
             <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? 'Changing…' : 'Change Priority'}
             </Button>
-            <Button type="button" variant="outline" onClick={() => router.push(`/dashboard/requests/${requestId}`)} disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                onCancel ? onCancel() : router.push(`/dashboard/requests/${requestId}`)
+              }
+              disabled={isPending}
+            >
               Cancel
             </Button>
           </div>

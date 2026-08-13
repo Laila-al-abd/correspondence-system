@@ -1,0 +1,1 @@
+{"version":3,"file":"purge-old-notifications.command.js","sourceRoot":"","sources":["../../../../../../src/application/observability/commands/purge-old-notifications/purge-old-notifications.command.ts"],"names":[],"mappings":";;;AAIA,MAAa,4BAA4B;IAClB;IAArB,YAAqB,aAAqB;QAArB,kBAAa,GAAb,aAAa,CAAQ;IAAG,CAAC;CAC/C;AAFD,oEAEC"}

@@ -1,29 +1,43 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+/**
+ * The smoke test: does the whole application actually stand up?
+ *
+ * Every other e2e file assumes a booted app. This one proves it, and it is the
+ * file to run first when something is wrong, because it fails for a completely
+ * different set of reasons than a route test: a missing provider, an
+ * unreachable database, a mistyped connection string.
+ *
+ * Replaces the Nest starter test that asserted "Hello World!" on GET /. That
+ * assertion had stopped being true in spirit -- the interesting property of
+ * this API is that it is CLOSED by default -- so both facts are asserted here
+ * instead: the two deliberately public routes answer, and a route that is not
+ * public refuses an anonymous caller.
+ */
+import type { INestApplication } from '@nestjs/common'
+import { api, createTestApp } from './helpers/e2e-app'
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('application bootstrap (e2e)', () => {
+  let app: INestApplication
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+  beforeAll(async () => {
+    app = await createTestApp()
+  }, 60_000)
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+  afterAll(async () => {
+    await app?.close()
+  })
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+  it('boots and answers the public root route', async () => {
+    const response = await api(app).get('/')
+    expect(response.status).toBe(200)
+  })
 
-  afterEach(async () => {
-    await app.close();
-  });
-});
+  it('answers the public liveness probe', async () => {
+    const response = await api(app).get('/health')
+    expect(response.body).toEqual({ status: 'ok' })
+  })
+
+  it('refuses an anonymous caller on a protected route', async () => {
+    const response = await api(app).get('/auth/me/permissions')
+    expect(response.status).toBe(401)
+  })
+})
