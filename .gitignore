@@ -8,8 +8,7 @@ models/
 codebase.md
 .doc-progress.json
 # ---- Builds ----
-docs/
-dist/
+backend\docsdist/
 build/
 .next/
 out/

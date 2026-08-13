@@ -153,21 +153,38 @@ class BackendClient:
 
     # ---------- write ----------
     def classify_by_model(self, request_id: str, template_id: str, confidence: float,
-                          threshold: float, model_version: str,
-                          suggested_priority: Optional[str] = None) -> ClassifyOutcome:
+                          threshold: float, model_version: str) -> ClassifyOutcome:
+        # No suggestedPriority. Priority is declared on the template and may be
+        # overridden by staff; a guess read off the requester's wording has no
+        # standing next to either, and the backend discards the field anyway.
         body = {
             "templateId": template_id,
             "confidence": round(float(max(0.0, min(1.0, confidence))), 6),
             "threshold": round(float(threshold), 6),
             "modelVersion": model_version,
         }
-        if suggested_priority:
-            body["suggestedPriority"] = suggested_priority
-
         if self.cfg.dry_run:
             return ClassifyOutcome(True, "dry_run", None, body)
 
         r = self._request("POST", f"/requests/{request_id}/classify/model", json=body)
+        if r.status_code < 400:
+            data = r.json()
+            return ClassifyOutcome(True, "ok", data.get("classificationStatus"), data)
+        return ClassifyOutcome(False, _classify_error(r.status_code, r.text),
+                               None, r.text)
+
+    def flag_for_review(self, request_id: str) -> ClassifyOutcome:
+        """Hand a request we could not place to the human review queue.
+
+        Called once every candidate has been refused. No body: the whole
+        reason we are here is that no template fits, so there is nothing to
+        send. Idempotent on the backend, which matters because a dropped
+        response here would otherwise re-alert every reviewer on the retry.
+        """
+        if self.cfg.dry_run:
+            return ClassifyOutcome(True, "dry_run", None, {"flagged": request_id})
+
+        r = self._request("POST", f"/requests/{request_id}/classify/needs-review")
         if r.status_code < 400:
             data = r.json()
             return ClassifyOutcome(True, "ok", data.get("classificationStatus"), data)

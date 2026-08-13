@@ -15,7 +15,6 @@ import torch.nn.functional as F
 from transformers import AutoModel, AutoTokenizer
 
 from .config import Config
-from .priority import suggest_priority
 
 
 @dataclass
@@ -33,7 +32,6 @@ class ClassifyResult:
     confidence: float          # calibrated 0..1, this is what the backend sees
     cosine: float              # raw top-1 similarity, for debugging
     margin: float              # top1 - top2 cosine
-    suggested_priority: str
     candidates: List[Candidate] = field(default_factory=list)
     model_version: str = ""
     elapsed_ms: float = 0.0
@@ -45,7 +43,6 @@ class ClassifyResult:
             "confidence": round(self.confidence, 4),
             "cosine": round(self.cosine, 4),
             "margin": round(self.margin, 4),
-            "suggested_priority": self.suggested_priority,
             "candidates": [
                 {"template_code": c.template_code, "template_id": c.template_id,
                  "score": round(c.score, 4), "probability": round(c.probability, 4)}
@@ -171,7 +168,6 @@ class TemplateClassifier:
                 confidence=cands[0].probability,
                 cosine=cands[0].score,
                 margin=scores[0] - scores[1],
-                suggested_priority=suggest_priority(texts[row]),
                 candidates=cands[:self.cfg.top_k],
                 model_version=self.cfg.model_version,
                 elapsed_ms=elapsed,
