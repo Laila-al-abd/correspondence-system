@@ -38,7 +38,10 @@ export function ActOnStepForm({
 }: Props) {
   const router = useRouter();
   const actOnStep = useActOnStep();
-  const { data: catalogActionTypes, isLoading: isLoadingActionTypes } = useActionTypes();
+  // Terminal action types only: this form maps any code that is not a rejection
+  // or a skip onto COMPLETE, so a non-terminal one would finish the step while
+  // appearing to forward it or to ask for a payment. The server refuses them too.
+  const { data: catalogActionTypes, isLoading: isLoadingActionTypes } = useActionTypes(true);
 
   const isPendingStep = currentStepStatus === 'PENDING';
 

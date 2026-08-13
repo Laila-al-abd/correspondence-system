@@ -1,0 +1,1 @@
+{"version":3,"file":"mark-notification-read.command.js","sourceRoot":"","sources":["../../../../../../src/application/observability/commands/mark-notification-read/mark-notification-read.command.ts"],"names":[],"mappings":";;;AAIA,MAAa,2BAA2B;IAE3B;IACA;IAFX,YACW,cAAsB,EACtB,MAAc;QADd,mBAAc,GAAd,cAAc,CAAQ;QACtB,WAAM,GAAN,MAAM,CAAQ;IACtB,CAAC;CACL;AALD,kEAKC"}

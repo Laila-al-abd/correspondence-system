@@ -30,6 +30,9 @@ import { toNumber } from '../shared/dto/page-query.dto'
 import { EntityNotFoundError } from '../../application/errors'
 import { RequirePermissions } from '../identity/permissions.decorator'
 
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 @Controller('organization/departments')
 @RequirePermissions('user.manage')
 export class OrganizationController {
@@ -78,15 +81,22 @@ export class OrganizationController {
     return this.departments.tree(activeOnly === 'true')
   }
 
-  @Get(':id')
-  async getOne(@Param('id') id: string): Promise<DepartmentView> {
-    const found = await this.departments.getById(id)
-    if (!found) throw new EntityNotFoundError('Department', id)
-    return found
-  }
-
+  // Declared before ':id'. Nest matches routes in declaration order, so a
+  // literal segment registered after a parameter route is unreachable: the
+  // request lands in getOne() with id === 'unit-types' and Postgres rejects it
+  // as an invalid uuid (a 500, not a 404).
   @Get('unit-types')
   listUnitTypes(): Promise<OrgUnitTypeView[]> {
     return this.queryBus.execute(new ListOrgUnitTypesQuery())
+  }
+
+  @Get(':id')
+  async getOne(@Param('id') id: string): Promise<DepartmentView> {
+    // Defence in depth for the bug above. Any future literal route added below
+    // this one still yields a clean 404 instead of leaking a driver error.
+    if (!UUID_PATTERN.test(id)) throw new EntityNotFoundError('Department', id)
+    const found = await this.departments.getById(id)
+    if (!found) throw new EntityNotFoundError('Department', id)
+    return found
   }
 }

@@ -35,16 +35,11 @@ export class ActivateWorkflowPathHandler
     if (!path) throw new EntityNotFoundError('WorkflowPath', workflowPathId)
 
     path.activate()
-
-    const current = await this.workflowPaths.findActiveByTemplate(
-      path.templateId,
-    )
-    if (current && !current.id.equals(path.id)) {
-      current.deactivate()
-      await this.workflowPaths.save(current)
-    }
-
-    await this.workflowPaths.save(path)
+    // Not save(): this path may already be carrying requests, and save() would
+    // delete and recreate its steps underneath them. Not two setActive calls
+    // either: retiring the incumbent and promoting this one have to be a single
+    // transaction or the template is momentarily left with two active paths.
+    await this.workflowPaths.activateExclusively(path.templateId, path.id)
     return { id: path.id.toString(), isActive: path.isActive }
   }
 }

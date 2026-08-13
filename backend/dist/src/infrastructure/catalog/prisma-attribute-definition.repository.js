@@ -1,0 +1,49 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrismaAttributeDefinitionRepository = void 0;
+const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../persistence/prisma.service");
+const attribute_definition_mapper_1 = require("./attribute-definition.mapper");
+let PrismaAttributeDefinitionRepository = class PrismaAttributeDefinitionRepository {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async findById(id) {
+        const row = await this.prisma.attributeDefinition.findFirst({
+            where: { id: id.toString(), deletedAt: null },
+            include: attribute_definition_mapper_1.attributeInclude,
+        });
+        return row ? attribute_definition_mapper_1.AttributeDefinitionMapper.toDomain(row) : null;
+    }
+    async findByCode(code) {
+        const row = await this.prisma.attributeDefinition.findFirst({
+            where: { code, deletedAt: null },
+            include: attribute_definition_mapper_1.attributeInclude,
+        });
+        return row ? attribute_definition_mapper_1.AttributeDefinitionMapper.toDomain(row) : null;
+    }
+    async list() {
+        const rows = await this.prisma.attributeDefinition.findMany({
+            where: { deletedAt: null },
+            orderBy: { code: 'asc' },
+            include: attribute_definition_mapper_1.attributeInclude,
+        });
+        return rows.map((row) => attribute_definition_mapper_1.AttributeDefinitionMapper.toDomain(row));
+    }
+};
+exports.PrismaAttributeDefinitionRepository = PrismaAttributeDefinitionRepository;
+exports.PrismaAttributeDefinitionRepository = PrismaAttributeDefinitionRepository = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+], PrismaAttributeDefinitionRepository);
+//# sourceMappingURL=prisma-attribute-definition.repository.js.map

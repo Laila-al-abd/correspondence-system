@@ -11,6 +11,10 @@ export interface WorkflowStepInput {
   defaultActionTypeId?: string
   slaHours?: number
   pausesSla?: boolean
+  /** What the step costs the requester. Absent means free. */
+  feeAmount?: number
+  /** ISO 4217 code; defaults to SYP when an amount is given without one. */
+  feeCurrency?: string
   allowedActionTypeIds?: string[]
   /** Keys of the steps that must finish before this one (a DAG edge). */
   dependsOn?: string[]

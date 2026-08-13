@@ -99,14 +99,30 @@ export class StartRequestWorkflowHandler
       )
     }
 
-    // Auto-route: pick one owner per step from its assignee strategy. Steps we
-    // cannot resolve are left unassigned for an admin to pick up manually.
+    // Auto-route, but only the steps that can be worked now.
+    //
+    // Routing the whole path up front dated every downstream decision to the
+    // moment the request was confirmed. A step five hand-offs deep was given to
+    // whoever was least busy days before anyone could touch it, and because
+    // ActOnStepHandler.refreshOwnership deliberately refuses to churn a healthy
+    // owner, that stale choice then stood. The effect the user sees is that
+    // assignment happens at confirmation rather than when the step opens.
+    //
+    // Leaving a not-yet-startable step unassigned makes it case 1 of
+    // refreshOwnership ("nobody owns it"), so it is routed against the
+    // directory as it stands at release time -- current staff, current
+    // workloads, current delegations -- while a human assignment made in the
+    // meantime is still respected.
     const assignments = await this.assignees.resolveForPath(
       path,
       request.requesterId,
+      entryStepIds,
     )
+    let entryStepCount = 0
     let assignedStepCount = 0
     for (const instance of stepInstances) {
+      if (!entryStepIds.has(instance.workflowStepId.toString())) continue
+      entryStepCount++
       const assignee = assignments.get(instance.workflowStepId.toString())
       if (assignee) {
         instance.assignTo(assignee)
@@ -161,7 +177,10 @@ export class StartRequestWorkflowHandler
     // Starting a request never fails just because a step could not be routed,
     // but staying silent was the wrong answer: the request would sit still
     // while looking healthy. Whoever can fix the routing is now told.
-    const unassignedStepCount = stepInstances.length - assignedStepCount
+    // Counted over startable steps only. A later step being unassigned is now
+    // the normal, intended state rather than a routing failure, and alerting an
+    // admin about it would make the alert meaningless.
+    const unassignedStepCount = entryStepCount - assignedStepCount
     if (unassignedStepCount > 0) {
       await this.notifier.stepAssignmentRequired({
         requestId: request.id.toString(),

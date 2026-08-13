@@ -25,6 +25,9 @@
 //   - defaultActionTypeId (optional, string) — dropdown from GET /action-types (all action types)
 //   - slaHours (optional, int >= 1)
 //   - pausesSla (optional, boolean)
+//   - feeAmount (optional, > 0) / feeCurrency (optional, 3-letter ISO, default SYP)
+//     The fee is charged when the step is STARTED and the step cannot be
+//     completed until that payment is confirmed or waived.
 //   - allowedActionTypeIds (optional, string[]) — multi-select from GET /action-types?onlyTerminal=true (terminal action types only)
 //   - dependsOn (optional, string[]) — references other step keys
 
@@ -76,6 +79,26 @@ const ASSIGNEE_TYPE_OPTIONS: { value: AssigneeType; label: string }[] = Object.v
   label: ASSIGNEE_TYPE_LABELS[v],
 }));
 
+// A head/dean step resolves to "the holder of this role, scoped to that unit",
+// so it needs a role exactly as much as a SPECIFIC_ROLE step does. The form
+// used to offer the role picker for SPECIFIC_ROLE only, which made it
+// impossible to author a routable head or dean step: every one of them was
+// saved with no role and arrived unassigned.
+// Types that can carry a department. SPECIFIC_UNIT must have one; a role step
+// may have one, and the picker has to be on screen for that to be possible --
+// while it was rendered for SPECIFIC_UNIT alone, every role step was saved
+// unscoped and routing had no department to prefer.
+const DEPARTMENT_CAPABLE_TYPES: AssigneeType[] = [
+  AssigneeType.SPECIFIC_UNIT,
+  AssigneeType.SPECIFIC_ROLE,
+]
+
+const ROLE_REQUIRED_TYPES: AssigneeType[] = [
+  AssigneeType.SPECIFIC_ROLE,
+  AssigneeType.REQUESTER_DEPARTMENT_HEAD,
+  AssigneeType.REQUESTER_FACULTY_DEAN,
+];
+
 // Initial empty step
 function createEmptyStep(): WorkflowStepDto {
   return {
@@ -88,6 +111,8 @@ function createEmptyStep(): WorkflowStepDto {
     defaultActionTypeId: undefined,
     slaHours: undefined,
     pausesSla: undefined,
+    feeAmount: undefined,
+    feeCurrency: undefined,
     allowedActionTypeIds: undefined,
     dependsOn: undefined,
   };
@@ -100,8 +125,13 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
   // Fetch data for dropdowns
   const { data: templatesData } = useTemplateHook(true); // includeActive = true
   const { data: rolesData } = useRoles();
-  const { data: departmentTreeData } = useDepartmentTree(true); // activeOnly = true
-  const { data: actionTypesData } = useActionTypes(); // all action types for defaultActionTypeId
+  const { data: departmentTreeData, isLoading: departmentsLoading } = useDepartmentTree(true); // activeOnly = true
+  // Terminal action types only. A non-terminal code (FORWARD, REQUEST_PAYMENT)
+  // describes work that continues, and the step form maps anything it does not
+  // recognise as a rejection or a skip onto COMPLETE -- so offering one here
+  // would let an author arm a step that silently finishes instead of carrying
+  // on. The server refuses them as well; this keeps them off the screen.
+  const { data: actionTypesData } = useActionTypes(true);
 
   const templates = templatesData ?? [];
   const roles = rolesData ?? [];
@@ -186,6 +216,9 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
         defaultActionTypeId: s.defaultActionTypeId?.trim() || undefined,
         slaHours: s.slaHours,
         pausesSla: s.pausesSla,
+        feeAmount: s.feeAmount,
+        // Only meaningful alongside an amount; the backend defaults it to SYP.
+        feeCurrency: s.feeAmount !== undefined ? (s.feeCurrency?.trim().toUpperCase() || undefined) : undefined,
         allowedActionTypeIds: s.allowedActionTypeIds?.filter((c) => c.trim()) || undefined,
         dependsOn: s.dependsOn?.filter((k) => k.trim()) || undefined,
       })),
@@ -428,7 +461,7 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                 </div>
 
                 {/* Conditional fields based on assigneeType */}
-                {step.assigneeType === AssigneeType.SPECIFIC_ROLE && roles.length > 0 && (
+                {ROLE_REQUIRED_TYPES.includes(step.assigneeType) && (
                   <div className="space-y-1">
                     <Label htmlFor={`step-${index}-assigneeRoleId`}>
                       Role <span className="text-destructive">*</span>
@@ -454,7 +487,7 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                   </div>
                 )}
 
-                {step.assigneeType === AssigneeType.SPECIFIC_UNIT && flatDepartments.length > 0 && (
+                {DEPARTMENT_CAPABLE_TYPES.includes(step.assigneeType) && (
                   <div className="space-y-1">
                     <Label htmlFor={`step-${index}-assigneeDepartmentId`}>
                       Department <span className="text-destructive">*</span>
@@ -464,7 +497,7 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                       className={selectClass}
                       value={step.assigneeDepartmentId ?? ''}
                       onChange={(e) => updateStep(index, { assigneeDepartmentId: e.target.value || undefined })}
-                      disabled={isPending}
+                      disabled={isPending || departmentsLoading}
                       required
                     >
                       <option value="">— select department —</option>
@@ -474,8 +507,13 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                         </option>
                       ))}
                     </select>
-                    {flatDepartments.length === 0 && (
-                      <p className="text-xs text-muted-foreground">No departments available.</p>
+                    {departmentsLoading && (
+                      <p className="text-xs text-muted-foreground">Loading departments…</p>
+                    )}
+                    {!departmentsLoading && flatDepartments.length === 0 && (
+                      <p className="text-xs text-destructive">
+                        No departments exist yet. Create one before defining this step.
+                      </p>
                     )}
                   </div>
                 )}
@@ -486,7 +524,7 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* defaultActionTypeId - single select from all action types */}
                   <div className="space-y-1">
-                    <Label htmlFor={`step-${index}-defaultActionTypeId`}>Default action type (optional)</Label>
+                    <Label htmlFor={`step-${index}-defaultActionTypeId`}>Default action type (optional, terminal only)</Label>
                     <select
                       id={`step-${index}-defaultActionTypeId`}
                       className={selectClass}
@@ -502,7 +540,7 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                       ))}
                     </select>
                     {actionTypes.length === 0 && (
-                      <p className="text-xs text-muted-foreground">No action types available.</p>
+                      <p className="text-xs text-muted-foreground">No terminal action types available.</p>
                     )}
                   </div>
 
@@ -568,6 +606,48 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                     )}
                     <p className="text-xs text-muted-foreground">
                       Hold Ctrl/Cmd to select multiple. Terminal action types only (actions that end a request's journey).
+                    </p>
+                  </div>
+                </div>
+
+                {/* Fee -- charged when the step starts, blocks completion until settled */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Label htmlFor={`step-${index}-feeAmount`}>Fee amount (optional)</Label>
+                    <Input
+                      id={`step-${index}-feeAmount`}
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={step.feeAmount ?? ''}
+                      onChange={(e) =>
+                        updateStep(index, {
+                          feeAmount: e.target.value ? parseFloat(e.target.value) : undefined,
+                        })
+                      }
+                      disabled={isPending}
+                      placeholder="e.g., 5000"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Charged when this step is started. The step cannot be completed
+                      until the fee is confirmed or waived. Leave empty for a free step.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <Label htmlFor={`step-${index}-feeCurrency`}>Currency</Label>
+                    <Input
+                      id={`step-${index}-feeCurrency`}
+                      value={step.feeCurrency ?? ''}
+                      onChange={(e) =>
+                        updateStep(index, { feeCurrency: e.target.value.toUpperCase() || undefined })
+                      }
+                      disabled={isPending || step.feeAmount === undefined}
+                      maxLength={3}
+                      placeholder="SYP"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      3-letter ISO code. Defaults to SYP.
                     </p>
                   </div>
                 </div>

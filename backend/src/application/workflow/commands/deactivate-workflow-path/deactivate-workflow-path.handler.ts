@@ -26,7 +26,8 @@ export class DeactivateWorkflowPathHandler
     )
     if (!path) throw new EntityNotFoundError('WorkflowPath', workflowPathId)
     path.deactivate()
-    await this.workflowPaths.save(path)
+    // Same reason as everywhere else: retiring a path must not touch its steps.
+    await this.workflowPaths.setActive(path.id, false)
     return { id: path.id.toString(), isActive: path.isActive }
   }
 }

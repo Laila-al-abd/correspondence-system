@@ -454,11 +454,16 @@ export interface StepInstanceView {
   id: string;
   workflowStepId: string;
   assignedToUserId?: string;
+  /** Arabic (or English) name of the step definition, when it resolves. */
+  stepName?: string;
   status: string;
   slaDueAt?: string;
   slaPaused: boolean;
   startedAt?: string;
   completedAt?: string;
+  allowedActionTypeIds: string[];
+  /** True when the step definition declares a fee. */
+  chargesFee: boolean;
 }
 
 /**
@@ -545,6 +550,8 @@ export interface RequestSummaryView {
   slaRisk: string;
   slaDueAt?: string;
   completedAt?: string;
+  /** Fees raised on this request and not yet paid or waived. */
+  outstandingPaymentCount?: number;
 }
 
 /**
@@ -678,6 +685,33 @@ export interface ActOnStepResponse {
 export interface AssignStepResponse {
   stepInstanceId: string;
   assignedToUserId: string;
+}
+
+/**
+ * One person this step may be assigned to.
+ * Source: backend/src/application/request/queries/list-step-candidates/list-step-candidates.handler.ts
+ */
+export interface StepCandidateView {
+  userId: string;
+  openStepCount: number;
+  /** Automatic routing would also have considered this person. */
+  recommended: boolean;
+}
+
+/**
+ * Candidates for one step instance.
+ * GET /requests/:id/steps/:stepId/candidates
+ */
+export interface StepCandidatesView {
+  stepInstanceId: string;
+  workflowStepId: string;
+  stepName?: string;
+  assigneeType?: string;
+  assigneeRoleId?: string;
+  currentAssigneeUserId?: string;
+  candidates: StepCandidateView[];
+  /** No eligible pool — the backend will accept any active user. */
+  unrestricted: boolean;
 }
 
 /**

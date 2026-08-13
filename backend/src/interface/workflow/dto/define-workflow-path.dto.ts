@@ -5,7 +5,9 @@ import {
   IsBoolean,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   Length,
   Min,
@@ -61,6 +63,23 @@ class WorkflowStepDto {
   @IsOptional()
   @IsBoolean()
   pausesSla?: boolean
+
+  /**
+   * What this step costs the requester. Absent means free, which is the case
+   * for all but a handful of steps. A zero fee is rejected rather than stored:
+   * it would create a payment row that is settled by paying nothing, and a step
+   * that blocks until somebody clicks to confirm it.
+   */
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsPositive()
+  feeAmount?: number
+
+  /** ISO 4217 code. Defaults to SYP when an amount is given without one. */
+  @IsOptional()
+  @IsString()
+  @Length(3, 3)
+  feeCurrency?: string
 
   @IsOptional()
   @IsArray()

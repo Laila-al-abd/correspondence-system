@@ -1,0 +1,1 @@
+{"version":3,"file":"revoke-role-from-user.command.js","sourceRoot":"","sources":["../../../../../../src/application/identity/commands/revoke-role-from-user/revoke-role-from-user.command.ts"],"names":[],"mappings":";;;AAMA,MAAa,yBAAyB;IACR;IAA5B,YAA4B,KAA8B;QAA9B,UAAK,GAAL,KAAK,CAAyB;IAAG,CAAC;CAC/D;AAFD,8DAEC"}

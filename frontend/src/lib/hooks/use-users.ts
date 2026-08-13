@@ -129,7 +129,13 @@ export function useAssignRole(userId: string) {
 export function useRevokeRole(userId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (roleId: string) => usersApi.revokeRole(userId, roleId),
+    // The department is part of which assignment this is, not extra detail
+    // about it: the same role held globally and scoped to a unit are two rows,
+    // and a revoke that omits the department deletes the global one. Sending
+    // only the role id therefore silently did nothing to a scoped assignment,
+    // and the endpoint is idempotent so it answered 204 either way.
+    mutationFn: (vars: { roleId: string; departmentId?: string }) =>
+      usersApi.revokeRole(userId, vars.roleId, vars.departmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.detail(userId) });
       queryClient.invalidateQueries({ queryKey: userKeys.all });

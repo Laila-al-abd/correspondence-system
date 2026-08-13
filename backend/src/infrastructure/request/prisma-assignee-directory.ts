@@ -42,13 +42,38 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
     if (query.excludeUserId)
       userWhere.id = { not: query.excludeUserId }
 
+    // departmentId is selected alongside userId because, when requireScoped is
+    // false, a holder can match this query in either of two ways: their role is
+    // scoped to the department we asked about, or they hold it globally. Those
+    // are not the same answer, so the rows must not be collapsed with
+    // `distinct` before we have looked at how each one matched.
     const holders = await this.prisma.userRole.findMany({
       where: { AND: conditions, user: userWhere },
-      select: { userId: true },
-      distinct: ['userId'],
+      select: { userId: true, departmentId: true },
     })
-    const userIds = holders.map((h) => h.userId)
-    if (userIds.length === 0) return []
+    if (holders.length === 0) return []
+
+    // Which department makes a holder "local". preferDepartmentId is consulted
+    // only when the caller did not constrain the query, because a step that
+    // names its own department has already said where the work belongs.
+    const wantedDepartmentId =
+      query.departmentId ?? query.preferDepartmentId ?? null
+    const scopedUserIds = new Set<string>()
+    const userIds: string[] = []
+    const seen = new Set<string>()
+    for (const holder of holders) {
+      const id = holder.userId.toString()
+      if (!seen.has(id)) {
+        seen.add(id)
+        userIds.push(id)
+      }
+      if (
+        wantedDepartmentId !== null &&
+        holder.departmentId !== null &&
+        holder.departmentId.toString() === wantedDepartmentId
+      )
+        scopedUserIds.add(id)
+    }
 
     const loads = await this.prisma.requestStepInstance.groupBy({
       by: ['assignedToUserId'],
@@ -64,17 +89,84 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
         loadByUser.set(row.assignedToUserId.toString(), row._count._all)
 
     const candidates: AssigneeCandidate[] = userIds.map((id) => ({
-      userId: id.toString(),
-      openStepCount: loadByUser.get(id.toString()) ?? 0,
+      userId: id,
+      openStepCount: loadByUser.get(id) ?? 0,
+      scoped: scopedUserIds.has(id),
     }))
-    candidates.sort((a, b) => {
+
+    // Locality beats workload, and it is not a tie-break -- it is a filter.
+    //
+    // Scoping a role to a unit is a statement that that unit's work belongs to
+    // that desk. Ranking the local holder and a university-wide holder together
+    // by open-step count alone meant the local desk was preferred only until it
+    // was one item busier than the global one, so the first couple of requests
+    // routed correctly and the next one silently left the department. Load
+    // balancing is the right rule *within* a tier and the wrong rule across it.
+    //
+    // The global tier is still a real fallback: it is used whenever the
+    // department has nobody eligible, which is the case this OR existed for.
+    const scopedCandidates = candidates.filter((c) => c.scoped)
+    const pool = scopedCandidates.length > 0 ? scopedCandidates : candidates
+
+    pool.sort((a, b) => {
       if (a.openStepCount !== b.openStepCount)
         return a.openStepCount - b.openStepCount
       const ai = a.userId
       const bi = b.userId
       return ai < bi ? -1 : ai > bi ? 1 : 0
     })
-    return candidates
+    return pool
+  }
+
+  async findActiveDelegations(on: Date): Promise<Map<string, string>> {
+    // start_date/end_date are DATE columns, so the comparison is by calendar
+    // day. Truncating avoids a delegation that ends today being treated as
+    // already expired at 09:00 because `on` carries a time component.
+    const day = new Date(
+      Date.UTC(on.getUTCFullYear(), on.getUTCMonth(), on.getUTCDate()),
+    )
+
+    const rows = await this.prisma.delegation.findMany({
+      where: {
+        isActive: true,
+        deletedAt: null,
+        startDate: { lte: day },
+        endDate: { gte: day },
+        // A delegation to someone who has since left is not a delegation.
+        delegate: { status: 'ACTIVE', deletedAt: null },
+        delegator: { deletedAt: null },
+      },
+      select: { delegatorId: true, delegateId: true },
+      orderBy: { createdAt: 'asc' },
+    })
+
+    const byDelegator = new Map<string, string>()
+    // Ascending order means the last write wins, so if someone has two open
+    // delegations the most recently granted one takes effect.
+    for (const row of rows)
+      byDelegator.set(row.delegatorId.toString(), row.delegateId.toString())
+    return byDelegator
+  }
+
+  findRoleHolders(query: {
+    roleId: string
+    excludeUserId?: string
+  }): Promise<AssigneeCandidate[]> {
+    // Same query as findCandidates with the department constraint dropped, so
+    // the workload counts and least-busy-first ordering stay consistent between
+    // the automatic list and the manual one.
+    return this.findCandidates({
+      roleId: query.roleId,
+      excludeUserId: query.excludeUserId,
+    })
+  }
+
+  async isAssignable(userId: string): Promise<boolean> {
+    const row = await this.prisma.user.findFirst({
+      where: { id: userId, status: 'ACTIVE', deletedAt: null },
+      select: { id: true },
+    })
+    return row !== null
   }
 
   async getUserDepartmentId(userId: string): Promise<string | null> {
