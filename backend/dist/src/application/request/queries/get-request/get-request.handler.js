@@ -68,7 +68,16 @@ let GetRequestHandler = class GetRequestHandler {
         const computedSlaDueAt = openStepInstances.length > 0
             ? new Date(Math.min(...openStepInstances.map((si) => si.slaDueAt.getTime())))
             : undefined;
-        const detail = (0, request_view_1.toRequestDetail)(request, actions, documents, payments, durationEstimate, template ?? undefined, workflowPath?.steps ? [...workflowPath.steps] : undefined);
+        const assigneeIds = [
+            ...new Set(request
+                .snapshot()
+                .stepInstances.map((si) => si.assignedToUserId)
+                .filter((id) => !!id)),
+        ];
+        const assigneeNames = assigneeIds.length > 0 && this.requestQuery.resolveUserDisplayNames
+            ? await this.requestQuery.resolveUserDisplayNames(assigneeIds)
+            : {};
+        const detail = (0, request_view_1.toRequestDetail)(request, actions, documents, payments, durationEstimate, template ?? undefined, workflowPath?.steps ? [...workflowPath.steps] : undefined, assigneeNames);
         return { ...detail, slaDueAt: computedSlaDueAt?.toISOString() };
     }
 };

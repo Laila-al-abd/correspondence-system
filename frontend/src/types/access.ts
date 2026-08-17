@@ -161,3 +161,53 @@ export interface TemplateEligibilityView {
   /** List of rules that were not satisfied */
   unmetRules: UnmetRuleView[];
 }
+
+/**
+ * One allowed choice of an ENUM attribute.
+ * Matches: backend/src/interface/access/dto/create-attribute-definition.dto.ts
+ */
+export interface CreateAttributeOptionDto {
+  /** The value that gets stored on a user (1-100 characters) */
+  value: string;
+
+  /** Arabic label shown in pickers (1-200 characters) */
+  labelAr: string;
+
+  /** Optional English label */
+  labelEn?: string;
+
+  /** Display order; the backend falls back to array position */
+  ordinal?: number;
+}
+
+/**
+ * Request body for creating an attribute definition.
+ * POST /access/attributes
+ * Matches: backend/src/interface/access/dto/create-attribute-definition.dto.ts
+ */
+export interface CreateAttributeDefinitionDto {
+  /**
+   * lower_snake_case, 2-50 characters, starting with a letter. This is the
+   * name eligibility rules refer to, not display text, and it cannot be
+   * changed afterwards.
+   */
+  code: string;
+
+  /** Arabic label (required) */
+  labelAr: string;
+
+  /** English label (optional) */
+  labelEn?: string;
+
+  /** Decides how stored values are compared by the eligibility engine */
+  dataType: AttributeDataType;
+
+  /** Optional Arabic description */
+  descriptionAr?: string;
+
+  /** Optional English description */
+  descriptionEn?: string;
+
+  /** Required (at least one) for ENUM, rejected for every other data type */
+  options?: CreateAttributeOptionDto[];
+}

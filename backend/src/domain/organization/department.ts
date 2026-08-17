@@ -29,6 +29,8 @@ isActive: true, externalRef: p.externalRef, sourceSystem: p.externalRef.source, 
 static rehydrate(id: Identifier, props: DepartmentProps): Department { return new Department(id, props) }
 rename(name: LocalizedText): void { this.props.name = name 
 }
+/** Edits the description, or clears it when called with nothing. Routing never reads it. */
+describe(description?: LocalizedText): void { this.props.description = description }
 deactivate(): void { this.props.isActive = false }
 attachTo(parentId: Identifier): void {
 if (parentId.equals(this.id)) throw new InvariantViolationError("A department cannot be its own parent.")

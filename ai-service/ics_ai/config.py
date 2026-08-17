@@ -59,7 +59,7 @@ class Config:
 
     @classmethod
     def load(cls, path: str = None):
-        path = path or os.path.join(HERE, "config_inference.json")
+        path = path or os.path.join(HERE, "models", "config_inference.json")
         cfg = cls()
         if os.path.exists(path):
             with open(path, encoding="utf-8") as fh:
@@ -69,7 +69,7 @@ class Config:
         return cfg
 
     def save(self, path: str = None):
-        path = path or os.path.join(HERE, "config_inference.json")
+        path = path or os.path.join(HERE, "models", "config_inference.json")
         secret = {"backend_password", "backend_email"}
         data = {k: v for k, v in asdict(self).items() if k not in secret}
         with open(path, "w", encoding="utf-8") as fh:

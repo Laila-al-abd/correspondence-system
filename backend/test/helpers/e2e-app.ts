@@ -23,15 +23,41 @@ import { requestContextMiddleware } from '../../src/interface/shared/request-con
 import { PrismaService } from '../../src/infrastructure/persistence/prisma.service'
 import { assertTestDatabase, loadTestEnv } from './test-env'
 
-export async function createTestApp(): Promise<INestApplication> {
+/**
+ * One provider replaced for the duration of a test.
+ *
+ * Used for exactly one thing so far, and it is the thing that cannot be tested
+ * any other way: the personnel directory. Every other port in this system is
+ * backed by our own Postgres, so a test can simply write the rows it needs --
+ * but the directory is somebody else's HTTP service, and we do not have one.
+ * Replacing that single port with an in-memory feed leaves the rest of the
+ * application untouched: the same controller, the same guards, the same
+ * transaction, the same Prisma writes.
+ */
+export interface ProviderOverride {
+  /** The DI token to replace, e.g. PERSONNEL_DIRECTORY. */
+  token: unknown
+  /** The stand-in instance. */
+  value: unknown
+}
+
+export async function createTestApp(
+  overrides: ProviderOverride[] = [],
+): Promise<INestApplication> {
   // Before the module is compiled: PrismaService reads DATABASE_URL through
   // ConfigService during construction, so loading the env afterwards would be
   // too late.
   loadTestEnv()
 
-  const moduleRef = await Test.createTestingModule({
+  let builder = Test.createTestingModule({
     imports: [AppModule],
-  }).compile()
+  })
+  for (const override of overrides)
+    builder = builder
+      .overrideProvider(override.token as never)
+      .useValue(override.value)
+
+  const moduleRef = await builder.compile()
 
   const app = moduleRef.createNestApplication()
   app.use(requestContextMiddleware)

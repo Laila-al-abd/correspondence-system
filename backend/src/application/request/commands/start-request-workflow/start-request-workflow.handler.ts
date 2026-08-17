@@ -86,8 +86,12 @@ export class StartRequestWorkflowHandler
     const stepInstances: RequestStepInstance[] = []
     for (const step of path.steps) {
       const startsNow = entryStepIds.has(step.id.toString())
+      // ...and only the steps that are not declared as pausing the SLA. The
+      // same rule is applied to successors in ActOnStepHandler; both places
+      // must agree, or an entry step and a downstream step carrying the same
+      // flag would behave differently.
       const slaDueAt =
-        startsNow && step.slaHours !== undefined
+        startsNow && step.slaHours !== undefined && !step.pausesSla
           ? await this.businessHours.addWorkingHours(startedAt, step.slaHours)
           : undefined
       stepInstances.push(

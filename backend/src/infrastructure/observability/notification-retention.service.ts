@@ -12,7 +12,7 @@ import { RequestContextStore } from '../shared/request-context'
 import { SYSTEM_USER_ID } from '../shared/system-actor'
 
 const MS_PER_HOUR = 60 * 60 * 1000
-const DEFAULT_RETENTION_DAYS = 30
+const DEFAULT_RETENTION_DAYS = 1
 const DEFAULT_SWEEP_HOURS = 24
 /** Small delay so startup is not slowed by a database sweep. */
 const STARTUP_DELAY_MS = 10_000

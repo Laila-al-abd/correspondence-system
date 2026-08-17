@@ -18,7 +18,7 @@ const purge_old_notifications_command_1 = require("../../application/observabili
 const request_context_1 = require("../shared/request-context");
 const system_actor_1 = require("../shared/system-actor");
 const MS_PER_HOUR = 60 * 60 * 1000;
-const DEFAULT_RETENTION_DAYS = 30;
+const DEFAULT_RETENTION_DAYS = 1;
 const DEFAULT_SWEEP_HOURS = 24;
 const STARTUP_DELAY_MS = 10_000;
 let NotificationRetentionService = NotificationRetentionService_1 = class NotificationRetentionService {

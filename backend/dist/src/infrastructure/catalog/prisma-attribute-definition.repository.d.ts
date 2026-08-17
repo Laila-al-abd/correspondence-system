@@ -8,4 +8,5 @@ export declare class PrismaAttributeDefinitionRepository implements AttributeDef
     findById(id: Identifier): Promise<AttributeDefinition | null>;
     findByCode(code: string): Promise<AttributeDefinition | null>;
     list(): Promise<AttributeDefinition[]>;
+    save(definition: AttributeDefinition): Promise<void>;
 }

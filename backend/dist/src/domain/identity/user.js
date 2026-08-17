@@ -58,6 +58,7 @@ class User extends entity_1.AggregateRoot {
         this.props.status = enums_1.UserStatus.SUSPENDED;
     }
     activate() { this.props.status = enums_1.UserStatus.ACTIVE; }
+    deactivate() { this.props.status = enums_1.UserStatus.INACTIVE; }
     changeEmail(email) {
         this.props.email = email;
     }

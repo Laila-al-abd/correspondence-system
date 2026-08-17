@@ -20,10 +20,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDepartmentTree } from '@/lib/hooks/use-organization';
+import { useDepartmentTree, useUpdateDepartment } from '@/lib/hooks/use-organization';
 import { PermissionGate } from '@/components/permission-gate';
 import { DepartmentSyncButton } from '@/components/forms/department-sync-button';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableHeader,
@@ -71,6 +72,86 @@ function CopyIdButton({ id }: { id: string }) {
     >
       {copied ? 'copied' : `${id.slice(0, 8)}…`}
     </button>
+  );
+}
+
+/**
+ * Renaming is the one edit to a unit that cannot move work: routing matches on
+ * the unit id, its parent link, and its org-unit type, and never on the name.
+ * So a typo in the chart is fixable at any time, including while requests are
+ * in flight through the unit.
+ */
+function RenameControl({ node }: { node: DepartmentTreeNode }) {
+  const update = useUpdateDepartment();
+  const [open, setOpen] = useState(false);
+  const [ar, setAr] = useState(node.name.ar);
+  const [en, setEn] = useState(node.name.en ?? '');
+  const [error, setError] = useState<string | null>(null);
+
+  function reset() {
+    setAr(node.name.ar);
+    setEn(node.name.en ?? '');
+    setError(null);
+    setOpen(false);
+  }
+
+  async function handleSave() {
+    setError(null);
+    const trimmed = ar.trim();
+    if (!trimmed) {
+      setError('The Arabic name is required.');
+      return;
+    }
+    try {
+      await update.mutateAsync({
+        id: node.id,
+        name: { ar: trimmed, en: en.trim() || undefined },
+      });
+      setOpen(false);
+    } catch (e) {
+      const message = (e as { message?: string } | null)?.message;
+      setError(message ?? 'Could not rename this unit.');
+    }
+  }
+
+  if (!open)
+    return (
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+        Rename
+      </Button>
+    );
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex items-center justify-end gap-2">
+        <Input
+          value={ar}
+          onChange={(e) => setAr(e.target.value)}
+          placeholder="Arabic name"
+          maxLength={255}
+          className="h-9 w-40"
+        />
+        <Input
+          value={en}
+          onChange={(e) => setEn(e.target.value)}
+          placeholder="English name (optional)"
+          maxLength={255}
+          className="h-9 w-48"
+        />
+        <Button size="sm" onClick={handleSave} disabled={update.isPending}>
+          {update.isPending ? 'Saving…' : 'Save'}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={reset}
+          disabled={update.isPending}
+        >
+          Cancel
+        </Button>
+      </div>
+      {error && <span className="text-xs text-destructive">{error}</span>}
+    </div>
   );
 }
 
@@ -123,6 +204,7 @@ function DepartmentsPageContent() {
               <TableHead>Status</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>ID</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -165,6 +247,9 @@ function DepartmentsPageContent() {
                 </TableCell>
                 <TableCell>
                   <CopyIdButton id={node.id} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <RenameControl node={node} />
                 </TableCell>
               </TableRow>
             ))}

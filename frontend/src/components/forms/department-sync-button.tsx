@@ -25,6 +25,13 @@ interface Props {
   showSourceInput?: boolean;
 }
 
+/** See the same helper in dashboard/users/page.tsx: show the server's reason. */
+function syncErrorMessage(err: unknown, fallback: string): string {
+  const message = (err as { response?: { data?: { message?: string } } })
+    ?.response?.data?.message;
+  return typeof message === 'string' && message.length > 0 ? message : fallback;
+}
+
 export function DepartmentSyncButton({
   children,
   className,
@@ -44,8 +51,11 @@ export function DepartmentSyncButton({
       setShowForm(false);
       setSource('');
       onSuccess?.();
-    } catch {
-      setError('Failed to sync departments. Please try again.');
+    } catch (err) {
+      console.error('Department sync failed', err);
+      setError(
+        syncErrorMessage(err, 'Failed to sync departments. Please try again.'),
+      );
     }
   }
 

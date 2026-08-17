@@ -108,4 +108,20 @@ export interface RequestQueryPort {
    * Undefined when the template has no history and no declared budget.
    */
   estimateDuration(templateId: string): Promise<DurationEstimateView | undefined>
+
+  /**
+   * Display names for a handful of user ids, keyed by id.
+   *
+   * Exists so the request detail can name the person a step is assigned to.
+   * The obvious alternative -- let the browser fetch /users and join -- cannot
+   * work: that endpoint is behind user.manage, so every reviewer, and every
+   * requester reading their own request, would be refused and left with a raw
+   * UUID on screen.
+   *
+   * Optional on the port so a test double that only answers list queries stays
+   * a valid implementation; callers must therefore check before calling. Ids
+   * with no matching account are simply absent from the result rather than
+   * mapped to a placeholder, so the caller decides what to show.
+   */
+  resolveUserDisplayNames?(userIds: string[]): Promise<Record<string, string>>
 }

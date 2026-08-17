@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, FileText, Building2, LogOut } from 'lucide-react';
+import { Home, FileText, LogOut } from 'lucide-react';
 import { useLogout } from '@/lib/hooks/use-auth';
 import { usePermissions } from '@/lib/auth/permissions-provider';
 
@@ -14,14 +14,13 @@ const NAV_ITEMS: {
   icon: typeof Home;
   permission?: string;
 }[] = [
+  // Two entries on purpose. The sidebar is for the places any signed-in person
+  // returns to constantly; every administrative destination lives on the
+  // dashboard cards, which are permission-filtered the same way. One list of
+  // admin links rather than two means a new screen cannot be added in one place
+  // and forgotten in the other.
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/dashboard/requests', label: 'My Requests', icon: FileText },
-  {
-    href: '/dashboard/organization/departments',
-    label: 'Departments',
-    icon: Building2,
-    permission: 'user.manage',
-  },
 ];
 
 export function DashboardSidebar() {

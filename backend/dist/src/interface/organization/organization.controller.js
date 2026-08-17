@@ -19,6 +19,8 @@ const sync_departments_command_1 = require("../../application/organization/comma
 const sync_departments_dto_1 = require("./dto/sync-departments.dto");
 const create_department_command_1 = require("../../application/organization/commands/create-department/create-department.command");
 const create_department_dto_1 = require("./dto/create-department.dto");
+const update_department_command_1 = require("../../application/organization/commands/update-department/update-department.command");
+const update_department_dto_1 = require("./dto/update-department.dto");
 const list_departments_dto_1 = require("./dto/list-departments.dto");
 const list_org_unit_types_query_1 = require("../../application/organization/queries/list-org-unit-types/list-org-unit-types.query");
 const tokens_1 = require("../../application/tokens");
@@ -44,6 +46,15 @@ let OrganizationController = class OrganizationController {
             name: dto.name,
             description: dto.description,
             parentId: dto.parentId,
+        }));
+    }
+    updateOne(id, dto) {
+        if (!UUID_PATTERN.test(id))
+            throw new errors_1.EntityNotFoundError('Department', id);
+        return this.commandBus.execute(new update_department_command_1.UpdateDepartmentCommand({
+            id,
+            name: dto.name,
+            description: dto.description,
         }));
     }
     list(dto) {
@@ -85,6 +96,14 @@ __decorate([
     __metadata("design:paramtypes", [create_department_dto_1.CreateDepartmentDto]),
     __metadata("design:returntype", Promise)
 ], OrganizationController.prototype, "create", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_department_dto_1.UpdateDepartmentDto]),
+    __metadata("design:returntype", Promise)
+], OrganizationController.prototype, "updateOne", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),

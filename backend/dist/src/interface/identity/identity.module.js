@@ -26,6 +26,7 @@ const sync_users_from_directory_1 = require("../../application/identity/sync-use
 const user_type_attribute_writer_1 = require("../../application/identity/services/user-type-attribute.writer");
 const set_user_attribute_handler_1 = require("../../application/identity/commands/set-user-attribute/set-user-attribute.handler");
 const clear_user_attribute_handler_1 = require("../../application/identity/commands/clear-user-attribute/clear-user-attribute.handler");
+const update_user_status_handler_1 = require("../../application/identity/commands/update-user-status/update-user-status.handler");
 const tokens_1 = require("../../application/tokens");
 const prisma_user_repository_1 = require("../../infrastructure/identity/prisma-user.repository");
 const directory_auth_provider_1 = require("../../infrastructure/identity/directory-auth.provider");
@@ -84,6 +85,7 @@ exports.IdentityModule = IdentityModule = __decorate([
             user_type_attribute_writer_1.UserTypeAttributeWriter,
             set_user_attribute_handler_1.SetUserAttributeHandler,
             clear_user_attribute_handler_1.ClearUserAttributeHandler,
+            update_user_status_handler_1.UpdateUserStatusHandler,
             grant_delegation_handler_1.GrantDelegationHandler,
             revoke_delegation_handler_1.RevokeDelegationHandler,
             list_delegations_handler_1.ListDelegationsHandler,

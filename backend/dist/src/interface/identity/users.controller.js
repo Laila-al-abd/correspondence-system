@@ -21,9 +21,11 @@ const set_user_attribute_command_1 = require("../../application/identity/command
 const clear_user_attribute_command_1 = require("../../application/identity/commands/clear-user-attribute/clear-user-attribute.command");
 const create_user_command_1 = require("../../application/identity/commands/create-user/create-user.command");
 const sync_users_command_1 = require("../../application/identity/commands/sync-users/sync-users.command");
+const update_user_status_command_1 = require("../../application/identity/commands/update-user-status/update-user-status.command");
 const assign_role_dto_1 = require("./dto/assign-role.dto");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const set_user_attribute_dto_1 = require("./dto/set-user-attribute.dto");
+const update_user_status_dto_1 = require("./dto/update-user-status.dto");
 const permissions_decorator_1 = require("./permissions.decorator");
 const current_user_decorator_1 = require("./current-user.decorator");
 const list_users_dto_1 = require("./dto/list-users.dto");
@@ -70,6 +72,9 @@ let UsersController = class UsersController {
     }
     revokeRole(userId, roleId, departmentId) {
         return this.commandBus.execute(new revoke_role_from_user_command_1.RevokeRoleFromUserCommand({ userId, roleId, departmentId }));
+    }
+    updateStatus(userId, dto) {
+        return this.commandBus.execute(new update_user_status_command_1.UpdateUserStatusCommand({ userId, status: dto.status }));
     }
     setAttribute(userId, dto) {
         return this.commandBus.execute(new set_user_attribute_command_1.SetUserAttributeCommand({
@@ -133,6 +138,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "revokeRole", null);
+__decorate([
+    (0, common_1.Patch)(':userId/status'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_user_status_dto_1.UpdateUserStatusDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateStatus", null);
 __decorate([
     (0, common_1.Put)(':userId/attributes'),
     __param(0, (0, common_1.Param)('userId')),

@@ -58,7 +58,7 @@ let StartRequestWorkflowHandler = class StartRequestWorkflowHandler {
         const stepInstances = [];
         for (const step of path.steps) {
             const startsNow = entryStepIds.has(step.id.toString());
-            const slaDueAt = startsNow && step.slaHours !== undefined
+            const slaDueAt = startsNow && step.slaHours !== undefined && !step.pausesSla
                 ? await this.businessHours.addWorkingHours(startedAt, step.slaHours)
                 : undefined;
             stepInstances.push(request_step_instance_1.RequestStepInstance.create(this.ids.next(), {

@@ -258,7 +258,7 @@ let ActOnStepHandler = class ActOnStepHandler {
             if (!waitedOnThisStep)
                 continue;
             const definition = this.definitionOf(path, ready);
-            if (definition?.slaHours !== undefined)
+            if (definition?.slaHours !== undefined && !definition.pausesSla)
                 ready.scheduleSla(await this.businessHours.addWorkingHours(now, definition.slaHours));
             const before = ready.assignedToUserId?.toString();
             if (definition)

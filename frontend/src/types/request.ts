@@ -454,6 +454,11 @@ export interface StepInstanceView {
   id: string;
   workflowStepId: string;
   assignedToUserId?: string;
+  /**
+   * The assignee's display name, resolved server-side (Arabic name, else
+   * English, else email). Undefined when the step is unassigned.
+   */
+  assignedToName?: string;
   /** Arabic (or English) name of the step definition, when it resolves. */
   stepName?: string;
   status: string;

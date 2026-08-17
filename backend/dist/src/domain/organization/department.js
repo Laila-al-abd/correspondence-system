@@ -24,6 +24,7 @@ class Department extends entity_1.AggregateRoot {
     rename(name) {
         this.props.name = name;
     }
+    describe(description) { this.props.description = description; }
     deactivate() { this.props.isActive = false; }
     attachTo(parentId) {
         if (parentId.equals(this.id))

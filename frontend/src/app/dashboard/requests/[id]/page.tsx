@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useRequest, useDocumentDownloadUrl, useStartWorkflow } from '@/lib/hooks/use-requests';
-import { useUsers as useUsersList } from '@/lib/hooks/use-users';
+import { useRequest, useStartWorkflow } from '@/lib/hooks/use-requests';
 import { usePermissions } from '@/lib/auth/permissions-provider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,46 +18,27 @@ import { WaivePaymentForm } from '@/components/forms/waive-payment-form';
 import { UploadDocumentForm } from '@/components/forms/upload-document-form';
 import { DocumentDownloadButton } from '@/components/forms/document-download-button';
 import { Priority } from '@/types/request';
+import {
+  formatWorkingMinutes,
+  describeEstimateBasis,
+  formatSlaRisk,
+} from '@/lib/format/duration';
 
-/** Component that resolves raw UUIDs into friendly Employee / User names */
-function AssigneeName({ userId }: { userId?: string }) {
-  const { data: usersData, isLoading } = useUsersList(1, 100);
-
+/**
+ * Names the person a step is assigned to.
+ *
+ * The name arrives on the step itself (assignedToName), resolved by the
+ * backend. This component used to fetch the first 100 users and join in the
+ * browser, which could not work for three separate reasons: the assignee might
+ * be on page two, GET /users is behind user.manage so a reviewer or the
+ * requester was refused outright, and the field names it guessed at
+ * (fullName / displayName / name) are not the ones the users endpoint returns.
+ * The id is kept as the last resort, for an account that no longer exists.
+ */
+function AssigneeName({ userId, name }: { userId?: string; name?: string }) {
   if (!userId) return <span className="text-muted-foreground">Unassigned</span>;
-  if (isLoading) return <span className="animate-pulse text-muted-foreground">Loading name…</span>;
-
-  const user = usersData?.items?.find((u) => u.id === userId);
-
-  if (user) {
-    const u = user as Record<string, any>;
-    const displayName =
-      u.fullName ||
-      u.displayName ||
-      u.name ||
-      [u.firstName, u.lastName].filter(Boolean).join(' ') ||
-      u.email;
-
-    return <span>{displayName || `User (${userId.slice(0, 8)}…)`}</span>;
-  }
-
+  if (name) return <span>{name}</span>;
   return <span>User ({userId.slice(0, 8)}…)</span>;
-}
-
-function DocumentDownloadButton({ requestId, documentId }: { requestId: string; documentId: string }) {
-  const { data, refetch, isFetching } = useDocumentDownloadUrl(requestId, documentId);
-
-  async function handleDownload() {
-    const res = await refetch();
-    if (res.data?.url) {
-      window.open(res.data.url, '_blank');
-    }
-  }
-
-  return (
-    <Button variant="outline" size="sm" onClick={handleDownload} disabled={isFetching}>
-      {isFetching ? 'Preparing…' : 'Download'}
-    </Button>
-  );
 }
 
 export default function RequestDetailPage() {
@@ -145,10 +125,58 @@ export default function RequestDetailPage() {
           </div>
           <CardDescription>
             Priority: <span className="font-semibold">{request.priority}</span> | 
-            SLA Risk: <span className="font-semibold">{request.slaRisk}</span>
+            Deadline status: <span className="font-semibold">{formatSlaRisk(request.slaRisk)}</span>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Timing, in words a requester can act on.
+
+              Two defects were visible here at once. "SLA Due" was read as a
+              deadline for the whole request -- it is the deadline of the step
+              open right now. And durationEstimate, computed on every detail
+              read since the query was written, was never rendered by any
+              component: the one figure that answers "when will this be
+              finished?" was crossing the wire and being discarded. */}
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-md border p-3">
+              <h3 className="text-xs font-medium text-muted-foreground">
+                Expected total time for this type of request
+              </h3>
+              <p className="text-sm font-semibold">
+                {request.durationEstimate
+                  ? formatWorkingMinutes(request.durationEstimate.minutes)
+                  : 'Not enough data yet'}
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {request.durationEstimate
+                  ? describeEstimateBasis(request.durationEstimate)
+                  : 'No completed request of this type yet, and no declared budget on its steps.'}
+              </p>
+            </div>
+
+            <div className="rounded-md border p-3">
+              <h3 className="text-xs font-medium text-muted-foreground">
+                Deadline of the step in progress
+              </h3>
+              <p className="text-sm font-semibold">
+                {request.slaDueAt ? new Date(request.slaDueAt).toLocaleString() : '—'}
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                The current step only, not the whole request. Counted in working hours.
+              </p>
+            </div>
+
+            <div className="rounded-md border p-3">
+              <h3 className="text-xs font-medium text-muted-foreground">Deadline status</h3>
+              <p className="text-sm font-semibold">{formatSlaRisk(request.slaRisk)}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {request.businessDurationMinutes !== undefined
+                  ? `Finished in ${formatWorkingMinutes(request.businessDurationMinutes)}.`
+                  : 'Reflects the step closest to -- or furthest past -- its deadline.'}
+              </p>
+            </div>
+          </div>
+
           {request.rawText && (
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-1">Citizen Description</h3>
@@ -209,7 +237,7 @@ export default function RequestDetailPage() {
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Assigned To:{' '}
                         <span className="font-medium text-foreground">
-                          <AssigneeName userId={step.assignedToUserId} />
+                          <AssigneeName userId={step.assignedToUserId} name={step.assignedToName} />
                         </span>
                       </p>
                     </div>

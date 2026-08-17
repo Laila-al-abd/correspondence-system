@@ -90,6 +90,31 @@ export class PrismaRequestQuery implements RequestQueryPort {
   }
 
   /**
+   * See RequestQueryPort.resolveUserDisplayNames.
+   *
+   * Arabic name first, because the interface is Arabic and every account has
+   * one -- fullNameEn is nullable. Falls back to the email rather than to the
+   * id: an address at least identifies a person. Soft-deleted accounts are
+   * still named on purpose; a step assigned to somebody who has since left
+   * should read as their name and not regress to a UUID.
+   */
+  async resolveUserDisplayNames(
+    userIds: string[],
+  ): Promise<Record<string, string>> {
+    const ids = [...new Set(userIds.filter((id) => !!id))]
+    if (ids.length === 0) return {}
+    const rows = await this.db.user.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, fullNameAr: true, fullNameEn: true, email: true },
+    })
+    const names: Record<string, string> = {}
+    for (const row of rows) {
+      names[row.id] = row.fullNameAr || row.fullNameEn || row.email
+    }
+    return names
+  }
+
+  /**
    * Two questions, asked in order, and the second only if the first cannot be
    * answered honestly.
    *

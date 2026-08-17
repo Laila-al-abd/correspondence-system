@@ -3,6 +3,8 @@ import { SyncDepartmentsResult } from '../../application/organization/sync-depar
 import { SyncDepartmentsDto } from './dto/sync-departments.dto';
 import { CreateDepartmentResult } from '../../application/organization/commands/create-department/create-department.handler';
 import { CreateDepartmentDto } from './dto/create-department.dto';
+import { UpdateDepartmentResult } from '../../application/organization/commands/update-department/update-department.handler';
+import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { ListDepartmentsDto } from './dto/list-departments.dto';
 import { OrgUnitTypeView } from '../../application/organization/queries/list-org-unit-types/org-unit-type.view';
 import type { DepartmentQueryPort, DepartmentTreeNode, DepartmentView } from '../../application/organization/ports/department-query.port';
@@ -14,6 +16,7 @@ export declare class OrganizationController {
     constructor(commandBus: CommandBus, queryBus: QueryBus, departments: DepartmentQueryPort);
     sync(dto: SyncDepartmentsDto): Promise<SyncDepartmentsResult>;
     create(dto: CreateDepartmentDto): Promise<CreateDepartmentResult>;
+    updateOne(id: string, dto: UpdateDepartmentDto): Promise<UpdateDepartmentResult>;
     list(dto: ListDepartmentsDto): Promise<OffsetPage<DepartmentView>>;
     tree(activeOnly?: string): Promise<DepartmentTreeNode[]>;
     listUnitTypes(): Promise<OrgUnitTypeView[]>;

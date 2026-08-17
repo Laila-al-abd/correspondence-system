@@ -9,6 +9,7 @@ import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUsers } from '@/lib/hooks/use-users';
 import { useSyncUsersFromDirectory } from '@/lib/hooks/use-users';
+import { useUpdateUserStatus } from '@/lib/hooks/use-users';
 import { PermissionGate } from '@/components/permission-gate';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,20 @@ import {
 function formatDate(value: string): string {
   const d = new Date(value);
   return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString();
+}
+
+/**
+ * The message the server actually sent, when it sent one.
+ *
+ * A sync can fail for reasons only the server knows -- the directory is
+ * unreachable, a unit type is unmapped, a user type cannot be imported -- and
+ * every one of those arrives as a sentence in the error body. Swallowing it and
+ * printing "please try again" turns a diagnosable failure into a mystery.
+ */
+function syncErrorMessage(err: unknown, fallback: string): string {
+  const message = (err as { response?: { data?: { message?: string } } })
+    ?.response?.data?.message;
+  return typeof message === 'string' && message.length > 0 ? message : fallback;
 }
 
 function SyncFromDirectoryControl() {
@@ -42,8 +57,11 @@ function SyncFromDirectoryControl() {
     try {
       const data = await sync.mutateAsync(source.trim() || undefined);
       setResult(data);
-    } catch {
-      setError('Sync failed. Please try again.');
+    } catch (err) {
+      // Also logged: a CORS or network failure never reaches the body above,
+      // and the browser console is the only place it can be read.
+      console.error('User sync failed', err);
+      setError(syncErrorMessage(err, 'Sync failed. Please try again.'));
     }
   }
 
@@ -86,6 +104,63 @@ function statusBadge(status: string) {
     >
       {status}
     </span>
+  );
+}
+
+const STATUS_OPTIONS = ['ACTIVE', 'SUSPENDED', 'INACTIVE'] as const;
+
+/**
+ * Until now the Status column was a label for an intention rather than a
+ * control: login already refuses a non-ACTIVE account and step routing already
+ * skips one, but nothing could write the value after the account was created.
+ *
+ * Suspension is not something to do by a stray click, so the change is
+ * confirmed first; and the server's own refusal -- the administrative floor,
+ * when this is the last account that can manage users -- is shown verbatim
+ * rather than replaced by a generic failure message.
+ */
+function StatusControl({ userId, status }: { userId: string; status: string }) {
+  const update = useUpdateUserStatus();
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleChange(next: string) {
+    if (next === status) return;
+    setError(null);
+    const consequence =
+      next === 'ACTIVE'
+        ? 'They will be able to sign in and receive steps again.'
+        : 'They will no longer be able to sign in, and new steps will route to somebody else.';
+    if (!window.confirm(`Set this account to ${next}? ${consequence}`)) return;
+    try {
+      await update.mutateAsync({
+        userId,
+        status: next as 'ACTIVE' | 'SUSPENDED' | 'INACTIVE',
+      });
+    } catch (e) {
+      const message = (e as { message?: string } | null)?.message;
+      setError(message ?? 'Could not change the status.');
+    }
+  }
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <select
+        aria-label="Account status"
+        value={status}
+        onChange={(e) => handleChange(e.target.value)}
+        disabled={update.isPending}
+        className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+      >
+        {STATUS_OPTIONS.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      {error && (
+        <span className="text-xs text-destructive max-w-64 text-right">{error}</span>
+      )}
+    </div>
   );
 }
 
@@ -158,6 +233,7 @@ function UsersPageContent() {
                     >
                       Manage Attributes
                     </Button>
+                    <StatusControl userId={u.id} status={u.status} />
                   </div>
                 </TableCell>
               </TableRow>

@@ -11,7 +11,9 @@ import { AddEligibilityRuleCommand } from '../../application/access/commands/add
 import { RemoveEligibilityRuleCommand } from '../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.command'
 import { ListEligibilityRulesQuery } from '../../application/access/queries/list-eligibility-rules/list-eligibility-rules.query'
 import { EligibilityRuleView } from '../../application/access/queries/views/eligibility-rule.view'
+import { CreateAttributeDefinitionCommand } from '../../application/access/commands/create-attribute-definition/create-attribute-definition.command'
 import { AddEligibilityRuleDto } from './dto/add-eligibility-rule.dto'
+import { CreateAttributeDefinitionDto } from './dto/create-attribute-definition.dto'
 
 @Controller('access')
 @RequirePermissions('template.manage', 'user.manage')
@@ -24,6 +26,32 @@ export class AccessController {
   @Get('attributes')
   attributes(): Promise<AttributeDefinitionView[]> {
     return this.queryBus.execute(new ListAttributeDefinitionsQuery())
+  }
+
+  /**
+   * Authoring the ABAC vocabulary is a catalogue job, not a user-administration
+   * job: an attribute exists so that a template's eligibility rules can refer
+   * to it. The method-level decorator overrides the class-level pair, so this
+   * route asks for 'template.manage' alone -- whoever authors the templates the
+   * attribute is for can author the attribute, without also being granted
+   * authority over user accounts.
+   */
+  @Post('attributes')
+  @RequirePermissions('template.manage')
+  createAttribute(
+    @Body() dto: CreateAttributeDefinitionDto,
+  ): Promise<AttributeDefinitionView> {
+    return this.commandBus.execute(
+      new CreateAttributeDefinitionCommand({
+        code: dto.code,
+        labelAr: dto.labelAr,
+        labelEn: dto.labelEn,
+        dataType: dto.dataType,
+        descriptionAr: dto.descriptionAr,
+        descriptionEn: dto.descriptionEn,
+        options: dto.options,
+      }),
+    )
   }
 
   @Get('users/:userId/eligible-templates')

@@ -297,7 +297,11 @@ async function main(): Promise<void> {
 
   // --- ABAC attribute vocabulary --------------------------------------------
   const attributes = [
-    { id: attributeId(1), code: 'user_type', label: t('نوع المستخدم', 'User type'), dataType: 'TEXT' },
+    // ENUM, not TEXT. The eligibility engine compares this value against the
+    // UserType names, so a typed-in 'employee' or 'Staff' is a value no rule
+    // will ever match -- and the screen that sets it has no way to know that.
+    // Declaring it an enumeration gives that screen a real list to offer.
+    { id: attributeId(1), code: 'user_type', label: t('نوع المستخدم', 'User type'), dataType: 'ENUM' },
     { id: attributeId(2), code: 'degree_level', label: t('المرحلة الدراسية', 'Degree level'), dataType: 'ENUM' },
     { id: attributeId(3), code: 'gpa', label: t('المعدل التراكمي', 'GPA'), dataType: 'NUMBER' },
     { id: attributeId(4), code: 'clearance_level', label: t('مستوى التصريح', 'Clearance level'), dataType: 'NUMBER' },
@@ -305,7 +309,9 @@ async function main(): Promise<void> {
   for (const a of attributes) {
     await prisma.attributeDefinition.upsert({
       where: { code: a.code },
-      update: {},
+      // dataType IS refreshed on re-seed: user_type shipped as TEXT and has to
+      // be able to become ENUM on an existing database without a migration.
+      update: { dataType: a.dataType, label: a.label },
       create: { id: a.id, code: a.code, label: a.label, dataType: a.dataType },
     })
   }
@@ -329,6 +335,32 @@ async function main(): Promise<void> {
         // directly) -- confirm against the real loop before running.
         id: crypto.randomUUID(),
         attributeId: attributeId(2),
+        value: opt.value,
+        label: opt.label,
+        ordinal: opt.ordinal,
+      },
+    })
+  }
+
+  // The vocabulary of user_type, kept identical to the UserType enum in
+  // backend/src/domain/identity/enums.ts. APPLICANT is included because
+  // self-registered accounts really do hold it and eligibility rules may name
+  // it; it is simply not importable from the directory feed.
+  const userTypeOptions = [
+    { value: 'EMPLOYEE', label: t('موظف', 'Employee'), ordinal: 1 },
+    { value: 'STUDENT', label: t('طالب', 'Student'), ordinal: 2 },
+    { value: 'ADMIN', label: t('إداري نظام', 'System administrator'), ordinal: 3 },
+    { value: 'APPLICANT', label: t('متقدم', 'Applicant'), ordinal: 4 },
+  ]
+  for (const opt of userTypeOptions) {
+    await prisma.attributeOption.upsert({
+      where: {
+        attributeId_value: { attributeId: attributeId(1), value: opt.value },
+      },
+      update: { label: opt.label, ordinal: opt.ordinal },
+      create: {
+        id: crypto.randomUUID(),
+        attributeId: attributeId(1),
         value: opt.value,
         label: opt.label,
         ordinal: opt.ordinal,
@@ -374,6 +406,11 @@ async function main(): Promise<void> {
     // separate duty and needs this permission. Granted below to the
     // Administrator role only -- add it to another role to delegate it.
     { id: permissionId(10), code: 'payment.settle', name: t('تسوية الرسوم', 'Settle fees') },
+    // Guards the institution-wide work queue. Deliberately separate from
+    // request.read, which every reviewer holds so they can open the requests
+    // they are involved in: seeing every open request in the institution at
+    // once is oversight, not participation, and that is a different duty.
+    { id: permissionId(11), code: 'request.manage', name: t('الإشراف على الطلبات', 'Oversee requests') },
   ]
 
   /*
@@ -423,6 +460,10 @@ async function main(): Promise<void> {
     'payment.settle': {
       ar: 'تأكيد دفع رسوم الطلب أو الإعفاء منها مع تسجيل السبب.',
       en: 'Confirm that a request fee was paid, or waive it with a recorded reason.',
+    },
+    'request.manage': {
+      ar: 'الاطلاع على قائمة عمل الطلبات على مستوى المؤسسة كاملةً والإشراف عليها.',
+      en: 'View and supervise the institution-wide request work queue.',
     },
   }
 

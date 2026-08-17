@@ -35,6 +35,27 @@ export class PrismaAssigneeDirectory implements AssigneeDirectoryPort {
       )
     }
 
+    // A closed unit must stop receiving work.
+    //
+    // A scoped role assignment carries a department id, and that department may
+    // since have been deactivated -- by hand on the departments screen, or by a
+    // directory sync that no longer sees the unit in the feed. Nothing here
+    // looked at that flag, so a closed department kept collecting requests
+    // through the desks scoped to it: the deactivation was visible in the tree
+    // and invisible to the router.
+    //
+    // Global holders are deliberately untouched. Their assignment carries no
+    // department id, so no unit's status can disqualify them -- and because the
+    // scoped tier is now empty for a closed unit, the fallback that already
+    // exists for "this department has nobody eligible" is exactly the behaviour
+    // a closed department wants.
+    conditions.push({
+      OR: [
+        { departmentId: null },
+        { department: { isActive: true, deletedAt: null } },
+      ],
+    })
+
     const userWhere: Prisma.UserWhereInput = {
       status: 'ACTIVE',
       deletedAt: null,

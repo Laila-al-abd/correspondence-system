@@ -9,6 +9,7 @@ import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.genera
 import { SyncDepartmentsFromDirectory } from '../../application/organization/sync-departments-from-directory'
 import { SyncDepartmentsHandler } from '../../application/organization/commands/sync-departments/sync-departments.handler'
 import { CreateDepartmentHandler } from '../../application/organization/commands/create-department/create-department.handler'
+import { UpdateDepartmentHandler } from '../../application/organization/commands/update-department/update-department.handler'
 import { ListOrgUnitTypesHandler } from '../../application/organization/queries/list-org-unit-types/list-org-unit-types.handler'
 import {
   DEPARTMENT_QUERY,
@@ -32,6 +33,7 @@ import { OrganizationController } from './organization.controller'
   providers: [
     SyncDepartmentsHandler,
     CreateDepartmentHandler,
+    UpdateDepartmentHandler,
     // Query handlers must be listed here too. The @QueryHandler decorator only
     // tags the class; CqrsModule registers it with the QueryBus when Nest
     // instantiates it as a provider. Without this line the bus throws

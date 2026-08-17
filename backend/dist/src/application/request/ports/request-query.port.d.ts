@@ -25,4 +25,5 @@ export interface RequestQueryPort {
     listAssignedTo(input: ListRequestsAssignedInput): Promise<KeysetPage<RequestSummaryView>>;
     listQueue(input: ListRequestQueueInput): Promise<KeysetPage<RequestSummaryView>>;
     estimateDuration(templateId: string): Promise<DurationEstimateView | undefined>;
+    resolveUserDisplayNames?(userIds: string[]): Promise<Record<string, string>>;
 }
