@@ -8,6 +8,7 @@ import { CheckTemplateEligibilityHandler } from '../../application/access/querie
 import { ListEligibleTemplatesHandler } from '../../application/access/queries/list-eligible-templates/list-eligible-templates.handler'
 import { ListAttributeDefinitionsHandler } from '../../application/access/queries/list-attribute-definitions/list-attribute-definitions.handler'
 import { AddEligibilityRuleHandler } from '../../application/access/commands/add-eligibility-rule/add-eligibility-rule.handler'
+import { CreateAttributeDefinitionHandler } from '../../application/access/commands/create-attribute-definition/create-attribute-definition.handler'
 import { RemoveEligibilityRuleHandler } from '../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.handler'
 import { ListEligibilityRulesHandler } from '../../application/access/queries/list-eligibility-rules/list-eligibility-rules.handler'
 import { UuidV7IdGenerator } from '../../infrastructure/shared/uuid-v7-id.generator'
@@ -23,6 +24,7 @@ const handlers = [
   CheckTemplateEligibilityHandler,
   ListEligibleTemplatesHandler,
   ListAttributeDefinitionsHandler,
+  CreateAttributeDefinitionHandler,
   AddEligibilityRuleHandler,
   RemoveEligibilityRuleHandler,
   ListEligibilityRulesHandler,

@@ -47,6 +47,15 @@ const selectClass =
 // confirmed for AttributeDataType specifically.
 type DataTypeCode = 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'ENUM';
 
+// user_type is not free text in spirit, whatever its declared dataType says:
+// the eligibility engine compares it against the UserType names, so anything
+// else is a value no rule can ever match. This picker is offered whenever that
+// attribute is selected, so a database that still declares it TEXT (i.e. one
+// seeded before that changed) is safe too. Kept in step by hand with
+// backend/src/domain/identity/enums.ts.
+const USER_TYPE_ATTRIBUTE = 'user_type';
+const USER_TYPE_OPTIONS = ['EMPLOYEE', 'STUDENT', 'ADMIN', 'APPLICANT'];
+
 function ManageAttributesContent() {
   const params = useParams<{ id: string }>();
   const userId = params.id;
@@ -256,7 +265,22 @@ function ManageAttributesContent() {
 
             <div className="space-y-1">
                 <Label htmlFor="value">Value</Label>
-                {effectiveDataType === 'BOOLEAN' ? (
+                {attributeCode === USER_TYPE_ATTRIBUTE ? (
+                    <select
+                    id="value"
+                    className={selectClass}
+                    value={rawValue}
+                    onChange={(e) => setRawValue(e.target.value)}
+                    disabled={setAttribute.isPending}
+                    >
+                    <option value="">— select —</option>
+                    {USER_TYPE_OPTIONS.map((code) => (
+                        <option key={code} value={code}>
+                        {code}
+                        </option>
+                    ))}
+                    </select>
+                ) : effectiveDataType === 'BOOLEAN' ? (
                     <select id="value" className={selectClass} value={rawValue} onChange={(e) => setRawValue(e.target.value)} disabled={setAttribute.isPending}>
                     <option value="">— select —</option>
                     <option value="true">True</option>

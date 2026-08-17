@@ -472,7 +472,13 @@ export class ActOnStepHandler
       if (!waitedOnThisStep) continue
 
       const definition = this.definitionOf(path, ready)
-      if (definition?.slaHours !== undefined)
+      // A step whose definition pauses the SLA is opened without a deadline.
+      // That is the whole of what "pauses the SLA" can mean at the moment a
+      // step opens: no deadline means the sweep -- which only looks at steps
+      // that have one -- never sees it, so it can be neither at risk nor
+      // breached, and it cannot drag the request's verdict down while it is
+      // open. Waiting on an external party is not the desk's failure.
+      if (definition?.slaHours !== undefined && !definition.pausesSla)
         ready.scheduleSla(
           await this.businessHours.addWorkingHours(now, definition.slaHours),
         )

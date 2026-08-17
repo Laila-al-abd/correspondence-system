@@ -6,6 +6,7 @@ export declare class PrismaRequestQuery implements RequestQueryPort {
     private readonly prisma;
     constructor(prisma: PrismaService);
     private get db();
+    resolveUserDisplayNames(userIds: string[]): Promise<Record<string, string>>;
     estimateDuration(templateId: string): Promise<DurationEstimateView | undefined>;
     listByRequester(input: ListRequestsByRequesterInput): Promise<KeysetPage<RequestSummaryView>>;
     listAssignedTo(input: ListRequestsAssignedInput): Promise<KeysetPage<RequestSummaryView>>;

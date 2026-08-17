@@ -120,8 +120,17 @@ export class RequestController {
     )
   }
 
+  /**
+   * The whole-institution work queue.
+   *
+   * Behind request.manage, not request.read: reading a request you are involved
+   * in and surveying every open request in the institution are different
+   * privileges, and every reviewer holds the former. Oversight is the narrower
+   * duty, so it gets its own permission -- grant it to the roles that actually
+   * supervise the workload.
+   */
   @Get('queue')
-  @RequirePermissions('request.read')
+  @RequirePermissions('request.manage')
   listQueue(
     @Query() dto: ListQueueDto,
   ): Promise<KeysetPage<RequestSummaryView>> {

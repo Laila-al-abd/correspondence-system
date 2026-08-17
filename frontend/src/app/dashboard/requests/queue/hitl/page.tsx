@@ -12,6 +12,7 @@ import { RequestSummaryView } from '@/types/request';
 import { PermissionGate } from '@/components/permission-gate';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { formatSlaRisk } from '@/lib/format/duration';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 
@@ -61,8 +62,8 @@ function HitlQueueContent() {
               <TableRow>
                 <TableHead>Reference #</TableHead>
                 <TableHead>Priority</TableHead>
-                <TableHead>SLA Risk</TableHead>
-                <TableHead>SLA Due</TableHead>
+                <TableHead>Deadline status</TableHead>
+                <TableHead>Deadline of step in progress</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -74,7 +75,7 @@ function HitlQueueContent() {
                 >
                   <TableCell>{req.referenceNo ?? '—'}</TableCell>
                   <TableCell><Badge>{req.priority}</Badge></TableCell>
-                  <TableCell>{req.slaRisk}</TableCell>
+                  <TableCell>{formatSlaRisk(req.slaRisk)}</TableCell>
                   <TableCell>{req.slaDueAt ? new Date(req.slaDueAt).toLocaleString() : '—'}</TableCell>
                 </TableRow>
               ))}

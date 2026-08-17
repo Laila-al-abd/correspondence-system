@@ -24,6 +24,7 @@ import { SyncUsersFromDirectory } from '../../application/identity/sync-users-fr
 import { UserTypeAttributeWriter } from '../../application/identity/services/user-type-attribute.writer'
 import { SetUserAttributeHandler } from '../../application/identity/commands/set-user-attribute/set-user-attribute.handler'
 import { ClearUserAttributeHandler } from '../../application/identity/commands/clear-user-attribute/clear-user-attribute.handler'
+import { UpdateUserStatusHandler } from '../../application/identity/commands/update-user-status/update-user-status.handler'
 import {
   ACCESS_TOKEN_SERVICE,
   ATTRIBUTE_DEFINITION_REPOSITORY,
@@ -103,6 +104,9 @@ import { ObservabilityModule } from '../observability/observability.module'
     UserTypeAttributeWriter,
     SetUserAttributeHandler,
     ClearUserAttributeHandler,
+    // Registering the handler is what binds it to the CommandBus; the
+    // @CommandHandler decorator alone only tags the class.
+    UpdateUserStatusHandler,
     GrantDelegationHandler,
     RevokeDelegationHandler,
     ListDelegationsHandler,

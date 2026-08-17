@@ -1,6 +1,7 @@
 import apiClient from './axios-client';
 import {
   AttributeDefinitionView,
+  CreateAttributeDefinitionDto,
   EligibleTemplateView,
   EligibilityRuleView,
   AddEligibilityRuleDto,
@@ -19,6 +20,23 @@ export const accessApi = {
    */
   getAttributes: async (): Promise<AttributeDefinitionView[]> => {
     const { data } = await apiClient.get<AttributeDefinitionView[]>('/access/attributes');
+    return data;
+  },
+
+  /**
+   * Add one attribute to the ABAC vocabulary.
+   * POST /access/attributes
+   *
+   * Requires 'template.manage' (the route overrides the controller's
+   * class-level pair, so 'user.manage' is not also needed).
+   */
+  createAttribute: async (
+    request: CreateAttributeDefinitionDto
+  ): Promise<AttributeDefinitionView> => {
+    const { data } = await apiClient.post<AttributeDefinitionView>(
+      '/access/attributes',
+      request
+    );
     return data;
   },
 

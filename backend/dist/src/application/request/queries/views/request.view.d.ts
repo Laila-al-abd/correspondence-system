@@ -10,6 +10,7 @@ export interface StepInstanceView {
     id: string;
     workflowStepId: string;
     assignedToUserId?: string;
+    assignedToName?: string;
     stepName?: string;
     status: string;
     slaDueAt?: string;
@@ -115,10 +116,10 @@ export interface RequestDetailView extends RequestSummaryView {
     documents: DocumentView[];
     payments: PaymentView[];
 }
-export declare function toStepInstanceView(s: StepInstanceSnapshot, stepDefinition?: WorkflowStep): StepInstanceView;
+export declare function toStepInstanceView(s: StepInstanceSnapshot, stepDefinition?: WorkflowStep, assignedToName?: string): StepInstanceView;
 export declare function toRequestSummary(request: Request, outstandingPaymentCount?: number): RequestSummaryView;
 export declare function toRequestActionView(action: RequestAction): RequestActionView;
 export declare function toDocumentView(document: Document): DocumentView;
 export declare function toPaymentView(payment: Payment): PaymentView;
 export declare function toTemplateFormView(template: Template): TemplateFormView;
-export declare function toRequestDetail(request: Request, actions: RequestAction[], documents: Document[], payments: Payment[], durationEstimate?: DurationEstimateView, template?: Template, workflowSteps?: WorkflowStep[]): RequestDetailView;
+export declare function toRequestDetail(request: Request, actions: RequestAction[], documents: Document[], payments: Payment[], durationEstimate?: DurationEstimateView, template?: Template, workflowSteps?: WorkflowStep[], assigneeNames?: Readonly<Record<string, string>>): RequestDetailView;

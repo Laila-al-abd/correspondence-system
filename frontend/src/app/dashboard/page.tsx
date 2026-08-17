@@ -12,7 +12,9 @@ import {
   Users,
   Repeat,
   BarChart3,
-  Building,
+  Settings,
+  Building2,
+  Tags,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
@@ -53,7 +55,7 @@ const CARDS: DashboardCard[] = [
     description: 'All in-flight requests across the institute.',
     href: '/dashboard/requests/queue',
     icon: Inbox,
-    requiredPermission: 'request.act',
+    requiredPermission: 'request.manage',
   },
   {
     title: 'Templates',
@@ -97,6 +99,27 @@ const CARDS: DashboardCard[] = [
     icon: BarChart3,
     requiredPermission: 'reports.view',
   },
+  {
+  title: 'Departments',
+  description: 'Browse the organizational tree and create new units.',
+  href: '/dashboard/organization/departments',
+  icon: Building2,
+  requiredPermission: 'user.manage',
+},
+{
+  title: 'System Settings',
+  description: 'Working hours and request numbering.',
+  href: '/dashboard/settings',
+  icon: Settings,
+  requiredPermission: 'system.monitor',
+},
+{
+  title: 'Attribute vocabulary',
+  description: 'Define the attributes that request-type eligibility rules use.',
+  href: '/dashboard/access/attributes',
+  icon: Tags,
+  requiredPermission: 'template.manage',
+},
 ];
 
 export default function DashboardPage() {

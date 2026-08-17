@@ -179,3 +179,26 @@ export function useClearUserAttribute(userId: string) {
     },
   });
 }
+
+/**
+ * Activate, suspend, or deactivate an account.
+ * PATCH /users/:userId/status
+ *
+ * Invalidates the detail AND the list: the status badge is rendered in the list.
+ */
+export function useUpdateUserStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    // Both the id and the target status travel in the variables rather than
+    // being closed over, so one instance of the hook serves every row of the
+    // table -- and neither parameter the API function accepts is dropped.
+    mutationFn: (vars: {
+      userId: string;
+      status: 'ACTIVE' | 'SUSPENDED' | 'INACTIVE';
+    }) => usersApi.updateStatus(vars.userId, vars.status),
+    onSuccess: (_data, vars) => {
+      queryClient.invalidateQueries({ queryKey: userKeys.detail(vars.userId) });
+      queryClient.invalidateQueries({ queryKey: userKeys.all });
+    },
+  });
+}

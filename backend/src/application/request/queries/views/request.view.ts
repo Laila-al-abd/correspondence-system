@@ -13,6 +13,16 @@ export interface StepInstanceView {
   id: string
   workflowStepId: string
   assignedToUserId?: string
+  /**
+   * The assignee's display name, resolved server-side.
+   *
+   * Resolved here and not in the browser because GET /users is behind
+   * user.manage: a reviewer or the requester asking the users endpoint for the
+   * name behind this id gets 403, so the screen could only ever print the
+   * UUID. Undefined when the step is unassigned, or when the account behind
+   * the id has since been deleted.
+   */
+  assignedToName?: string
   stepName?: string 
   status: string
   slaDueAt?: string
@@ -221,13 +231,18 @@ export interface RequestDetailView extends RequestSummaryView {
 const iso = (date?: Date): string | undefined =>
   date ? date.toISOString() : undefined
 
-export function toStepInstanceView(s: StepInstanceSnapshot, stepDefinition?: WorkflowStep): StepInstanceView {
+export function toStepInstanceView(
+  s: StepInstanceSnapshot,
+  stepDefinition?: WorkflowStep,
+  assignedToName?: string,
+): StepInstanceView {
   const stepSnap = stepDefinition?.snapshot()
   return {
     id: s.id,
     workflowStepId: s.workflowStepId,
     stepName: stepSnap ? (stepSnap.name.ar || stepSnap.name.en) : undefined,
     assignedToUserId: s.assignedToUserId,
+    assignedToName: s.assignedToUserId ? assignedToName : undefined,
     status: s.status,
     slaDueAt: iso(s.slaDueAt),
     slaPaused: s.slaPaused,
@@ -382,7 +397,9 @@ export function toRequestDetail(
   payments: Payment[],
   durationEstimate?: DurationEstimateView,
   template?: Template,
-  workflowSteps?: WorkflowStep[]
+  workflowSteps?: WorkflowStep[],
+  /** Assignee display names by user id; see StepInstanceView.assignedToName. */
+  assigneeNames?: Readonly<Record<string, string>>
 ): RequestDetailView {
   const snapshot = request.snapshot()
   const form = template ? toTemplateFormView(template) : undefined
@@ -401,7 +418,11 @@ export function toRequestDetail(
     missingRequiredFields: missingRequiredFields(form, snapshot.filledData),
     stepInstances: snapshot.stepInstances.map((s) => {
       const def = workflowSteps?.find(ws => ws.id.toString() === s.workflowStepId)
-      return toStepInstanceView(s, def)
+      return toStepInstanceView(
+        s,
+        def,
+        s.assignedToUserId ? assigneeNames?.[s.assignedToUserId] : undefined,
+      )
     }),
     actions: actions.map(toRequestActionView),
     documents: documents.map(toDocumentView),

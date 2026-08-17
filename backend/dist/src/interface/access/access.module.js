@@ -17,6 +17,7 @@ const check_template_eligibility_handler_1 = require("../../application/access/q
 const list_eligible_templates_handler_1 = require("../../application/access/queries/list-eligible-templates/list-eligible-templates.handler");
 const list_attribute_definitions_handler_1 = require("../../application/access/queries/list-attribute-definitions/list-attribute-definitions.handler");
 const add_eligibility_rule_handler_1 = require("../../application/access/commands/add-eligibility-rule/add-eligibility-rule.handler");
+const create_attribute_definition_handler_1 = require("../../application/access/commands/create-attribute-definition/create-attribute-definition.handler");
 const remove_eligibility_rule_handler_1 = require("../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.handler");
 const list_eligibility_rules_handler_1 = require("../../application/access/queries/list-eligibility-rules/list-eligibility-rules.handler");
 const uuid_v7_id_generator_1 = require("../../infrastructure/shared/uuid-v7-id.generator");
@@ -26,6 +27,7 @@ const handlers = [
     check_template_eligibility_handler_1.CheckTemplateEligibilityHandler,
     list_eligible_templates_handler_1.ListEligibleTemplatesHandler,
     list_attribute_definitions_handler_1.ListAttributeDefinitionsHandler,
+    create_attribute_definition_handler_1.CreateAttributeDefinitionHandler,
     add_eligibility_rule_handler_1.AddEligibilityRuleHandler,
     remove_eligibility_rule_handler_1.RemoveEligibilityRuleHandler,
     list_eligibility_rules_handler_1.ListEligibilityRulesHandler,

@@ -103,3 +103,28 @@ export function useOrgUnitTypes() {
     queryFn: () => organizationApi.getUnitTypes(),
   });
 }
+
+/**
+ * Rename a department, or edit its description.
+ * PATCH /organization/departments/:id
+ *
+ * Invalidates organizationKeys.all rather than just the detail: the name is
+ * rendered by the flat list, the tree, and every picker that reads either.
+ */
+export function useUpdateDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: {
+      id: string;
+      name?: { ar: string; en?: string };
+      description?: { ar: string; en?: string } | null;
+    }) =>
+      organizationApi.update(vars.id, {
+        name: vars.name,
+        description: vars.description,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+    },
+  });
+}

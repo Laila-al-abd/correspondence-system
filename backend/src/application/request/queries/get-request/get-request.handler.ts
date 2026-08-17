@@ -97,6 +97,22 @@ export class GetRequestHandler
       ? new Date(Math.min(...openStepInstances.map((si) => si.slaDueAt!.getTime())))
       : undefined
 
+    // Assignee names are resolved here, once, for the whole request: the
+    // screen has to print who each step is waiting on, and the browser cannot
+    // find that out for itself because /users is behind user.manage.
+    const assigneeIds = [
+      ...new Set(
+        request
+          .snapshot()
+          .stepInstances.map((si) => si.assignedToUserId)
+          .filter((id): id is string => !!id),
+      ),
+    ]
+    const assigneeNames =
+      assigneeIds.length > 0 && this.requestQuery.resolveUserDisplayNames
+        ? await this.requestQuery.resolveUserDisplayNames(assigneeIds)
+        : {}
+
     const detail = toRequestDetail(
       request,
       actions,
@@ -105,6 +121,7 @@ export class GetRequestHandler
       durationEstimate,
       template ?? undefined,
       workflowPath?.steps ? [...workflowPath.steps] : undefined,
+      assigneeNames,
     )
 
     // Override slaDueAt with computed value

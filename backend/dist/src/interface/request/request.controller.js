@@ -172,7 +172,7 @@ __decorate([
 ], RequestController.prototype, "listHitlQueue", null);
 __decorate([
     (0, common_1.Get)('queue'),
-    (0, permissions_decorator_1.RequirePermissions)('request.read'),
+    (0, permissions_decorator_1.RequirePermissions)('request.manage'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [list_queue_dto_1.ListQueueDto]),

@@ -1,6 +1,7 @@
 'use client';
 //frontend\src\app\dashboard\requests\queue\page.tsx
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useQueries } from '@tanstack/react-query';
 import { requestsApi } from '@/lib/api/requests';
 import { requestKeys } from '@/lib/hooks/use-requests';
@@ -113,6 +114,7 @@ function BooleanPairFilter({
 }
 
 function RequestQueueContent() {
+  const router = useRouter();
   const [status, setStatus] = useState<RequestStatus>(RequestStatus.IN_PROGRESS);
   const [classificationStatus, setClassificationStatus] = useState<ClassificationStatus | ''>('');
   const [hasFilledData, setHasFilledData] = useState<TriState>(undefined);
@@ -272,8 +274,8 @@ function RequestQueueContent() {
                 <TableHead>Stage</TableHead>
                 <TableHead>Classification</TableHead>
                 <TableHead>Priority</TableHead>
-                <TableHead>SLA Risk</TableHead>
-                <TableHead>SLA Due</TableHead>
+                <TableHead>Deadline status</TableHead>
+                <TableHead>Deadline of step in progress</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -281,7 +283,17 @@ function RequestQueueContent() {
                 const stage = stageStyles[row.stage] ?? { variant: 'outline' as BadgeVariant };
                 const risk = slaRiskStyles[row.slaRisk] ?? { variant: 'secondary' as BadgeVariant };
                 return (
-                  <TableRow key={row.id}>
+                  // The queue listed reference numbers and SLA badges with no
+                  // way to open the request behind them. GET /requests/:id
+                  // already admits any holder of request.read (see
+                  // RequestReadAccessPolicy), and the detail page hides every
+                  // control the viewer lacks -- so this needed no new endpoint
+                  // and grants no new authority. It is navigation, not access.
+                  <TableRow
+                    key={row.id}
+                    onClick={() => router.push(`/dashboard/requests/${row.id}`)}
+                    className="cursor-pointer hover:bg-muted/50"
+                  >
                     <TableCell className="font-mono text-xs">
                       {row.referenceNo ?? '—'}
                     </TableCell>
@@ -341,7 +353,7 @@ function RequestQueueContent() {
 
 export default function RequestQueuePage() {
   return (
-    <PermissionGate require={['request.read']}>
+    <PermissionGate require={['request.manage']}>
       <RequestQueueContent />
     </PermissionGate>
   );

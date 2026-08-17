@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { formatSlaRisk } from '@/lib/format/duration';
 import { SubmitRequestForm } from '@/components/forms/submit-request-form';
 
 function stageBadgeVariant(stage: string): 'default' | 'secondary' {
@@ -78,8 +79,8 @@ export default function RequestsPage() {
                 <TableHead>Stage</TableHead>
                 <TableHead>Priority</TableHead>
                 <TableHead>Payment</TableHead>
-                <TableHead>SLA Risk</TableHead>
-                <TableHead>SLA Due</TableHead>
+                <TableHead>Deadline status</TableHead>
+                <TableHead>Deadline of step in progress</TableHead>
                 <TableHead>Completed</TableHead>
               </TableRow>
             </TableHeader>
@@ -106,7 +107,7 @@ export default function RequestsPage() {
                         <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
-                    <TableCell>{req.slaRisk}</TableCell>
+                    <TableCell>{formatSlaRisk(req.slaRisk)}</TableCell>
                     <TableCell>{req.slaDueAt ? new Date(req.slaDueAt).toLocaleString() : '—'}</TableCell>
                     <TableCell>{req.completedAt ? new Date(req.completedAt).toLocaleString() : '—'}</TableCell>
                   </TableRow>

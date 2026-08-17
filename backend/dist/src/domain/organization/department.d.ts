@@ -30,6 +30,7 @@ export declare class Department extends AggregateRoot {
     }): Department;
     static rehydrate(id: Identifier, props: DepartmentProps): Department;
     rename(name: LocalizedText): void;
+    describe(description?: LocalizedText): void;
     deactivate(): void;
     attachTo(parentId: Identifier): void;
     applyExternalUpdate(name: LocalizedText, syncedAt: Date, unitTypeId?: Identifier): void;

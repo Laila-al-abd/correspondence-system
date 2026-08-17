@@ -12,6 +12,7 @@ backend\docsdist/
 build/
 .next/
 out/
+todolist.md
 
 # ---- Python (ai-service) ----
 ai-service/venv/

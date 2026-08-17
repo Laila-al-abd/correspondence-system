@@ -6,6 +6,7 @@ import {
   HttpCode,
   Inject,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -17,9 +18,11 @@ import { SetUserAttributeCommand } from '../../application/identity/commands/set
 import { ClearUserAttributeCommand } from '../../application/identity/commands/clear-user-attribute/clear-user-attribute.command'
 import { CreateUserCommand } from '../../application/identity/commands/create-user/create-user.command'
 import { SyncUsersCommand } from '../../application/identity/commands/sync-users/sync-users.command'
+import { UpdateUserStatusCommand } from '../../application/identity/commands/update-user-status/update-user-status.command'
 import { AssignRoleDto } from './dto/assign-role.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { SetUserAttributeDto } from './dto/set-user-attribute.dto'
+import { UpdateUserStatusDto } from './dto/update-user-status.dto'
 import { RequirePermissions } from './permissions.decorator'
 import { CurrentUserId } from './current-user.decorator'
 import { ListUsersDto } from './dto/list-users.dto'
@@ -125,6 +128,27 @@ export class UsersController {
   ) {
     return this.commandBus.execute(
       new RevokeRoleFromUserCommand({ userId, roleId, departmentId }),
+    )
+  }
+
+  /**
+   * Activate, suspend, or deactivate an account.
+   *
+   * user.manage alone, deliberately, rather than role.manage as well: this
+   * changes whether the account can be used, not what authority it holds.
+   * Its roles survive, so reactivating restores the person to their desk
+   * without an admin having to remember what they held.
+   *
+   * The handler still refuses the one transition that would leave nobody
+   * able to administer the system.
+   */
+  @Patch(':userId/status')
+  updateStatus(
+    @Param('userId') userId: string,
+    @Body() dto: UpdateUserStatusDto,
+  ) {
+    return this.commandBus.execute(
+      new UpdateUserStatusCommand({ userId, status: dto.status }),
     )
   }
 

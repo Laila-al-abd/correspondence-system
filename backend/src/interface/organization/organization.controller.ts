@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common'
@@ -14,6 +15,9 @@ import { SyncDepartmentsDto } from './dto/sync-departments.dto'
 import { CreateDepartmentCommand } from '../../application/organization/commands/create-department/create-department.command'
 import { CreateDepartmentResult } from '../../application/organization/commands/create-department/create-department.handler'
 import { CreateDepartmentDto } from './dto/create-department.dto'
+import { UpdateDepartmentCommand } from '../../application/organization/commands/update-department/update-department.command'
+import { UpdateDepartmentResult } from '../../application/organization/commands/update-department/update-department.handler'
+import { UpdateDepartmentDto } from './dto/update-department.dto'
 import { ListDepartmentsDto } from './dto/list-departments.dto'
 import {
   ListOrgUnitTypesQuery,
@@ -56,6 +60,31 @@ export class OrganizationController {
         name: dto.name,
         description: dto.description,
         parentId: dto.parentId,
+      }),
+    )
+  }
+
+  /**
+   * Rename a unit, or edit its description.
+   *
+   * Nothing routing reads is editable here. The parent link and the
+   * org-unit type both steer the head and dean escalation walks, so
+   * changing either would redirect the remaining steps of requests already
+   * in flight; the handler explains why that is left to the sync.
+   */
+  @Patch(':id')
+  updateOne(
+    @Param('id') id: string,
+    @Body() dto: UpdateDepartmentDto,
+  ): Promise<UpdateDepartmentResult> {
+    // Same guard as getOne: a non-uuid must be a clean 404 rather than a
+    // driver error surfacing as a 500.
+    if (!UUID_PATTERN.test(id)) throw new EntityNotFoundError('Department', id)
+    return this.commandBus.execute(
+      new UpdateDepartmentCommand({
+        id,
+        name: dto.name,
+        description: dto.description,
       }),
     )
   }

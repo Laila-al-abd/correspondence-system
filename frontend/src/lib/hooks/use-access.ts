@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { accessApi } from '@/lib/api/access';
 import {
   AttributeDefinitionView,
+  CreateAttributeDefinitionDto,
   EligibleTemplateView,
   EligibilityRuleView,
   AddEligibilityRuleDto,
@@ -117,6 +118,29 @@ export function useRemoveEligibilityRule(templateId: string) {
       queryClient.invalidateQueries({
         queryKey: accessKeys.eligibilityRules(templateId),
       });
+    },
+  });
+}
+
+/**
+ * Add one attribute to the ABAC vocabulary.
+ * POST /access/attributes
+ *
+ * Invalidates:
+ * - attributes() -- the vocabulary itself changed, and it feeds both the
+ *   eligibility-rule builder and the per-user attribute picker, so both pick
+ *   the new attribute up without a reload.
+ *
+ * Eligibility results are deliberately NOT invalidated: a brand-new attribute
+ * is referenced by no rule yet, so nobody's eligibility can have changed.
+ */
+export function useCreateAttributeDefinition() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (request: CreateAttributeDefinitionDto) =>
+      accessApi.createAttribute(request),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: accessKeys.attributes() });
     },
   });
 }

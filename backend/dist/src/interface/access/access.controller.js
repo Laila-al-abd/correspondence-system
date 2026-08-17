@@ -22,7 +22,9 @@ const permissions_decorator_1 = require("../identity/permissions.decorator");
 const add_eligibility_rule_command_1 = require("../../application/access/commands/add-eligibility-rule/add-eligibility-rule.command");
 const remove_eligibility_rule_command_1 = require("../../application/access/commands/remove-eligibility-rule/remove-eligibility-rule.command");
 const list_eligibility_rules_query_1 = require("../../application/access/queries/list-eligibility-rules/list-eligibility-rules.query");
+const create_attribute_definition_command_1 = require("../../application/access/commands/create-attribute-definition/create-attribute-definition.command");
 const add_eligibility_rule_dto_1 = require("./dto/add-eligibility-rule.dto");
+const create_attribute_definition_dto_1 = require("./dto/create-attribute-definition.dto");
 let AccessController = class AccessController {
     queryBus;
     commandBus;
@@ -32,6 +34,17 @@ let AccessController = class AccessController {
     }
     attributes() {
         return this.queryBus.execute(new list_attribute_definitions_query_1.ListAttributeDefinitionsQuery());
+    }
+    createAttribute(dto) {
+        return this.commandBus.execute(new create_attribute_definition_command_1.CreateAttributeDefinitionCommand({
+            code: dto.code,
+            labelAr: dto.labelAr,
+            labelEn: dto.labelEn,
+            dataType: dto.dataType,
+            descriptionAr: dto.descriptionAr,
+            descriptionEn: dto.descriptionEn,
+            options: dto.options,
+        }));
     }
     eligibleTemplates(userId) {
         return this.queryBus.execute(new list_eligible_templates_query_1.ListEligibleTemplatesQuery(userId));
@@ -61,6 +74,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AccessController.prototype, "attributes", null);
+__decorate([
+    (0, common_1.Post)('attributes'),
+    (0, permissions_decorator_1.RequirePermissions)('template.manage'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_attribute_definition_dto_1.CreateAttributeDefinitionDto]),
+    __metadata("design:returntype", Promise)
+], AccessController.prototype, "createAttribute", null);
 __decorate([
     (0, common_1.Get)('users/:userId/eligible-templates'),
     __param(0, (0, common_1.Param)('userId')),

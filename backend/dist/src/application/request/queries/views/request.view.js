@@ -9,13 +9,14 @@ exports.toTemplateFormView = toTemplateFormView;
 exports.toRequestDetail = toRequestDetail;
 const request_stage_1 = require("./request-stage");
 const iso = (date) => date ? date.toISOString() : undefined;
-function toStepInstanceView(s, stepDefinition) {
+function toStepInstanceView(s, stepDefinition, assignedToName) {
     const stepSnap = stepDefinition?.snapshot();
     return {
         id: s.id,
         workflowStepId: s.workflowStepId,
         stepName: stepSnap ? (stepSnap.name.ar || stepSnap.name.en) : undefined,
         assignedToUserId: s.assignedToUserId,
+        assignedToName: s.assignedToUserId ? assignedToName : undefined,
         status: s.status,
         slaDueAt: iso(s.slaDueAt),
         slaPaused: s.slaPaused,
@@ -131,7 +132,7 @@ function missingRequiredFields(form, filledData) {
     })
         .map((field) => field.key);
 }
-function toRequestDetail(request, actions, documents, payments, durationEstimate, template, workflowSteps) {
+function toRequestDetail(request, actions, documents, payments, durationEstimate, template, workflowSteps, assigneeNames) {
     const snapshot = request.snapshot();
     const form = template ? toTemplateFormView(template) : undefined;
     const paymentViews = payments.map(toPaymentView);
@@ -146,7 +147,7 @@ function toRequestDetail(request, actions, documents, payments, durationEstimate
         missingRequiredFields: missingRequiredFields(form, snapshot.filledData),
         stepInstances: snapshot.stepInstances.map((s) => {
             const def = workflowSteps?.find(ws => ws.id.toString() === s.workflowStepId);
-            return toStepInstanceView(s, def);
+            return toStepInstanceView(s, def, s.assignedToUserId ? assigneeNames?.[s.assignedToUserId] : undefined);
         }),
         actions: actions.map(toRequestActionView),
         documents: documents.map(toDocumentView),

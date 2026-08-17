@@ -62,6 +62,7 @@ export declare class User extends AggregateRoot {
     setPasswordHash(hash: string): void;
     suspend(): void;
     activate(): void;
+    deactivate(): void;
     changeEmail(email: Email): void;
     markSynced(at: Date): void;
     upgradeToDirectoryUser(p: {

@@ -44,6 +44,20 @@ let PrismaRequestQuery = class PrismaRequestQuery {
     get db() {
         return (0, transaction_context_1.dbClient)(this.prisma);
     }
+    async resolveUserDisplayNames(userIds) {
+        const ids = [...new Set(userIds.filter((id) => !!id))];
+        if (ids.length === 0)
+            return {};
+        const rows = await this.db.user.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, fullNameAr: true, fullNameEn: true, email: true },
+        });
+        const names = {};
+        for (const row of rows) {
+            names[row.id] = row.fullNameAr || row.fullNameEn || row.email;
+        }
+        return names;
+    }
     async estimateDuration(templateId) {
         const [observed] = await this.db.$queryRaw(client_1.Prisma.sql `
       SELECT

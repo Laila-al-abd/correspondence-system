@@ -99,6 +99,12 @@ this.props.passwordHash = hash
 suspend(): void { this.props.status = UserStatus.SUSPENDED 
 }
 activate(): void { this.props.status = UserStatus.ACTIVE }
+/**
+ * Retired rather than barred. Every gate treats INACTIVE exactly as it
+ * treats SUSPENDED -- login refuses it, routing skips it -- so the pair is
+ * an administrative record of why, not two different powers.
+ */
+deactivate(): void { this.props.status = UserStatus.INACTIVE }
 changeEmail(email: Email): void { this.props.email = email 
 }
 markSynced(at: Date): void { this.props.lastSyncedAt = at }

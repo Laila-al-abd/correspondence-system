@@ -574,7 +574,10 @@ export function WorkflowPathForm({ templateId: fixedTemplateId, existing }: Prop
                       </Label>
                     </div>
                     <p className="text-xs text-muted-foreground ml-6">
-                      Time spent in this step doesn't count toward SLA.
+                      This step opens without a deadline, so it is never counted
+                      late and never makes the request late. Use it for steps
+                      that wait on someone outside the office. The hours above
+                      are still recorded on the step definition.
                     </p>
                   </div>
 

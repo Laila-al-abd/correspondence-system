@@ -89,6 +89,27 @@ export const organizationApi = {
   },
 
   /**
+   * Rename a department, or edit its description.
+   * PATCH /organization/departments/:id
+   *
+   * The endpoint accepts nothing else on purpose: the parent link and the
+   * org-unit type are what routing walks, so they are not editable by hand.
+   */
+  update: async (
+    id: string,
+    request: {
+      name?: { ar: string; en?: string };
+      description?: { ar: string; en?: string } | null;
+    }
+  ): Promise<{ id: string; name: { ar: string; en?: string } }> => {
+    const { data } = await apiClient.patch<{
+      id: string;
+      name: { ar: string; en?: string };
+    }>(`/organization/departments/${id}`, request);
+    return data;
+  },
+
+  /**
    * Get all org unit types.
    * GET /organization/departments/unit-types
    */

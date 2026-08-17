@@ -54,8 +54,6 @@ interface RequestVerdict {
  * `request_step_instances.sla_due_at` was a deadline nobody ever checked. This
  * service makes both of them live.
  *
- * Three decisions worth defending:
- *
  * 1. **Remaining time is counted in working hours, not clock hours.** A step
  *    that falls due on Thursday afternoon is not late on Friday morning,
  *    because Friday is not a working day here. Wall-clock arithmetic would

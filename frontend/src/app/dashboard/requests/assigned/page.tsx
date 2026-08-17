@@ -8,6 +8,7 @@ import { PermissionGate } from '@/components/permission-gate';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { formatSlaRisk } from '@/lib/format/duration';
 
 function stageBadgeVariant(stage: string): 'default' | 'secondary' {
   if (stage === 'COMPLETED' || stage === 'REJECTED' || stage === 'CANCELLED') return 'secondary';
@@ -60,8 +61,8 @@ function AssignedRequestsContent() {
                 <TableHead>Reference #</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead>Priority</TableHead>
-                <TableHead>SLA Risk</TableHead>
-                <TableHead>SLA Due</TableHead>
+                <TableHead>Deadline status</TableHead>
+                <TableHead>Deadline of step in progress</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -77,7 +78,7 @@ function AssignedRequestsContent() {
                     <Badge variant={stageBadgeVariant(req.stage)}>{req.stage}</Badge>
                   </TableCell>
                   <TableCell>{req.priority}</TableCell>
-                  <TableCell>{req.slaRisk}</TableCell>
+                  <TableCell>{formatSlaRisk(req.slaRisk)}</TableCell>
                   <TableCell>{req.slaDueAt ? new Date(req.slaDueAt).toLocaleString() : '—'}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="outline" size="sm" onClick={(e) => {

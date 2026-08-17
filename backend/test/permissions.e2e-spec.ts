@@ -100,6 +100,10 @@ describe('permission matrix (e2e)', () => {
         '/health/detailed',
         '/auth/admin/ping',
         '/reports/overview',
+        // The institution-wide queue moved from request.read to request.manage.
+        // A reviewer holds request.read, so this cell proves the move landed:
+        // before it, this same request answered 200.
+        '/requests/queue',
       ]) {
         const response = await get(path, reviewerToken)
         // 403, not 401: the caller is known, and known to be insufficient.
@@ -112,6 +116,13 @@ describe('permission matrix (e2e)', () => {
   describe('an administrator', () => {
     it('may call a route guarded by user.manage', async () => {
       const response = await get('/auth/admin/ping', adminToken)
+      expect(response.status).toBe(200)
+    })
+
+    it('may read the institution-wide queue', async () => {
+      // Requires the seed to have been re-run after request.manage was added,
+      // so the Administrator role carries it: npm run test:e2e:reset.
+      const response = await get('/requests/queue', adminToken)
       expect(response.status).toBe(200)
     })
 

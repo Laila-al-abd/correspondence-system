@@ -100,6 +100,21 @@ export const usersApi = {
   },
 
   /**
+   * Activate, suspend, or deactivate an account.
+   * PATCH /users/:userId/status
+   */
+  updateStatus: async (
+    userId: string,
+    status: 'ACTIVE' | 'SUSPENDED' | 'INACTIVE',
+  ): Promise<{ userId: string; status: string }> => {
+    const { data } = await apiClient.patch<{ userId: string; status: string }>(
+      `/users/${userId}/status`,
+      { status },
+    );
+    return data;
+  },
+
+  /**
    * Clear a user's ABAC attribute.
    * DELETE /users/:userId/attributes/:attributeCode
    */
